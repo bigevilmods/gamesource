@@ -1,0 +1,36 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestQuatPos<FloatType>::UnitTestQuatPos()
+#else
+UnitTestQuatPos::UnitTestQuatPos()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestQuatPos<FloatType>::~UnitTestQuatPos()
+#else
+UnitTestQuatPos::~UnitTestQuatPos()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestQuatPos<FloatType>::Test()
+#else
+void UnitTestQuatPos::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

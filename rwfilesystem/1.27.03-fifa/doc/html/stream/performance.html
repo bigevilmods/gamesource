@@ -1,0 +1,94 @@
+
+<html>
+<head>
+    <title>Stream Performance</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Estimating the performance overhead for a streamed file</h1>
+
+<p>On systems or devices where seek time is large (100's of milliseconds),
+game designers need to take this into consideration when planning the
+allocation of system resources.  Each time the stream buffer is filled,
+the file system must perform a seek to the data on the disc.  This
+seeking can seriously impair load times so anyone designing a game which
+will use streams must take this impairment into consideration. To
+estimate how much overhead streaming will cost, use this information.</p>
+
+<ul>
+<li>DeviceAvgSeekTime is the average seek time for the device (specified in seconds)</li>
+
+<li>DeviceThroughPut is the device's throughput (specified in bytes per second)</li>
+
+<li>StreamBufSize is the size of the circular buffer (the stream buffer size
+      less the stream overhead) Each stream in a system may have a different
+      size.</li>
+
+<li>GreedyLevel is the level at which the streamer will refill the stream
+      buffer, expressed as a percentage of StreamBufSize.  A common amount
+      is about 1/3 of the buffer.  So when the buffer drops below 2/3 full,
+      it will send a request to the file system that the stream buffer be
+      filled again, which will cause a seek.  You can increase or decrease
+      this parameter depending on how important it is that stream not run
+      dry.</li>
+
+<li>ConsumptionRate is the average number of bytes per second that the
+      application consumes from the stream's circular buffer.</li>
+</ul>
+
+Then, 
+
+<ul>
+<li>AvgSeeksPerSecond (the average number of seeks per second that a
+      given stream will cause) can be calculated by this formula:
+
+        ConsumptionRate / StreamBufSize / (1-GreedyLevel)</li>
+
+<li>TopUpTime (the total amount of time required to fill a stream) can
+      be calculated by this formula:
+
+        DeviceAvgSeekTime + (StreamBufSize * (1-GreedyLevel) / DeviceThroughPut)</li>
+
+<li>StreamOverhead (percentage of theoretical device throughput used
+      by a stream) can be calculated as follows:
+
+        TopUpTime * AvgSeeksPerSecond</li>
+
+<li>If there is more than one active stream in the system, the total
+      overhead is simply the sum of the StreamOverhead for each stream.
+      It must be less than 1.0, otherwise one or more streams will run
+      dry during the normal course of usage.</li>
+</ul>
+
+If the overhead is too high, you can tune various parameters to make it work:
+
+<ul>
+<li>Decrease the total number of concurrent streams</li>
+<li>Increase the stream buffer size for one or more streams</li>
+<li>Decrease the consumption rate for one or more streams (maybe by using
+      better compression, or reducing quality).</li>
+</ul>
+
+<p>Performance characteristics for different systems can be found in their
+respective documentation.  For the Xbox, look in the "Maximizing Xbox File
+Performance" White Paper.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

@@ -1,0 +1,73 @@
+/*!
+\page p_gotchas_for_branch_free_code Gotchas for Branch Free Code
+
+\section s_handling_code_with_side_effects Handling code with side-effects
+
+You may have noticed that the introduction to \ref p_branch_free_coding "branch free coding" 
+discusses how branching math code that has no side-effects can be converted
+into branch free code.  But what about math code that does have side-effects?  Can it be
+made branch free as well?
+
+In \e general, it is not possible to convert code with side-effects to branch
+free code.  Here is an example to illustrate the problem.
+
+\code
+
+Vector4 Add(Vector4 a, Vector4 b)
+{
+    printf("Adding\n");         // Output is a side-effect
+    return a+b;
+}
+
+Vector4 Subtract(Vector4 a, Vector4 b)
+{
+    printf("Subtracting\n");    // Output is a side-effect
+    return a-b;
+}
+
+Vector4 MyFunction(Vector4 a, Vector4 b)
+{
+    if( a.X() < b.X() )
+    {
+        return Add(a,b);
+    }
+    else
+    {
+        return Subtract(a,b);
+    }
+}
+
+\endcode
+
+This example can not be safely converted to branch free code.  Consider what
+would happen if \c MyFunction was converted to the following branch free code:
+
+\code
+
+Vector4 MyFunction(Vector a, Vector b)
+{
+    return Select( CompLessThan( a.X() < b.X() ), Add(a,b), Subtract(a,b) );
+}
+
+\endcode
+
+This branch free code will not have the same behavior.  This is because \c Add
+and \c Subtract are always called in the branch free version.  Therefore you
+will see "Adding" and "Subtracting" output in the branch free version.  The
+branching version of the code would only execute one of the two functions, and therefore
+you would see either "Adding" or "Subtracting" (but never both).
+
+This example demonstrates that in at least some cases you can’t convert code
+with side-effects into branch free code.  However, there are situations where
+you can write branch free code even when the then/else clauses have
+side-effects.  You just have to recognize that the side-effects are always
+going to occur regardless of if the condition you are testing passes/fails.
+
+Many scenarios where branching code has side-effects can still be converted to
+branch free code.  However, care must be taken to ensure these side-effects are
+"safe" and do not cause incorrect behavior.  Just remember that all "branches" of
+the original code will execute when converted to branch free code.  If you keep
+this in mind, you should be able to avoid problems when converting branching code
+to branch free code (or writing new branch free code from scratch).
+
+*/

@@ -1,0 +1,55 @@
+/*!
+\page p_gotchas Gotchas
+
+This section lists some common problems that people run into using the math.
+
+The major ones have their own page.
+
+    - \ref p_address_of_accessors "Why you can't write &v.X()."
+    - \ref p_printf "Why printf('%f', v.X()) doesn't work."
+    - \ref p_aliasing "Problems caused by aliasing, and why reinterpret_cast is a bad idea."
+    - \ref p_alignment "Alignment requirements"
+	- \ref p_potentially_spurious_warnings "Potentially Spurious Warnings"
+	- \ref p_endian_swapping "Endian Swapping"
+    - \ref p_ambiguous_function_calls "Ambiguous Function Calls"
+    - \ref p_gotchas_for_branch_free_code "Gotchas for Branch Free Code"
+    - \ref p_constistency_of_results "Consistency of Results"
+    - \ref p_static_initialization_order "Static Initialization Order"
+    - \ref p_matrix_lookat_functions "Matrix LookAt Functions"
+    
+And below are some frequently asked questions.
+
+\par Why is the order of quaternion multiplications not intuitive?
+
+Well, who says it isn't? That is, there may be somebody else who does think it's intuitive. That said, we have to embarrasingly admit there may be
+some inconsistency in the math library. Some people expect the quaternion multiplication to be similar to matrix multiplication, i.e. the composition
+of two rotation. Consider the following code...
+
+\code
+    Quaternion q1 = QuaternionFromAxisRotationAngle(Vector3(1,0,0), PI / 6);
+    Quaternion q2 = QuaternionFromAxisRotationAngle(Vector3(0,1,0), PI / 6);
+    Quaternion q3 = q1 * q2;
+    Matrix33 m1 = Matrix33FromQuaternion(q1);
+    Matrix33 m2 = Matrix33FromQuaternion(q2);
+    Matrix33 m3 = m1 * m2;
+    Matrix33 m4 = Matrix33FromQuaternion(q3);
+    Matrix33 m5 = m4 - m3;
+\endcode
+
+Some would expect <code>m5</code> to be the zero matrix, which it isn't. If we change the third line to...
+
+\code
+    Quaternion q3 = q2 * q1;
+\endcode
+
+Then <code>m5</code> is zero as expected. Quaternion multiplication is not commutative, henceforth only one of the two works. But why the second one?
+
+Unfortunately that is mostly a legacy issue. Our current definition for quaternion multiplication comes from the old EA Math library and follows the 
+right handed rule, e.g. <code>X * Y = Z</code>, so <code>(1,0,0,0) * (0,1,0,0) = (0,0,1,0)</code>. This makes sense. Matrix multiplication is more
+arbitrary because it depends not only on the handedness of your coordinate system, but also on whether you use row or column vectors.
+
+Changing either matrix or quaternion definition is not possible at this point, since our support for legacy code. Which means we just decided to roll
+with it and hope this little item in the FAQ is sufficient as an explanation.
+
+
+*/

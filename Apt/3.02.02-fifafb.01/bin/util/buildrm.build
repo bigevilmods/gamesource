@@ -1,0 +1,85 @@
+<project>
+    <target name="psp">
+		<dependent name="EABase"		version="2.0.5"/>
+		<dependent name="realgraph"		version="5.23.00-fusion-02"/>
+		<dependent name="realcore"		version="5.24.00-fusion-03"/>
+        <dependent name="EAGLPSP"		version="4.08.07-fusion-03"/>
+		<dependent name="PSP"			version="0.2.1"/>
+
+		<dependent name="snd"			version="9.02.00-psp-emu-pre-alpha-00"/>
+
+		<property name="realgraphdir"	value="${package.realgraph.dir}"/>
+		<property name="realdir"		value="${package.realcore.dir}"/>
+		<property name="eagldir"		value="${package.EAGLPSP.dir}"/>
+
+		<property name="snddir"			value="${package.snd.dir}"/>
+
+		<property name="buildrm"		value="buildpsprm"/>
+
+		<property name="exec.env.PSPHOME" value="${package.PSP.dir}/sce/psp" />
+		<property name="exec.env.EAGLHOME" value="${package.EAGLPSP.dir}" />
+
+        <exec program="perl.exe">
+            <arg value="..\..\bin\util\${buildrm}.pl" />
+        </exec>
+
+    </target>
+    <target name="ps2">
+		<dependent name="realgraphps2" version="5.19.02"/>
+		<dependent name="realcoreps2" version="5.21.00-1"/>
+    <dependent name="EAGLPS2" version="4.08.08"/>
+		<dependent name="PlayStation2SN" version="3.0.2-4"/>
+
+		<property name="realgraphdir" value="${package.realgraphps2.dir}"/>
+		<property name="realdir" value="${package.realcoreps2.dir}"/>
+		<property name="eagldir" value="${package.EAGLPS2.dir}"/>
+		<property name="buildrm" value="buildrm"/>
+		
+		<property name="exec.env.EAGLHOME" value="${package.EAGLPS2.dir}" />
+		<!-- pearl script will look for this if present. -->
+		<!-- This prevents the script from calling come other package. -->
+		<property name="exec.env.PS2GCCBIN" value="${package.PlayStation2SN.appdir}\sce\ee\gcc\bin\" />
+        <exec program="perl.exe">
+            <arg value="..\..\bin\util\${buildrm}.pl" />
+        </exec>
+    </target>    
+    <target name="gcmw">
+		<dependent name="RealGCMW" version="5.15.02"/>
+		<dependent name="EAGLGCMW" version="4.08.06"/>
+		
+        <property name="realdir" value="${package.RealGCMW.dir}"/>
+		<property name="realgraphdir" value="${package.RealGCMW.dir}"/>
+		
+		<property name="eagldir" value="${package.EAGLGCMW.dir}"/>
+		<property name="buildrm" value="buildgcrm"/>
+        <property name="exec.env.EAGLHOME" value="${package.EAGLGCMW.dir}" />
+        <property name="exec.env.realcore" value="${package.RealGCMW.dir}" />
+        <property name="exec.env.DolphinRoot" value="c:\dev\usr\local\ngc\dolphin" />
+        <exec program="perl.exe">
+            <arg value="..\..\bin\util\${buildrm}.pl" />
+        </exec>
+    </target>        
+    <target name="gcsn">
+	    <property name="package.GameCubeSN.version" value="3.9.3-4" unless="@{PropertyExists('package.GameCubeSN.version')}"/>
+	    
+		<dependent name="realgraphgcsn" version="5.19.02"/>
+		<dependent name="realcoregcsn" version="5.21.00-1"/>
+        <dependent name="EAGLGCSN" version="4.08.08"/>
+		<dependent name="GameCubeSN" version="${package.GameCubeSN.version}"/>
+
+		<property name="realgraphdir" value="${package.realgraphgcsn.dir}"/>
+		<property name="realdir" value="${package.realcoregcsn.dir}"/>
+		<property name="eagldir" value="${package.EAGLGCSN.dir}"/>
+        <property name="buildrm" value="buildgcsnrm"/> 
+                
+        <property name="exec.env.EAGLHOME" value="${package.EAGLGCSN.dir}" />
+        <property name="exec.env.realgraphgcsn" value="${package.realgraphgcsn.dir}" />
+        <property name="exec.env.realcore" value="${package.realcoregcsn.dir}" />
+        <property name="exec.env.DolphinRoot" value="${package.GameCubeSN.appdir}" />		
+        <exec program="perl.exe">
+            <arg value="..\..\bin\util\${buildrm}.pl" />
+        </exec>
+    </target>
+</project>
+
+

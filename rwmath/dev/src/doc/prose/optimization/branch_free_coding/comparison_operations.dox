@@ -1,0 +1,70 @@
+/*!
+\page p_comparison_operations Comparison Operations
+
+\par Introduction
+
+In order to replace branching code with branchfree code, the Mask API must
+duplicate many of the comparison operations that are used in branching code.
+Therefore, the math types in RW Math have had comparison functions added that
+return Mask types.
+
+\par Quick Example
+
+Here is a trivial example for illustrative purposes.  With boolean types and
+operations you could compare two float values like this:
+
+\code
+bool isTwoGreaterThanOrEqualToThree = (2.0f >= 3.0f);
+\endcode
+
+Using the Mask API, the equivalent statement would be:
+\code
+MaskScalar isTwoGreaterThanOrEqualToThree = CompGreaterEqual(2.0f, 3.0f);
+\endcode
+
+\par Comparison Operations Available
+
+Comparison operations have been defined for scalar types (e.g. VecFloat's),
+vector, quaternion, and plane types.  Comparison operations for "larger" types,
+such as matrices, are not provided.  However, they are also not entirely
+necessary, because these operations can be implemented as a series of Vector
+operations.  Comparison operations for these types could be added to the math
+library if their is demand for their inclusion.
+
+The comparison operations currently available are:
+- CompLessThan
+- CompGreaterThan
+- CompLessEqual
+- CompGreaterEqual
+- CompEqual
+- CompNotEqual
+
+The Mask types also have comparison operations for comparing two Mask types to one another.
+For details on these comparison operations please see \ref p_mask_operations "mask operations".
+
+
+All of these operations are <em>element-wise</em>.  That means that CompEqual
+does not try and determine if all elements of a Vector4 are equal.  Instead, it
+computes four values.  Each element in the mask represents the result of the test for the
+corresponding element in each vector.
+
+For example:
+
+\code
+    Mask4 compResult = CompEqual(
+                         Vector4(1.0f, 2.0f, 3.0f, 4.0f),
+                         Vector4(9.0f, 2.0f, 2.0f, 4.0f)
+                       );
+\endcode
+
+The code snippet above initializes \c compResult to the same values as the code below:
+
+\code
+    Mask4 compResult( false, true, false, true );
+\endcode
+
+As you can see, \c CompEqual is comparing the two vectors element by element,
+instead of comparing entire vectors to one another.
+
+
+*/

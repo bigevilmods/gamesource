@@ -1,0 +1,10 @@
+Use of the software in this package is governed by the EA Development Software License,
+found in the accompanying file EA_DEV_SOFTWARE_LICENSE.txt.
+
+Additional licenses also apply to this software package as detailed below.
+
+Portions of this library are licensed under the following terms:
+
+    Copyright (C) 2006 Sony Computer Entertainment Inc.
+
+

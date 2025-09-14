@@ -1,0 +1,1070 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{b39cacf9-ce93-41e8-8e47-9e5b649655e0}</UniqueIdentifier>
+      <Extensions>*.c;*.cpp</Extensions>
+    </Filter>
+    <Filter Include="tiff">
+      <UniqueIdentifier>{000ea4c0-af78-47c4-93d2-6235fd376820}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jpeg">
+      <UniqueIdentifier>{84658f5b-9438-4a8b-91f5-50858ef74078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="png">
+      <UniqueIdentifier>{5841801d-981c-4d66-b490-b321c33240a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mpeg">
+      <UniqueIdentifier>{0a84f68d-f17f-4fe0-8a34-c195e2689bf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{4165dfed-453f-4479-9459-bacf27ed449a}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{cac66d80-51f5-4a48-b56d-9f9295710325}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\3prread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\3prwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\aboutlib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\actread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\actwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\anmread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\anmwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ashread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ashwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\aviread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\avivfw.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\aviwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bifread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bifwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bikread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bikwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bmpread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bmpwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bnrread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\bnrwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\clpread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\clpwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ddsread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ddswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\epsread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\epswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\exeread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\exewrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ffnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ffnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fliread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fliwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\flmread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\flmwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\getbits.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\getblk.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\gethdr.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\getpic.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\getvlc.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gifread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gifwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gmxread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gmxwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gopenlib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gopentbl.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\gstdecode.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\gstencode.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\glue\gstglue.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\gstmap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\gstquery.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gtfread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\gtfwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\hsiread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\hsiwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\icoread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\icowrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\idct.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\idec_decode.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\idec_encode.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\idxgimex.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ijlread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ijlwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\jp2read.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\jp2write.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\lbmread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\lbmwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\maddec.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\maddeca.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\madenc.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\madidct.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\madlab.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\madread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\madwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\mfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\mfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\motion.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\movread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\movwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\mpeg2dec.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\mpgerror.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\mpgread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\mpgwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\mshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\mshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\mssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\msswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\newread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\glue\newshpgstglue.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\newwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nilread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nilwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldashread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldashwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldfshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldfshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldfssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldfsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldgshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldgshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldgssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldgsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldmshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldmshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldmssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldmsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldpshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldpshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldshpcmn.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\glue\oldshpgstglue.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldshpread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldshpwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldsshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldsshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldsssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldssswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldxshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldxshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldxssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\oldxsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pcxread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pcxwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\picread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\picwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pixread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pixwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ppmread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ppmwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\psdread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\psdwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\qmtread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\qmtwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="quicktime\qt3read.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="quicktime\qt3write.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\quant4d.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\quant6d.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ramread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ramwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rawread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rawwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\recon.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rlaread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rlawrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sctread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sctwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sgiread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sgiwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\shpcmn.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\shpread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\shpwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\simread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\simwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\sssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ssswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\store.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\strread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\strwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tgaread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tgawrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tgvread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tgvwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\timread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\timwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tm2read.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tm2write.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tplread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\tplwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ttfread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ttfwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gst\codec\twizzle.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\vp6read.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\vp6write.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xprread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xprwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\xsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ysswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yuvread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\yuvwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zfnread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zfnwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zshread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zshwrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zssread.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\zsswrite.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\fax3sm_winnt.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_aux.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_close.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_codec.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_compress.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_dir.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_dirinfo.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_dirread.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_dirwrite.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_dumpmode.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_error.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_fax3.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_flush.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_getimage.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_gx.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_jpeg.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_luv.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_lzw.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_next.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_open.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_packbits.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_pixarlog.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_predict.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_print.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_read.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_strip.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_swab.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_thunder.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_tile.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_version.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_warning.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_write.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tif_zip.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tifread.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="tiff\tifwrite.c">
+      <Filter>tiff</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcapimin.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcapistd.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jccoefct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jccolor.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcdctmgr.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jchuff.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcinit.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcmainct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcmarker.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcmaster.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcomapi.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcparam.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcphuff.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcprepct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jcsample.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jctrans.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdapimin.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdapistd.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdatadst.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdatasrc.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdcoefct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdcolor.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jddctmgr.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdhuff.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdinput.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdmainct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdmarker.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdmaster.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdmerge.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdphuff.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdpostct.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdsample.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jdtrans.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jerror.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jfdctflt.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jfdctfst.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jfdctint.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jidctflt.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jidctfst.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jidctint.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jidctred.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jmemansi.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jmemmgr.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jpgread.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jpgwrite.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jquant1.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jquant2.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="jpeg\jutils.c">
+      <Filter>jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="png\adler32.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\compress.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\crc32.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\deflate.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\gzio.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\infblock.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\infcodes.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\inffast.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\inflate.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\inftrees.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\infutil.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\png.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngerror.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngget.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pnglread.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pnglwrite.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngmem.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngpread.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngread.cpp">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngrio.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngrtran.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngrutil.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngset.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngtrans.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngwio.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngwrite.cpp">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngwtran.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\pngwutil.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\trees.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\uncompr.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="png\zutil.c">
+      <Filter>png</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\conform.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\emotion.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\fdctref.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\predict.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\putbits.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\puthdr.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\putmpg.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\putpic.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\putvlc.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\quantize.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\ratectl.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\readpic.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\stats.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="mpeg\transfrm.c">
+      <Filter>mpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="dllgimex.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmn\shpcmn.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\shpgimex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="stdgimex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="dllgimex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gpixel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gimex.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

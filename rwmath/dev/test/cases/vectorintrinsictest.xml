@@ -1,0 +1,892 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestVectorIntrinsic" HEADER="vectorintrinsictest.h" SOURCE="vectorintrinsictest.inc" RWHOSTHEADER="rw/math/vpu/vector_intrinsic_operation.h" RWGENERICHEADER="" HOST="true" GENERIC="false">
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="vectorintrinsic_alignment">
+      <![CDATA[
+
+        SetFunctionName("test for vector intrinsic alignment");
+
+        // Validate the use of EA_ALIGN_OF to find the specified alignment of the VectorIntrinsic type.
+        Validate( EA_ALIGN_OF(VectorIntrinsic) == RW_MATH_VECTORINTRINSIC_ALIGNMENT);
+
+        VectorIntrinsic v0;
+        char c0 = 0;
+        VectorIntrinsic v1;
+
+        // Validate the stack alignment of vector instances to ensure they actually have the right alignment at runtime.
+        Validate( (((uintptr_t)&v0) & (RW_MATH_VECTORINTRINSIC_ALIGNMENT-1)) == 0 );
+        Validate( (((uintptr_t)&v1) & (RW_MATH_VECTORINTRINSIC_ALIGNMENT-1)) == 0 );
+
+        EA_UNUSED(v0);
+        EA_UNUSED(c0);
+        EA_UNUSED(v1);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("magnitude in RW_MATH_VPU_NormalizeWithMagnitudeV4(zero VectorIntrinsic, VectorIntrinsic &magnitude)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 0.0f, 0.0f, 0.0f);
+        VectorIntrinsic mag= CreateVectorIntrinsic(10.0f, 11.0f, 12.0f, 13.0f);
+        VectorIntrinsic n;
+        RW_MATH_VPU_NormalizeWithMagnitudeV4(n, mag, a0);
+        EA_UNUSED(n);
+        Validate(_asmIsEqualV4(mag, a0));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("magnitude in RW_MATH_VPU_NormalizeWithMagnitudeV3(zero VectorIntrinsic, VectorIntrinsic &magnitude)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 0.0f, 0.0f, 4.0f);
+        VectorIntrinsic mag= CreateVectorIntrinsic(10.0f, 11.0f, 12.0f, 13.0f);
+        VectorIntrinsic n;
+        RW_MATH_VPU_NormalizeWithMagnitudeV3(n, mag, a0);
+        EA_UNUSED(n);
+        Validate(_asmIsEqualV3(mag, a0) && 
+            _asmIsEqualV3(mag, CreateVectorIntrinsic(0.0f, 0.0f, 0.0f, 0.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+        SetFunctionName("magnitude in RW_MATH_VPU_NormalizeWithMagnitudeV2(zero VectorIntrinsic, VectorIntrinsic &magnitude)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 0.0f, 3.0f, 4.0f);
+        VectorIntrinsic mag= CreateVectorIntrinsic(10.0f, 11.0f, 12.0f, 13.0f);
+        VectorIntrinsic n;
+        RW_MATH_VPU_NormalizeWithMagnitudeV2(n, mag, a0);
+        EA_UNUSED(n);
+        Validate(_asmIsEqualV2(mag, a0) && 
+            _asmIsEqualV2(mag, CreateVectorIntrinsic(0.0f, 0.0f, 0.0f, 0.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        SetFunctionName("VectorIntrinsic RW_MATH_VPU_IsEqual_R(VectorIntrinsic, VectorIntrinsic)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 3.0f);
+        VectorIntrinsic b0 = CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 3.0f);
+        VectorIntrinsic r0 = RW_MATH_VPU_Select_R(b0, a0, RW_MATH_VPU_IsEqual_R(a0, b0));
+
+        VectorIntrinsic a1 = CreateVectorIntrinsic(5.0f, 1.0f, 9.0f, 3.0f);
+        VectorIntrinsic b1 = CreateVectorIntrinsic(10.0f, 11.0f, 12.0f, 13.0f);
+        VectorIntrinsic r1 = RW_MATH_VPU_Select_R(b1, a1, RW_MATH_VPU_IsEqual_R(a1, a0));
+        
+        Validate(_asmIsEqualV4(r0, b0) && 
+                 _asmIsEqualV4(r1, CreateVectorIntrinsic(10.0f, 1.0f, 12.0f, 3.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmSelect">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Select_R(VectorIntrinsic_InParam a, VectorIntrinsic_InParam b, VectorIntrinsic_InParam c)");
+        VectorIntrinsic v0 = CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 3.0f);
+        VectorIntrinsic v1 = CreateVectorIntrinsic(4.0f, 5.0f, 6.0f, 7.0f);
+        
+        VectorIntrinsicUnion x0y0z0w0;
+        x0y0z0w0.scalarUInt[0] = 0;
+        x0y0z0w0.scalarUInt[1] = 0;
+        x0y0z0w0.scalarUInt[2] = 0;
+        x0y0z0w0.scalarUInt[3] = 0;
+
+        VectorIntrinsicUnion x1y0z0w0;
+        x1y0z0w0.scalarUInt[0] = 0xffffffff;
+        x1y0z0w0.scalarUInt[1] = 0;
+        x1y0z0w0.scalarUInt[2] = 0;
+        x1y0z0w0.scalarUInt[3] = 0;
+
+        VectorIntrinsicUnion x0y1z0w0;
+        x0y1z0w0.scalarUInt[0] = 0;
+        x0y1z0w0.scalarUInt[1] = 0xffffffff;
+        x0y1z0w0.scalarUInt[2] = 0;
+        x0y1z0w0.scalarUInt[3] = 0;
+
+        VectorIntrinsicUnion x0y0z1w0;
+        x0y0z1w0.scalarUInt[0] = 0;
+        x0y0z1w0.scalarUInt[1] = 0;
+        x0y0z1w0.scalarUInt[2] = 0xffffffff;
+        x0y0z1w0.scalarUInt[3] = 0;
+
+        VectorIntrinsicUnion x0y0z0w1;
+        x0y0z0w1.scalarUInt[0] = 0;
+        x0y0z0w1.scalarUInt[1] = 0;
+        x0y0z0w1.scalarUInt[2] = 0;
+        x0y0z0w1.scalarUInt[3] = 0xffffffff;
+
+        VectorIntrinsicUnion x1y1z1w1;
+        x1y1z1w1.scalarUInt[0] = 0xffffffff;
+        x1y1z1w1.scalarUInt[1] = 0xffffffff;
+        x1y1z1w1.scalarUInt[2] = 0xffffffff;
+        x1y1z1w1.scalarUInt[3] = 0xffffffff;
+
+        Validate(
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x0y0z0w0.vector), v0) && 
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x1y0z0w0.vector), CreateVectorIntrinsic(4.0f, 1.0f, 2.0f, 3.0f)) &&
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x0y1z0w0.vector), CreateVectorIntrinsic(0.0f, 5.0f, 2.0f, 3.0f)) &&
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x0y0z1w0.vector), CreateVectorIntrinsic(0.0f, 1.0f, 6.0f, 3.0f)) &&
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x0y0z0w1.vector), CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 7.0f)) &&
+                 _asmIsEqualV4(RW_MATH_VPU_Select_R(v0, v1, x1y1z1w1.vector), v1)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test_asmIsGreater">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_IsGreater_R(VectorIntrinsic_InParam a, VectorIntrinsic_InParam b)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 3.0f);
+        VectorIntrinsic b0 = CreateVectorIntrinsic(4.0f, 5.0f, 6.0f, 7.0f);
+        VectorIntrinsic t0 = RW_MATH_VPU_IsGreater_R(a0, b0);
+        VectorIntrinsic r0 = RW_MATH_VPU_Select_R(b0, a0, t0);
+
+        VectorIntrinsic a1 = CreateVectorIntrinsic(5.0f, 1.0f, 9.0f, 3.0f);
+        VectorIntrinsic b1 = CreateVectorIntrinsic(4.0f, 5.0f, 6.0f, 7.0f);
+        VectorIntrinsic t1 = RW_MATH_VPU_IsGreater_R(a1, b1);
+        VectorIntrinsic r1 = RW_MATH_VPU_Select_R(b1, a1, t1);
+        
+        Validate(_asmIsEqualV4(r0, b0) && 
+                 _asmIsEqualV4(r1, CreateVectorIntrinsic(5.0f, 5.0f, 9.0f, 7.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmIsGreaterEqual">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_IsGreaterEqual_R(VectorIntrinsic_InParam a, VectorIntrinsic_InParam b)");
+        VectorIntrinsic a0 = CreateVectorIntrinsic(0.0f, 1.0f, 2.0f, 3.0f);
+        VectorIntrinsic b0 = CreateVectorIntrinsic(4.0f, 5.0f, 6.0f, 7.0f);
+        VectorIntrinsic r0 = RW_MATH_VPU_Select_R(b0, a0, RW_MATH_VPU_IsGreater_R(a0, b0));
+
+        VectorIntrinsic a1 = CreateVectorIntrinsic(5.0f, 1.0f, 9.0f, 3.0f);
+        VectorIntrinsic b1 = CreateVectorIntrinsic(4.0f, 5.0f, 6.0f, 7.0f);
+        VectorIntrinsic r1 = RW_MATH_VPU_Select_R(b1, a1, RW_MATH_VPU_IsGreater_R(a1, b1));
+
+        VectorIntrinsic a2 = CreateVectorIntrinsic(5.0f, 1.0f, 9.0f, 3.0f);
+        VectorIntrinsic b2 = CreateVectorIntrinsic(4.0f, 1.0f, 6.0f, 7.0f);
+        VectorIntrinsic r2 = RW_MATH_VPU_Select_R(b2, a2, RW_MATH_VPU_IsGreater_R(a2, b2));
+
+        Validate(_asmIsEqualV4(r0, b0) && 
+                 _asmIsEqualV4(r1, CreateVectorIntrinsic(5.0f, 5.0f, 9.0f, 7.0f)) &&
+                 _asmIsEqualV4(r2, CreateVectorIntrinsic(5.0f, 1.0f, 9.0f, 7.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_CreateVectorFromScalar_R(float value)");
+        VectorIntrinsic vi = RW_MATH_VPU_CreateVectorFromScalar_R(42.0f);
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vUnion;
+        vUnion.vector = vi;
+
+        Validate( vUnion.scalarFloat[0] == 42.0f &&
+                  vUnion.scalarFloat[1] == 42.0f &&
+                  vUnion.scalarFloat[2] == 42.0f &&
+                  vUnion.scalarFloat[3] == 42.0f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("CreateVectorIntrinsic(float x, float y, float z, float w)");
+        VectorIntrinsic vi = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vUnion;
+        vUnion.vector = vi;
+
+        Validate( vUnion.scalarFloat[0] == 42.0f &&
+                  vUnion.scalarFloat[1] == 43.0f &&
+                  vUnion.scalarFloat[2] == 44.0f &&
+                  vUnion.scalarFloat[3] == 45.0f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Mult(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic result;
+        RW_MATH_VPU_Mult(result, vi1, vi2);
+
+        VectorIntrinsic ref = CreateVectorIntrinsic( 42.0f, 43.0f*2.0f, 44.0f*3.0f, 45.0f*4.0f );
+        VectorIntrinsic t = CreateVectorIntrinsic( 0.0001f, 0.0001f, 0.0001f, 0.0001f );
+
+        Validate( _asmIsSimilarV4( ref, result, t ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Divide(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic result;
+        RW_MATH_VPU_Divide(result, vi1, vi2);
+
+        VectorIntrinsic ref = CreateVectorIntrinsic( 42.0f, 43.0f/2.0f, 44.0f/3.0f, 45.0f/4.0f );
+        VectorIntrinsic t = CreateVectorIntrinsic( 0.0001f, 0.0001f, 0.0001f, 0.0001f );
+
+        Validate( _asmIsSimilarV4( ref, result, t ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        const int NUM_RECIPROCAL_TEST_VALUES = 9;
+        float ReciprocalTestValues[NUM_RECIPROCAL_TEST_VALUES] =
+        {
+            1.0f/2345523523.1214f,
+            1.0f/345235.852f,
+            1.0f/23432.342f,
+            1.0f/521.354854364f,
+            1.0f,
+            521.354854364f,
+            23432.342f,
+            345235.852f,
+            2345523523.1214f,
+        };
+
+        SetFunctionName("RW_MATH_VPU_ReciprocalEstimate(VectorIntrinsic_InParam v)");
+        bool success = true;
+        for( int i=0; i < NUM_RECIPROCAL_TEST_VALUES; ++i )
+        {
+            float testVal = ReciprocalTestValues[i];
+            float reciprocal = 1.0f/testVal;
+            VectorIntrinsic testVec = RW_MATH_VPU_CreateVectorFromScalar_R(testVal);
+            VectorIntrinsic ref = RW_MATH_VPU_CreateVectorFromScalar_R(1.0f/testVal);
+            VectorIntrinsic result;
+            RW_MATH_VPU_ReciprocalEstimate(result, testVec);
+
+            #ifdef RWMATH_USE_NEON
+                VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.005f);
+            #else
+                VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.001f);
+            #endif
+            success = success && _asmIsSimilarV4(result, ref, acceptableError );
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        const int NUM_RECIPROCAL_TEST_VALUES = 9;
+        float ReciprocalTestValues[NUM_RECIPROCAL_TEST_VALUES] =
+        {
+            1.0f/2345523523.1214f,
+            1.0f/345235.852f,
+            1.0f/23432.342f,
+            1.0f/521.354854364f,
+            1.0f,
+            521.354854364f,
+            23432.342f,
+            345235.852f,
+            2345523523.1214f,
+        };
+
+        SetFunctionName("RW_MATH_VPU_ReciprocalFast(VectorIntrinsic_InParam v)");
+        bool success = true;
+        for( int i=0; i < NUM_RECIPROCAL_TEST_VALUES; ++i )
+        {
+            float testVal = ReciprocalTestValues[i];
+            float reciprocal = 1.0f/testVal;
+            VectorIntrinsic testVec = RW_MATH_VPU_CreateVectorFromScalar_R(testVal);
+            VectorIntrinsic ref = RW_MATH_VPU_CreateVectorFromScalar_R(1.0f/testVal);
+            VectorIntrinsic result;
+            RW_MATH_VPU_ReciprocalFast( result, testVec );
+
+            VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.001f);
+            success = success && _asmIsSimilarV4(result, ref, acceptableError );
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        const int NUM_RECIPROCAL_TEST_VALUES = 9;
+        float ReciprocalTestValues[NUM_RECIPROCAL_TEST_VALUES] =
+        {
+            1.0f/2345523523.1214f,
+            1.0f/345235.852f,
+            1.0f/23432.342f,
+            1.0f/521.354854364f,
+            1.0f,
+            521.354854364f,
+            23432.342f,
+            345235.852f,
+            2345523523.1214f,
+        };
+
+        SetFunctionName("RW_MATH_VPU_Reciprocal(VectorIntrinsic_InParam v)");
+        bool success = true;
+        for( int i=0; i < NUM_RECIPROCAL_TEST_VALUES; ++i )
+        {
+            float testVal = ReciprocalTestValues[i];
+            float reciprocal = 1.0f/testVal;
+            VectorIntrinsic testVec = RW_MATH_VPU_CreateVectorFromScalar_R(testVal);
+            VectorIntrinsic ref = RW_MATH_VPU_CreateVectorFromScalar_R(1.0f/testVal);
+            VectorIntrinsic result;
+            RW_MATH_VPU_Reciprocal(result, testVec);
+
+
+#if defined EA_PLATFORM_PS3_SPU || defined RWMATH_USE_NEON
+            VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.0000002f);
+#elif defined EA_PLATFORM_PALM && defined RWMATH_USE_NEON
+            VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.0000002f);
+#else
+            VectorIntrinsic acceptableError = RW_MATH_VPU_CreateVectorFromScalar_R(reciprocal * 0.0000001f);
+#endif
+            success = success && _asmIsSimilarV4(result, ref, acceptableError );
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_MultAdd(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1,      VectorIntrinsic_InParam v2)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi3 = CreateVectorIntrinsic(11.0f, 12.0f, 13.0f, 14.0f);
+        VectorIntrinsic result;
+        RW_MATH_VPU_MultAdd(result, vi1, vi2, vi3);
+        VectorIntrinsic ref = CreateVectorIntrinsic( 42.0f+11.0f, 43.0f*2.0f+12.0f, 44.0f*3.0f+13.0f, 45.0f*4.0f+14.0f );
+        VectorIntrinsic t = CreateVectorIntrinsic( 0.0001f, 0.0001f, 0.0001f, 0.0001f );
+
+        Validate( _asmIsSimilarV4( ref, result, t ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Add_R(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic result = RW_MATH_VPU_Add_R(vi1, vi2);
+        VectorIntrinsic ref = CreateVectorIntrinsic( 42.0f+1.0f, 43.0f+2.0f, 44.0f+3.0f, 45.0f+4.0f );
+        VectorIntrinsic t = CreateVectorIntrinsic( 0.0001f, 0.0001f, 0.0001f, 0.0001f );
+
+        Validate( _asmIsSimilarV4( ref, result, t ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Subtract_R(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(42.0f, 43.0f, 44.0f, 45.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic result = RW_MATH_VPU_Subtract_R(vi1, vi2);
+        VectorIntrinsic ref = CreateVectorIntrinsic( 42.0f-1.0f, 43.0f-2.0f, 44.0f-3.0f, 45.0f-4.0f );
+        VectorIntrinsic t = CreateVectorIntrinsic( 0.0001f, 0.0001f, 0.0001f, 0.0001f );
+
+        Validate( _asmIsSimilarV4( ref, result, t ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        SetFunctionName("_asmIsEqualV4(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi3 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.1f);
+
+        Validate(
+                 _asmIsEqualV4( vi1, vi2 ) &&
+                 _asmIsEqualV4( vi2, vi1 ) &&
+                !_asmIsEqualV4( vi1, vi3 ) &&
+                !_asmIsEqualV4( vi1, vi3 ) &&
+                !_asmIsEqualV4( vi3, vi2 )
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        SetFunctionName("_asmIsEqualV3(VectorIntrinsic_InParam v0,   VectorIntrinsic_InParam v1)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi3 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.1f);
+        VectorIntrinsic vi4 = CreateVectorIntrinsic(1.0f, 2.0f, 3.1f, 4.1f);
+
+        Validate(
+                 _asmIsEqualV3( vi1, vi2 ) &&
+                 _asmIsEqualV3( vi2, vi1 ) &&
+                 _asmIsEqualV3( vi1, vi3 ) &&
+                 _asmIsEqualV3( vi1, vi3 ) &&
+                 _asmIsEqualV3( vi3, vi2 ) &&
+                !_asmIsEqualV3( vi1, vi4 ) &&
+                !_asmIsEqualV3( vi3, vi4 ) &&
+                !_asmIsEqualV3( vi4, vi1 ) &&
+                !_asmIsEqualV3( vi4, vi3 )
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Splat_I(r, v, i)");
+        VectorIntrinsic vi = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic res1;
+        RW_MATH_VPU_Splat_I(res1, vi, VectorAxisX);
+        VectorIntrinsic res2;
+        RW_MATH_VPU_Splat_I(res2, vi, VectorAxisY);
+        VectorIntrinsic res3;
+        RW_MATH_VPU_Splat_I(res3, vi, VectorAxisZ);
+        VectorIntrinsic res4;
+        RW_MATH_VPU_Splat_I(res4, vi, VectorAxisW);
+
+        VectorIntrinsic ref1 = RW_MATH_VPU_CreateVectorFromScalar_R(1.0f);
+        VectorIntrinsic ref2 = RW_MATH_VPU_CreateVectorFromScalar_R(2.0f);
+        VectorIntrinsic ref3 = RW_MATH_VPU_CreateVectorFromScalar_R(3.0f);
+        VectorIntrinsic ref4 = RW_MATH_VPU_CreateVectorFromScalar_R(4.0f);
+
+        Validate(
+            _asmIsEqualV4(res1, ref1) &&
+            _asmIsEqualV4(res2, ref2) &&
+            _asmIsEqualV4(res3, ref3) &&
+            _asmIsEqualV4(res4, ref4)
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        SetFunctionName("VectorIntrinsic RW_MATH_VPU_Splat(VectorIntrinsic_InParam v, VectorAxis index )");
+        VectorIntrinsic vi = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic res1;
+        RW_MATH_VPU_Splat(res1, vi, VectorAxisX);
+        VectorIntrinsic res2;
+        RW_MATH_VPU_Splat(res2, vi, VectorAxisY);
+        VectorIntrinsic res3;
+        RW_MATH_VPU_Splat(res3, vi, VectorAxisZ);
+        VectorIntrinsic res4;
+        RW_MATH_VPU_Splat(res4, vi, VectorAxisW);
+
+        VectorIntrinsic ref1 = RW_MATH_VPU_CreateVectorFromScalar_R(1.0f);
+        VectorIntrinsic ref2 = RW_MATH_VPU_CreateVectorFromScalar_R(2.0f);
+        VectorIntrinsic ref3 = RW_MATH_VPU_CreateVectorFromScalar_R(3.0f);
+        VectorIntrinsic ref4 = RW_MATH_VPU_CreateVectorFromScalar_R(4.0f);
+
+        Validate(
+            _asmIsEqualV4(res1, ref1) &&
+            _asmIsEqualV4(res2, ref2) &&
+            _asmIsEqualV4(res3, ref3) &&
+            _asmIsEqualV4(res4, ref4)
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        SetFunctionName("template<VectorAxis INDEX_DEST, VectorAxis INDEX_SRC> VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorIntrinsic_InParam src)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(10.0f, 20.0f, 30.0f, 40.0f);
+
+        VectorIntrinsic res[16];
+        res[0]  = _asmSwizzleStore<VectorAxisX, VectorAxisX>(vi1, vi2);
+        res[1]  = _asmSwizzleStore<VectorAxisX, VectorAxisY>(vi1, vi2);
+        res[2]  = _asmSwizzleStore<VectorAxisX, VectorAxisZ>(vi1, vi2);
+        res[3]  = _asmSwizzleStore<VectorAxisX, VectorAxisW>(vi1, vi2);
+        res[4]  = _asmSwizzleStore<VectorAxisY, VectorAxisX>(vi1, vi2);
+        res[5]  = _asmSwizzleStore<VectorAxisY, VectorAxisY>(vi1, vi2);
+        res[6]  = _asmSwizzleStore<VectorAxisY, VectorAxisZ>(vi1, vi2);
+        res[7]  = _asmSwizzleStore<VectorAxisY, VectorAxisW>(vi1, vi2);
+        res[8]  = _asmSwizzleStore<VectorAxisZ, VectorAxisX>(vi1, vi2);
+        res[9]  = _asmSwizzleStore<VectorAxisZ, VectorAxisY>(vi1, vi2);
+        res[10] = _asmSwizzleStore<VectorAxisZ, VectorAxisZ>(vi1, vi2);
+        res[11] = _asmSwizzleStore<VectorAxisZ, VectorAxisW>(vi1, vi2);
+        res[12] = _asmSwizzleStore<VectorAxisW, VectorAxisX>(vi1, vi2);
+        res[13] = _asmSwizzleStore<VectorAxisW, VectorAxisY>(vi1, vi2);
+        res[14] = _asmSwizzleStore<VectorAxisW, VectorAxisZ>(vi1, vi2);
+        res[15] = _asmSwizzleStore<VectorAxisW, VectorAxisW>(vi1, vi2);
+
+        bool success = true;
+        for( int i=0; i<16; ++i)
+        {
+            float refArray[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            float srcArray[] = { 10.0f, 20.0f, 30.0f, 40.0f };
+            refArray[i/4] = srcArray[i%4];
+            VectorIntrinsic ref = CreateVectorIntrinsic( refArray[0], refArray[1], refArray[2], refArray[3] );
+            if( !_asmIsEqualV4( ref, res[i] ) )
+            {
+                const char *axisStrings[] = { "VectorAxisX", "VectorAxisY", "VectorAxisZ", "VectorAxisW" };
+                SetFunctionName("template<VectorAxis %s, VectorAxis %s> VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorIntrinsic_InParam src)", axisStrings[i/4], axisStrings[i%4] );
+                success = false;
+                break;
+            }
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("template<VectorAxis INDEX_DEST> VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorIntrinsic_InParam src, int srcIndex)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(10.0f, 20.0f, 30.0f, 40.0f);
+
+        VectorIntrinsic res[16];
+        res[ 0] = _asmSwizzleStore<VectorAxisX>(vi1, vi2, VectorAxisX);
+        res[ 1] = _asmSwizzleStore<VectorAxisX>(vi1, vi2, VectorAxisY);
+        res[ 2] = _asmSwizzleStore<VectorAxisX>(vi1, vi2, VectorAxisZ);
+        res[ 3] = _asmSwizzleStore<VectorAxisX>(vi1, vi2, VectorAxisW);
+        res[ 4] = _asmSwizzleStore<VectorAxisY>(vi1, vi2, VectorAxisX);
+        res[ 5] = _asmSwizzleStore<VectorAxisY>(vi1, vi2, VectorAxisY);
+        res[ 6] = _asmSwizzleStore<VectorAxisY>(vi1, vi2, VectorAxisZ);
+        res[ 7] = _asmSwizzleStore<VectorAxisY>(vi1, vi2, VectorAxisW);
+        res[ 8] = _asmSwizzleStore<VectorAxisZ>(vi1, vi2, VectorAxisX);
+        res[ 9] = _asmSwizzleStore<VectorAxisZ>(vi1, vi2, VectorAxisY);
+        res[10] = _asmSwizzleStore<VectorAxisZ>(vi1, vi2, VectorAxisZ);
+        res[11] = _asmSwizzleStore<VectorAxisZ>(vi1, vi2, VectorAxisW);
+        res[12] = _asmSwizzleStore<VectorAxisW>(vi1, vi2, VectorAxisX);
+        res[13] = _asmSwizzleStore<VectorAxisW>(vi1, vi2, VectorAxisY);
+        res[14] = _asmSwizzleStore<VectorAxisW>(vi1, vi2, VectorAxisZ);
+        res[15] = _asmSwizzleStore<VectorAxisW>(vi1, vi2, VectorAxisW);
+
+        bool success = true;
+        for( int i=0; i<16; ++i)
+        {
+            float refArray[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            float srcArray[] = { 10.0f, 20.0f, 30.0f, 40.0f };
+            refArray[i/4] = srcArray[i%4];
+            VectorIntrinsic ref = CreateVectorIntrinsic( refArray[0], refArray[1], refArray[2], refArray[3] );
+            if( !_asmIsEqualV4( ref, res[i] ) )
+            {
+                const char *axisStrings[] = { "VectorAxisX", "VectorAxisY", "VectorAxisZ", "VectorAxisW" };
+                SetFunctionName("template<VectorAxis %s> VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorIntrinsic_InParam src, %d)", axisStrings[i/4], i%4 );
+                success = false;
+                break;
+            }
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        SetFunctionName("template<VectorAxis INDEX_SRC> VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorAxis destIndex, VectorIntrinsic_InParam src)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(10.0f, 20.0f, 30.0f, 40.0f);
+
+        VectorIntrinsic res[16];
+         res[0] = _asmSwizzleStore<VectorAxisX>(vi1, VectorAxisX, vi2);
+         res[1] = _asmSwizzleStore<VectorAxisY>(vi1, VectorAxisX, vi2);
+         res[2] = _asmSwizzleStore<VectorAxisZ>(vi1, VectorAxisX, vi2);
+         res[3] = _asmSwizzleStore<VectorAxisW>(vi1, VectorAxisX, vi2);
+         res[4] = _asmSwizzleStore<VectorAxisX>(vi1, VectorAxisY, vi2);
+         res[5] = _asmSwizzleStore<VectorAxisY>(vi1, VectorAxisY, vi2);
+         res[6] = _asmSwizzleStore<VectorAxisZ>(vi1, VectorAxisY, vi2);
+         res[7] = _asmSwizzleStore<VectorAxisW>(vi1, VectorAxisY, vi2);
+         res[8] = _asmSwizzleStore<VectorAxisX>(vi1, VectorAxisZ, vi2);
+         res[9] = _asmSwizzleStore<VectorAxisY>(vi1, VectorAxisZ, vi2);
+        res[10] = _asmSwizzleStore<VectorAxisZ>(vi1, VectorAxisZ, vi2);
+        res[11] = _asmSwizzleStore<VectorAxisW>(vi1, VectorAxisZ, vi2);
+        res[12] = _asmSwizzleStore<VectorAxisX>(vi1, VectorAxisW, vi2);
+        res[13] = _asmSwizzleStore<VectorAxisY>(vi1, VectorAxisW, vi2);
+        res[14] = _asmSwizzleStore<VectorAxisZ>(vi1, VectorAxisW, vi2);
+        res[15] = _asmSwizzleStore<VectorAxisW>(vi1, VectorAxisW, vi2);
+
+        bool success = true;
+        for( int i=0; i<16; ++i)
+        {
+            float refArray[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            float srcArray[] = { 10.0f, 20.0f, 30.0f, 40.0f };
+            refArray[i/4] = srcArray[i%4];
+            VectorIntrinsic ref = CreateVectorIntrinsic( refArray[0], refArray[1], refArray[2], refArray[3] );
+            if( !_asmIsEqualV4( ref, res[i] ) )
+            {
+                success = false;
+                break;
+            }
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        SetFunctionName("VectorIntrinsic _asmSwizzleStore(VectorIntrinsic_InParam dest, VectorAxis destIndex, VectorIntrinsic_InParam src, VectorAxis srcIndex)");
+        VectorIntrinsic vi1 = CreateVectorIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+        VectorIntrinsic vi2 = CreateVectorIntrinsic(10.0f, 20.0f, 30.0f, 40.0f);
+
+        VectorIntrinsic res[16];
+         res[0] = _asmSwizzleStore(vi1, VectorAxisX, vi2, VectorAxisX);
+         res[1] = _asmSwizzleStore(vi1, VectorAxisX, vi2, VectorAxisY);
+         res[2] = _asmSwizzleStore(vi1, VectorAxisX, vi2, VectorAxisZ);
+         res[3] = _asmSwizzleStore(vi1, VectorAxisX, vi2, VectorAxisW);
+         res[4] = _asmSwizzleStore(vi1, VectorAxisY, vi2, VectorAxisX);
+         res[5] = _asmSwizzleStore(vi1, VectorAxisY, vi2, VectorAxisY);
+         res[6] = _asmSwizzleStore(vi1, VectorAxisY, vi2, VectorAxisZ);
+         res[7] = _asmSwizzleStore(vi1, VectorAxisY, vi2, VectorAxisW);
+         res[8] = _asmSwizzleStore(vi1, VectorAxisZ, vi2, VectorAxisX);
+         res[9] = _asmSwizzleStore(vi1, VectorAxisZ, vi2, VectorAxisY);
+        res[10] = _asmSwizzleStore(vi1, VectorAxisZ, vi2, VectorAxisZ);
+        res[11] = _asmSwizzleStore(vi1, VectorAxisZ, vi2, VectorAxisW);
+        res[12] = _asmSwizzleStore(vi1, VectorAxisW, vi2, VectorAxisX);
+        res[13] = _asmSwizzleStore(vi1, VectorAxisW, vi2, VectorAxisY);
+        res[14] = _asmSwizzleStore(vi1, VectorAxisW, vi2, VectorAxisZ);
+        res[15] = _asmSwizzleStore(vi1, VectorAxisW, vi2, VectorAxisW);
+
+        bool success = true;
+        for( int i=0; i<16; ++i)
+        {
+            float refArray[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            float srcArray[] = { 10.0f, 20.0f, 30.0f, 40.0f };
+            refArray[i/4] = srcArray[i%4];
+            VectorIntrinsic ref = CreateVectorIntrinsic( refArray[0], refArray[1], refArray[2], refArray[3] );
+            if( !_asmIsEqualV4( ref, res[i] ) )
+            {
+                success = false;
+                break;
+            }
+        }
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmGetSignMaskXYZW">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_GetSignMaskXYZW()");
+        VectorIntrinsic ret;
+        RW_MATH_VPU_GetSignMaskXYZW(ret);
+        VectorIntrinsicUnion ref;
+        ref.scalarUInt[0] = 0x80000000;
+        ref.scalarUInt[1] = 0x80000000;
+        ref.scalarUInt[2] = 0x80000000;
+        ref.scalarUInt[3] = 0x80000000;
+
+        Validate(
+                 _asmIsEqualV4(ret, ref.vector)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmGetSignMaskXYZ">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_GetSignMaskXYZ()");
+        VectorIntrinsic ret;
+        RW_MATH_VPU_GetSignMaskXYZ(ret);
+        VectorIntrinsicUnion ref;
+        ref.scalarUInt[0] = 0x80000000;
+        ref.scalarUInt[1] = 0x80000000;
+        ref.scalarUInt[2] = 0x80000000;
+        ref.scalarUInt[3] = 0x00000000;
+
+        Validate(
+                 _asmIsEqualV4(ret, ref.vector)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmAnd">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_And()");
+        VectorIntrinsicUnion a, b, r, ref;
+        a.scalarUInt[0] = 0xF0F0F0F0;
+        a.scalarUInt[1] = 0x0F0F0F0F;
+        a.scalarUInt[2] = 0xF0F0F0F0;
+        a.scalarUInt[3] = 0x0F0F0F0F;
+
+        b.scalarUInt[0] = 0xFFFFFFFF;
+        b.scalarUInt[1] = 0xFFFFFFFF;
+        b.scalarUInt[2] = 0x10101010;
+        b.scalarUInt[3] = 0x01010101;
+
+        ref.scalarUInt[0] = 0xF0F0F0F0;
+        ref.scalarUInt[1] = 0x0F0F0F0F;
+        ref.scalarUInt[2] = 0x10101010;
+        ref.scalarUInt[3] = 0x01010101;
+
+        RW_MATH_VPU_And(r.vector, a.vector, b.vector);
+
+        Validate(
+                 r.scalarUInt[0] == ref.scalarUInt[0] &&
+                 r.scalarUInt[1] == ref.scalarUInt[1] &&
+                 r.scalarUInt[2] == ref.scalarUInt[2] &&
+                 r.scalarUInt[3] == ref.scalarUInt[3]
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmOr">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Or()");
+        VectorIntrinsicUnion a, b, r, ref;
+        a.scalarUInt[0] = 0xF0F0F0F0;
+        a.scalarUInt[1] = 0x0F0F0F0F;
+        a.scalarUInt[2] = 0xF0F0F0F0;
+        a.scalarUInt[3] = 0x0F0F0F0F;
+
+        b.scalarUInt[0] = 0xF0F0F0F0;
+        b.scalarUInt[1] = 0xFFFFFFFF;
+        b.scalarUInt[2] = 0x01010101;
+        b.scalarUInt[3] = 0x10101010;
+
+        ref.scalarUInt[0] = 0xF0F0F0F0;
+        ref.scalarUInt[1] = 0xFFFFFFFF;
+        ref.scalarUInt[2] = 0xF1F1F1F1;
+        ref.scalarUInt[3] = 0x1F1F1F1F;
+
+        RW_MATH_VPU_Or(r.vector, a.vector, b.vector);
+
+        Validate(
+                 r.scalarUInt[0] == ref.scalarUInt[0] &&
+                 r.scalarUInt[1] == ref.scalarUInt[1] &&
+                 r.scalarUInt[2] == ref.scalarUInt[2] &&
+                 r.scalarUInt[3] == ref.scalarUInt[3]
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmNot">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Not()");
+        VectorIntrinsicUnion a, r, ref;
+        a.scalarUInt[0] = 0xF0F0F0F0;
+        a.scalarUInt[1] = 0xFFFFFFFF;
+        a.scalarUInt[2] = 0x10101010;
+        a.scalarUInt[3] = 0x10101010;
+
+        ref.scalarUInt[0] = 0x0F0F0F0F;
+        ref.scalarUInt[1] = 0x00000000;
+        ref.scalarUInt[2] = 0xEFEFEFEF;
+        ref.scalarUInt[3] = 0xEFEFEFEF;
+
+        RW_MATH_VPU_Not(r.vector, a.vector);
+
+        Validate(
+                 r.scalarUInt[0] == ref.scalarUInt[0] &&
+                 r.scalarUInt[1] == ref.scalarUInt[1] &&
+                 r.scalarUInt[2] == ref.scalarUInt[2] &&
+                 r.scalarUInt[3] == ref.scalarUInt[3]
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_asmXor">
+      <![CDATA[
+
+        SetFunctionName("RW_MATH_VPU_Xor()");
+        VectorIntrinsicUnion a, b, r, ref;
+        a.scalarUInt[0] = 0xF0F0F0F0;
+        a.scalarUInt[1] = 0xFFFFFFFF;
+        a.scalarUInt[2] = 0x10101010;
+        a.scalarUInt[3] = 0x10101010;
+
+        b.scalarUInt[0] = 0xF0F0F0F0;
+        b.scalarUInt[1] = 0xFFFFFFFF;
+        b.scalarUInt[2] = 0x01010101;
+        b.scalarUInt[3] = 0x10101010;
+
+        ref.scalarUInt[0] = 0x00000000;
+        ref.scalarUInt[1] = 0x00000000;
+        ref.scalarUInt[2] = 0x11111111;
+        ref.scalarUInt[3] = 0x00000000;
+
+        RW_MATH_VPU_Xor(r.vector, a.vector, b.vector);
+
+        Validate(
+                 r.scalarUInt[0] == ref.scalarUInt[0] &&
+                 r.scalarUInt[1] == ref.scalarUInt[1] &&
+                 r.scalarUInt[2] == ref.scalarUInt[2] &&
+                 r.scalarUInt[3] == ref.scalarUInt[3]
+                );
+
+      ]]>
+      </TEST>
+
+
+
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+<!-- The Last Test is test25, make sure test names do not repeat-->
+
+</TESTCLASS>

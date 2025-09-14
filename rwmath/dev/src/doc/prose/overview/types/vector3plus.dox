@@ -1,0 +1,11 @@
+/*!
+\page p_vector_3_plus Vector3Plus
+
+The \c Vector3Plus type is essentially used only for storage purposes.  On the
+VPU, all \c Vector3's are actually padded out to 4 elements to preserve
+vector alignment.  That means that each \c Vector3 is wasting 4 bytes of memory.
+For some applications, it is useful to interleave other useful data with Vector3's.
+Therefore, the library provides the \c Vector3Plus type for storing Vector3 data
+plus an additional scalar element.
+    
+*/

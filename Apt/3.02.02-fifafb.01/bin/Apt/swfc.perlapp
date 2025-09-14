@@ -1,0 +1,37 @@
+#!C:\Program Files\ActiveState Perl Dev Kit 6.0\bin\lib\pai.exe
+PAP-Version: 1.0
+Packer: C:\Program Files\ActiveState Perl Dev Kit 6.0\bin\perlapp.exe
+Script: swfc.pl
+Cwd: C:\dev\p4\Apt\tiburon\dev\bin\Apt
+Add: SWF::BinStream::Codec::Zlib
+Byref: 0
+Clean: 0
+Date: 2006-02-02 16:42:32
+Debug: 
+Dependent: 0
+Dyndll: 0
+Exe: swfc.exe
+Force: 0
+Gui: 0
+Hostname: 22psenze1knkz71
+Lib: lib:SWF-File-0.36\lib
+Lib: lib:Data
+No-Compress: 0
+No-Gui: 0
+No-Logo: 0
+Runlib: 
+Shared: none
+Singleton: 0
+Tmpdir: 
+Verbose: 0
+Version-Comments: 
+Version-CompanyName: 
+Version-FileDescription: 
+Version-FileVersion: 
+Version-InternalName: 
+Version-LegalCopyright: 
+Version-LegalTrademarks: 
+Version-OriginalFilename: 
+Version-ProductName: 
+Version-ProductVersion: 
+Xclude: 0

@@ -1,0 +1,165 @@
+<project>
+    
+  <target name="detail-test-run-trap2" depends="test-build">
+    <property name="result" value="true"/>
+
+    <property name="workingdir" value="${package.configbindir}\test"/>
+
+
+    <mkdir dir="${workingdir}\testresults"/>
+
+    <!-- auto-generate trap2_platform.xml -->
+    <property name="dollar" value='$'/>
+    <property name="lt" value='&lt;'/>
+
+    <choose>
+      <do if="${config-system} == pc">
+        <property name="trap2_platform-content">
+          ${lt}data>
+          ${lt}platform name="PC" executable="${dollar}{file.path}${dollar}{file.name}" usage="${dollar}{exec.params}">
+          ${lt}machine ip="127.0.0.1"/>
+          ${lt}config name="${config}" extension="${exe-suffix}"/>
+          ${lt}/platform>
+          ${lt}/data>
+        </property>
+      </do>
+      <do if="${config-system} == xenon">
+        <property name="trap2_platform-content">
+          ${lt}data>
+          ${lt}platform name="XBOX360" executable="${dollar}{xenonbin}\xbreboot.exe" usage="/X:${dollar}{machine.name} xe:\trap2\${dollar}{file.name} ${dollar}{exec.params}">
+          ${lt}property name="xenoninstallpath" key="HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Xbox\2.0\SDK\InstallPath"/>
+          ${lt}property name="xenonbin" value="${dollar}{xenoninstallpath}\bin\win32"/>
+          ${lt}pretest executable="${dollar}{xenonbin}\xbcp.exe" cmdline="/X:${dollar}{machine.name} /Y /T /F ${dollar}{file.path}${dollar}{file.name} xe:\trap2\"/>
+          ${lt}machine name="xenon" ip="127.0.0.1"/>
+          ${lt}config name="${config}" extension="${exe-suffix}"/>
+          ${dollar}{lt}/platform>
+          ${lt}/data>
+        </property>
+      </do>
+
+      <do if="${config-system} == ps3">
+        <property name="trap2_platform-content">
+          ${lt}data>
+          ${lt}platform name="PS3" executable="${dollar}{prodgbin}\ps3run.exe" usage="-t ${dollar}{machine.name} ${dollar}{ps3run.args} ${dollar}{file.path}${dollar}{file.name} ${dollar}{exec.params}">
+          ${lt}property name="prodgdir" enviro="SN_PS3_PATH"/>
+          ${lt}property name="prodgbin" value="${dollar}{prodgdir}\bin"/>
+          ${lt}property name="ps3run.args" value="-r"/>
+          ${lt}machine name="deh" ip="127.0.0.1"/>
+          ${lt}config name="${config}" extension="${exe-suffix}"/>
+          ${lt}/platform>
+          ${lt}/data>
+        </property>
+      </do>
+
+      <do>
+        <fail message="test-run-trap2 target: Unsupported Platform"/>
+      </do>
+    </choose>
+
+    <echo file="${workingdir}\trap2_platform.xml" message="${trap2_platform-content}"/>
+
+
+    <foreach item="String" in="${test.buildmodules}" property="module">
+      <choose>
+        <do if="'${config-system}' == 'pc'">
+          <task name="run-trap2" workpath="${workingdir}" params="-run ${package.configbuilddir}/../bin/test/${module}${exe-suffix} -platform PC:${config} -result testresults\testresult-${config}.xml"/>
+        </do>
+        <do unless="'${config-system}' == 'pc'">
+          <script language="C#">
+            <code>
+              <![CDATA[                        
+                                public static void ScriptMain(Project project) {
+                                    project.Properties["ip"] = System.Net.Dns.GetHostByName(System.Net.Dns.GetHostName()).AddressList[0].ToString();            
+                                }
+                            ]]>
+            </code>
+          </script>
+
+          <property name="cmdline" value="" unless="@{PropertyExists('cmdline')}"/>
+          <choose>
+            <do if="'${config-system}' == 'ps3'">
+              <task name="run-${config-system}-test" test="${module}" cmdline="-trap 5 ${ip} 9000"/>
+              <task name="run-trap2" workpath="${workingdir}\testresults" params="-lite 0 -result testresult-${config}.xml"/>
+            </do>
+            <do>
+              <task name="run-${config-system}-test" test="${module}" cmdline="-trap 5 ${ip} 9000"/>
+              <task name="run-trap2" workpath="${workingdir}\testresults" params="-lite 0 -result testresult-${config}.xml"/>
+            </do>
+          </choose>
+        </do>
+      </choose>
+
+      <property name="result" value="false" unless="'${exec.exitcode}' == '0'"/>
+    </foreach>
+
+    <echo message="All Tests Passed" if="${result}"/>
+    <fail message="Test Failed"      unless="${result}"/>
+  </target>
+
+
+    <!-- Note: This file was taken from rwconfig.  It actually defines tasks that are used by trap2's initialize.xml.
+       -       This file should actually be a part of the trap2 package instead of existing here.  Hopefully future
+       -       releases of trap2 will make this file unnecessary.
+       -
+      -->
+    <createtask name="run-pc-test">
+        <parameters>
+            <option name="test" value="Required" />
+            <option name="cmdline" value="" />
+        </parameters>
+        <code>
+            <exec program="${package.configbuilddir}/../bin/${run-pc-test.test}${exe-suffix}" workingdir=""
+                commandline="${run-pc-test.cmdline}" failonerror="true" />
+        </code>
+    </createtask>
+    
+    <createtask name="run-xenon-test">
+        <parameters>
+            <option name="test" value="Required" />
+            <option name="cmdline" value="" />
+        </parameters>
+        <code>
+            <property name="Xenon.target" value="" unless="@{PropertyExists('Xenon.target')}" />
+            
+            <fail message="You need to specify Xenon.target property in order to call test-run-trap2 target"
+                if="'${Xenon.target}' == '' and '${config-system}' == 'xenon'" />
+            <exec program="${package.xenonsdk.appdir}/bin/win32/xbcp.exe" workingdir="${package.configbuilddir}/../bin/test"
+                failonerror="true">
+                <args>
+                    <arg value="/X:${Xenon.target}" unless="@{StrLen('${Xenon.target}')} == 0" />
+                    <arg value="/Y /T *.* xe:\trap2" />
+                </args>
+            </exec>
+
+            <exec program="${package.xenonsdk.appdir}/bin/win32/xbreboot.exe" workingdir="${package.configbuilddir}/../bin/test"
+                failonerror="true">
+                <args>
+                    <arg value="/X:${Xenon.target}" unless="@{StrLen('${Xenon.target}')} == 0" />
+                    <arg value="xe:\trap2\${run-xenon-test.test}${exe-suffix} ${run-xenon-test.cmdline}" />
+                </args>
+            </exec>
+        </code>
+    </createtask>
+    
+    <createtask name="run-ps3-test">
+        <parameters>
+            <option name="test" value="Required" />
+            <option name="cmdline" value="" />
+        </parameters>
+        <code>
+            <property name="Prodg.target" value="" unless="@{PropertyExists('Prodg.target')}" />
+            
+            <fail message="You need to specify Prodg.target property in order to call test-run-trap2 target"
+                if="'${Prodg.target}' == '' and '${config-system}' == 'ps3'" />
+            <property name="Prodg.dir" value="C:\Program Files\SN Systems\PS3\bin" />
+            <!-- Below two lines run either .self or .elf respectively, depending if SDK>=085.007 or not -->
+            <exec program="${Prodg.dir}/ps3run.exe" workingdir="${package.configbuilddir}/../bin/test"
+                commandline="-t ${Prodg.target} -r -f ${package.configbuilddir}/../bin/test ${run-ps3-test.test}.self ${run-ps3-test.cmdline} ${spu-elf-options??}"
+                failonerror="true" if="${package.PlayStation3GCC.version} gte 085.007" />
+            <exec program="${Prodg.dir}/ps3run.exe" workingdir="${package.configbuilddir}/../bin/test"
+                commandline="-t ${Prodg.target} -r -f ${package.configbuilddir}/../bin/test ${run-ps3-test.test}${exe-suffix} ${run-ps3-test.cmdline} ${spu-elf-options??}"
+                failonerror="true" if="${package.PlayStation3GCC.version} lt 085.007" />
+        </code>
+    </createtask>
+    
+</project>

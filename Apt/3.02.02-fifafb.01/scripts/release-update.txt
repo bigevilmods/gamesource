@@ -1,0 +1,8 @@
+include/Apt/AptVersion.h|#define(\s+)APT_VERSION_MAJOR(\s+)(\d+)|#define APT_VERSION_MAJOR %Major%
+include/Apt/AptVersion.h|#define(\s+)APT_VERSION_MAJOR_REVISION(\s+)(\d+)|#define APT_VERSION_MAJOR_REVISION %MajorRevision%
+include/Apt/AptVersion.h|#define(\s+)APT_VERSION_MINOR(\s+)(\d+)|#define APT_VERSION_MINOR %Minor%
+include/Apt/AptVersion.h|#define(\s+)APT_VERSION_MINOR_REVISION(\s+)(\d+)|#define APT_VERSION_MINOR_REVISION %MinorRevision%
+source/Apt/AptVersion.cpp|"Apt-(.*)"|"Apt-%Version%"
+source/Apt/AptVersion.cpp|"(.*)"(.*)//(.*)date|"%Date%" // date
+doc/Supporting Documentation/config/default-release.xml|projectversion"(\s+)value="(.*)"|projectversion" value="%Version%"
+bin/Apt/swfc.pl|Built for Apt-(.*)"|Built for Apt-%Version%\n\n"

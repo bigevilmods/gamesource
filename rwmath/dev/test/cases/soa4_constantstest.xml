@@ -1,0 +1,121 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4Constants" HEADER="soa4_constantstest.h" SOURCE="soa4_constantstest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_constants_operation.h rw/math/vpu/soa4_float_operation.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="getmaskscalar_true">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4MaskScalar_True()");
+        Soa4MaskScalar m = GetSoa4MaskScalar_True();
+        Validate( IsEqual(m, CreateSoa4MaskScalar(true, true, true, true)) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmaskscalar_false">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4MaskScalar_False()");
+        Soa4MaskScalar m = GetSoa4MaskScalar_False();
+        Validate( IsEqual(m, CreateSoa4MaskScalar(false, false, false, false)) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getnegtwo">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_NegativeTwo()");
+        Soa4Float v1 = GetSoa4Float_NegativeTwo();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(-2.0f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getnegone">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_NegativeOne()");
+        Soa4Float v1 = GetSoa4Float_NegativeOne();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(-1.0f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getneghalf">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_NegativeHalf()");
+        Soa4Float v1 = GetSoa4Float_NegativeHalf();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(-0.5f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getnegzero">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_NegativeZero()");
+        Soa4Float v1 = GetSoa4Float_NegativeZero();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(-0.0f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getzero">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_Zero()");
+        Soa4Float v1 = GetSoa4Float_Zero();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(0.0f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_gethalf">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_Half()");
+        Soa4Float v1 = GetSoa4Float_Half();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(0.5f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getone">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_One()");
+        Soa4Float v1 = GetSoa4Float_One();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(1.0f) ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_gettwo">
+      <![CDATA[
+
+        SetFunctionName("GetSoa4Float_Two()");
+        Soa4Float v1 = GetSoa4Float_Two();
+        Validate( IsEqual( v1, Soa4FloatFromFloat(2.0f) ) );
+
+      ]]>
+      </TEST>
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

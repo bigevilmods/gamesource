@@ -1,0 +1,27 @@
+/*!
+\page p_unions Unions
+
+On MS Visual C++ (XBox, PC, XBox360), vector type is declared internally as
+union of 128bit vector type and 4-floats. On GCC (PS3 PPU, and SPU),
+vector type is declared only as 128 bit vector type. GCC is much more strict on
+the union type, if a data is declared as union of vector and float type,
+compiler must write the data into memory when it is done, because it can’t
+optimize that due to strict ISO C/C++ standards on union types and type
+aliasing.
+
+As result, when union is used, performance of vector type on GCC is
+significantly slower. And RenderWare math library doesn’t use union of vector
+and float as EAMath did previously.
+
+Although, the vector type used by Visual C++ is a union, it is still
+recommended that users avoid accessing data using the union (at least in
+general).  Mixing operations on the vector with union accesses will lead
+to a \ref p_load_hit_store "LHS".  So, it is important that users not
+access data using the union in performance critical code.  Also, accessing
+data using a union means the code will not be portable to the PS3, because
+its vector type is not a union.
+
+To learn more about our "solution" to the union problem, please read the
+documentation about \ref p_accessors "accessors".
+
+*/

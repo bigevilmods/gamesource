@@ -1,0 +1,126 @@
+<project default="AptViewer">
+    <!-- include package build file to get dependency and configuration information -->        
+	<property name="runtime.AptViewerPCOpenGL.buildtype" value="WindowsProgram"/>
+	<property name="runtime.AptViewerPCOpenGL.builddependencies.pc">
+	    EABase
+	    coreallocator
+	    FontFusion	    
+	</property>
+    
+        <property name="runtime.AptViewerPCOpenGL.builddependencies.pc">
+		    ${property.value}
+		    EAThread
+	    </property>
+      
+    <!-- Apt Debugger Dependencies -->
+    <include file="AptDebugger.xml" />    
+    
+     <do if="${package.Apt.EnableDebugger}">
+        <property name="runtime.AptViewerPCOpenGL.builddependencies.pc" >
+		    ${property.value}
+		    toolim
+	    </property>
+    </do>
+    
+     <dependent name="toolim"  if="${package.Apt.EnableDebugger}"/>
+     <dependent name="EAAssert"  if="${package.Apt.EnableDebugger}"/>
+    
+     <property name="LibDir2" value="${RenderwareLibDir}\rwcore${lib-suffix}" />
+     <property name="LibDir3" value="${RenderwareLibDir}\rwmemory${lib-suffix}" />
+        
+     <do if="${package.Apt.EnableDebugger}">
+        <property name="runtime.AptViewerPCOpenGL.builddependencies.pc" >
+		    ${property.value}
+		    EASTL
+		    EAAssert
+	    </property>
+	    
+        <property name="LibDir2" value="${package.EAAssert.builddir}/${config}/lib/EAAssert${lib-suffix}" />
+        <property name="LibDir3" value="${package.EAAssert.builddir}/${config}/lib/EAAssert${lib-suffix}" />
+    </do>
+    
+        
+	<property name="runtime.AptViewerPCOpenGL.usedependencies.pc">
+		DirectX
+		GLUT
+	</property>
+	<property name="runtime.AptViewerPCOpenGL.usedependencies.xenon">
+		xenonsdk
+	</property>
+
+	<property name="runtime.AptViewerPCOpenGL.warningsuppression.pc">
+	    -wd4512     <!-- assignment operator could not be generated -->
+	    -wd4127     <!-- conditional expression is constant-->
+	    -wd4505     <!-- unreferenced local function has been removed -->
+	    -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4619     <!-- #pragma warning there is no warning number XXXX -->
+	    -wd4189     <!-- local variable is initialized but not referenced (DO_COVERAGE)-->
+	    -wd4506     <!-- no definition for inline function XXX (DO_COVERAGE)-->
+	</property>
+    
+    <!-- This section sets up FW1 package quirks that FW2 doesn't care about -->
+    <property name="fw1config-type" value="d" if="${config-type} == deprecated-d" />
+    <property name="fw1config-type" value="z" if="${config-type} == deprecated-z" />          
+    <property name="fw1config-platform" value="pc-vc71" />  
+
+	<property name="runtime.AptViewerPCOpenGL.defines">
+	    ${runtime.defines}
+	</property>
+	
+    <do if="${config-system} == pc">
+        <dependent name="FontFusion" />
+        <dependent name="GLUT" />
+        <dependent name="VisualStudio" />
+        <dependent name="WindowsSDK" />
+    </do>            
+
+	<property name="runtime.AptViewerPCOpenGL.includedirs.pc">
+	    ${package.dir}/include/Apt
+		${package.dir}/include/AptFF
+		${package.dir}/include/AptAuxPCOpenGL
+		${package.dir}/source/AptViewer
+		${ToolIMIncDir}
+        ${RenderwareIncDir}
+        ${DirtySockIncDir}
+        C:\packages\GLUT\3.7.6\include      <!-- hard coding this in until GLUT becomes FW2 yo -->
+	</property>
+		
+	<property name="runtime.AptViewerPCOpenGL.includedirs.pc">
+	    ${property.value}	
+	</property>	                       
+    
+	<fileset name="runtime.AptViewerPCOpenGL.sourcefiles.pc">
+		<includes name="${package.Apt.dir}/source/AptViewer/pc_opengl_viewer.cpp" />
+	</fileset>
+
+
+	<fileset name="runtime.AptViewerPCOpenGL.libs.pc">
+		<includes name="${package.configlibdir}/${lib-prefix}Apt${lib-suffix}" />
+		<includes name="${package.configlibdir}/${lib-prefix}AptAuxPCOpenGL${lib-suffix}" />
+		<includes name="${package.configlibdir}/${lib-prefix}Aptff${lib-suffix}" />		
+		<!-- moved fontfusion library here before RW fontfusion generates ambiguity -->
+		<includes name="${package.configbuilddir}/../../../../r/FontFusion/${package.FontFusion.version}/${config}/lib/${lib-prefix}FontFusion${lib-suffix}" />		
+		
+		<includes name="c:\packages\GLUT\3.7.6\lib\glut32.lib" />       <!-- hard coding this in until GLUT becomes FW2 yo -->
+		<group if="${APT_TEST_SUITE} == true">
+		<includes name="${package.WindowsSDK.appdir}/Lib/OpenGL32.Lib"/>
+		</group>
+		
+		<includes name="${lib-prefix}user32${lib-suffix}" asis='true'/>
+		<includes name="wininet${lib-suffix}" asis='true'/>
+		
+		<group if="${package.Apt.EnableDebugger} == true">
+			<includes name="${ToolIMLibDir}" />
+            <includes name="${LibDir1}" />
+            <includes name="${LibDir2}" />
+            <includes name="${LibDir3}" />
+			            
+			<includes name="${package.VisualStudio.appdir}/vc7/platformsdk/lib/ws2_32.lib"/>
+			<includes name="${package.VisualStudio.appdir}\VC7\PlatformSDK\lib\netapi32.lib" />
+			
+			<includes name="${DirtySockLibDir}\dirtysock.lib" if="${package.Apt.AptDebuggerUseDirtyXSDK} == true"/>
+
+		</group>
+	</fileset>   
+</project>
+

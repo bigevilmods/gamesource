@@ -1,0 +1,89 @@
+/*!
+\page p_static_initialization_order Static Initialization Order
+
+\section s_static_initialization_order_intro Introduction
+
+One particularly error prone corner of C++, is the order (or lack thereof) in which static objects are constructed.
+A good discussion of the problem is available <a href="http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.12">here</a> in the C++ FAQ Lite.
+Note that the particular problem that math users run into usually relates to initialization of built-in types.  A discussion
+of this problem may be found <a href="http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.16">here</a>.
+
+This ordering problem impacts math users, so I thought it would be a good idea to
+briefly discuss when you can run into problems and what has been done to reduce
+this risk.
+
+\section s_static_initialization_order_examples Some Examples
+
+Here is some \e code that could fail to produce the expected result.  In actual fact, this code should now work on most, if
+not all RWMath platforms.
+
+\code
+// Create a global "true" mask
+rw::math::vpu::MaskScalar gMaskTrue(true);
+\endcode
+
+This code may look quite safe, but it can easily fail.  That is because on some
+platforms constructor for \c MaskScalar may load a 'true' vector constant to
+initialize the vector.  However, if the constructor for \c gMaskTrue is executed before
+the 'true' constant is initialized (the constant could be
+determined at compile time, but this is not always the case) \c gMaskTrue will be initialized
+with uninitialized memory.
+
+This is just one example where statically constructed math types can fail.  Initializing specific
+vector elements in a global constructor may also fail.  That is because certain permute constants
+need to be initialized in order to update elements of a vector (depending on the platform).
+
+The following code may also fail to execute properly when \c gStaticObject is constructed.
+
+\code
+void MyObject::MyObject()
+{
+    mVector[0] = 1.0f;
+    mVector[1] = 2.0f;
+    mVector[2] = 3.0f;
+    mVector[3] = 4.0f;
+}
+
+MyObject gStaticObject;
+\endcode
+
+\section s_static_initialization_order_mitigating Reducing occurences of this problem
+
+In the 1.06.00 release of math, steps were taken to reduce the likelyhood of
+this problem.  On the PS3 (both PPU and SPU) all math constants are created at
+compile time and do not require any runtime initialization.  This was accomplished using
+an assembly source file that contains all the constants that would normally be initialized
+at runtime.  On the Xbox 360, and PC math constants are initialized during 'lib' initialization.
+So all constants on the 360/PC should be intitialized before 'user' code runs.
+
+Of course, this problem may still occur on other platforms, and it may still be possible
+for Xenon \e library code to run into initialization order problems.
+
+\section s_static_initialization_order_init_via_func Initializing Variables using a Function Call
+
+Not only are static constructors used for static global objects, but they are often used to initialize
+global variables whose values are initialized using a function call.  For example:
+
+\code
+VectorIntrinsic gMyIntrinsic = VecUtilCreateIntrinsic(1.0f, 2.0f, 3.0f, 4.0f);
+\endcode
+
+The intitialization of \c gMyIntrinsic occurs at runtime (\e not at compile time).  So even though \c gMyIntrinsic will
+be initialized, it is hard to know precisely when this initialization will occur.  You should avoid 
+using \c gMyIntrinsic until after all global constructors have executed (i.e. after main begins executing).  
+
+There may also be a small efficiency concern when using functions to initialize built-in types.  First, the initialization
+occurs at runtime, so some time must be spent initializing a value that could often (in principle) have been
+determined at compile time.  Also, the program may be slightly larger than if a compile time constant is used (since
+the compiler must generate code to initialize the value).  Normally these issues are insignificant, however they may
+be a small concern on the SPU where available memory is at a premium.
+
+\section s_static_initialization_additional_info Other Solutions
+
+The C++ FAQ describes a technique for avoiding the initialization "fiasco"
+<a href="http://www.parashift.com/c++-faq-lite/ctors.html#faq-10.13">here</a>.
+In general this is a good technique, however it makes use of a function
+containing a static variable.  The function introduces considerable overhead when
+accessing a simple constant.  For that reason, the technique is not used by RWMath.
+
+*/

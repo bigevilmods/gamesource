@@ -1,0 +1,4 @@
+<project>
+	<include file="${package.tlconfig.dir}/config/pc-vc71-debug.xml" />
+	<include file="platform/pc-vc71.xml"/>
+</project>

@@ -1,0 +1,5 @@
+<project>
+	<dependent name="eaconfig" />
+	<include file="${package.eaconfig.dir}/config/ps3-sn-dev-opt.xml" />
+
+</project>

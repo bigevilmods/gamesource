@@ -1,0 +1,11 @@
+/*!
+\page p_mask2 Mask2
+
+The Mask2 type represents an aggregate of two true or false conditions.  You can think of the
+Mask2 type as representing an array of two boolean values.  The math library has comparison
+functions that generate Mask2 results.  For example, you can compare two Vector2 types to generate
+a Mask2.  Mask2's may also be used to "select" between Vector2 objects.  This
+ability allows "conditional" code to be written that does not contain any branch
+instuctions.
+
+*/

@@ -1,0 +1,34 @@
+/*!
+\page p_branching Branching
+
+PPC core on Xbox 360 uses a simple branch history table, because of the hardware
+design, an incorrectly predicted branch will cause a 23 to 24 cycle penalty. Even
+if the branch is correctly predicted it can lead to a pipeline stall.
+
+Beside the cost of branching miss-predict, branching effectively creates an
+optimization barrier for the compiler. This limits the compiler’s ability to do
+optimization such as instruction rescheduling/interleaving, latency hiding and
+register reuse.
+
+Code that avoids branching can often be several times faster than code that
+uses branches.  Remember, on next-gen architectures, calculations are cheap.
+Program flow control (i.e. branches) are very expensive.  Trying to perform
+a branch to avoid a calculation is usually the wrong strategy.
+
+Optimized code in the math library tries to avoid branches where possible.  The
+math library also plans on introducing high level functionality for letting
+users write branch free math code.
+
+There are several things users can do now to reduce branching:
+- Do not try to avoid calculations (unless they are really expensive).
+- Unroll loops in performance critical code to reduce loop overhead and give
+  the compiler enough instructions to efficiently reschedule.
+- Ensure performance critical code is inlined.
+
+These are guidelines, not hard and fast rules.  In some cases, a calculation
+may be so expensive that a branch that avoids it can help performance.
+Unrolling loops too much can cause I-cache misses, and even lead to register
+spilling back to memory.  Inlining large functions could also cause I-cache
+misses.
+
+*/

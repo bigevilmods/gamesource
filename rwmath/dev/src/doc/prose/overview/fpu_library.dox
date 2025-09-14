@@ -1,0 +1,61 @@
+/*!
+\page p_fpu_library The FPU Library
+
+The FPU library is designed and written to run on processor’s floating point unit. The FPU library should be used when:
+- Directly porting legacy fpu code without optimization (such as code written for EAMath)
+- Writing deterministic code that needs to be the same on different instances of the same platform, for example, network code between client and server.  (This issue may only be important on the PS2.  So far, it appears that SSE/VMX is deterministic.)
+- Writing code where accuracy or the IEEE standard are more important than performance.
+- Writing code where FPU code actually performs better than VPU code (see \ref p_fpu_versus_vpu "VPU versus FPU" for more information)
+
+\section Hardware
+
+The FPU library uses the \c float or \c double data type.  The library relies
+(for the most part) on the quality of the compiler, and the performance of the
+FPU.  On the PS3 SPU, the scalar float operations actually get mapped to vector
+operations by the compiler.  However, because the compiler is trying to simulate
+a scalar floating point unit, performance is usually much lower than writing code
+using the VPU library.
+
+Platform Note
+PPC core (both XBox360 and PS3) floating point divide \c fdiv and floating
+point square root \c fsqrts are not pipelined, which means those instructions
+will block instructions behind them from executing until they have completed,
+this happens on both hardware threads, and block both hardware threads from
+executing.
+
+PS3 SPU core does not have scalar floating point hardware. In fact, doing
+floating point is more expensive than doing vector calculation, since vector
+splat and shuffle are necessary to simulate the scalar behavior. If possible,
+user should try to avoid scalar operations, and use the VPU library instead.
+
+PC (AMD/INTEL) platform has very different hardware in comparison to PPC and
+PS2 hardware. SSE1/2/3 hardware can be configured to perform full IEEE floating
+point standards (with performance penalty on P4 and some processors). In fact,
+if you compile code with SSE1/2/3 turned on, generated assembly code will use
+SSEx instructions instead of regular floating point instructions. As result,
+user’s fpu code will actually end up using SSEx hardware.
+
+\section Library Overview
+
+The FPU library can be thought of as two separate libraries.  All data types and operations
+can be performed on types composed of floats or doubles.
+
+\subsection 32 bit float vs. 64 bit float
+
+Depends on requirements, users can choose between 32 bit and/or 64 bit types; however,
+interoperation between 32 bit and/or 64 bit library is not provided, user must
+explicitly convert one type to another type as required.
+
+Again, performance of 64 bit float is purely depends on the compiler and hardware support. 
+On many platforms, all floating point operations are performed on double precision values.
+However, if users are storing math data back to memory, floats will probably be preferred
+because they take half the space.
+
+
+\section Platform Notes
+rw::math::&lt;vpu/fpu&gt;::&lt;type&gt;::Alignment is alignment requirement for the
+hardware. If you don’t align the data to this requirement, the hardware will
+throw an exception, or silently load/store the wrong value(s).
+
+
+*/

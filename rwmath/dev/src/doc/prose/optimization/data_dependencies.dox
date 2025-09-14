@@ -1,0 +1,228 @@
+/*!
+\page p_data_dependencies Data Dependencies
+
+I know that the vectorization documents and talks that have been given often
+discuss how high latency instructions cause stalls due to data dependencies.
+However, I always find that a practical example really hammers the point home.
+So, I thought I would post some sample code and discuss how its performance is
+impacted by data dependencies at the instruction level.  All these tests were
+done on the PS3 PPU, but are just as applicable to Xenon and the SPU.  The
+results are particularly impressive on the PPU because of the quality of the
+compiler (in this case) and the relatively high latency of instructions.
+
+Let’s take a look at a short performance test:
+
+\code
+
+StartTimer(rw::math::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * rw::math::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+for (int testloop = 0; testloop < rw::math::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+{
+    for (int i = 0; i < rw::math::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        fOutArray[i] = NormalizeAngle(xArray[i]);
+    }
+}
+
+StopTimer();
+
+\endcode
+
+This code executes in 0.024483 microseconds.  The assembly code for the loop
+actually looks pretty good.  Here is the VMX code from the loop.  I have
+omitted the other integer instructions from the assembly code to make things
+more readable.  I have also omitted instructions that are constant, and get
+hoisted out of the loop.
+
+<pre>
+00023364 102142EE vmaddfp     v1,v1,v11,v8
+00023368 11A00ACA vrfim       v13,v1                 <b>11</b> (00023364) REG
+0002336C 1021684A vsubfp      v1,v1,v13              <b>11</b> (00023368) REG PIPE
+00023370 100152C6 vcmpgtfp    v0,v1,v10              <b>11</b> (0002336C) REG
+00023374 10004C04 vand        v0,v0,v9               <b>03</b> (00023370) REG PIPE
+00023378 1021004A vsubfp      v1,v1,v0               <b>03</b> (00023374) REG
+0002337C 1021432E vmaddfp     v1,v1,v12,v8           <b>11</b> (00023378) REG PIPE
+</pre>
+
+As you can see, the loop has 7 VMX instructions.  Each instruction has a
+throughput of one cycle.  But what about the latency of these instructions?
+Each instruction has a fairly large latency.  Most of the instructions actually
+take 12 cycles to complete, and a few are 4 cycles.
+
+The numbers in bold show how many cycles each of the instructions stalls for.
+As you can see, the instructions actually stall for the maximum amount of time.
+i.e. If the previous instruction had a 12 cycle latency, the next instruction
+stalls for 11 cycles.  The stalls occur because each instruction depends on
+data calculated by the instruction before it.  So, instead of having the code
+finish in ~7 cycles (or even less considering some instructions could dual
+issue) the code will stall for an extra 50 cycles.  When you consider the fact
+that the store to memory will also stall, on a data dependency, things look
+even worse.  The overall efficiency of the loop is terrible, because more
+cycles are wasted waiting for results than actually computing!
+
+Now, what happens if we modify the benchmark code to do more operations per loop?
+
+StartTimer(rw::math::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * rw::math::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+\code
+
+for (int testloop = 0; testloop < rw::math::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+{
+    for (int i = 0; i < rw::math::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=8)
+    {
+        float_test_type temp0 = NormalizeAngle(xArray[i  ]);
+        float_test_type temp1 = NormalizeAngle(xArray[i+1]);
+        float_test_type temp2 = NormalizeAngle(xArray[i+2]);
+        float_test_type temp3 = NormalizeAngle(xArray[i+3]);
+        float_test_type temp4 = NormalizeAngle(xArray[i+4]);
+        float_test_type temp5 = NormalizeAngle(xArray[i+5]);
+        float_test_type temp6 = NormalizeAngle(xArray[i+6]);
+        float_test_type temp7 = NormalizeAngle(xArray[i+7]);
+        fOutArray[i  ] = temp0;
+        fOutArray[i+1] = temp1;
+        fOutArray[i+2] = temp2;
+        fOutArray[i+3] = temp3;
+        fOutArray[i+4] = temp4;
+        fOutArray[i+5] = temp5;
+        fOutArray[i+6] = temp6;
+        fOutArray[i+7] = temp7;
+    }
+}
+
+StopTimer();
+
+\endcode
+
+I have intentionally assigned the results of the computations to temporary
+variables to make sure GCC can perform memory aliasing (or lack there of)
+optimizations.
+
+This code executes in 0.005654 microseconds.  That is over 4 times faster than
+the first performance test!  Why is that the case?  Surely, the loop overhead
+can’t be causing a 4 times reduction in performance.  The real win is that
+latency, caused by data dependencies, has been hidden by unrolling the loop.
+Here is the assembly code for the unrolled loop.  Again I have omitted the
+non-VMX instructions:
+
+<pre>
+000237D4 10E78BEE vmaddfp     v7,v7,v15,v17           PIPE
+000237DC 10C68BEE vmaddfp     v6,v6,v15,v17           PIPE
+000237E0 10A58BEE vmaddfp     v5,v5,v15,v17
+000237E8 10848BEE vmaddfp     v4,v4,v15,v17
+000237F0 10638BEE vmaddfp     v3,v3,v15,v17
+000237F8 10428BEE vmaddfp     v2,v2,v15,v17
+00023800 12738BEE vmaddfp     v19,v19,v15,v17
+00023808 12528BEE vmaddfp     v18,v18,v15,v17
+0002381C 10003ACA vrfim       v0,v7                  <b>01</b> (000237D4) REG
+00023824 102032CA vrfim       v1,v6                  <b>01</b> (000237DC) REG
+0002382C 11A02ACA vrfim       v13,v5
+00023834 118022CA vrfim       v12,v4
+0002383C 11601ACA vrfim       v11,v3
+00023844 114012CA vrfim       v10,v2
+0002384C 11209ACA vrfim       v9,v19
+00023854 110092CA vrfim       v8,v18
+00023868 10E7004A vsubfp      v7,v7,v0
+00023870 10C6084A vsubfp      v6,v6,v1
+00023878 10A5684A vsubfp      v5,v5,v13
+00023880 1084604A vsubfp      v4,v4,v12
+00023888 1063584A vsubfp      v3,v3,v11
+00023890 1042504A vsubfp      v2,v2,v10
+00023894 1273484A vsubfp      v19,v19,v9              PIPE
+0002389C 1252404A vsubfp      v18,v18,v8
+000238A0 100772C6 vcmpgtfp    v0,v7,v14              <b>04</b> (00023868) REG
+000238A4 102672C6 vcmpgtfp    v1,v6,v14               PIPE
+000238A8 11A572C6 vcmpgtfp    v13,v5,v14
+000238AC 118472C6 vcmpgtfp    v12,v4,v14              PIPE
+000238B0 116372C6 vcmpgtfp    v11,v3,v14
+000238B4 114272C6 vcmpgtfp    v10,v2,v14              PIPE
+000238B8 113372C6 vcmpgtfp    v9,v19,v14
+000238BC 111272C6 vcmpgtfp    v8,v18,v14              PIPE
+000238C0 1000FC04 vand        v0,v0,v31
+000238C4 1021FC04 vand        v1,v1,v31               PIPE
+000238C8 11ADFC04 vand        v13,v13,v31
+000238CC 118CFC04 vand        v12,v12,v31             PIPE
+000238D0 116BFC04 vand        v11,v11,v31
+000238D4 114AFC04 vand        v10,v10,v31             PIPE
+000238D8 1129FC04 vand        v9,v9,v31
+000238DC 1108FC04 vand        v8,v8,v31               PIPE
+000238E0 10E7004A vsubfp      v7,v7,v0
+000238E4 10C6084A vsubfp      v6,v6,v1                PIPE
+000238E8 10A5684A vsubfp      v5,v5,v13
+000238EC 1084604A vsubfp      v4,v4,v12               PIPE
+000238F0 1063584A vsubfp      v3,v3,v11
+000238F4 1042504A vsubfp      v2,v2,v10               PIPE
+000238F8 1273484A vsubfp      v19,v19,v9
+000238FC 1252404A vsubfp      v18,v18,v8              PIPE
+00023900 10E78C2E vmaddfp     v7,v7,v16,v17          <b>04</b> (000238E0) REG
+00023904 10C68C2E vmaddfp     v6,v6,v16,v17           PIPE
+00023908 10A58C2E vmaddfp     v5,v5,v16,v17
+0002390C 10848C2E vmaddfp     v4,v4,v16,v17           PIPE
+00023910 10638C2E vmaddfp     v3,v3,v16,v17
+00023914 10428C2E vmaddfp     v2,v2,v16,v17           PIPE
+00023918 12738C2E vmaddfp     v19,v19,v16,v17
+0002391C 12528C2E vmaddfp     v18,v18,v16,v17         PIPE
+</pre>
+
+Now the loop is doing 8 times the work, but it is only stalling for 10 cycles
+due to data dependencies!  I think that is worth repeating.  The loop does 8
+times the work, but it stalls for 1/5th as many cycles.  Clearly the new loop
+will execute much faster, even if the performance gain from reduced loop
+overhead is ignored.
+
+The compiler was able to eliminate almost all the stalls caused by data
+dependencies because it was able to interleave the instructions for each
+NormalizeAngle function call.  That means independent instructions (i.e.
+instructions that don’t have data dependencies on other instructions)
+can execute "in parallel" instead of sequentially.  By "in parallel" I mean
+multiple instructions can be in the VMX pipeline being executed instead of
+having a single instruction in the pipeline.
+
+During testing, I actually tried different levels of unrolling:
+
+
+<code>rw::math::vpu::NormalizeAngle on PS3 PPU</code>
+<table>
+<tr>
+<td>Level of Unrolling</td> 	<td>time in microseconds</td>  <td>Improvement over non-unrolled loop</td>
+</tr>
+<tr>
+<td>1</td>	<td>0.024483</td>	<td>1.000000</td>
+</tr>
+<tr>
+<td>2</td>	<td>0.012019</td>	<td>2.037025</td>
+</tr>
+<tr>
+<td>4</td>	<td>0.007060</td>	<td>3.467847</td>
+</tr>
+<tr>
+<td>8</td>	<td>0.005654</td>	<td>4.330209</td>
+</tr>
+<tr>
+<td>16</td>	<td>0.010381</td>	<td>2.358443</td>
+</tr>
+</table>
+
+Unrolling the code 8 times has the biggest performance increase on PS3 PPU.
+But it is interesting to note that executing twice as much code in a loop
+actually went ~2 times as fast.  In other words, executing twice as many
+instructions did not slow down the execution time for a single loop iteration
+at all!  By the time the loop is unrolled 8 times, most of the latency due to
+data dependencies between instructions has been hidden; so we are not seeing 8
+times the performance.  Unrolling the loop further won’t give much of an
+improvement.  In fact, by the time the loop is unrolled 16 times, it actually
+runs slower than unrolling the loop 8 times.
+
+\par Conclusions:
+
+-# Unrolling loops can greatly increase performance.
+-# Data dependencies between instructions can’t be ignored in performance critical code.
+-# There are limits to how much a loop can be unrolled.  (Be sure to profile.)
+
+\par Corollary:
+Inlining is very important!  Not only does making a branch hurt
+performance because of the branch itself, but it also eliminates opportunities
+for the compiler to efficiently schedule instructions to hide the latency of
+data dependencies. Don’t think of an extra branch as a constant overhead.  The
+knock-on effect of a branch is far greater than the branch itself.
+
+*/

@@ -1,0 +1,25 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestMask2 :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestMask2();
+    virtual ~UnitTestMask2();
+    void Test();
+
+//#BLOCK
+
+private:
+
+};
+

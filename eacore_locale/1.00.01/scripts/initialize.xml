@@ -1,0 +1,12 @@
+<project>
+	<!-- List of library include directories -->
+	<property name="package.eacore_locale.includedirs">
+		${package.eacore_locale.dir}/include
+	</property>
+
+	<!-- List of library files -->
+	<fileset name="package.eacore_locale.libs">
+		<includes name="${package.eacore_locale.builddir}/${config}/lib/${lib-prefix}eacore_locale${lib-suffix}"/>
+	</fileset>
+
+</project>

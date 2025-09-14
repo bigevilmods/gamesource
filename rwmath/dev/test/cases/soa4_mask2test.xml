@@ -1,0 +1,262 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4Mask2" HEADER="soa4_mask2test.h" SOURCE="soa4_mask2test.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_mask2.h rw/math/vpu/soa4_mask2_operation.h rw/math/vpu/soa4_maskscalar.h rw/math/vpu/soa4_maskscalar_operation.h" COMMON="true">
+
+
+    <TYPE NAME="function">
+
+        <TYPE NAME="correctness">
+
+        <TEST NAME="soa4mask2_construction">
+        <![CDATA[
+            SetFunctionName("Soa4Mask2()");
+
+            {
+                Soa4Mask2 s;
+                Validate( true );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Soa4Mask2(const Soa4Mask2&)");
+
+            {
+                Soa4Mask2 a( mAllTrue );
+                Soa4Mask2 b( mAllFalse );
+
+                Validate( IsEqual( mAllTrue, a ) && IsEqual( mAllFalse, b ) );
+            }
+            
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator =(const Soa4Mask2&)");
+
+            {
+                Soa4Mask2 a = mAllTrue;
+                Soa4Mask2 b = mAllFalse;
+
+                Validate( IsEqual( mAllTrue, a ) && IsEqual( mAllFalse, b ) );
+            }
+
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Soa4Mask2(Soa4MaskScalar::InParam s)");
+
+            {
+                Soa4MaskScalar a = CreateSoa4MaskScalar( true, false, true, false );
+                Soa4Mask2 mask( a );
+
+                Validate( IsEqual( mask.x, a ) && IsEqual( mask.y, a ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Soa4Mask2(Soa4MaskScalar::InParam, Soa4MaskScalar::InParam)");
+
+            {
+                Soa4MaskScalar a = CreateSoa4MaskScalar( true, false, true, false );
+                Soa4MaskScalar b = CreateSoa4MaskScalar( false, true, false, true );
+                Soa4Mask2 mask( a, b );
+
+                Validate( IsEqual( mask.x, a ) && IsEqual( mask.y, b ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Soa4Mask2(VectorIntrinsicInParam, VectorIntrinsicInParam)");
+
+            {
+                Soa4MaskScalar a = CreateSoa4MaskScalar( true, false, true, false );
+                Soa4MaskScalar b = CreateSoa4MaskScalar( false, true, false, true );
+                Soa4Mask2 mask( a.mV, b.mV );
+
+                Validate( IsEqual( mask.x, a ) && IsEqual( mask.y, b ) );
+            }
+        ]]>
+        </TEST>
+            
+        <TEST NAME="member_access">
+        <![CDATA[
+            SetFunctionName("X() const");
+
+            {
+                Soa4Mask2 a( mAllTrue );
+                const Soa4MaskScalar& x( a.X() );
+
+                Validate( IsEqual( x, a.x ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("X()");
+
+            {
+                Soa4Mask2 a( mAllTrue );
+                Soa4MaskScalar falseMask = CreateSoa4MaskScalar( false, false, false, false );
+                a.X() = falseMask;
+
+                Validate( IsEqual( a.x, falseMask ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Y() const");
+
+            {
+                Soa4Mask2 a( mAllFalse );
+                const Soa4MaskScalar& y( a.Y() );
+
+                Validate( IsEqual( y, a.y ) );           
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Y()");
+
+            {
+                Soa4Mask2 a( mAllTrue );
+                Soa4MaskScalar falseMask = CreateSoa4MaskScalar( false, false, false, false );
+                a.Y() = falseMask;
+
+                Validate( IsEqual( a.y, falseMask ) );
+            }
+
+        ]]>
+        </TEST>
+           
+        <TEST NAME="soa4mask2_operations">
+        <![CDATA[
+            SetFunctionName("Not");
+
+            {
+                Soa4Mask2 a = Not( mAllTrue );
+                Validate( IsEqual( a, mAllFalse ) );
+
+                Soa4Mask2 b = Not( mMixed );
+                Validate( IsEqual( b.x, mMixed.y ) && IsEqual( b.y, mMixed.x ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("And");
+
+            {
+                Soa4Mask2 a( mMixed.x, mMixed.x );
+                Soa4Mask2 res = And( a, a );
+                Validate( IsEqual( res, a ) );
+
+                Soa4Mask2 b = And( mMixed, mAllFalse );
+                Validate( IsEqual( b, mAllFalse ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Or");
+
+            {
+                Soa4Mask2 a = Or( mAllFalse, mAllFalse );
+                Validate( IsEqual( a, mAllFalse ) );
+
+                a = Or( a, mMixed );
+                Validate( IsEqual( a, mMixed ) );
+
+                a = Or( a, mAllTrue );
+                Validate( IsEqual( a, mAllTrue ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Xor");
+            {
+                Soa4Mask2 a = mMixed;
+
+                Soa4Mask2 res = Xor( a, a );
+                Validate( IsEqual( res, mAllFalse ) );
+
+                res = Xor( mAllTrue, mAllFalse );
+                Validate( IsEqual( res, mAllTrue ) );
+            }
+
+            //-----------------------------------------------------------------------
+            SetFunctionName("CompEqual");
+
+            {
+                Soa4Mask2 a( mMixed.y, mMixed.x );
+                Soa4Mask2 res = CompEqual( a, mMixed );
+                Validate( IsEqual( res, mAllFalse ) );
+                
+                a = Soa4Mask2( mMixed );
+                res = CompEqual( a, mMixed );
+                Validate( IsEqual( res, mAllTrue ) );
+                }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompEqual");
+
+            {
+                Soa4Mask2 a( mMixed.y, mMixed.x );
+                Soa4Mask2 res = CompNotEqual( a, mMixed );
+                Validate( IsEqual( res, mAllTrue ) );
+                
+                a = Soa4Mask2( mMixed );
+                res = CompNotEqual( a, mMixed );
+                Validate( IsEqual( res, mAllFalse ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompAnyTrue");
+            {
+                Soa4MaskScalar res = CompAnyTrue( mMixed );
+                Validate( IsEqual( res, mAllTrue.x ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompAllTrue");
+            {
+                Soa4MaskScalar res = CompAllTrue( mMixed );
+                Validate( IsEqual( res, mAllFalse.x ) );
+
+                res = CompAllTrue( mAllTrue );
+                Validate( IsEqual( res, mAllTrue.x ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Select(Soa4MaskScalar::InParam mask, Soa4Mask2::InParam trueValue, Soa4Mask2::InParam falseValue )");
+            {
+                Soa4Mask2 res = Select( mMixed.x, mAllFalse, mAllTrue );
+                Soa4Mask2 ref = Soa4Mask2( CreateSoa4MaskScalar( false, true, false, true ), 
+                                    CreateSoa4MaskScalar( false, true, false, true ) );
+                Validate( IsEqual( res, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Select(Soa4Mask2::InParam mask, Soa4Mask2::InParam trueValue, Soa4Mask2::InParam falseValue )");
+            {
+                Soa4Mask2 res = Select( mMixed, mAllFalse, mAllTrue );
+                Soa4Mask2 ref = Soa4Mask2( CreateSoa4MaskScalar( false, true, false, true ), 
+                                    CreateSoa4MaskScalar( true, false, true, false ) );
+                Validate( IsEqual( res, ref ) );
+            }
+
+        ]]>
+        </TEST>
+
+        </TYPE>
+
+        <TYPE NAME="performance">
+
+        </TYPE>
+
+    </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

@@ -1,0 +1,350 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4MaskScalar" HEADER="soa4_maskscalartest.h" SOURCE="soa4_maskscalartest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_maskscalar.h rw/math/vpu/soa4_maskscalar_operation.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="maskscalar_default_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalar()");
+
+        Soa4MaskScalar v;
+        Validate( true ); // Take address of v so that it is referenced
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_copy_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalar(const Soa4MaskScalar&)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalar(true, false, false, true));
+
+        Validate( IsEqual(ref, CreateSoa4MaskScalar(true, false, false, true)) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_intrinsic_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalar(VectorIntrinsicInParam)");
+
+        Soa4MaskScalar ref;
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarUInt[0] = 1;
+        vu.scalarUInt[1] = 2;
+        vu.scalarUInt[2] = 3;
+        vu.scalarUInt[3] = 4;
+        ref.mV = vu.vector;
+        Soa4MaskScalar r(vu.vector);
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_scalar_bool_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalarFromBool(bool)");
+
+        Soa4MaskScalar ref1(CreateSoa4MaskScalar(true, true, true, true));
+        Soa4MaskScalar r1(Soa4MaskScalarFromBool(true));
+
+        Soa4MaskScalar ref2(CreateSoa4MaskScalar(false, false, false, false));
+        Soa4MaskScalar r2(Soa4MaskScalarFromBool(false));
+
+        Validate( IsEqual(r1, ref1) &&
+                  IsEqual(r2, ref2)
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_scalar_uint_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalarFromUInt(uint32_t v)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalarFromUInt(0x12345678U, 0x12345678U, 0x12345678U, 0x12345678U));
+        Soa4MaskScalar r(Soa4MaskScalarFromUInt(0x12345678U));
+
+        Validate( IsEqual(r, ref) ); 
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_vpu_maskscalar_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalar(vpu::Soa4MaskScalar &)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalar(true, true, true, true));
+        Soa4MaskScalar r(Soa4MaskScalarFromBool(true));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_mask4_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalar(bool, bool, bool, bool)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalar(true, false, true, true));
+        Soa4MaskScalar r(Soa4MaskScalarFromBools(true, false, true, true));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="assignment_operator">
+      <![CDATA[
+
+        SetFunctionName("operator =(const Soa4MaskScalar&)");
+
+        Soa4MaskScalar ref(Soa4MaskScalarFromBool(true));
+        Soa4MaskScalar r;
+        r = ref;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_multiple_bool_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalarFromBools(bool, bool, bool, bool)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalar(false, true, true, false));
+        Soa4MaskScalar r(Soa4MaskScalarFromBools(false, true, true, false));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_multiple_uint_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalarFromUInts(uint32_t, uint32_t, uint32_t, uint32_t)");
+
+        Soa4MaskScalar ref( CreateSoa4MaskScalarFromUInt(0x23425U, 0x36127U, 0x6825U, 0x5236U));
+        Soa4MaskScalar r(Soa4MaskScalarFromUInts(0x23425U, 0x36127U, 0x6825U, 0x5236U));
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maskscalar_multiple_maskscalar_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4MaskScalarFromMaskScalars(vpu::MaskScalar::InParam, vpu::MaskScalar::InParam, vpu::MaskScalar::InParam, vpu::MaskScalar::InParam)");
+
+        Soa4MaskScalar ref(CreateSoa4MaskScalar(true, false, true, false));
+        Soa4MaskScalar r(Soa4MaskScalarFromMaskScalars(MaskScalar(true), MaskScalar(false), MaskScalar(true), MaskScalar(false)));
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isanytrue">
+      <![CDATA[
+
+        SetFunctionName("IsAnyTrue(Soa4MaskScalar)");
+
+        Soa4MaskScalar testA(Soa4MaskScalarFromBools(false, true, true, false));
+        Soa4MaskScalar testB(Soa4MaskScalarFromBools(false, true, false, false));
+        Soa4MaskScalar testC(Soa4MaskScalarFromBools(true, true, true, true));
+        Soa4MaskScalar testD(Soa4MaskScalarFromBools(false, false, false, false));
+        
+        Validate(
+             IsAnyTrue(testA) &&
+             IsAnyTrue(testB) &&
+             IsAnyTrue(testC) &&
+            !IsAnyTrue(testD)
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isalltrue">
+      <![CDATA[
+
+        SetFunctionName("IsAllTrue(Soa4MaskScalar)");
+
+        Soa4MaskScalar testA(Soa4MaskScalarFromBools(false, true, true, false));
+        Soa4MaskScalar testB(Soa4MaskScalarFromBools(false, true, false, false));
+        Soa4MaskScalar testC(Soa4MaskScalarFromBools(true, true, true, true));
+        Soa4MaskScalar testD(Soa4MaskScalarFromBools(false, false, false, false));
+        
+        Validate(
+            !IsAllTrue(testA) &&
+            !IsAllTrue(testB) &&
+             IsAllTrue(testC) &&
+            !IsAllTrue(testD)
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isanyfalse">
+      <![CDATA[
+
+        SetFunctionName("IsAnyFalse(Soa4MaskScalar)");
+
+        Soa4MaskScalar testA(Soa4MaskScalarFromBools(false, true, true, false));
+        Soa4MaskScalar testB(Soa4MaskScalarFromBools(false, true, false, false));
+        Soa4MaskScalar testC(Soa4MaskScalarFromBools(true, true, true, true));
+        Soa4MaskScalar testD(Soa4MaskScalarFromBools(false, false, false, false));
+        
+        Validate(
+             IsAnyFalse(testA) &&
+             IsAnyFalse(testB) &&
+            !IsAnyFalse(testC) &&
+             IsAnyFalse(testD)
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isallfalse">
+      <![CDATA[
+
+        SetFunctionName("IsAllFalse(Soa4MaskScalar)");
+
+        Soa4MaskScalar testA(Soa4MaskScalarFromBools(false, true, true, false));
+        Soa4MaskScalar testB(Soa4MaskScalarFromBools(false, true, false, false));
+        Soa4MaskScalar testC(Soa4MaskScalarFromBools(true, true, true, true));
+        Soa4MaskScalar testD(Soa4MaskScalarFromBools(false, false, false, false));
+        
+        Validate(
+            !IsAllFalse(testA) &&
+            !IsAllFalse(testB) &&
+            !IsAllFalse(testC) &&
+             IsAllFalse(testD)
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_not">
+      <![CDATA[
+
+        SetFunctionName("Not(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(Not(Soa4MaskScalarFromBools(true, false, false, true)));
+        Soa4MaskScalar ref(Soa4MaskScalarFromBools(false, true, true, false));
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_and">
+      <![CDATA[
+
+        SetFunctionName("And(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(And(
+            Soa4MaskScalarFromBools(true, true, false, false),
+            Soa4MaskScalarFromBools(true, false, true, false)
+        ));
+        Soa4MaskScalar ref = Soa4MaskScalarFromBools(true, false, false, false);
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_or">
+      <![CDATA[
+
+        SetFunctionName("Or(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(Or(
+            Soa4MaskScalarFromBools(true, true, false, false),
+            Soa4MaskScalarFromBools(true, false, true, false)
+        ));
+        Soa4MaskScalar ref(Soa4MaskScalarFromBools(true, true, true, false));
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_xor">
+      <![CDATA[
+
+        SetFunctionName("Xor(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(Xor(
+            Soa4MaskScalarFromBools(true, true, false, false),
+            Soa4MaskScalarFromBools(true, false, true, false)
+        ));
+        Soa4MaskScalar ref(Soa4MaskScalarFromBools(false, true, true, false));
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+
+        SetFunctionName("CompEqual(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(CompEqual(
+            Soa4MaskScalarFromBools(true, true, false, false),
+            Soa4MaskScalarFromBools(true, false, true, false)
+        ));
+        Soa4MaskScalar ref(Soa4MaskScalarFromBools(true, false, false, true));
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+
+        SetFunctionName("CompNotEqual(Soa4MaskScalar)");
+
+        Soa4MaskScalar result(CompNotEqual(
+            Soa4MaskScalarFromBools(true, true, false, false),
+            Soa4MaskScalarFromBools(true, false, true, false)
+        ));
+        Soa4MaskScalar ref(Soa4MaskScalarFromBools(false, true, true, false));
+        
+        Validate( IsEqual(result, ref) );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

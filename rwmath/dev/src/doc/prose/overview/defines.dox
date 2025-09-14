@@ -1,0 +1,139 @@
+/*!
+\page p_defines Defines
+
+\section s_user_customizable_defines_macros User Customizable Defines / Macros
+
+\subsection ss_alignment_defines Alignment Check Defines
+
+\par RW_MATH_ENABLE_ALIGNMENT_CHECK_CONSTRUCTORS define
+
+This define will enable data alignment check/assert in math constructors.
+<BR>Default: not defined
+
+\par RW_MATH_ENABLE_ALIGNMENT_CHECK_FUNCTIONS define
+
+This define will enable data alignment check/assert in math functions (but not constructors).
+<BR>Default: not defined
+
+\subsection ss_deprecated_apis Enabling/Disabling Deprecated API's
+
+\par RW_MATH_ENABLE_DEPRECATED_API define
+
+Enables the deprecated parts of the API, define to 0 to disable those parts, 1 to enable
+<BR>Default: defined to 1
+
+\subsection ss_force_inlining_defines Force Inlining Defines
+
+Normally, the math library force inlines a large number of functions for
+release builds.  However, in debug builds, force inlining may cause a lot of
+code bloat.  For that reason, we only enable force inlining of math
+code in release builds of math by default.
+
+However, it is possible that a user will want to enable force inlining in debug
+to possibly improve performance, or they will want to disable force inlining in
+release to reduce code size (at least for some functions).  So, we provide two
+macros for control inlining.  Defining RW_MATH_ENABLE_FORCE_INLINING will enable
+force inlining regardless of whether the build is release or debug.  Similarly,
+RW_MATH_DISABLE_FORCE_INLINING will disable force inlining regardless of whether
+the build is release or debug.
+
+\subsection ss_assertions Assertions
+
+\par RW_MATH_ENABLE_ASSERTS
+Defining RW_MATH_ENABLE_ASSERTS will cause assertion macros to be defined.  By default
+assertions are not defined (even for debug builds) because of the performance hit.
+<BR>Default: undefined
+
+\par RW_MATH_ASSERT_MSG(condition, message) and RW_MATH_ASSERT(condition)
+
+These defines are used to control how assertions are handled.  By defining these macros,
+users can call custom assertion code.  This allows the math library to properly integrate
+its assertion checks with a users own assertion checking system.
+
+The message parameter is actually a list of arguments enclosed in parenthesis.  This
+allows printf style assertion messages.  Here is an example math assertion macro call:
+
+\code
+    RW_MATH_ASSERT_MSG((determinant != 0.0f), ("Matrix is singular."));
+\endcode
+
+<BR>Default: both macros are defined to assert(condition) when
+RW_MATH_ENABLE_ASSERTS is defined.  Otherwise they are defined to nothing.
+
+\subsection ss_misc_defines Misc. Defines
+
+\par RW_MATH_USE_REFERENCE_IMPLEMENTATION
+
+This define will compile the math library using reference implementation code.
+Normally users should not define RW_MATH_USE_REFERENCE_IMPLEMENTATION.  It is
+only intended for compiling the math library on new platforms that don't yet
+have a proper native port of the math library.
+<BR>Default: not defined
+
+\par RW_MATH_ENABLE_SIMULATED_VPL_OPERATIONS
+
+This define enables the "simulated" implementations for VPL functions that are
+not supported on the host platform.  For example, a function like \c VecLog2Est
+is not normally available on the SPU since the hardware does not have an
+instruction for estimating this value.  When simulated operations are
+available, an inefficient simulated implementation (such as calling a log
+function for each element) is used.
+
+Enabling simulated operations is useful if you want to compile VPL code on an
+unsupported platform before it can be properly converted to native code.  It may
+also be useful if you want to compile optimized VPL code for a PC side tool
+(where performance is not a concern).
+
+This define should never be relied upon for high performance code.  The
+implementation of the simulated code is generally very inefficient.
+
+\subsection ss_unsupported_defines Available but Unsupported Defines
+
+RWMath has a few defines that have been added to the library.  However due to testing
+resource constraints they are not guaranteed to work properly.  You may use these
+defines at your own risk.  Having said that, if you find any of these defines are
+not working properly, please report the issue to rwmath support.
+
+\par RW_MATH_NO_NONDETERMINISTIC_SSE_INTRINSICS
+
+This define will compile the math library using the deterministic implementations for
+functions and macros. Currently the estimate and fast versions of both Reciprocal and 
+ReciprocalSquareRoot macros on PC have both deterministic and non-deterministic
+implementations.
+<BR>Default: not defined
+
+\par RW_MATH_DISABLE_VECFLOAT_IMPLICIT_FLOAT_CONVERSION_OPERATOR
+
+This define disables implicit conversions from VecFloat to float.  These conversions
+are very expensive on PS3 PPU and 360.  This define may be used to disable these
+implicit conversions and catch locations in your code where you may be unintentionally
+converting from VecFloat to float.
+
+\section s_public_defines_macros Public Defines / Macros
+
+\subsection ss_version_defines Version Defines
+
+\par RW_MATH_VERSION_MAJOR, RW_MATH_VERSION_MINOR and RW_MATH_VERSION_PATCH
+
+These defines may be checked by the user to determine (at compile time) what
+version of math the code is being compiled against.
+The preferred way to check the version information is to use #RW_MATH_VERSION,
+and #RW_MATH_CREATE_VERSION_NUMBER.
+
+Please look at the documentation for #RW_MATH_CREATE_VERSION_NUMBER for more information.
+
+\subsection ss_version_macros Version Macros
+
+The #RW_MATH_CREATE_VERSION_NUMBER macro may be used to construct a math version number
+from major, minor, and patch values.  See the documentation for #RW_MATH_CREATE_VERSION_NUMBER for
+more information.
+
+\subsection ss_type_alignment_defines Alignment Defines for Specific Types
+
+\par RW_MATH_<TYPE>_ALIGNMENT define
+
+This define is an immediate value that corresponding to the alignment of that
+type in vpu hardware.
+
+
+*/

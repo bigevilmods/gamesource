@@ -1,0 +1,51 @@
+<project default="build">
+
+    <property name="example.buildmodules" if="@{PropertyExists('disable-rwcodecchunk')} == false">
+        example-chunkcodec
+    </property>
+
+    <property name="example.example-chunkcodec.buildtype" value="Program" />
+
+    <fileset name="example.example-chunkcodec.sourcefiles">
+        <includes name="chunkcodec/*.cpp"/>
+    </fileset>
+
+    <property name="example.example-chunkcodec.usedependencies">
+        EABase
+        coreallocator
+        job_manager
+    </property>
+
+    <property name="example.example-chunkcodec.builddependencies">
+        coreallocator
+        EAAssert
+        EABase
+        EAThread
+        EASTL
+        PPMalloc
+        job_manager
+        job_util
+        xceedzip
+        EAStdC
+    </property>
+
+    <property name="example.example-chunkcodec.runtime.moduledependencies">
+        rwcodec
+    </property>
+
+    <do if="'${config-system}' == 'pc'">
+        <trycatch>
+            <try>
+                <property name="xenonsdk-cross"/>
+                <dependent name="xenonsdk"/>
+                <fileset name="example.example-chunkcodec.libs" append="true" fromfileset="xcompress_library"/>
+                <property name="example.example-chunkcodec.defines">
+                    ${property.value}
+                    RW_CORE_CODEC_LZXCOMPRESSION
+                </property>
+            </try>
+            <catch/>
+        </trycatch>
+    </do>
+  
+</project>

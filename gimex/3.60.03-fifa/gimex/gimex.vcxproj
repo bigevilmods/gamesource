@@ -1,0 +1,466 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5BD8F732-B1D0-40F5-B370-585BD086A2F5}</ProjectGuid>
+    <RootNamespace>gimex</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;..\codex\cmn;gst\glue;gst\codec;cmn;quicktime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;DEBUG;WIN32_LEAN_AND_MEAN;PC;GIMEXLOAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)build\$(Platform)\$(Configuration)\crapi.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\codex.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\gfilter.lib;Vfw32.lib;.\qtsdk\qtmlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <NoEntryPoint>false</NoEntryPoint>
+      <ImageHasSafeExceptionHandlers>
+      </ImageHasSafeExceptionHandlers>
+      <IgnoreSpecificDefaultLibraries>LIBCMTD</IgnoreSpecificDefaultLibraries>
+      <MapExports>true</MapExports>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <OptimizeReferences>false</OptimizeReferences>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <Profile>false</Profile>
+      <ModuleDefinitionFile>$(ProjectDir)\gimex.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>..\include;..\codex\cmn;gst\glue;gst\codec;cmn;quicktime;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;PC;GIMEXLOAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)build\$(Platform)\$(Configuration)\crapi.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\codex.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\gfilter.lib;Vfw32.lib;.\qtsdk\qtmlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ModuleDefinitionFile>$(ProjectDir)\gimex.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\3prread.cpp" />
+    <ClCompile Include="cmn\3prwrite.cpp" />
+    <ClCompile Include="cmn\aboutlib.cpp" />
+    <ClCompile Include="cmn\actread.cpp" />
+    <ClCompile Include="cmn\actwrite.cpp" />
+    <ClCompile Include="cmn\anmread.cpp" />
+    <ClCompile Include="cmn\anmwrite.cpp" />
+    <ClCompile Include="cmn\ashread.cpp" />
+    <ClCompile Include="cmn\ashwrite.cpp" />
+    <ClCompile Include="cmn\aviread.cpp" />
+    <ClCompile Include="cmn\avivfw.cpp" />
+    <ClCompile Include="cmn\aviwrite.cpp" />
+    <ClCompile Include="cmn\bifread.cpp" />
+    <ClCompile Include="cmn\bifwrite.cpp" />
+    <ClCompile Include="cmn\bikread.cpp" />
+    <ClCompile Include="cmn\bikwrite.cpp" />
+    <ClCompile Include="cmn\bmpread.cpp" />
+    <ClCompile Include="cmn\bmpwrite.cpp" />
+    <ClCompile Include="cmn\bnrread.cpp" />
+    <ClCompile Include="cmn\bnrwrite.cpp" />
+    <ClCompile Include="cmn\clpread.cpp" />
+    <ClCompile Include="cmn\clpwrite.cpp" />
+    <ClCompile Include="cmn\ddsread.cpp" />
+    <ClCompile Include="cmn\ddswrite.cpp" />
+    <ClCompile Include="cmn\epsread.cpp" />
+    <ClCompile Include="cmn\epswrite.cpp" />
+    <ClCompile Include="cmn\exeread.cpp" />
+    <ClCompile Include="cmn\exewrite.cpp" />
+    <ClCompile Include="cmn\ffnread.cpp" />
+    <ClCompile Include="cmn\ffnwrite.cpp" />
+    <ClCompile Include="cmn\fliread.cpp" />
+    <ClCompile Include="cmn\fliwrite.cpp" />
+    <ClCompile Include="cmn\flmread.cpp" />
+    <ClCompile Include="cmn\flmwrite.cpp" />
+    <ClCompile Include="cmn\fshread.cpp" />
+    <ClCompile Include="cmn\fshwrite.cpp" />
+    <ClCompile Include="cmn\fssread.cpp" />
+    <ClCompile Include="cmn\fsswrite.cpp" />
+    <ClCompile Include="dllgimex.cpp" />
+    <ClCompile Include="mpeg\getbits.c" />
+    <ClCompile Include="mpeg\getblk.c" />
+    <ClCompile Include="mpeg\gethdr.c" />
+    <ClCompile Include="mpeg\getpic.c" />
+    <ClCompile Include="mpeg\getvlc.c" />
+    <ClCompile Include="cmn\gfnread.cpp" />
+    <ClCompile Include="cmn\gfnwrite.cpp" />
+    <ClCompile Include="cmn\gifread.cpp" />
+    <ClCompile Include="cmn\gifwrite.cpp" />
+    <ClCompile Include="cmn\gmxread.cpp" />
+    <ClCompile Include="cmn\gmxwrite.cpp" />
+    <ClCompile Include="cmn\gopenlib.cpp" />
+    <ClCompile Include="cmn\gopentbl.cpp" />
+    <ClCompile Include="cmn\gshread.cpp" />
+    <ClCompile Include="cmn\gshwrite.cpp" />
+    <ClCompile Include="cmn\gssread.cpp" />
+    <ClCompile Include="cmn\gsswrite.cpp" />
+    <ClCompile Include="gst\codec\gstdecode.cpp" />
+    <ClCompile Include="gst\codec\gstencode.cpp" />
+    <ClCompile Include="gst\glue\gstglue.cpp" />
+    <ClCompile Include="gst\codec\gstmap.cpp" />
+    <ClCompile Include="gst\codec\gstquery.cpp" />
+    <ClCompile Include="cmn\gtfread.cpp" />
+    <ClCompile Include="cmn\gtfwrite.cpp" />
+    <ClCompile Include="cmn\hsiread.cpp" />
+    <ClCompile Include="cmn\hsiwrite.cpp" />
+    <ClCompile Include="cmn\icoread.cpp" />
+    <ClCompile Include="cmn\icowrite.cpp" />
+    <ClCompile Include="mpeg\idct.c" />
+    <ClCompile Include="cmn\idec_decode.cpp" />
+    <ClCompile Include="cmn\idec_encode.cpp" />
+    <ClCompile Include="cmn\idxgimex.cpp" />
+    <ClCompile Include="cmn\ijlread.cpp" />
+    <ClCompile Include="cmn\ijlwrite.cpp" />
+    <ClCompile Include="cmn\jp2read.cpp" />
+    <ClCompile Include="cmn\jp2write.cpp" />
+    <ClCompile Include="cmn\lbmread.cpp" />
+    <ClCompile Include="cmn\lbmwrite.cpp" />
+    <ClCompile Include="cmn\maddec.cpp" />
+    <ClCompile Include="cmn\maddeca.cpp" />
+    <ClCompile Include="cmn\madenc.cpp" />
+    <ClCompile Include="cmn\madidct.cpp" />
+    <ClCompile Include="cmn\madlab.cpp" />
+    <ClCompile Include="cmn\madread.cpp" />
+    <ClCompile Include="cmn\madwrite.cpp" />
+    <ClCompile Include="cmn\mfnread.cpp" />
+    <ClCompile Include="cmn\mfnwrite.cpp" />
+    <ClCompile Include="mpeg\motion.c" />
+    <ClCompile Include="cmn\movread.cpp" />
+    <ClCompile Include="cmn\movwrite.cpp" />
+    <ClCompile Include="mpeg\mpeg2dec.c" />
+    <ClCompile Include="mpeg\mpgerror.c" />
+    <ClCompile Include="mpeg\mpgread.cpp" />
+    <ClCompile Include="mpeg\mpgwrite.cpp" />
+    <ClCompile Include="cmn\mshread.cpp" />
+    <ClCompile Include="cmn\mshwrite.cpp" />
+    <ClCompile Include="cmn\mssread.cpp" />
+    <ClCompile Include="cmn\msswrite.cpp" />
+    <ClCompile Include="cmn\newread.cpp" />
+    <ClCompile Include="gst\glue\newshpgstglue.cpp" />
+    <ClCompile Include="cmn\newwrite.cpp" />
+    <ClCompile Include="cmn\nilread.cpp" />
+    <ClCompile Include="cmn\nilwrite.cpp" />
+    <ClCompile Include="cmn\oldashread.cpp" />
+    <ClCompile Include="cmn\oldashwrite.cpp" />
+    <ClCompile Include="cmn\oldfshread.cpp" />
+    <ClCompile Include="cmn\oldfshwrite.cpp" />
+    <ClCompile Include="cmn\oldfssread.cpp" />
+    <ClCompile Include="cmn\oldfsswrite.cpp" />
+    <ClCompile Include="cmn\oldgshread.cpp" />
+    <ClCompile Include="cmn\oldgshwrite.cpp" />
+    <ClCompile Include="cmn\oldgssread.cpp" />
+    <ClCompile Include="cmn\oldgsswrite.cpp" />
+    <ClCompile Include="cmn\oldmshread.cpp" />
+    <ClCompile Include="cmn\oldmshwrite.cpp" />
+    <ClCompile Include="cmn\oldmssread.cpp" />
+    <ClCompile Include="cmn\oldmsswrite.cpp" />
+    <ClCompile Include="cmn\oldpshread.cpp" />
+    <ClCompile Include="cmn\oldpshwrite.cpp" />
+    <ClCompile Include="cmn\oldshpcmn.cpp" />
+    <ClCompile Include="gst\glue\oldshpgstglue.cpp" />
+    <ClCompile Include="cmn\oldshpread.cpp" />
+    <ClCompile Include="cmn\oldshpwrite.cpp" />
+    <ClCompile Include="cmn\oldsshread.cpp" />
+    <ClCompile Include="cmn\oldsshwrite.cpp" />
+    <ClCompile Include="cmn\oldsssread.cpp" />
+    <ClCompile Include="cmn\oldssswrite.cpp" />
+    <ClCompile Include="cmn\oldxshread.cpp" />
+    <ClCompile Include="cmn\oldxshwrite.cpp" />
+    <ClCompile Include="cmn\oldxssread.cpp" />
+    <ClCompile Include="cmn\oldxsswrite.cpp" />
+    <ClCompile Include="cmn\pcxread.cpp" />
+    <ClCompile Include="cmn\pcxwrite.cpp" />
+    <ClCompile Include="cmn\pfnread.cpp" />
+    <ClCompile Include="cmn\pfnwrite.cpp" />
+    <ClCompile Include="cmn\picread.cpp" />
+    <ClCompile Include="cmn\picwrite.cpp" />
+    <ClCompile Include="cmn\pixread.cpp" />
+    <ClCompile Include="cmn\pixwrite.cpp" />
+    <ClCompile Include="cmn\ppmread.cpp" />
+    <ClCompile Include="cmn\ppmwrite.cpp" />
+    <ClCompile Include="cmn\psdread.cpp" />
+    <ClCompile Include="cmn\psdwrite.cpp" />
+    <ClCompile Include="cmn\pshread.cpp" />
+    <ClCompile Include="cmn\pshwrite.cpp" />
+    <ClCompile Include="cmn\qmtread.cpp" />
+    <ClCompile Include="cmn\qmtwrite.cpp" />
+    <ClCompile Include="quicktime\qt3read.cpp" />
+    <ClCompile Include="quicktime\qt3write.cpp" />
+    <ClCompile Include="gst\codec\quant4d.cpp" />
+    <ClCompile Include="gst\codec\quant6d.cpp" />
+    <ClCompile Include="cmn\ramread.cpp" />
+    <ClCompile Include="cmn\ramwrite.cpp" />
+    <ClCompile Include="cmn\rawread.cpp" />
+    <ClCompile Include="cmn\rawwrite.cpp" />
+    <ClCompile Include="mpeg\recon.c" />
+    <ClCompile Include="cmn\rlaread.cpp" />
+    <ClCompile Include="cmn\rlawrite.cpp" />
+    <ClCompile Include="cmn\sctread.cpp" />
+    <ClCompile Include="cmn\sctwrite.cpp" />
+    <ClCompile Include="cmn\sfnread.cpp" />
+    <ClCompile Include="cmn\sfnwrite.cpp" />
+    <ClCompile Include="cmn\sgiread.cpp" />
+    <ClCompile Include="cmn\sgiwrite.cpp" />
+    <ClCompile Include="cmn\shpcmn.cpp" />
+    <ClCompile Include="cmn\shpread.cpp" />
+    <ClCompile Include="cmn\shpwrite.cpp" />
+    <ClCompile Include="cmn\simread.cpp" />
+    <ClCompile Include="cmn\simwrite.cpp" />
+    <ClCompile Include="cmn\sshread.cpp" />
+    <ClCompile Include="cmn\sshwrite.cpp" />
+    <ClCompile Include="cmn\sssread.cpp" />
+    <ClCompile Include="cmn\ssswrite.cpp" />
+    <ClCompile Include="mpeg\store.c" />
+    <ClCompile Include="cmn\strread.cpp" />
+    <ClCompile Include="cmn\strwrite.cpp" />
+    <ClCompile Include="cmn\tgaread.cpp" />
+    <ClCompile Include="cmn\tgawrite.cpp" />
+    <ClCompile Include="cmn\tgvread.cpp" />
+    <ClCompile Include="cmn\tgvwrite.cpp" />
+    <ClCompile Include="cmn\timread.cpp" />
+    <ClCompile Include="cmn\timwrite.cpp" />
+    <ClCompile Include="cmn\tm2read.cpp" />
+    <ClCompile Include="cmn\tm2write.cpp" />
+    <ClCompile Include="cmn\tplread.cpp" />
+    <ClCompile Include="cmn\tplwrite.cpp" />
+    <ClCompile Include="cmn\ttfread.cpp" />
+    <ClCompile Include="cmn\ttfwrite.cpp" />
+    <ClCompile Include="gst\codec\twizzle.cpp" />
+    <ClCompile Include="cmn\vp6read.cpp" />
+    <ClCompile Include="cmn\vp6write.cpp" />
+    <ClCompile Include="cmn\xfnread.cpp" />
+    <ClCompile Include="cmn\xfnwrite.cpp" />
+    <ClCompile Include="cmn\xprread.cpp" />
+    <ClCompile Include="cmn\xprwrite.cpp" />
+    <ClCompile Include="cmn\xshread.cpp" />
+    <ClCompile Include="cmn\xshwrite.cpp" />
+    <ClCompile Include="cmn\xssread.cpp" />
+    <ClCompile Include="cmn\xsswrite.cpp" />
+    <ClCompile Include="cmn\yfnread.cpp" />
+    <ClCompile Include="cmn\yfnwrite.cpp" />
+    <ClCompile Include="cmn\yshread.cpp" />
+    <ClCompile Include="cmn\yshwrite.cpp" />
+    <ClCompile Include="cmn\yssread.cpp" />
+    <ClCompile Include="cmn\ysswrite.cpp" />
+    <ClCompile Include="cmn\yuvread.cpp" />
+    <ClCompile Include="cmn\yuvwrite.cpp" />
+    <ClCompile Include="cmn\zfnread.cpp" />
+    <ClCompile Include="cmn\zfnwrite.cpp" />
+    <ClCompile Include="cmn\zshread.cpp" />
+    <ClCompile Include="cmn\zshwrite.cpp" />
+    <ClCompile Include="cmn\zssread.cpp" />
+    <ClCompile Include="cmn\zsswrite.cpp" />
+    <ClCompile Include="tiff\fax3sm_winnt.c" />
+    <ClCompile Include="tiff\tif_aux.c" />
+    <ClCompile Include="tiff\tif_close.c" />
+    <ClCompile Include="tiff\tif_codec.c" />
+    <ClCompile Include="tiff\tif_compress.c" />
+    <ClCompile Include="tiff\tif_dir.c" />
+    <ClCompile Include="tiff\tif_dirinfo.c" />
+    <ClCompile Include="tiff\tif_dirread.c" />
+    <ClCompile Include="tiff\tif_dirwrite.c" />
+    <ClCompile Include="tiff\tif_dumpmode.c" />
+    <ClCompile Include="tiff\tif_error.c" />
+    <ClCompile Include="tiff\tif_fax3.c" />
+    <ClCompile Include="tiff\tif_flush.c" />
+    <ClCompile Include="tiff\tif_getimage.c" />
+    <ClCompile Include="tiff\tif_gx.c" />
+    <ClCompile Include="tiff\tif_jpeg.c" />
+    <ClCompile Include="tiff\tif_luv.c" />
+    <ClCompile Include="tiff\tif_lzw.c" />
+    <ClCompile Include="tiff\tif_next.c" />
+    <ClCompile Include="tiff\tif_open.c" />
+    <ClCompile Include="tiff\tif_packbits.c" />
+    <ClCompile Include="tiff\tif_pixarlog.c" />
+    <ClCompile Include="tiff\tif_predict.c" />
+    <ClCompile Include="tiff\tif_print.c" />
+    <ClCompile Include="tiff\tif_read.c" />
+    <ClCompile Include="tiff\tif_strip.c" />
+    <ClCompile Include="tiff\tif_swab.c" />
+    <ClCompile Include="tiff\tif_thunder.c" />
+    <ClCompile Include="tiff\tif_tile.c" />
+    <ClCompile Include="tiff\tif_version.c" />
+    <ClCompile Include="tiff\tif_warning.c" />
+    <ClCompile Include="tiff\tif_write.c" />
+    <ClCompile Include="tiff\tif_zip.c" />
+    <ClCompile Include="tiff\tifread.c" />
+    <ClCompile Include="tiff\tifwrite.c" />
+    <ClCompile Include="jpeg\jcapimin.c" />
+    <ClCompile Include="jpeg\jcapistd.c" />
+    <ClCompile Include="jpeg\jccoefct.c" />
+    <ClCompile Include="jpeg\jccolor.c" />
+    <ClCompile Include="jpeg\jcdctmgr.c" />
+    <ClCompile Include="jpeg\jchuff.c" />
+    <ClCompile Include="jpeg\jcinit.c" />
+    <ClCompile Include="jpeg\jcmainct.c" />
+    <ClCompile Include="jpeg\jcmarker.c" />
+    <ClCompile Include="jpeg\jcmaster.c" />
+    <ClCompile Include="jpeg\jcomapi.c" />
+    <ClCompile Include="jpeg\jcparam.c" />
+    <ClCompile Include="jpeg\jcphuff.c" />
+    <ClCompile Include="jpeg\jcprepct.c" />
+    <ClCompile Include="jpeg\jcsample.c" />
+    <ClCompile Include="jpeg\jctrans.c" />
+    <ClCompile Include="jpeg\jdapimin.c" />
+    <ClCompile Include="jpeg\jdapistd.c" />
+    <ClCompile Include="jpeg\jdatadst.c" />
+    <ClCompile Include="jpeg\jdatasrc.c" />
+    <ClCompile Include="jpeg\jdcoefct.c" />
+    <ClCompile Include="jpeg\jdcolor.c" />
+    <ClCompile Include="jpeg\jddctmgr.c" />
+    <ClCompile Include="jpeg\jdhuff.c" />
+    <ClCompile Include="jpeg\jdinput.c" />
+    <ClCompile Include="jpeg\jdmainct.c" />
+    <ClCompile Include="jpeg\jdmarker.c" />
+    <ClCompile Include="jpeg\jdmaster.c" />
+    <ClCompile Include="jpeg\jdmerge.c" />
+    <ClCompile Include="jpeg\jdphuff.c" />
+    <ClCompile Include="jpeg\jdpostct.c" />
+    <ClCompile Include="jpeg\jdsample.c" />
+    <ClCompile Include="jpeg\jdtrans.c" />
+    <ClCompile Include="jpeg\jerror.c" />
+    <ClCompile Include="jpeg\jfdctflt.c" />
+    <ClCompile Include="jpeg\jfdctfst.c" />
+    <ClCompile Include="jpeg\jfdctint.c" />
+    <ClCompile Include="jpeg\jidctflt.c" />
+    <ClCompile Include="jpeg\jidctfst.c" />
+    <ClCompile Include="jpeg\jidctint.c" />
+    <ClCompile Include="jpeg\jidctred.c" />
+    <ClCompile Include="jpeg\jmemansi.c" />
+    <ClCompile Include="jpeg\jmemmgr.c" />
+    <ClCompile Include="jpeg\jpgread.c" />
+    <ClCompile Include="jpeg\jpgwrite.c" />
+    <ClCompile Include="jpeg\jquant1.c" />
+    <ClCompile Include="jpeg\jquant2.c" />
+    <ClCompile Include="jpeg\jutils.c" />
+    <ClCompile Include="png\adler32.c" />
+    <ClCompile Include="png\compress.c" />
+    <ClCompile Include="png\crc32.c" />
+    <ClCompile Include="png\deflate.c" />
+    <ClCompile Include="png\gzio.c" />
+    <ClCompile Include="png\infblock.c" />
+    <ClCompile Include="png\infcodes.c" />
+    <ClCompile Include="png\inffast.c" />
+    <ClCompile Include="png\inflate.c" />
+    <ClCompile Include="png\inftrees.c" />
+    <ClCompile Include="png\infutil.c" />
+    <ClCompile Include="png\png.c" />
+    <ClCompile Include="png\pngerror.c" />
+    <ClCompile Include="png\pngget.c" />
+    <ClCompile Include="png\pnglread.c" />
+    <ClCompile Include="png\pnglwrite.c" />
+    <ClCompile Include="png\pngmem.c" />
+    <ClCompile Include="png\pngpread.c" />
+    <ClCompile Include="png\pngread.cpp" />
+    <ClCompile Include="png\pngrio.c" />
+    <ClCompile Include="png\pngrtran.c" />
+    <ClCompile Include="png\pngrutil.c" />
+    <ClCompile Include="png\pngset.c" />
+    <ClCompile Include="png\pngtrans.c" />
+    <ClCompile Include="png\pngwio.c" />
+    <ClCompile Include="png\pngwrite.cpp" />
+    <ClCompile Include="png\pngwtran.c" />
+    <ClCompile Include="png\pngwutil.c" />
+    <ClCompile Include="png\trees.c" />
+    <ClCompile Include="png\uncompr.c" />
+    <ClCompile Include="png\zutil.c" />
+    <ClCompile Include="mpeg\conform.c" />
+    <ClCompile Include="mpeg\emotion.c" />
+    <ClCompile Include="mpeg\fdctref.c" />
+    <ClCompile Include="mpeg\predict.c" />
+    <ClCompile Include="mpeg\putbits.c" />
+    <ClCompile Include="mpeg\puthdr.c" />
+    <ClCompile Include="mpeg\putmpg.c" />
+    <ClCompile Include="mpeg\putpic.c" />
+    <ClCompile Include="mpeg\putvlc.c" />
+    <ClCompile Include="mpeg\quantize.c" />
+    <ClCompile Include="mpeg\ratectl.c" />
+    <ClCompile Include="mpeg\readpic.c" />
+    <ClCompile Include="mpeg\stats.c" />
+    <ClCompile Include="mpeg\transfrm.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmn\shpcmn.h" />
+    <ClInclude Include="cmn\shpgimex.h" />
+    <ClInclude Include="dllgimex.h" />
+    <ClInclude Include="gpixel.h" />
+    <ClInclude Include="stdgimex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gimex.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\codex\codex.vcxproj">
+      <Project>{5728de05-6585-4e2c-83bd-aaf12b62fca7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\crapi\crapi.vcxproj">
+      <Project>{e5bc48b9-9fd6-4e57-b46e-deccf58c911e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

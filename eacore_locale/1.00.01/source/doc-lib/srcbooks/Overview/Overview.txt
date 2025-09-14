@@ -1,0 +1,9 @@
+/*!
+********************************************************************************
+\page   p_overview	Overview - eacore_locale help
+
+\section s_whatisinhelp	What is in eacore_locale help?	
+
+This help provides users with information about how to use the eacore_locale library.
+
+*/

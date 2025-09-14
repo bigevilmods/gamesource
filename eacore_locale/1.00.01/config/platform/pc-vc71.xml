@@ -1,0 +1,8 @@
+<project>
+
+	<property name="cc.options">
+		${property.value}
+		-W3			<!-- Warning level 3 -->
+	</property>
+
+</project>

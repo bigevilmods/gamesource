@@ -1,0 +1,645 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestQuatPos" HEADER="quatpostest.h" SOURCE="quatpostest.inc" RWHOSTHEADER="rw/math/vpu/quatpos_operation.h rw/math/vpu/matrix44affine_operation.h" RWGENERICHEADER="rw/math/fpu/quatpos_operation.h rw/math/fpu/matrix44affine_operation.h" RWOPTIMALHEADER="rw/math/optimal/quatpos_operation.h rw/math/optimal/matrix44affine_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("QuatPos(VectorIntrinsic, VectorIntrinsic)");
+        MakeVectorIntrinsic(viQuat, 1.0f, 2.1f, 3.2f, 4.3f);
+        MakeVectorIntrinsic(viPos, 5.0f, 6.0f, 7.0f, 0.0f);
+        QuatPos qp(viQuat, viPos);
+        Validate((float)qp.GetQuaternion().X() == 1.0f && (float)qp.GetQuaternion().Y() == 2.1f && (float)qp.GetQuaternion().Z() == 3.2f && (float)qp.GetQuaternion().W() == 4.3f
+        && (float)qp.GetPos().X() == 5.0f && (float)qp.GetPos().Y() == 6.f && (float)qp.GetPos().Z() == 7.f);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        SetFunctionName("QuatPos(const QuatPos&)");
+        QuatPos qpRef( 1.0f, 2.1f, 3.2f, 4.3f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp(qpRef);
+        Validate((float)qp.GetQuaternion().X() == 1.0f && (float)qp.GetQuaternion().Y() == 2.1f && (float)qp.GetQuaternion().Z() == 3.2f && (float)qp.GetQuaternion().W() == 4.3f
+        && (float)qp.GetPos().X() == 5.0f && (float)qp.GetPos().Y() == 6.f && (float)qp.GetPos().Z() == 7.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("QuatPos()");
+        QuatPos qp;
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        SetFunctionName("QuatPos(Quaternion quat, Vector3 pos)");
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+        QuatPos qp(q, p);
+
+        Validate( qp.GetQuaternion() == q &&
+                  qp.GetPos() == p );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        SetFunctionName("QuatPos(QuatPos( _QuatX,  _QuatY,  _QuatZ,  _QuatW,  _PosX,  _PosY,  _PosZ))");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        SetFunctionName("QuatPos(float_test_type::InParam _QuatX, float_test_type::InParam _QuatY, float_test_type::InParam _QuatZ, float_test_type::InParam _QuatW, float_test_type::InParam _PosX, float_test_type::InParam _PosY, float_test_type::InParam _PosZ)");
+        QuatPos qp(float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f),
+            float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+            qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("QuatPos(float xyzw[7] )");
+
+        float floatData[] = {1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 0.0f};
+        AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+        QuatPos qp(floatBuffer.GetFloatData());
+
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("QuatPos(float_test_typeRefIndex::InParam _QuatX, float_test_typeRefIndex::InParam _QuatY, float_test_typeRefIndex::InParam _QuatZ, float_test_typeRefIndex::InParam _QuatW, float_test_typeRefIndex::InParam _PosX, float_test_typeRefIndex::InParam _PosY, float_test_typeRefIndex::InParam _PosZ)");
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        QuatPos qp( q.GetComponent(0), q.GetComponent(1), q.GetComponent(2), q.GetComponent(3),
+                    p.GetComponent(0), p.GetComponent(1), p.GetComponent(2) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("QuatPos(float_test_typeRef<QUAT_XSRC_INDEX> _QuatX, float_test_typeRef<QUAT_YSRC_INDEX> _QuatY, float_test_typeRef<QUAT_ZSRC_INDEX> _QuatZ, float_test_typeRef<QUAT_WSRC_INDEX> _QuatW, float_test_typeRef<POS_XSRC_INDEX> _PosX, float_test_typeRef<POS_YSRC_INDEX> _PosY, float_test_typeRef<POS_ZSRC_INDEX> _PosZ)");
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        QuatPos qp( q.X(), q.Y(), q.Z(), q.W(),
+                    p.X(), p.Y(), p.Z() );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+#ifndef HOST_TESTING
+
+        SetFunctionName("QuatPos(FloatType* )");
+        float_basic_type f[7] =
+        {
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f
+        };
+        QuatPos qp(f);
+
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+        qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("Set(float _QuatX, float _QuatY, float _QuatZ, float _QuatW, float _PosX, float _PosY, float _PosZ)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        qp.Set( 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        SetFunctionName("Set(float_test_type::InParam _QuatX, float_test_type::InParam _QuatY, float_test_type::InParam _QuatZ, float_test_type::InParam _QuatW, float_test_type::InParam _PosX, float_test_type::InParam _PosY, float_test_type::InParam _PosZ)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        qp.Set( float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        SetFunctionName("Set(float_test_typeRefIndex::InParam _QuatX, float_test_typeRefIndex::InParam _QuatY, float_test_typeRefIndex::InParam _QuatZ, float_test_typeRefIndex::InParam _QuatW, float_test_typeRefIndex::InParam _PosX, float_test_typeRefIndex::InParam _PosY, float_test_typeRefIndex::InParam _PosZ)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        qp.Set( q.GetComponent(0), q.GetComponent(1), q.GetComponent(2), q.GetComponent(3),
+                p.GetComponent(0), p.GetComponent(1), p.GetComponent(2) );
+
+        qp.Set( float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        SetFunctionName("Set(float_test_typeRef<QUAT_XSRC_INDEX> _QuatX, float_test_typeRef<QUAT_YSRC_INDEX> _QuatY, float_test_typeRef<QUAT_ZSRC_INDEX> _QuatZ, float_test_typeRef<QUAT_WSRC_INDEX> _QuatW, float_test_typeRef<POS_XSRC_INDEX> _PosX, float_test_typeRef<POS_YSRC_INDEX> _PosY, float_test_typeRef<POS_ZSRC_INDEX> _PosZ)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        qp.Set( q.X(), q.Y(), q.Z(), q.W(),
+                p.X(), p.Y(), p.Z() );
+
+        qp.Set( float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  qp.GetPos() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        SetFunctionName("SetQuaternion(Quaternion q)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        qp.SetQuaternion( Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+        Validate( qp.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        SetFunctionName("SetPos(Vector3 v)");
+        QuatPos qp(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        qp.SetPos( Vector3(1.0f, 2.0f, 3.0f) );
+        Validate( qp.GetPos() == Vector3(1.0f, 2.0f, 3.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("SetZero()");
+        QuatPos v( 1.0f, 2.0f, 3.0f, 4.f, 1.0f, 2.0f, 3.0f );
+        v.SetZero();
+        Validate(v == GetQuatPos_Zero());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        SetFunctionName("SetIdentity()");
+        QuatPos v( 1.0f, 2.0f, 3.0f, 4.f, 1.0f, 2.0f, 3.0f );
+        v.SetIdentity();
+        Validate(v == GetQuatPos_Identity());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        SetFunctionName("GetQuaternion()");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Quaternion &result = qp.GetQuaternion();
+        Validate( result == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        SetFunctionName("GetQuaternion() const");
+        const QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Quaternion &result = qp.GetQuaternion();
+        Validate( result == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        SetFunctionName("GetPos()");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Vector3 result = qp.GetPos();
+        Validate( result == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        SetFunctionName("GetPos() const");
+        const QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Vector3 &result = qp.GetPos();
+        Validate( result == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("QuatPos Select(MaskScalar mask, QuatPos a, QuatPos b)");
+        const QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const QuatPos qp2(12.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f);
+
+        QuatPos result1 = Select( MaskScalar(true), qp1, qp2 );
+        QuatPos result2 = Select( MaskScalar(false), qp1, qp2 );
+        Validate(
+            result1 == qp1 &&
+            result2 == qp2
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(QuatPos a,  QuatPos b, epsilon)");
+        QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp2(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.1f );
+
+        Validate( !IsSimilar(qp1, qp2) &&
+                  !IsSimilar(qp1, qp2, (float_test_type)0.09f) &&
+                   IsSimilar(qp1, qp2, (float_test_type)0.11f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+// on SPU, NaN operations evaluates to 0
+#if !defined EA_PLATFORM_PS3_SPU
+        {
+            SetFunctionName("IsValid(QuatPos a,  QuatPos b, epsilon)");
+            QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+    
+            QuatPos qp2((float)testing::GetNaN(), 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.01f );
+            QuatPos qp3(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, (float)testing::GetNaN() );
+
+            Validate(  IsValid(qp1) &&
+                      !IsValid(qp2) &&
+                      !IsValid(qp3) );
+        }
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("Mult(QuatPos a, QuatPos b)");
+        QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp2(3.0f, 2.0f, 1.0f, 0.0f, -1.0f, -2.0f, -3.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        QuatPos ref(8.0f, 16.0f, 0.0f, -10.0f, 4.0f, 4.0f, 4.0f );
+
+        QuatPos result = Mult(qp1, qp2);
+
+        Validate( IsSimilar( result, ref, (float_test_type)0.001f ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test_quatpos_inverse">
+        <![CDATA[
+
+
+        SetFunctionName("Inverse(QuatPos a)");
+        
+        QuatPos qp1(4.0f, 3.0f, 2.0f, -3.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp_compare;
+        Inverse(qp1.quat, qp_compare.quat);
+        Vector3Transform(qp_compare.quat, qp1.pos, qp_compare.pos);
+        Negate(qp_compare.pos, qp_compare.pos);
+        
+        QuatPos qp2 = Inverse(qp1);
+        QuatPos multiply_qp2_qp1 = Mult(qp2, qp1);
+        QuatPos identity = GetQuatPos_Identity();
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.X(), (float_basic_type)-0.105263f) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.Y(), (float_basic_type)-0.078947f) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.Z(), (float_basic_type)-0.052632f) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.W(), (float_basic_type)-0.078947f) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.X(), (float_basic_type)qp_compare.quat.X()) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.Y(), (float_basic_type)qp_compare.quat.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.Z(), (float_basic_type)qp_compare.quat.Z()) &&
+                IsEqualWithEpsilon((float_basic_type)qp2.quat.W(), (float_basic_type)qp_compare.quat.W()) &&
+                IsSimilar(qp2.pos, qp_compare.pos) &&
+                IsSimilar(multiply_qp2_qp1.quat, identity.quat) &&
+                IsSimilar(multiply_qp2_qp1.pos, identity.pos)
+        );
+        
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("QuatPosFromMatrix44(Matrix44::InParam)");
+        Quaternion quat = Normalize(Quaternion(1.0f, 2.0f, 3.0f, 1.5f));
+        Vector3 position( -4.0f, 7.0f, 9.0f );
+        Matrix44 matrix = Matrix44FromQuaternionTranslation(quat, position);
+        QuatPos result = QuatPosFromMatrix44( matrix );
+
+        Validate( IsSimilar( result.GetQuaternion(), quat, (float_test_type)0.001f ) &&
+                  IsSimilar( result.GetPos(), position, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("Matrix44FromQuatPos(QuatPos::InParam)");
+        QuatPos qp( Normalize(Quaternion(1.0f, 2.0f, 3.0f, 1.5f)),
+                    Vector3( -4.0f, 7.0f, 9.0f ) );
+        Matrix44 result = Matrix44FromQuatPos(qp);
+        QuatPos qp2 = QuatPosFromMatrix44( result );
+
+        Validate( IsSimilar( qp, qp2, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("QuatPosFromMatrix44Affine(Matrix44Affine::InParam)");
+        Quaternion quat = Normalize(Quaternion(1.0f, 2.0f, 3.0f, 1.5f));
+        Vector3 position( -4.0f, 7.0f, 9.0f );
+        Matrix44Affine matrix = Matrix44AffineFromQuaternionTranslation(quat, position);
+        QuatPos result = QuatPosFromMatrix44Affine( matrix );
+
+        Validate( IsSimilar( result.GetQuaternion(), quat, (float_test_type)0.001f ) &&
+                  IsSimilar( result.GetPos(), position, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromQuatPos(QuatPos::InParam)");
+        QuatPos qp( Normalize(Quaternion(1.0f, 2.0f, 3.0f, 1.5f)),
+                    Vector3( -4.0f, 7.0f, 9.0f ) );
+        Matrix44Affine result = Matrix44AffineFromQuatPos(qp);
+        QuatPos qp2 = QuatPosFromMatrix44Affine( result );
+
+        Validate( IsSimilar( qp, qp2, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("TransformPoint(Vector3 point, QuatPos q)");
+        QuatPos qp( Normalize(Quaternion(1.0f, 2.0f, 3.0f, 1.5f)),
+                    Vector3( -4.0f, 7.0f, 9.0f ) );
+        Matrix44 mat = Matrix44FromQuatPos(qp);
+        Vector3 point(5.0f, 4.0f, -3.0f);
+        Vector3 ref = TransformPoint( point, mat );
+        Vector3 result = TransformPoint( point, qp );
+
+        Validate( IsSimilar( ref, result, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        SetFunctionName("QuatPosGetMatrix44AffineRowX(QuatPos::InParam quat)");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Matrix44 mat= Matrix44FromQuaternion(qp.GetQuaternion());
+        Vector3 ref = GetXYZ(mat.XAxis());
+        Vector3 result = QuatPosGetMatrix44AffineRowX(qp);
+
+        Validate( IsSimilar(result, ref) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        SetFunctionName("QuatPosGetMatrix44AffineRowY(QuatPos::InParam quat)");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Matrix44 mat= Matrix44FromQuaternion(qp.GetQuaternion());
+        Vector3 ref = GetXYZ(mat.YAxis());
+        Vector3 result = QuatPosGetMatrix44AffineRowY(qp);
+
+        Validate( IsSimilar(result, ref) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        SetFunctionName("QuatPosGetMatrix44AffineRowZ(QuatPos::InParam quat)");
+        QuatPos qp(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Vector3 ref = GetXYZ(Matrix44FromQuaternion(qp.GetQuaternion()).ZAxis());
+        Vector3 result = QuatPosGetMatrix44AffineRowZ(qp);
+
+        Validate( IsSimilar(result, ref) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        SetFunctionName("QuatPosFromAxisRotationAngle(Vector3 axis, VecFloat lrAngleInRadians)");
+
+        Vector3 axis( SQRT_HALF, SQRT_HALF, 0);
+        QuatPos ref( 0.5f, 0.5f, 0.0f, SQRT_HALF,
+                     0.0f, 0.0f, 0.0f );
+
+        QuatPos result = QuatPosFromAxisRotationAngle(axis, (float_test_type)HALF_PI);
+
+        Validate( IsSimilar( result, ref, (float_test_type)0.001f) );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        SetFunctionName("QuatPos&      operator = (QuatPos::InParam v)");
+        QuatPos qpRef( 1.0f, 2.1f, 3.2f, 4.3f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp;
+        qp= qpRef;
+        Validate((float)qp.GetQuaternion().X() == 1.0f && (float)qp.GetQuaternion().Y() == 2.1f && (float)qp.GetQuaternion().Z() == 3.2f && (float)qp.GetQuaternion().W() == 4.3f
+        && (float)qp.GetPos().X() == 5.0f && (float)qp.GetPos().Y() == 6.f && (float)qp.GetPos().Z() == 7.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        SetFunctionName("operator ==(QuatPos::InParam a,           QuatPos::InParam b)");
+        QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp2(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp3(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.3f, 7.0f );
+
+        Validate(   qp1 == qp2  &&
+                  !(qp2 == qp3) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        SetFunctionName("operator !=(QuatPos::InParam a,           QuatPos::InParam b)");
+        QuatPos qp1(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp2(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        QuatPos qp3(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.3f, 7.0f );
+
+        Validate( !(qp1 != qp2) &&
+                    qp2 != qp3  );
+
+      ]]>
+      </TEST>
+
+   </TYPE>
+
+ </TYPE>
+
+<!-- The Last Test is test38, please change this number when you add more tests, make sure test names do not repeat-->
+</CLASS>
+
+</TESTCLASS>

@@ -1,0 +1,18 @@
+/*!
+\page p_prerequisite_knowledge Prerequisite Knowledge
+
+New hardware like the Playstation 3 and Xbox 360 has introduced many 
+complexities. To use the math library most effectively, it is important to 
+have some background information on how this affects the API, its implementation and 
+the way you ought to write your math code. Without this background, not only will 
+our math library surprise you and cause problems, you will also write code that 
+won't have near the performance it can achieve.
+
+In particular, it is important to have some knowledge on the following subjects.
+- \ref p_vectorization "Vectorization"
+- \ref p_scalar_access "Scalar Access"
+- \ref p_load_hit_store "Load Hit Store (LHS)"
+- \ref p_branching "Branching"
+
+*/
+

@@ -1,0 +1,11 @@
+UnitTestSoa4Constants
+UnitTestSoa4Float
+UnitTestSoa4Scalar
+UnitTestSoa4MaskScalar
+UnitTestSoa4Trig
+UnitTestSoa4Mask2
+UnitTestSoa4Mask3
+UnitTestSoa4Mask4
+UnitTestSoa4Vector2
+UnitTestSoa4Vector3
+UnitTestSoa4Vector4

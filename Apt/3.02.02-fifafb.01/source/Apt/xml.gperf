@@ -1,0 +1,31 @@
+struct XmlMembers { char *szName; int nIndex; };
+%%
+appendChild, 1
+attributes, 2
+childNodes, 3
+cloneNode, 4
+firstChild, 5
+hasChildNodes, 6
+insertBefore, 7
+lastChild, 8
+nextSibling, 9
+nodeName, 10
+nodeType, 11
+nodeValue, 12
+parentNode, 13
+previousSibling, 14
+removeNode, 15
+toString, 16
+contentType, 100
+createElement, 101
+createTextNode, 102
+docTypeDecl, 103
+getBytesTotal, 104
+getBytesLoaded, 105
+ignoreWhite, 106
+load, 107
+loaded, 108
+parseXml, 109
+send, 110
+sendAndLoad, 111
+status, 112

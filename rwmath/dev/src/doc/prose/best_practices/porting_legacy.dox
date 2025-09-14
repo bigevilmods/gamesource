@@ -1,0 +1,36 @@
+/*!
+\page p_porting_legacy Porting Legacy
+
+User should aware of certain compiler issues and hardware limitations if they want to make their code to run fast. Similar to the new XBox360 and PS3 hardware, user cannot expect things just run faster when the new library is used, proper use of the library is very important for the performance. A direct port of legacy code may or may not improve performance with RenderWare math library, and some case, performance will actually suffer.
+
+Porting from EAMath
+EAMath is originally written for fpu, if user is porting from EAMath, rw::math::fpu namespace functions and types would be the easiest to port with (use 32bit unaligned types).
+
+There won’t be any significant performance issue from porting to that library, since they do fairly similar things.
+
+Once code is running, user can try to port to rw::math::vpu namespace functions and types. However, porting to vpu requires data to be aligned from custom memory allocation, proper use of vpu library, performance investigation to find out what can be speed up, deal with difference between float& and VecFloatRef, and no more public float element accessors for x/y/z/w component in a vector and matrix.
+
+
+
+Porting from RWMath 4.0
+XBox360 and PS3 types for RWMath 4.0 are vector types, and porting that would
+be easier than EAMath. However, RWMath 4.0 PC math types are all fpu types, it
+may not be so easy to port that over.
+
+Well written VPU code can perform much better than FPU code.  However, poorly
+written VPU code (i.e. code that is written in a scalar fasion) may actually
+run slower.  Of course, porting to the VPU library may still be advantagous
+because it may allow more optimizations to be made later in development.
+
+Note:
+Matrix3x4 has been renamed to Matrix44Affine. Matrix44Affine is affine matrix
+where last column is assumed to be [0, 0, 0, 1], but in fact, it is filled with
+arbitrary values. When Matrix44Affine is used in an operation, the last column
+is never used for calculation, and all calculation assumes that last column is
+[0, 0, 0, 1] regardless what’s in it. \e Conceptually, the matrix looks like this:
+<BR>[ ?	? ? 0]
+<BR>[ ?	? ? 0]
+<BR>[ ?	? ? 0]
+<BR>[ ?	? ? 1]
+
+*/

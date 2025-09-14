@@ -1,0 +1,166 @@
+<project default="AptAuxEAGLREAL">
+    <!-- include package build file to get dependency and configuration information -->    
+	<property name="runtime.AptAuxEAGLREAL.buildtype" value="Library"/>
+	<property name="runtime.AptAuxEAGLREAL.usedependencies">
+	    EABase
+	    coreallocator
+	    FontFusion	    
+	</property>
+    
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.pc">
+		DirectX
+	    realgraphpc
+	    realcorepc
+	    EAGLPC
+	    snd		
+	</property>
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.xbox">	       
+	    realgraphxbox
+	    realcorexbox
+	    EAGLXBOX
+	    snd
+	</property>
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.ps2">
+	    realgraphps2
+	    realcoreps2
+	    EAGLPS2
+	    snd	
+	</property>
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.gc">
+	    realgraphgcsn
+	    realcoregcsn
+	    EAGLGCSN
+	    snd	
+	</property>			
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.xenon">
+		xenonsdk
+	</property>		
+    
+
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.psp">	       
+	    realgraph
+	    realcore
+	    eagl
+	    snd
+	</property>
+
+
+	<property name="runtime.AptAuxEAGLREAL.commonwarningsuppression">
+	    -wd4512     <!-- assignment operator could not be generated -->
+	    -wd4619     <!-- #pragma warning there is no warning number XXXX -->	    
+	    -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4244     <!-- conversion from int32_t to int16_t possible loss of data -->	  
+        -wd4062     <!-- enumerate 'ApAuxUnitType_LineSolid' in switch of enum 'AptAuxUnitType' is not handled -->	      
+        -wd4191     <!-- 'type cast' : unsafe conversion from 'PROC' to 'PFNGLMULTITEXCOORD2FVARBPROC' -->
+        -wd4189     <!-- 'ptr' : local variable is initialized but not referenced -->
+        -wd4296     <!-- '<' : expression is always false. IN EAGL -->
+        -wd4127     <!-- conditional expression is constant -->
+	</property>
+	<property name="runtime.AptAuxEAGLREAL.warningsuppression.pc">
+        ${runtime.AptAuxEAGLREAL.commonwarningsuppression}        
+	</property>	
+	<property name="runtime.AptAuxEAGLREAL.warningsuppression.xbox">
+        ${runtime.AptAuxEAGLREAL.commonwarningsuppression}
+	</property>	
+	<property name="runtime.AptAuxEAGLREAL.warningsuppression.ps2">
+	</property>	
+	<property name="runtime.AptAuxEAGLREAL.warningsuppression.gc">
+	</property>	        
+            
+	<property name="runtime.AptAuxEAGLREAL.defines">
+	    ${runtime.defines}
+	</property>
+            
+    <dependent name="snd" />
+	<property name="runtime.AptAuxEAGLREAL.includedirs">
+	    ${package.Apt.dir}/include/Apt
+		${package.Apt.dir}/include/AptFF
+		${package.Apt.dir}/include/AptAuxEAGLREAL
+		${package.Apt.dir}/source/AptAuxEAGLREAL
+		${package.snd.dir}/include
+	</property>	                       
+    
+    <do if="${config-system} == pc">
+        <dependent name="realgraphpc" />
+        <dependent name="realcorepc" />
+        <dependent name="EAGLPC" />
+        
+	    <property name="runtime.AptAuxEAGLREAL.includedirs.pc">
+		    ${package.realgraphpc.dir}/include
+		    ${package.realcorepc.dir}/include
+		    ${package.EAGLPC.dir}/include/cmn
+		    ${package.EAGLPC.dir}/include/devcaps
+		    ${package.EAGLPC.dir}/include/pc
+	    </property>            
+    </do>
+    
+    <do if="${config-system} == xbox">
+        <dependent name="realgraphxbox" />
+        <dependent name="realcorexbox" />
+        <dependent name="EAGLXBOX" />
+        <dependent name="Xdk" />
+        
+	    <property name="runtime.AptAuxEAGLREAL.includedirs.xbox">
+		    ${package.realgraphxbox.dir}/include
+		    ${package.realcorexbox.dir}/include
+		    ${package.EAGLXBOX.dir}/include/cmn
+		    ${package.EAGLXBOX.dir}/include/devcaps
+		    ${package.EAGLXBOX.dir}/include/xbox
+	    </property>            
+    </do>
+    
+    <do if="${config-system} == ps2">
+        <dependent name="realgraphps2" />
+        <dependent name="realcoreps2" />
+        <dependent name="EAGLPS2" />    
+        
+	    <property name="runtime.AptAuxEAGLREAL.includedirs.ps2">
+		    ${package.realgraphps2.dir}/include
+		    ${package.realcoreps2.dir}/include
+		    ${package.EAGLPS2.dir}/include/cmn
+		    ${package.EAGLPS2.dir}/include/devcaps
+		    ${package.EAGLPS2.dir}/include/ps2
+	    </property>            
+    </do>
+            
+    <do if="${config-system} == gc">    
+        <dependent name="realgraphgcsn" />
+        <dependent name="realcoregcsn" />
+        <dependent name="EAGLGCSN" />         
+        
+	    <property name="runtime.AptAuxEAGLREAL.includedirs.gc">
+		    ${package.realgraphgcsn.dir}/include
+		    ${package.realcoregcsn.dir}/include
+		    ${package.EAGLGCSN.dir}/include/cmn
+		    ${package.EAGLGCSN.dir}/include/devcaps
+		    ${package.EAGLGCSN.dir}/include/gc
+	    </property>		            
+    </do>        
+
+    <do if="${config-system} == psp">    
+        <dependent name="realgraph" />
+        <dependent name="realcore" />
+        <dependent name="eagl" />         
+        
+	    <property name="runtime.AptAuxEAGLREAL.includedirs.psp">
+		    ${package.realgraph.dir}/include
+		    ${package.realcore.dir}/include
+		    ${package.eagl.dir}/include/cmn
+		    ${package.eagl.dir}/include/devcaps
+		    ${package.eagl.dir}/include/psp
+	    </property>		         
+	    
+		<property name="runtime.AptAuxEAGLREAL.defines.psp">
+			PSP		    
+		    ${runtime.defines}
+		</property>
+      
+    </do>        
+
+
+	<fileset name="runtime.AptAuxEAGLREAL.sourcefiles">
+		<includes name="${package.Apt.dir}/source/AptAuxEAGLREAL/*.cpp"/>
+	</fileset>
+</project>
+
+

@@ -1,0 +1,775 @@
+history {
+	XbQString("tool")
+	XbQString("date")
+	XbQString("user")
+	XbQString("comment")
+	XbQString("sourceFile")
+	XbQString("ea3version")
+	XbQString("ea3grammarVersion")
+}
+history[] {
+}
+b("binaryData")[] {
+}
+layer {
+	normal[]
+	uv[]
+	colour[]
+	userData[]
+}
+geoPrim {
+	int("doubleSided") 0
+	coord[]
+	normal[]
+	uv[]
+	colour[]
+	userData[]
+	layer[] {
+	}
+	material[]
+}
+triMesh : geoPrim {
+}
+polygon : geoPrim {
+}
+triStrip : geoPrim {
+}
+sdsStrip : geoPrim {
+}
+sdsIrregularPatch : geoPrim {
+}
+sdsSimplePatch : geoPrim {
+}
+nurbsSurface : geoPrim {
+	float("weight")[] {
+	}
+	float("uknot")[] {
+	}
+	float("vknot")[] {
+	}
+	int("uDegree") 3
+	int("vDegree") 3
+	XbIdentifier("uForm") OPEN
+	XbIdentifier("vForm") OPEN
+	int("numVpoints") 0
+	int("numUpoints") 0
+	int("vStride") 0
+	int("uStride") 0
+}
+patch : geoPrim {
+	float("weight")[] {
+	}
+	float("uknot")[] {
+	}
+	float("vknot")[] {
+	}
+	int("uDegree") 3
+	int("vDegree") 3
+	XbIdentifier("uForm") OPEN
+	XbIdentifier("vForm") OPEN
+	XbIdentifier("uType") BEZIER
+	XbIdentifier("vType") BEZIER
+	int("numVpoints") 0
+	int("numUpoints") 0
+	int("vStride") 0
+	int("uStride") 0
+# tension for cardinal curves
+	float("uTension") 0
+	float("vTension") 0
+}
+curve : geoPrim {
+	float("weight")[] {
+	}
+	float("knot")[] {
+	}
+	int("degree") 3
+	XbIdentifier("form") OPEN
+	XbIdentifier("type") BEZIER
+	float("tension") 0
+	c("stipple") 0
+}
+nurbsCurve : geoPrim {
+	float("weight")[] {
+	}
+	float("knot")[] {
+	}
+	int("degree") 3
+	XbIdentifier("form") OPEN
+}
+geoPrim[] {
+	patch {
+	}
+	nurbsCurve {
+	}
+	curve {
+	}
+	triMesh {
+	}
+	triStrip {
+	}
+	polygon {
+	}
+	nurbsSurface {
+	}
+	sdsStrip {
+	}
+	sdsIrregularPatch {
+	}
+	sdsSimplePatch {
+	}
+	subDFace {
+	}
+}
+xform {
+	XbIdentifier("type") local
+	float16("matrix") 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+	float4("quaternion") 1 0 0 0
+	float3("euler") 0 0 0
+	float3("rotatePivot") 0 0 0
+	float3("scalePivot") 0 0 0
+	float3("translation") 0 0 0
+	float3("scale") 1 1 1
+}
+bone {
+	XbIdentifier("type") unknown
+	iiiiii("hasEulerLimits") 0 0 0 0 0 0
+	ffffff("eulerLimits") 0 0 0 0 0 0
+	iiiiii("hasTrnLimits") 0 0 0 0 0 0
+	ffffff("trnLimits") 0 0 0 0 0 0
+	xform[] {
+	}
+	instanceOf[]
+	links[]
+	objectLayer[]
+# ik properties
+	chainRoot[]
+	endEffector[]
+	ignoredBones[]
+	i("ikPriority") 0
+	d("ikType") twoBoneBallHingeIk
+	fff("poleVector") 0 0 0
+	fff("preferredAngle") 0 0 0
+	fff("stiffness") 0 0 0
+	fff("facingDirection") 0 0 0
+	fff("offsetVector") 0 0 0
+	fff("contactPosition") 0 0 0
+	int ("effectorId") 0
+	float ("reachR") 0 
+	float ("reachT") 0
+	float ("pull") 0
+	float ("resist") 0
+	auxiliary[]
+	pivot[]
+	character[]
+}
+skeleton {
+	userData {
+	}
+	bone {
+	}
+	skeleton("children")[] {
+	}
+	int("visibility") 1
+	float ("lodThreshold")[] {
+	}
+}
+material {
+	XbIdentifier("type") PHONG
+	float("reflectivity") 0
+	float("refractIndex") 0
+	float4("diffuse") 0 0 0 0
+	float4("ambient") 0 0 0 0
+	float4("specular") 0 0 0 0
+	float4("emission") 0 0 0 0
+	float4("reflected") 0 0 0 0
+	float("shininess") 0
+	float("diffuseCoeff") 0
+	vertexColourMapsTo[]
+	XbIdentifier("src") ZERO
+	XbIdentifier("dst") ONE
+	specularMap[]
+	specularRollOffMap[]
+	ambientMap[]
+	texture[]
+	reflectedMap[]
+	transparencyMap[]
+	reflectivityMap[]
+	bumpMap[]
+	emissionMap[]
+	material[]
+	float("blend")[] {
+	}
+	float("cosinePower") 2
+	float("eccentricity") 0.3
+	XbQString("shaderFile") ""
+	links[]
+# going away into bumpShader soon
+	float("bumpDepth") 0
+	float("bumpFilter") 0
+}
+alphaMap[] {
+	alphaMap[]
+} 
+layeredShader : material {
+	XbIdentifier("mode")[] {
+	}
+	float("alpha")[] {
+	}
+	i("useSubShaderAlpha")[] {
+	}
+	alphaMap[] {
+	} 
+}
+inputShader[] {
+	shader[]
+}
+inputGeom[] {
+	geometry[]
+}
+switchShader : material {
+	inputShader[] {
+	}
+	inputGeom[] {
+	}
+	defaultShader[]
+	float4("defaultColor")
+# for single/double switch
+	unassignedGeom[]
+	output[]
+	i("index")[] {
+	}
+}
+envMapShader : material {
+	XbIdentifier("type") CUBE
+}
+bumpShader : material {	
+}
+texture {
+	XbIdentifier("type") FILE
+	XbIdentifier("filterType") MipMap
+	XbQString("filename") "not_set"
+	binaryData[]
+	float4("texcolour") 0 0 0 0
+	XbIdentifier("texenv") MODULATE
+	int("wrapU") 1
+	int("wrapV") 1
+	int("frameIndex") 0
+	float("scaleU") 1.0
+	float("scaleV") 1.0
+	float("offsetU") 1.0
+	float("offsetV") 1.0
+	float("repeatU") 1.0
+	float("repeatV") 1.0
+# alternate mirroring U on tiling
+	i("mirrorU") 0 
+# alternate mirroring V on tiling
+	i("mirrorV") 0 
+	ffff("crop") 0.0 0.0 1.0 1.0
+	ffff("remappedTo") 0.0 0.0 1.0 1.0
+	i("uvSwapped") 0
+	XbIdentifier("minfilter") LINEAR
+	XbIdentifier("magfilter") LINEAR
+	uvGen[] {
+	}
+	xform[] {
+	}
+	links[]
+}
+light {
+	XbIdentifier("type") point
+	float("intensity") 1.0
+	float4("ambient") 1.0 1.0 1.0 1.0
+	float4("diffuse") 1.0 1.0 1.0 1.0
+	float4("specular") 1.0 1.0 1.0 1.0
+	float4("shadowColour") 1.0 1.0 1.0 1.0
+	float3("direction") 0.0 0.0 1.0
+	float3("interest") 0.0 0.0 0.0
+	float("cone") 0.0
+	float("spread") 0.0
+	float("startDecay") 0.0
+	float("endDecay") 0.0
+	float("spotExponent") 1.0
+	float4("decayParams") 1.0 0.0 0.0 0.0
+	float("dropOff") 1.0
+	float("ambientShade") 1.0
+	i("castingShadow") 1
+	i("overshoot") 0
+	pointAt[]
+	texture[]
+	geometry[]
+	i("useDepthMap") 0
+	iif("depthMapParams") 0 0 0
+	f("shadowRadius") 0
+	links[]
+}
+uvGen {
+	XbIdentifier("coord") S
+	XbIdentifier("mode") OBJECT
+	float4("params") 1 0 0 0
+}
+camera {
+# Type = ortho / persp
+	XbIdentifier("type") ortho
+	float("focalLength") 0.0
+	float2("clipPlane") 0.0 0.0
+	float("aspectRatio") 0.0
+# DOF : focus distance, F stop, Focue length ratio
+	float3("depthOfField") 0.0 0.0 0.0
+	float3("interestPoint") 0.0 0.0 0.0
+	float3("upVector") 0.0 0.0 0.0
+# Aperture Width, Height
+	float2("aperture") 0.0 0.0
+	float("roll") 0.0
+	float("fieldOfView") 0.0
+	pointAt[]
+}
+material[] {
+	layeredShader {
+	}
+	switchShader {
+	}
+	envMapShader {
+	}
+}
+texture[] {
+}
+
+clipChannel {
+# reference to a animation channel
+	input[]
+# reference to the bone's xform
+	output[]
+# index of the referenced channel
+	int("inputIx") 0
+# index of the referenced bone field
+	int("outputIx") 0
+# pose value
+	float("inputValue") 0.0
+}
+animClip {
+# Support morph, pose, and animation clips
+	XbIdentifier("type") unknown
+	clipChannel[] {
+		clipChannel {
+		}
+	}
+# reference clip weight curve, if any
+	weight[]
+# reference fcurve for doing timeWarp, if any
+	timeWarp[]
+# start and end time of clip -- implicit clip scale defined
+	ff("time") 0 0
+# start and end time of clip cropping
+	ff("crop") 0 0
+# Extrapolation type and its parameter
+	df("OutExtrapolation") NONE 0
+	df("InExtrapolation") NONE 0
+# in and out transition curve
+	inTransition[]
+	outTransition[]
+}
+animClip[] {
+	animClip {
+	}
+}
+
+constraint {
+# reference to input items
+	input[]
+# reference to output items
+	output[]
+# sub index of fields.	Must be same length as number of input refs
+	int("inputIx")[] {
+	}
+# sub index of fields.	Must be same length as number of output refs
+	int("outputIx")[] {
+	}
+# optional: offset added to each output value after evaluation.	
+# Must be same length as number of outputs.
+	float("offset")[] {
+	}
+}
+drivenKey : constraint {
+	channel[]
+}
+pointConstraint : constraint {
+}
+orientConstraint : constraint {
+}
+constraint[] {
+	drivenKey {
+	}
+	pointConstraint {
+	}
+	orientConstraint {
+	}
+}
+light[] {
+}
+camera[] {
+}
+set {
+	XbIdentifier("type") _
+	members[]
+	userData[] {
+	}
+}
+layerMap[] {
+	associatedShader[]
+}
+geometry {
+	layerMap[] {
+	}
+	float3("coord")[] {
+	}
+	float3("normal")[] {
+	}
+	float3("uv")[] {
+	}
+	XbColour("colour")[] {
+	}
+	edge[] {
+	}
+	coordGroup[] {
+	}
+	userData[] {
+	}
+	lod[] {
+	}
+	morphTarget[] {
+	}
+	instanceOf[]
+	set[] {
+	}
+	int("collapseMap")[] {
+	}
+}
+subDFace : geoPrim {
+	float("vtxCrease")[] {
+	}
+	float("edgeCrease")[] {
+	}
+	int("corner")
+	int("firstVtx")
+}
+level : lod {
+	float("subdivide") 0
+}
+mayaSubDSurface : geometry {
+	float3("offset")[] {
+	}
+	level[] {
+	}
+}
+geometry[] {
+	geometry[]
+	mayaSubDSurface[]
+}
+morphTarget {
+	sourceGeometry[]
+	coord[]
+	normal[]
+	uv[]
+	colour[]
+	float3("coordDelta")[] {
+	}
+	float3("normalDelta")[] {
+	}
+	float2("uvDelta")[] {
+	}
+	XbColour("colourDelta")[] {
+	}
+	XbIdentifier("coordSys") local
+}
+edge {
+	int("coord")[]
+	userData[]
+}
+lod {
+	float3("coord")[] {
+	}
+	float3("normal")[] {
+	}
+	float3("uv")[] {
+	}
+	XbColour("colour")[] {
+	}
+	envelope[]
+	userData[]
+	geoPrim[] {
+	}
+	geoPartition[] {
+	}
+}
+geoPartition : lod {
+}
+coordGroup {
+	int("coord")[]
+}
+envelope {
+	skeleton[]
+	cluster[] {
+	}
+}
+cluster {
+	bone[]
+	XbIdentifier("type") xform
+	float("weight")[] {
+	}
+	int("coord")[]
+	int("normal")[]
+}
+animation {
+	float("FPS") 30
+	int("startFrame") 0
+	int("endFrame") 1
+	channel[] {
+	}
+	trigger[] {
+	}
+	blender {
+	}
+}
+continuousF1Channel {
+	XbIdentifier("what") _
+	XbQString("attributeName") ""
+	int("index") 0
+	key[] {
+	}
+	XbIdentifier("preInfinity") CONSTANT
+	XbIdentifier("postInfinity") CONSTANT
+}
+key[] {
+# time, val ,left_slope, right_slope
+	ffff("hermite1DKey") 0 0 0 0
+	ffff("softHermiteKey") 0 0 0 0
+	ff("constantKey") 0 0 
+	ff("linearKey") 0 0 
+	ffdffdff("mayaW") 0 0 _ 0 0 _ 0 0
+	ffdffdff("mayaNW") 0 0 _ 0 0 _ 0 0
+	ffffff("soft2DKey") 0 0 0 0 0 0
+}
+discreteF3Channel {
+	XbIdentifier("what") _
+	XbQString("attributeName") ""
+	float3("data")[] {
+	}
+}
+discreteF1Channel {
+	XbIdentifier("what") _
+	XbQString("attributeName") ""
+	int("index") 0
+	float("data")[] {
+	}
+}
+channel[] {
+	discreteF3Channel {
+	}
+	discreteF1Channel {
+	}
+	continuousF1Channel {
+	}
+}
+blender {
+# one blender per animation
+# array of blenderChannel's - for each node in hierarchy
+	blenderChannel[] {
+	}
+	continuousF1Channel {
+	}
+	float("startTime") 0
+	float("endTime") 0
+	int("startFrame") 0
+	int("endFrame") 0
+	float("warp") 0
+	float("FPS") 0
+}
+blenderChannel {
+# one blenderChannel per bone per animation
+# reference to all the channels needed to animate this bone
+	channel[]
+# pre-xform to align things before blending - probably only needed for root
+# of hierarchy
+	xform {
+	}
+}
+
+enum {
+	XbIdentifier("choice")[] {
+	}
+}
+userDef {
+	enum[] {
+	}
+	float3("range")[] {
+# from, to, resolution
+	}
+}
+userDataItem {
+	float("floatVal") 0
+	int("intVal") 0
+	int("boolVal") 0
+	XbQString("stringVal") ""
+	XbIdentifier("identVal") _
+	range[]
+	enum[]
+}
+userData {
+	userDataItem[] {
+	}
+	range[] {
+	}
+	enum[] {
+	}
+}
+
+model {
+	skeleton[] {
+	}
+	geometry[] {
+	}
+	envelope[] {
+	}
+	animation[] {
+	}
+	userData[] {
+	}
+	set[] {
+	}
+	particle[] {
+	}
+	constraint[] {
+	}
+	animClip[] {
+	}
+	character[] {
+	}
+}
+particle[] {
+	curveFlow {
+	}
+	emitter {
+	}
+	field {
+	}
+}
+curveFlow {
+	curve[]
+	ff("curveParams")[] {
+	}
+	ff("lifeRange") 0 0
+	ff("rateRange") 0 0
+	cc("colorRange") 0x0 0x0 
+	ff("sizeRange") 0 0 
+}
+emitter {
+	XbIdentifier("type") OMNI
+	float("rate") 1.0
+	ff("distance") 0.0 1.0
+	fff("direction") 1.0 0.0 0.0
+	float("spread") 0.0
+	float("initialSpeed") 0.0
+}
+field {
+	XbIdentifier("type") gravity
+	f("magnitude") 1.0
+	f("attenuation") 1.0
+	fff("direction") 1.0 0.0 0.0
+}
+tagmap {
+	XbIdentifier("dataType") bool|float|enum|int
+	XbQString("operator") "<> | > | < | <= | =>"
+	ff("value") 0 0
+	XbQString("mapTo") ""
+	XbQString("description") ""
+}
+
+tag {
+	XbQString("channel") ""
+	XbIdentifier("what") user
+	int("index") 0
+	XbQString("description") ""
+	tagmap[]
+}
+tag[] {
+}
+
+objectLayer[] {
+}
+objectLayer {
+	XbIdentifier("view") NO_EFFECT
+	XbIdentifier("render") NO_EFFECT
+	XbIdentifier("selectable") NO_EFFECT
+}
+script[] {
+}
+script {
+	XbIdentifier("type") MEL
+	XbIdentifier("when") beforeRead|beforeWrite|afterRead|afterWrite|NONE
+	XbQString("filename") ""
+	XbQString("content") ""
+}
+directedGraph[] {
+}
+directedGraph {
+	node[] {
+	}
+}
+node {
+	ff("position") 0 0
+# script for entry into node
+	s("init") ""
+# script for update of node
+	s("update") ""
+# script for exit of node
+	s("exit") ""
+	arrow[] {
+	}
+}
+arrow {
+# pointsTo should be a single node reference
+# if arrow splits then this could be absent
+	pointsTo[]
+# arrows can split (form a tree)
+	arrow[] {
+	}
+# position where this arrow starts (default is node that contains it)
+# it is a relative position to the node or arrow that is parent
+	ff("position") 0 0
+# script to eval 
+	s("script") ""
+}
+
+globalSetting {
+	d("linearUnit") centimeter
+	d("angularUnit") degrees
+	d("timeUnit") NTSC
+	s("project") ""
+	s("comments") ""
+}
+xRef[] {
+}
+xRef {
+	i("enabled") 1
+	i("activeLOD") 0
+	xRefLOD[] {
+	}
+}
+xRefLOD[] {
+	xRefFile[] {
+	}
+	xRefObject[] {
+	}
+}
+xRefFile {
+	s("filename") ""
+}
+xRefObject : xRefFile {
+	s("objectName") ""
+}
+
+character[] {
+}
+
+character {
+}

@@ -1,0 +1,33 @@
+<project>
+	<!-- ----- USER SETTINGS FOR HELP BUILD ----- -->
+    <property name="doxygen.projectname" value="RenderWare Math"/>
+    <property name="doxygen.projectshortname" value="rw_math" />
+	<property name="doxygen.projectversion" value="${package.version}" />
+	<property name="doxygen.projectwebpage" value="http://eatech/default.aspx" />
+
+	<property name="doxygen.srcbooksdir" value="boilerplate" />
+	<property name="doxygen.outdir" value="../../build/doc" />
+	<property name="doxygen.htmloutdir" value="html" />
+	<property name="doxygen.helpfilename" value="${doxygen.projectshortname}.chm" />
+
+	<property name="doxygen.configfile" value="config.doxy" />
+	<property name="doxygen.inputspecfile" value="inputspec.xml" />
+	<property name="doxygen.warnlogfile" value="${doxygen.outdir}/buildwarnings.txt" />
+	<property name="doxygen.tagfile" value="${doxygen.outdir}/${doxygen.htmloutdir}/tag.xml" />
+
+    <property name="doxygen.defines" value="" />
+	<property name="doxygen.enabledsections" value="" />
+
+	<!-- pass the user settings to the Doxygen config file: -->
+	<property name="exec.env.PROJECTNAME" value="${doxygen.projectname}" />
+	<property name="exec.env.PROJECTVERSION" value="${doxygen.projectversion}" />
+	<property name="exec.env.PREDEFINED" value="${doxygen.defines}" />
+	<property name="exec.env.ENABLEDSECTIONS" value="${doxygen.enabledsections}" />
+	<property name="exec.env.SRCBOOKSDIR" value="${doxygen.srcbooksdir}" />
+	<property name="exec.env.OUTDIR" value="${doxygen.outdir}" />
+	<property name="exec.env.HTMLOUTDIR" value="${doxygen.htmloutdir}" />
+	<property name="exec.env.INPUTSPECFILE" value="${doxygen.inputspecfile}" />
+	<property name="exec.env.WARNLOGFILE" value="${doxygen.warnlogfile}" />
+	<property name="exec.env.TAGFILE" value="${doxygen.tagfile}" />
+
+</project>

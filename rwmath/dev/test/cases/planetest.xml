@@ -1,0 +1,1894 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestPlane" HEADER="planetest.h" SOURCE="planetest.inc" RWHOSTHEADER="rw/math/vpu/plane_operation.h" RWGENERICHEADER="rw/math/fpu/plane_operation.h" RWOPTIMALHEADER="rw/math/optimal/plane_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+            SetFunctionName("Plane()");
+            Validate(true);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+            SetFunctionName("Plane(Vector3, d)");
+
+            Plane p( Vector3(1.0f, 2.0f, 3.0f), 4.0f );
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        #ifdef HOST_TESTING
+            SetFunctionName("Plane(float abcd[4])");
+            float floatData[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+            Plane p( floatBuffer.GetFloatData() );
+        #else
+            float_basic_type floatData[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+            Plane p( floatData );
+        #endif
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+            SetFunctionName("Plane(float_t _a, float_t _b, float_t _c, float_t _d)");
+
+            Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Plane(VectorIntrinsicInParam v)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            Plane p(vi);
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Plane(VecFloat::InParam _a, VecFloat::InParam _b, VecFloat::InParam _c, VecFloat::InParam _d)");
+
+            Plane p(VecFloat(1.0f), VecFloat(2.0f), VecFloat(3.0f), VecFloat(4.0f));
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Plane(VecFloatRefIndex::InParam _a, VecFloatRefIndex::InParam _b, VecFloatRefIndex::InParam _c, VecFloatRefIndex::InParam _d)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            Plane p(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Plane(VecFloatRef<XSRC_INDEX> _a, VecFloatRef<YSRC_INDEX> _b, VecFloatRef<ZSRC_INDEX> _c, VecFloatRef<WSRC_INDEX> _d)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            VecFloatRefX refX = VecFloatRefX(vi);
+            Plane p(refX, VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Plane& operator = (VectorIntrinsicInParam v)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            Plane p(vi);
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("VectorIntrinsic &vi = q.GetVector();&()");
+
+            Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            VectorIntrinsic &vi = p.GetVector();
+
+            MakeVectorIntrinsic(ref, 1.0f, 2.0f, 3.0f, 4.0f);
+            Validate(memcmp(&ref,&vi,sizeof(ref))==0);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("const VectorIntrinsic &vi = q.GetVector();&() const");
+
+            const Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            const VectorIntrinsic &vi = p.GetVector();
+
+            MakeVectorIntrinsic(ref, 1.0f, 2.0f, 3.0f, 4.0f);
+            Validate(memcmp(&ref,&vi,sizeof(ref))==0);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("void SetVector(VectorIntrinsicInParam v)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            Plane p(vi);
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("VectorIntrinsic& GetVector()");
+
+            Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            VectorIntrinsic &vi = p.GetVector();
+
+            MakeVectorIntrinsic(ref, 1.0f, 2.0f, 3.0f, 4.0f);
+            Validate(memcmp(&ref,&vi,sizeof(ref))==0);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("const VectorIntrinsic& GetVector() const");
+
+            const Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            const VectorIntrinsic &vi = p.GetVector();
+
+            MakeVectorIntrinsic(ref, 1.0f, 2.0f, 3.0f, 4.0f);
+            Validate(memcmp(&ref,&vi,sizeof(ref))==0);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+            SetFunctionName("Set(float_t _a, float_t _b, float_t _c, float_t _d)");
+
+            Plane p;
+            p.Set(1.0f, 2.0f, 3.0f, 4.0f);
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("void Set(VecFloat::InParam _a, VecFloat::InParam _b, VecFloat::InParam _c, VecFloat::InParam _d)");
+
+            Plane p;
+            p.Set(VecFloat(1.0f), VecFloat(2.0f), VecFloat(3.0f), VecFloat(4.0f));
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("void Set(VecFloatRefIndex::InParam _a, VecFloatRefIndex::InParam _b, VecFloatRefIndex::InParam _c, VecFloatRefIndex::InParam _d)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            Plane p;
+            p.Set(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("void Set(VecFloatRef<XSRC_INDEX> _a, VecFloatRef<YSRC_INDEX> _b, VecFloatRef<ZSRC_INDEX> _c, VecFloatRef<WSRC_INDEX> _d)");
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            VecFloatRefX refX = VecFloatRefX(vi);
+            Plane p;
+            p.Set(refX, VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+            SetFunctionName("Set(const Vector3 &_normal, float_t _d)");
+
+            Plane p;
+            Vector3 v3;
+            v3.Set(1.0f, 2.0f, 3.0f);
+            float d = 4.0f;
+            p.Set(v3, d);
+            Validate(p.A() == v3.X() && p.B() == v3.Y() && p.C() == v3.Z() && (float)p.D() == d);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+            SetFunctionName("SetZero()");
+
+            Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            Plane ref(0.0f, 0.0f, 0.0f, 0.0f);
+            p.SetZero();
+            Validate(p == ref);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+            SetFunctionName("GetNormal()");
+
+            Plane p;
+            p.Set(1.0f, 2.0f, 3.0f, 4.0f);
+            const Vector3 &n = p.GetNormal();
+            Validate((float)n.X() == 1.0f && (float)n.Y() == 2.0f && (float)n.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+            SetFunctionName("GetNormal() const");
+
+            Plane p;
+            p.Set(1.0f, 2.0f, 3.0f, 4.0f);
+            const Vector3 &n = ((const Plane*)&p)->GetNormal();
+            Validate((float)n.X() == 1.0f && (float)n.Y() == 2.0f && (float)n.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+            SetFunctionName("SetNormal(normal)");
+
+            Plane p(3.0f, 3.0f, 3.0f, 3.0f);
+            p.SetNormal(Vector3(10.0f, 11.0f, 12.0f));
+            Validate((float)p.A() == 10.0f && (float)p.B() == 11.0f && (float)p.C() == 12.0f && (float)p.D() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(int i, float value)");
+            Plane p( 1.0f, 2.0f, 3.0f, 4.0f );
+            p.SetComponent( 1, 10.0f );
+            Validate((float)p.A() == 1.0f && (float)p.B() == 10.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(int i,VecFloat value)");
+            Plane p( 1.0f, 2.0f, 3.0f, 4.0f );
+            p.SetComponent( 1,float_test_type(12.0f) );
+            Validate((float)p.A() == 1.0f && (float)p.B() == 12.0f && (float)p.C() == 3.0f && (float)p.D() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRefIndex value)");
+            Plane p( 1.0f, 2.0f, 3.0f, 4.0f );
+            Vector4 vi (1.1f, 2.1f, 3.1f, 4.1f);
+            p.SetComponent( 2,VecFloatRefIndex(vi.GetVector(),3) );
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 4.1f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRef<INDEX> value)");
+            Plane p( 1.0f, 2.0f, 3.0f, 4.0f );
+            Vector4 vi(1.1f, 2.1f, 3.1f, 4.1f);
+            p.SetComponent( 2,VecFloatRefZ(vi.GetVector()) );
+            Validate((float)p.A() == 1.0f && (float)p.B() == 2.0f && (float)p.C() == 3.1f && (float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+            SetFunctionName("A() = float");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.A() = 1.0f;
+            Validate((float)p.A() == 1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("A() = VecFloat");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.A() = VecFloat(1.0f);
+            Validate((float)p.A() == 1.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("A() = VecFloatRef<INDEX>");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.A() = VecFloatRefX(vi);
+            Validate((float)p.A() == 1.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("A() = VecFloatRefIndex");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.A() = VecFloatRefIndex(vi,0);
+            Validate((float)p.A() == 1.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+            SetFunctionName("B() = float");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.B() = 2.0f;
+            Validate((float)p.B() == 2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("B() = VecFloat");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.B() = VecFloat(2.0f);
+            Validate((float)p.B() == 2.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("B() = VecFloatRef<INDEX>");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.B() = VecFloatRefY(vi);
+            Validate((float)p.B() == 2.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("B() = VecFloatRefIndex");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.B() = VecFloatRefIndex(vi,1);
+            Validate((float)p.B() == 2.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+            SetFunctionName("C() = float");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.C() = 3.0f;
+            Validate((float)p.C() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("C() = VecFloat");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.C() = VecFloat(3.0f);
+            Validate((float)p.C() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("C() = VecFloatRef<INDEX>");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.C() = VecFloatRefZ(vi);
+            Validate((float)p.C() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("C() = VecFloatRefIndex");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.C() = VecFloatRefIndex(vi,2);
+            Validate((float)p.C() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+            SetFunctionName("D() = float)");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.D() = 4.1f;
+            Validate((float)p.D() == 4.1f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("D() = VecFloat");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p.D() = VecFloat(4.0f);
+            Validate((float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("D() = VecFloatRef<INDEX>");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.D() = VecFloatRefW(vi);
+            Validate((float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("D() = VecFloatRefIndex");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+            p.D() = VecFloatRefIndex(vi,3);
+            Validate((float)p.D() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+            SetFunctionName("operator[0]");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p[0] = 99.0f;
+            Validate((float)p.A() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+            SetFunctionName("operator[1]");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p[1] = 100.0f;
+            Validate((float)p.B() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+            SetFunctionName("operator[2]");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p[2] = 55.0f;
+            Validate((float)p.C() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+            SetFunctionName("operator[3]");
+            Plane p(0.0f, 0.0f, 0.0f, 0.0f);
+            p[3] = 65.0f;
+            Validate((float)p.D() == 65.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+            SetFunctionName("operator[i] const");
+            const Plane p(1.0,2.0,3.0,4.0);
+            Validate(
+                (float)p[0] == 1.0f &&
+                (float)p[1] == 2.0f &&
+                (float)p[2] == 3.0f &&
+                (float)p[3] == 4.0f
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+            SetFunctionName("A()");
+            Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.A() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+            SetFunctionName("B()");
+            Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.B() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+            SetFunctionName("C()");
+            Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.C() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+            SetFunctionName("D()");
+            Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.D() == 65.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+            SetFunctionName("A() const");
+            const Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.A() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+            SetFunctionName("B() const");
+            const Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.B() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+            SetFunctionName("C() const");
+            const Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.C() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+            SetFunctionName("D() const");
+            const Plane p(99.0f, 100.0f, 55.0f, 65.0f);
+            Validate((float)p.D() == 65.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+            SetFunctionName("GetComponent(int i)");
+            Plane p( 1.0f, 2.1f, 3.2f, 4.3f );
+            float_basic_type val = p.GetComponent(2);
+            Validate( val == 3.2f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+            SetFunctionName("GetComponent(int i) const");
+            const Plane p( 1.0f, 2.1f, 3.2f, 4.3f );
+            float_basic_type val = p.GetComponent(2);
+            Validate( val == 3.2f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+            SetFunctionName("SignedDistance()");
+
+            Plane p;
+            p.Set(1.0f, 2.0f, 3.0f, 4.0f);
+            float_basic_type d = p.SignedDistance();
+            Validate(d == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+            SetFunctionName("SignedDistance() const");
+
+            const Plane p(1.0f, 2.0f, 3.0f, 4.0f);
+            float_basic_type d = p.SignedDistance();
+            Validate(d == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+            SetFunctionName("Distance() const");
+
+            Plane p(1.0f, 2.0f, 3.0f, -4.0f);
+            float_basic_type d = p.Distance();
+            Validate(d == 4.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompLessThan(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompLessThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompGreaterThan(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompGreaterThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompLessEqual(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompLessEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompGreaterEqual(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompGreaterEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompEqual(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompNotEqual(Plane a, Plane b)");
+        Plane va(1.0f, 1.0f, 2.0f, 2.0f );
+        Plane vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompNotEqual(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Plane Select(MaskScalar mask, Plane a, Plane b)");
+        Plane v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Plane v2(10.0f, 20.0f, 30.0f, 40.0f);
+
+        Plane result1 = Select( MaskScalar(true), v1, v2 );
+        Plane result2 = Select( MaskScalar(false), v1, v2 );
+        Validate(
+            result1 == v1 &&
+            result2 == v2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask4_bitwise">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("Plane Select(MaskScalar mask, Plane a, Plane b)");
+        Plane v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Plane v2(-10.0f, -20.0f, -30.0f, -40.0f);
+        Plane ref1( -1.0f, 20.0f, -3.0f, -40.0f);
+
+        uint32_t values[] = { 0x7fffffff, 0x80000000, 0x7fffffff, 0x00000000 };
+        Mask4 mask(values[0], values[1], values[2], values[3]);
+
+        Plane result1 = Select( mask, v1, v2 );
+        Validate( result1 == ref1 );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask4">
+      <![CDATA[
+      
+        SetFunctionName("Plane Select(Mask4 mask, Plane a, Plane b)");
+        Plane v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Plane v2(10.0f, 20.0f, 30.0f, 40.0f);
+        Plane ref1(1.0f, 2.0f, 30.0f, 40.0f);
+        Plane ref2(10.0f, 20.0f, 3.0f, 4.0f);
+        Mask4 mask1(true, true, false, false);
+        Mask4 mask2(false, false, true, true);
+
+        Plane result1 = Select( mask1, v1, v2 );
+        Plane result2 = Select( mask2, v1, v2 );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+        SetFunctionName("Set(const Vector3 &_normal, float_t _d)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_array[i].Set(v3_array[i], w_array[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+        SetFunctionName("Set(float_t _a, float_t _b, float_t _c, float_t _d)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_array[i].Set(x_array[i], y_array[i], z_array[i], w_array[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+        SetFunctionName("GetNormal() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                vecResult = ((const Plane*)&p_array[i])->GetNormal();
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+        SetFunctionName("SignedDistance()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = p_array[i].SignedDistance();
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+        SetFunctionName("SignedDistance() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = ((const Plane*)&p_array[i])->SignedDistance();
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+        SetFunctionName("Distance() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = ((const Plane*)&p_array[i])->Distance();
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+        SetFunctionName("operator == (const Plane &a, const Plane &b)");
+
+        Plane p1 (1.0f, 0.0f, 0.0f, 3.0f);
+        Plane p2 (1.0f, 0.0f, 0.0f, 3.0f);
+        Plane p3 (1.0f, 0.0f, 0.0f, 3.002f);
+
+        Validate( p1 == p2 && !(p1 == p3));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+        SetFunctionName("operator != (const Plane &a, const Plane &b)");
+
+        Plane p1 (1.0f, 0.0f, 0.0f, 3.0f);
+        Plane p2 (1.0f, 0.0f, 0.0f, 3.0f);
+        Plane p3 (1.0f, 0.0f, 0.0f, 3.002f);
+
+        Validate( !(p1 != p2) && p1 != p3);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+        SetFunctionName("IntersectPlaneLine(const Plane &plane,const Vector3 &p0,const Vector3 &p1,Vector3 &impact_out)");
+
+        // Testing IntersectPlaneLine
+        Vector3 VectorA1, VectorB1, VectorC1, VectorD1;
+        Plane PlaneA1;
+        // plane w/ normal (1,0,0) and d=3 sets origin at (-3, 0, 0)
+        PlaneA1.Set(1, 0, 0, 3);
+        VectorA1.Set(0, 0, 0);
+        VectorB1.Set(0, 1, 0);
+        VectorC1.Set(5, 1, 0);
+        VectorD1.Set( -3, 1, 0);
+        PlaneIntersection piResult1 = IntersectPlaneLine(PlaneA1, VectorB1, VectorC1, VectorA1);
+
+        // testing line parallel to plane where the line is not on the plane
+        Vector3 VectorA2, VectorB2, VectorC2, VectorD2;
+        Plane PlaneA2;
+        PlaneA2.Set(1, 0, 0, 3);
+        VectorA2.Set(0, 0, 0);
+        VectorB2.Set(0, -3, 0);
+        VectorC2.Set(0, -3, 1);
+        VectorD2.Set(0, 0, 0);
+        PlaneIntersection piResult2 = IntersectPlaneLine(PlaneA2, VectorB2, VectorC2, VectorA2);
+
+        // testing line parallel to plane where the line is on the plane
+        Vector3 VectorA3, VectorB3, VectorC3, VectorD3;
+        Plane PlaneA3;
+        PlaneA3.Set(1, 0, 0, 3);
+        VectorA3.Set(0, 0, 0);
+        VectorB3.Set(-3, 0, 0);
+        VectorC3.Set(-3, 0, 1);
+        VectorD3.Set(0, 0, 0);
+        PlaneIntersection piResult3 = IntersectPlaneLine(PlaneA3, VectorB3, VectorC3, VectorA3);
+
+        Validate( piResult1 == PI_ONE && IsSimilar(VectorA1, VectorD1) &&
+                  piResult2 == PI_ZERO &&
+                  piResult3 == PI_INFINITY );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+        SetFunctionName("IntersectPlaneDirectedSegment(const Plane &plane,const Vector3 &p0,const Vector3 &p1,Vector3 &impact_out)");
+
+        // Testing IntersectPlaneDirectedSegment
+        Vector3 VectorA, VectorB, VectorC, VectorD;
+        Plane PlaneA;
+        // plane w/ normal (1,0,0) and d= -3 sets origin at (3, 0, 0)
+        PlaneA.Set(1, 0, 0, -3);
+        VectorA.Set( 0, 0, 0);
+        VectorB.Set( 0, 1, 0);
+        VectorC.Set( 5, 1, 0);
+        VectorD.Set( 3, 1, 0);
+        PlaneIntersection piResult1 = IntersectPlaneDirectedSegment(PlaneA, VectorB, VectorC, VectorA);
+
+        // testing line parallel to plane where the line is not on the plane
+        Vector3 VectorA2, VectorB2, VectorC2, VectorD2;
+        Plane PlaneA2;
+        PlaneA2.Set(1, 0, 0, 3);
+        VectorA2.Set(0, 0, 0);
+        VectorB2.Set(0, -3, 0);
+        VectorC2.Set(0, -3, 1);
+        VectorD2.Set(0, 0, 0);
+        PlaneIntersection piResult2 = IntersectPlaneLine(PlaneA2, VectorB2, VectorC2, VectorA2);
+
+        // testing line parallel to plane where the line is on the plane
+        Vector3 VectorA3, VectorB3, VectorC3, VectorD3;
+        Plane PlaneA3;
+        PlaneA3.Set(1, 0, 0, 3);
+        VectorA3.Set(0, 0, 0);
+        VectorB3.Set(-3, 0, 0);
+        VectorC3.Set(-3, 0, 1);
+        VectorD3.Set(0, 0, 0);
+        PlaneIntersection piResult3 = IntersectPlaneLine(PlaneA3, VectorB3, VectorC3, VectorA3);
+
+        Validate( piResult1 == PI_ONE && IsSimilar(VectorA, VectorD) &&
+                  piResult2 == PI_ZERO &&
+                  piResult3 == PI_INFINITY );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromPosNormal(const Vector3& pos, const Vector3& normal)");
+
+        // Testing PlaneFromPosNormal
+        Vector3 VectorA, VectorB;
+        Plane PlaneA;
+        VectorA.Set( 0, 0, 1); // origin
+        VectorB.Set( 0, 0, 1); // normal
+        PlaneA = PlaneFromPosNormal(VectorA, VectorB);
+
+        Validate(
+                ((float)PlaneA.A() == 0.0f) &&
+                ((float)PlaneA.B() == 0.0f) &&
+                ((float)PlaneA.C() == 1.0f) &&
+                ((float)PlaneA.D() == -1.0f) &&
+                ((float)PlaneA.Distance() == 1.0f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromPosNormal(const Vector4& pos, const Vector4& normal)");
+
+        // Testing PlaneFromPosNormal
+        Vector4 VectorA, VectorB;
+        Plane PlaneA;
+        VectorA.Set( 0.0f, 0.0f, 1.0f, 1.0f); // origin
+        VectorB.Set( 0.0f, 0.0f, 1.0f, 1.0f); // normal
+        PlaneA = PlaneFromPosNormal(VectorA, VectorB);
+
+        Validate(
+                ((float)PlaneA.A() == 0.0f) &&
+                ((float)PlaneA.B() == 0.0f) &&
+                ((float)PlaneA.C() == 1.0f) &&
+                ((float)PlaneA.D() == -1.0f) &&
+                ((float)PlaneA.Distance() == 1.0f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVertices(const Vector3& origin, const Vector3& vert1, const Vector3& vert2)");
+
+        // Testing PlaneFromVertices
+        Vector3 VectorA, VectorB, VectorC;
+        Plane PlaneA;
+        VectorA.Set( 0, 3, 0); // origin
+        VectorB.Set( 0, 3, 1); // vertex 1
+        VectorC.Set( 1, 3, 0); // Vertex 2
+        PlaneA = PlaneFromVertices(VectorA, VectorB, VectorC);
+
+        Validate(
+                ((float)PlaneA.A() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.A() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.B() >= 1.0f - SMALL_FLOAT) && ((float)PlaneA.B() <= 1.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.C() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.C() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.D() >= -3.0f - SMALL_FLOAT) && ((float)PlaneA.D() <= -3.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.Distance() >= 3.0f - SMALL_FLOAT) &&  ((float)PlaneA.Distance() <= 3.0f + SMALL_FLOAT)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVertices(const Vector4& origin, const Vector4& vert1, const Vector4& vert2)");
+
+        // Testing PlaneFromVertices
+        Vector4 VectorA, VectorB, VectorC;
+        Plane PlaneA;
+        VectorA.Set( 0, 3, 0, 1); // origin
+        VectorB.Set( 0, 3, 1, 1); // vertex 1
+        VectorC.Set( 1, 3, 0, 1); // Vertex 2
+        PlaneA = PlaneFromVertices(VectorA, VectorB, VectorC);
+               
+        Validate(
+                ((float)PlaneA.A() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.A() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.B() >= 1.0f - SMALL_FLOAT) && ((float)PlaneA.B() <= 1.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.C() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.C() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.D() >= -3.0f - SMALL_FLOAT) && ((float)PlaneA.D() <= -3.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.Distance() >= 3.0f - SMALL_FLOAT) &&  ((float)PlaneA.Distance() <= 3.0f + SMALL_FLOAT)
+                ); 
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVectors(const Vector3& origin, const Vector3& vec1,  const Vector3& vec2)");
+
+        // Testing PlaneFromVectors
+        Vector3 VectorA, VectorB, VectorC;
+        Plane PlaneA;
+        VectorA.Set( 0, -3, 0); // origin
+        VectorB.Set( 0, 0, 1); // vector 1
+        VectorC.Set( 1, 0, 0); // Vector 2
+        PlaneA = PlaneFromVectors(VectorA, VectorB, VectorC);
+
+        Validate(
+                ((float)PlaneA.A() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.A() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.B() >= 1.0f - SMALL_FLOAT) && ((float)PlaneA.B() <= 1.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.C() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.C() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.D() >= 3.0f - SMALL_FLOAT) && ((float)PlaneA.D() <= 3.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.Distance() >= 3.0f - SMALL_FLOAT) &&  ((float)PlaneA.Distance() <= 3.0f + SMALL_FLOAT)
+                );
+                
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVectors(const Vector4& origin, const Vector4& vec1,  const Vector4& vec2)");
+
+        // Testing PlaneFromVectors
+        Vector4 VectorA, VectorB, VectorC;
+        Plane PlaneA;
+        VectorA.Set( 0, -3, 0, 1); // origin
+        VectorB.Set( 0, 0, 1, 1); // vector 1
+        VectorC.Set( 1, 0, 0, 1); // Vector 2
+        PlaneA = PlaneFromVectors(VectorA, VectorB, VectorC);
+
+        Validate(
+                ((float)PlaneA.A() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.A() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.B() >= 1.0f - SMALL_FLOAT) && ((float)PlaneA.B() <= 1.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.C() >= 0.0f - SMALL_FLOAT) && ((float)PlaneA.C() <= 0.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.D() >= 3.0f - SMALL_FLOAT) && ((float)PlaneA.D() <= 3.0f + SMALL_FLOAT) && 
+                ((float)PlaneA.Distance() >= 3.0f - SMALL_FLOAT) &&  ((float)PlaneA.Distance() <= 3.0f + SMALL_FLOAT)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+        SetFunctionName("TransformPlane(const Matrix44 &m, const Plane &p)");
+
+        Matrix44 MatrixA;
+        Plane PlaneA, PlaneB;
+
+        // Testing TransformPlane
+        PlaneA.Set(
+                   0.50709255283710994650577099641957f,
+                   0.84515425472851657750961832736595f,
+                   0.16903085094570331550192366547319f,
+                   4
+                  );
+
+        MatrixA.Set(
+                    0, 0,-1, 0,
+                    0, 1, 0, 0,
+                    1, 0, 0, 0,
+                    0, 0, 0, 1
+                   ); // 90 degrees rotation on the y axies
+
+        PlaneB = TransformPlane(MatrixA, PlaneA);
+
+        Validate(
+                ((float)PlaneB.A() >=  0.16903085094570331550192366547319f - SMALL_FLOAT) &&
+                ((float)PlaneB.B() >=  0.84515425472851657750961832736595f - SMALL_FLOAT) &&
+                ((float)PlaneB.C() >= -0.50709255283710994650577099641957f - SMALL_FLOAT) &&
+                ((float)PlaneB.A() <=  0.16903085094570331550192366547319f + SMALL_FLOAT) &&
+                ((float)PlaneB.B() <=  0.84515425472851657750961832736595f + SMALL_FLOAT) &&
+                ((float)PlaneB.C() <= -0.50709255283710994650577099641957f + SMALL_FLOAT) &&
+                ((float)PlaneB.D() ==  4.0f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(Plane::InParam a, Plane::InParam b, VecFloat::InParam epsilon)");
+
+        Plane PlaneA, PlaneB;
+
+        // Testing TransformPlane
+        PlaneA.Set(
+            0.50709255283710994650577099641957f,
+            0.84515425472851657750961832736595f,
+            0.16903085094570331550192366547319f,
+            4
+            );
+
+        PlaneB.Set(
+            0.50709255283710994650577099641957f + SMALL_FLOAT /2,
+            0.84515425472851657750961832736595f,
+            0.16903085094570331550192366547319f - SMALL_FLOAT /2,
+            4
+            );
+
+
+        Validate(
+            IsSimilar(PlaneA,PlaneB)
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="isanynan">
+      <![CDATA[
+
+
+#if !defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("IsAnyNaN(Plane v)");
+
+        float zero = 0.0f;
+        float_test_type nan = float_test_type(zero / zero);
+        int numPermutations = 1 << Plane::NumberOfElement;
+        bool result = true;
+        for( int curPermutation=0;curPermutation<numPermutations;curPermutation++)
+        {
+            Plane plane((float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f );
+            for( int elem = 0; elem < Plane::NumberOfElement; elem++ )
+            {
+                if( curPermutation & (1<<elem) )
+                {
+                    plane.SetComponent( elem, nan );
+                }
+            }
+            if( curPermutation == 0 )
+            {
+                // All bits are zero so the plane has no NaN's
+                result &= !IsAnyNaN(plane);
+            }
+            else
+            {
+                // At least one element is NaN.
+                result &= IsAnyNaN(plane);
+            }
+        }
+        Validate(result);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+#if !defined(RW_MATH_PLANE_OPERATION_INLINE_H)
+
+        SetFunctionName("TransformPlane(const Matrix44 &m, const Plane &p, Plane &result)");
+
+        Matrix44 MatrixA;
+        Plane PlaneA, PlaneB;
+
+        // Testing TransformPlane
+        PlaneA.Set(
+            0.50709255283710994650577099641957f,
+            0.84515425472851657750961832736595f,
+            0.16903085094570331550192366547319f,
+            4
+            );
+
+        MatrixA.Set(
+            0, 0,-1, 0,
+            0, 1, 0, 0,
+            1, 0, 0, 0,
+            0, 0, 0, 1
+            ); // 90 degrees rotation on the y axies
+
+        PlaneB = TransformPlane(MatrixA, PlaneA);
+
+        Validate(
+            ((float)PlaneB.A() >=  0.16903085094570331550192366547319f - SMALL_FLOAT) &&
+            ((float)PlaneB.B() >=  0.84515425472851657750961832736595f - SMALL_FLOAT) &&
+            ((float)PlaneB.C() >= -0.50709255283710994650577099641957f - SMALL_FLOAT) &&
+            ((float)PlaneB.A() <=  0.16903085094570331550192366547319f + SMALL_FLOAT) &&
+            ((float)PlaneB.B() <=  0.84515425472851657750961832736595f + SMALL_FLOAT) &&
+            ((float)PlaneB.C() <= -0.50709255283710994650577099641957f + SMALL_FLOAT) &&
+            ((float)PlaneB.D() ==  4.0f)
+            );
+
+#endif //RW_MATH_PLANE_OPERATION_INLINE_H
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+        SetFunctionName("IntersectPlaneLine(const Plane &plane,const Vector3 &p0,const Vector3 &p1,Vector3 &impact_out)");
+
+        Vector3 vectorB(0.0f, 0.0f, 0.0f), vectorC(1.0f, 1.0f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                IntersectPlaneLine(p_function_array[i], vectorB, vectorC, vecResult);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+        SetFunctionName("IntersectPlaneDirectedSegment(const Plane &plane,const Vector3 &p0,const Vector3 &p1,Vector3 &impact_out)");
+
+        Vector3 vectorB(0.0f, 0.0f, 0.0f), vectorC(1.0f, 1.0f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                IntersectPlaneDirectedSegment(p_function_array[i], vectorB, vectorC, vecResult);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromPosNormal(const Vector3& pos, const Vector3& normal)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_function_array[i] = PlaneFromPosNormal(v3_array[i], v3_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE-i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test83">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVertices(const Vector3& origin, const Vector3& vert1, const Vector3& vert2)");
+
+        Vector3 vectorB, vectorC;
+        vectorB.Set( 0, 3, 1); // vertex 1
+        vectorC.Set( 1, 3, 0); // Vertex 2
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_function_array[i] = PlaneFromVertices(v3_array[i], vectorB, vectorC);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVertices(const Vector4& origin, const Vector4& vert1, const Vector4& vert2)");
+
+        Vector4 vectorB, vectorC;
+        vectorB.Set( 0, 3, 1, 1); // vertex 1
+        vectorC.Set( 1, 3, 0, 1); // Vertex 2
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_function_array[i] = PlaneFromVertices(v4_array[i], vectorB, vectorC);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test85">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVectors(const Vector3& origin, const Vector3& vert1, const Vector3& vert2)");
+
+        Vector3 vectorB, vectorC;
+        vectorB.Set( 0, 3, 1); // vertex 1
+        vectorC.Set( 1, 3, 0); // Vertex 2
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_function_array[i] = PlaneFromVectors(v3_array[i], vectorB, vectorC);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test86">
+      <![CDATA[
+
+        SetFunctionName("PlaneFromVectors(const Vector4& origin, const Vector4& vert1, const Vector4& vert2)");
+
+        Vector4 vectorB, vectorC;
+        vectorB.Set( 0, 3, 1, 1); // vertex 1
+        vectorC.Set( 1, 3, 0, 1); // Vertex 2
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                p_function_array[i] = PlaneFromVectors(v4_array[i], vectorB, vectorC);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+        SetFunctionName("TransformPlane(const Matrix44 &m, const Plane &p)");
+
+        Matrix44 matrixA;
+
+        matrixA.Set(
+            0, 0,-1, 0,
+            0, 1, 0, 0,
+            1, 0, 0, 0,
+            0, 0, 0, 1
+            ); // 90 degrees rotation on the y axies
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                planeResult = TransformPlane(matrixA, p_function_array[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+        SetFunctionName("operator == (const Plane &a, const Plane &b)");
+
+        Plane a(1.0,2.0,3.0,4.0);
+        Plane b(1.0,2.0,3.0,4.0);
+        Plane c(1.0,2.0,3.0,5.0);
+
+        Validate(a == b && !(a == c));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+        SetFunctionName("operator != (const Plane &a, const Plane &b)");
+
+        Plane a(1.0,2.0,3.0,4.0);
+        Plane b(1.0,2.0,3.0,4.0);
+        Plane c(1.0,2.0,3.0,5.0);
+
+        Validate(!(a != b) && a != c);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+        SetFunctionName("Plane&      operator = (Plane::InParam v)");
+        Plane pRef( 1.0f, 2.1f, 3.2f, 4.3f );
+        Plane p;
+        p= pRef;
+        Validate((float)p.A() == 1.0f && (float)p.B() == 2.1f && (float)p.C() == 3.2f && (float)p.D() == 4.3f);
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test91">
+      <![CDATA[
+
+            Plane pRef;
+            pRef.Set(1.23f, 4.56f, 7.89f, 69.f);
+            Plane p(pRef);
+
+            SetFunctionName("Plane(const Plane&)");
+            Validate((float)p.A() == 1.23f && (float)p.B() == 4.56f && (float)p.C() == 7.89f && (float)p.D() == 69.f);
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test92">
+      <![CDATA[
+
+            {
+                Plane p(1.0, 0.0, 0.0, 0.0);
+                Vector3 zero(0.0, 0.0, 0.0);
+                Vector3 one(1.0, 0.0, 0.0);
+                
+                Validate(IsSimilar(0.0f, static_cast<float>(Distance(p, zero))));
+                Validate(IsSimilar(1.0f, static_cast<float>(Distance(p, one))));
+                Validate(IsSimilar(0.0f, static_cast<float>(Distance(zero, p))));
+                Validate(IsSimilar(1.0f, static_cast<float>(Distance(one, p))));
+            }
+            
+            {
+                Plane p(1.0, 0.0, 0.0, 10.0);
+                Vector4 zero(0.0, 0.0, 0.0, 0.0);
+                Vector4 one(1.0, 0.0, 0.0, 0.0);
+                
+                Validate(IsSimilar(10.0f, static_cast<float>(Distance(p, zero))));
+                Validate(IsSimilar(11.0f, static_cast<float>(Distance(p, one))));
+                Validate(IsSimilar(10.0f, static_cast<float>(Distance(zero, p))));
+                Validate(IsSimilar(11.0f, static_cast<float>(Distance(one, p))));
+            }
+            
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+</TESTCLASS>

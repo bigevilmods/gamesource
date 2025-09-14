@@ -1,0 +1,5269 @@
+<!-- (c) Electronic Arts. All Rights Reserved.-->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestVector4" HEADER="vector4test.h" SOURCE="vector4test.inc" RWHOSTHEADER="rw/math/vpu/vector4_operation.h" RWGENERICHEADER="rw/math/fpu/vector4_operation.h" RWOPTIMALHEADER="rw/math/optimal/vector4_operation.h" OPTIMAL="true" HOST="true" GENERIC="true">
+
+<!-- The Last Test is test196, please change this number when you add more tests, make sure test names do not repeat-->
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector3Plus(const fpu::Vector3PlusTemplate<FloatClassRHS> &_v)");
+            ::rw::math::fpu::Vector4Template<double> doubleUnalignedVector;
+            ::rw::math::fpu::Vector4Template<float> floatUnalignedVector;
+            ::rw::math::fpu::Vector4Template<double> doubleAlignedVector;
+            ::rw::math::fpu::Vector4Template<float> floatAlignedVector;
+
+            doubleUnalignedVector.Set(
+                0, 1, 2, 4
+                );
+            floatUnalignedVector.Set(
+                0, 1, 2, 4
+                );
+            doubleAlignedVector.Set(
+                0, 1, 2, 4
+                );
+            floatAlignedVector.Set(
+                0, 1, 2, 4
+                );
+
+            Vector4 ref;
+            ref.Set(
+                0, 1, 2, 4
+                );
+
+            Vector4 test_doubleUnalignedVector(doubleUnalignedVector);
+            Vector4 test_floatUnalignedVector(floatUnalignedVector);
+            Vector4 test_doubleAlignedVector(doubleAlignedVector);
+            Vector4 test_floatAlignedVector(floatAlignedVector);
+
+            Validate(IsSimilar(test_doubleUnalignedVector, ref) &&
+                IsSimilar(test_floatUnalignedVector, ref) &&
+                IsSimilar(test_doubleAlignedVector, ref) &&
+                IsSimilar(test_floatAlignedVector, ref));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector4(Vector3, VecFloatRefW)");
+            Vector3 v3i(1.0f, 2.1f, 3.2f);
+            Vector4 v4i(0.0f, 0.0f, 0.0f, 4.3f);
+            Vector4 v( v3i, v4i.W() );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.W() == 4.3f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector4(Vector3, VecFloatRefIndex)");
+            Vector3 v3i(1.0f, 2.1f, 3.2f);
+            Vector4 v4i(0.0f, 0.0f, 0.0f, 4.3f);
+            Vector4 v( v3i, v4i.GetComponent(3) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.W() == 4.3f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector4(Vector3, VecFloat)");
+            Vector3 v3(1.0f, 2.1f, 3.2f);
+            VecFloat vf(4.3f);
+            Vector4 v( v3, vf );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.W() == 4.3f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+            SetFunctionName("Vector4(Vector3, float)");
+            Vector3 v3(1.0f, 2.1f, 3.2f);
+            Vector4 v( v3, 4.3f );
+            Validate(IsEqualWithEpsilon((float)v.X(), 1.0f) && IsEqualWithEpsilon((float)v.Y(), 2.1f) && IsEqualWithEpsilon((float)v.Z(), 3.2f) && IsEqualWithEpsilon((float)v.W(), 4.3f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_scalar_construction">
+      <![CDATA[
+
+            SetFunctionName("Vector4(scalar)");
+            Vector4 v( float_test_type(7.0f) );
+            Validate((float)v.X() == 7.0f && (float)v.Y() == 7.0f && (float)v.Z() == 7.0f && (float)v.W() == 7.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="scalar_construction">
+      <![CDATA[
+
+            SetFunctionName("Vector4(float)");
+            Vector4 v( (float_test_type)3.8f );
+            Validate((float)v.X() == 3.8f && (float)v.Y() == 3.8f && (float)v.Z() == 3.8f && (float)v.W() == 3.8f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+            SetFunctionName("Vector4(float, float, float, float)");
+            Vector4 v( 1.0f, 2.1f, 3.2f, 4.3f );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.W() == 4.3f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        Vector4 v4;
+
+        SetFunctionName("Set(float, float, float, float)");
+        v4.Set(1.1f, 2.2f, 3.4f, 4.3f);
+        Validate((float)v4.X() == 1.1f && (float)v4.Y() == 2.2f && (float)v4.Z() == 3.4f && (float)v4.W() == 4.3f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector4(VecFloat, VecFloat, VecFloat, VecFloat)");
+            Vector4 v(VecFloat(1.2f), VecFloat(2.3f), VecFloat(3.5f), VecFloat(4.4f));
+            Validate((float)v.X() == 1.2f && (float)v.Y() == 2.3f && (float)v.Z() == 3.5f && (float)v.W() == 4.4f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+
+            SetFunctionName("Vector4(VecFloatRef, VecFloatRef, VecFloatRef, VecFloatRef)");
+            Vector4 vec = Vector4(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+            Validate((float)vec.X() == (float)1.0f && (float)vec.Y() == (float)2.0f && (float)vec.Z() == (float)3.0f && (float)vec.W() == (float)4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+
+            SetFunctionName("Vector4(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            Vector4 v(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+            Validate((float)v.X() == 1.1f && (float)v.Y() == 2.1f && (float)v.Z() == 3.1f && (float)v.W() == 4.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector4 v4;
+
+            SetFunctionName("Set(VecFloat, VecFloat, VecFloat, VecFloat)");
+            v4.Set(VecFloat(1.2f), VecFloat(2.3f), VecFloat(3.5f), VecFloat(4.4f));
+            Validate((float)v4.X() == 1.2f && (float)v4.Y() == 2.3f && (float)v4.Z() == 3.5f && (float)v4.W() == 4.4f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector4 v4;
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+
+            SetFunctionName("Set(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            v4.Set(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+            Validate((float)v4.X() == 1.1f && (float)v4.Y() == 2.1f && (float)v4.Z() == 3.1f && (float)v4.W() == 4.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+        Vector4 v4;
+
+            SetFunctionName("Set(VecFloatRef, VecFloatRef, VecFloatRef, VecFloatRef)");
+            v4.Set(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+            Validate((float)v4.X() == 1.0f && (float)v4.Y() == 2.0f && (float)v4.Z() == 3.0f && (float)v4.W() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloat value)");
+            Vector4 v( 1.0f, 2.0f, 3.0f, 4.0f );
+            v.SetComponent( 1, VecFloat(12.0f) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 12.0f && (float)v.Z() == 3.0f && (float)v.W() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRefIndex value, int i)");
+            Vector4 v( 1.0f, 2.0f, 3.0f, 4.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefIndex(vi,3) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 4.1f && (float)v.W() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRef<INDEX> value)");
+            Vector4 v( 1.0f, 2.0f, 3.0f, 4.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefZ(vi) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.1f && (float)v.W() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("GetComponent(int i)");
+            Vector4 v( 1.0f, 2.1f, 3.2f, 4.3f );
+            float val = v.GetComponent(2);
+            Validate( val == 3.2f );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(0, float value)");
+            Vector4 v( 1.0f, 2.0f, 3.0f, 4.0f );
+            v.SetComponent( 0, 101.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.0f && (float)v.W() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(1, float value)");
+            Vector4 v( 101.0f, 2.0f, 3.0f, 4.0f );
+            v.SetComponent( 1, 10.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 10.0f && (float)v.Z() == 3.0f && (float)v.W() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(2, float value)");
+            Vector4 v( 101.0f, 10.0f, 3.0f, 4.0f );
+            v.SetComponent( 2, 69.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 10.0f && (float)v.Z() == 69.0f && (float)v.W() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(3, float value)");
+            Vector4 v( 101.0f, 10.0f, 69.0f, 4.0f );
+            v.SetComponent( 3, 9.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 10.0f && (float)v.Z() == 69.0f && (float)v.W() == 9.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+            SetFunctionName("SetZero()");
+            Vector4 v( 1.0f, 2.0f, 3.0f, 4.0f );
+            v.SetZero();
+            Validate(v == Vector4(0.0f, 0.0f, 0.0f, 0.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(0)");
+        Validate(v4.X() == v4.GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(0) const");
+        Validate(const_cast<const Vector4*>(&v4)->X() == const_cast<const Vector4*>(&v4)->GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(1)");
+        Validate(v4.Y() == v4.GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(1) const");
+        Validate(const_cast<const Vector4*>(&v4)->Y() == const_cast<const Vector4*>(&v4)->GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(2)");
+        Validate(v4.Z() == v4.GetComponent(2));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(2) const");
+        Validate(const_cast<const Vector4*>(&v4)->Z() == const_cast<const Vector4*>(&v4)->GetComponent(2));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(3)");
+        Validate(v4.W() == v4.GetComponent(3));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("GetComponent(3) const");
+        Validate(const_cast<const Vector4*>(&v4)->W() == const_cast<const Vector4*>(&v4)->GetComponent(3));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+            Vector4 v4;
+            v4.Set(1.23f, 4.56f, 7.89f, 69.f);
+            Vector4 vA(v4);
+
+            SetFunctionName("Vector4(const Vector4&)");
+            Validate((float)vA.X() == 1.23f && (float)vA.Y() == 4.56f && (float)vA.Z() == 7.89f && (float)vA.W() == 69.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+      
+            SetFunctionName("Vector4(const FloatClass _xyzw[4])");
+
+#ifdef HOST_TESTING
+            {
+                float floatData[] = {1.23f, 4.56f, 7.89f, 10.0f};
+                AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+                Vector4 vB(floatBuffer.GetFloatData());
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f && (float)vB.W() == 10.0f);
+            }
+#else
+            {
+                float_basic_type fArray[4]={1.23f, 4.56f, 7.89f, 10.0f};
+                Vector4 vB(fArray);
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f && (float)vB.W() == 10.0f);
+            }
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("X() = float");
+        v4.X() = 1.0f;
+        Validate((float)v4.X() == 1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("Y() = float");
+        v4.Y() = 2.0f;
+        Validate((float)v4.Y() == 2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("Z() = float");
+        v4.Z() = 3.0f;
+        Validate((float)v4.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("W() = float");
+        v4.W() = 4.1f;
+        Validate((float)v4.W() == 4.1f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("operator[0]");
+        v4[0] = 99.0f;
+        Validate((float)v4.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("operator[1]");
+        v4[1] = 100.0f;
+        Validate((float)v4.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("operator[2]");
+        v4[2] = 55.0f;
+        Validate((float)v4.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("operator[3]");
+        v4[3] = 65.0f;
+        Validate((float)v4.W() == 65.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+         Vector4 v4(99.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("X()");
+        Validate((float)v4.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 3.0f, 4.0f);
+
+        SetFunctionName("Y()");
+        Validate((float)v4.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 55.0f, 4.0f);
+
+        SetFunctionName("Z()");
+        Validate((float)v4.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 55.0f, 65.0f);
+
+        SetFunctionName("W()");
+        Validate((float)v4.W() == 65.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 2.0f, 3.0f, 4.0f);
+
+        SetFunctionName("X() const");
+        Validate((float)const_cast<const Vector4*>(&v4)->X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 3.0f, 4.0f);
+
+        SetFunctionName("Y() const");
+        Validate((float)const_cast<const Vector4*>(&v4)->Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 55.0f, 4.0f);
+
+        SetFunctionName("Z() const");
+        Validate((float)const_cast<const Vector4*>(&v4)->Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        Vector4 v4(99.0f, 100.0f, 55.0f, 65.0f);
+
+        SetFunctionName("W() const");
+        Validate((float)const_cast<const Vector4*>(&v4)->W() == 65.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamp_vector">
+      <![CDATA[
+
+        Vector4 v4(2.5f, 1.99f, 1.01f, -2.5f);
+        Vector4 one = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+        Vector4 two = float_test_type(2.0f) * one;
+        Vector4 ref(2.0f, 1.99f, 1.01f, 1.0f );
+        Vector4 result = Clamp( v4, one, two );
+
+        SetFunctionName("Clamp(Vector4, Vector4, Vector4");
+        Validate( result == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompLessThan(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompLessThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompGreaterThan(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompGreaterThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompLessEqual(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompLessEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompGreaterEqual(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompGreaterEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompEqual(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool() &&
+            !mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask4 CompNotEqual(Vector4 a, Vector4 b)");
+        Vector4 va(1.0f, 1.0f, 2.0f, 2.0f );
+        Vector4 vb(1.0f, 2.0f, 1.0f, -1.0f );
+
+        Mask4 mask(CompNotEqual(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+             mask.GetZ().GetBool() &&
+             mask.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Vector4 Select(MaskScalar mask, Vector4 a, Vector4 b)");
+        Vector4 v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector4 v2(10.0f, 20.0f, 30.0f, 40.0f);
+
+        Vector4 result1 = Select( MaskScalar(true), v1, v2 );
+        Vector4 result2 = Select( MaskScalar(false), v1, v2 );
+        Validate(
+            result1 == v1 &&
+            result2 == v2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask4_bitwise">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("Vector4 Select(MaskScalar mask, Vector4 a, Vector4 b)");
+        Vector4 v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector4 v2(-10.0f, -20.0f, -30.0f, -40.0f);
+        Vector4 ref1( -1.0f, 20.0f, -3.0f, -40.0f);
+
+        uint32_t values[] = { 0x7fffffff, 0x80000000, 0x7fffffff, 0x00000000 };
+        Mask4 mask(values[0], values[1], values[2], values[3]);
+
+        Vector4 result1 = Select( mask, v1, v2 );
+        Validate( result1 == ref1 );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask4">
+      <![CDATA[
+      
+        SetFunctionName("Vector4 Select(Mask4 mask, Vector4 a, Vector4 b)");
+        Vector4 v1(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector4 v2(10.0f, 20.0f, 30.0f, 40.0f);
+        Vector4 ref1(1.0f, 2.0f, 30.0f, 40.0f);
+        Vector4 ref2(10.0f, 20.0f, 3.0f, 4.0f);
+        Mask4 mask1(true, true, false, false);
+        Mask4 mask2(false, false, true, true);
+
+        Vector4 result1 = Select( mask1, v1, v2 );
+        Vector4 result2 = Select( mask2, v1, v2 );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamptonegposrange">
+      <![CDATA[
+      
+        SetFunctionName("Vector4 ClampToNegPosRange(value, range)");
+        Vector4 range(5.0f, 5.0f, 5.0f, 5.0f);
+        Vector4   v1( 7.0f,  3.0f, 0.0f, 0.0f);
+        Vector4   v2(-7.0f, -3.0f, 0.0f, 0.0f);
+        Vector4 ref1( 5.0f,  3.0f, 0.0f, 0.0f);
+        Vector4 ref2(-5.0f, -3.0f, 0.0f, 0.0f);
+        Vector4 result1 = ClampToNegPosRange( v1, range );
+        Vector4 result2 = ClampToNegPosRange( v2, range );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="permute">
+      <![CDATA[
+      
+        SetFunctionName("Vector4 Permute<pattern>(value)");
+        Vector4 v(0.0f, 1.0f, 2.0f, 3.0f);
+        Vector4 ref1( 2.0f, 3.0f, 1.0f, 0.0f);
+        Vector4 ref2( 1.0f, 2.0f, 2.0f, 1.0f);
+        Vector4 result1 = Permute<0x2310>(v);
+        Vector4 result2 = Permute<0x1221>(v);
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="unalignedLoad">
+        <![CDATA[
+
+        SetFunctionName("Vector4 unaligned load/store tests");
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = static_cast<float>(i+1);
+        
+        ::rw::math::fpu::Vector4Template<float>* alignedVec = reinterpret_cast< ::rw::math::fpu::Vector4Template<float>*>(&buffer[0]);
+        Vector4 v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 1.0f && v.Y() == 2.0f && v.Z() == 3.0f  && v.W() == 4.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector4Template<float>*>(&buffer[1]);
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 2.0f && v.Y() == 3.0f && v.Z() == 4.0f  && v.W() == 5.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector4Template<float>*>(&buffer[2]);
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 3.0f && v.Y() == 4.0f && v.Z() == 5.0f  && v.W() == 6.0f);        
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector4Template<float>*>(&buffer[3]); 
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 4.0f && v.Y() == 5.0f && v.Z() == 6.0f  && v.W() == 7.0f);  
+     
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="UnalignedStore">
+        <![CDATA[
+
+        SetFunctionName("Vector4 unaligned store tests");
+
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = 0.0f;
+          
+        Vector4 v2;
+
+        v2.Set(1.1f, 2.2f, 3.3f, 4.4f);
+        ::rw::math::fpu::Vector4* unaligned = reinterpret_cast< ::rw::math::fpu::Vector4*>(&buffer[0]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[0] == 1.1f && buffer[1] == 2.2f && buffer[2] == 3.3f && buffer[3] == 4.4f);    
+
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector4*>(&buffer[1]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[1] == 1.1f && buffer[2] == 2.2f && buffer[3] == 3.3f && buffer[4] == 4.4f);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector4*>(&buffer[2]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[2] == 1.1f && buffer[3] == 2.2f && buffer[4] == 3.3f && buffer[5] == 4.4f);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector4*>(&buffer[3]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[3] == 1.1f && buffer[4] == 2.2f && buffer[5] == 3.3f && buffer[6] == 4.4f);            
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        SetFunctionName("Set(float, float, float, float)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Set(x_array[i], y_array[i], z_array[i], w_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        VecFloat vecfloatArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+        for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+        {
+            vecfloatArray[i] = 5.0f;
+        }
+
+        SetFunctionName("Set(VecFloat, VecFloat, VecFloat, VecFloat)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Set(vecfloatArray[i], vecfloatArray[i], vecfloatArray[i], vecfloatArray[i]);
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Set(VecFloatRef<INDEX>, VecFloatRef<INDEX>, VecFloatRef<INDEX>, VecFloatRef<INDEX>)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        VecFloatRefX x(vecintrinsic_array[1]);
+        VecFloatRefY y(vecintrinsic_array[3]);
+        VecFloatRefZ z(vecintrinsic_array[4]);
+        VecFloatRefW w(vecintrinsic_array[2]);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Set(x, y, z, w);
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Set(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        VecFloatRefIndex x(vecintrinsic_array[1], 2);
+        VecFloatRefIndex y(vecintrinsic_array[3], 3);
+        VecFloatRefIndex z(vecintrinsic_array[4], 0);
+        VecFloatRefIndex w(vecintrinsic_array[2], 1);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Set(x, y, z, w);
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+        SetFunctionName("X() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].X() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+        SetFunctionName("Y() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Y() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+        SetFunctionName("Z() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].Z() = z_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+        SetFunctionName("W() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].W() = w_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+        SetFunctionName("SetZero()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i].SetZero();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+        SetFunctionName("X()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i].X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+        SetFunctionName("Y()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i].Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+        SetFunctionName("Z()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i].Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+        SetFunctionName("W()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i].W();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+        SetFunctionName("float_t& operator [] (int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+        SetFunctionName("float_t operator [] (int i) const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v4out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+        SetFunctionName("X() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector4*>(&v4out_array[i])->X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+        SetFunctionName("Y() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector4*>(&v4out_array[i])->Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+        SetFunctionName("Z() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector4*>(&v4out_array[i])->Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Negate(const Vector4 &v, Vector4 &result)");
+        Negate(v4a, output);
+        Validate(IsEqualWithEpsilon((float_basic_type)v4a.X(), (float_basic_type)-output.X()) && IsEqualWithEpsilon((float_basic_type)v4a.Y(), -(float_basic_type)output.Y()) && IsEqualWithEpsilon((float_basic_type)v4a.Z(), -(float_basic_type)output.Z()) && IsEqualWithEpsilon((float_basic_type)v4a.W(), -(float_basic_type)output.W()));
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Negate(const Vector4 &v)");
+        output= Negate(v4a);
+        Validate(IsEqualWithEpsilon((float_basic_type)v4a.X(), (float_basic_type)-output.X()) && IsEqualWithEpsilon((float_basic_type)v4a.Y(), -(float_basic_type)output.Y()) && IsEqualWithEpsilon((float_basic_type)v4a.Z(), -(float_basic_type)output.Z()) && IsEqualWithEpsilon((float_basic_type)v4a.W(), -(float_basic_type)output.W()));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        float_test_type multiplier = 2.1f;
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Mult(const Vector4 &v, float_t s, Vector4 &result)");
+        Mult(v4a, multiplier, output);
+        Validate(
+                IsEqualWithEpsilon((float_test_type)v4a.X() * multiplier, (float_test_type)output.X()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Y() * multiplier, (float_test_type)output.Y()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Z() * multiplier, (float_test_type)output.Z()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.W() * multiplier, (float_test_type)output.W())
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+        float_test_type multiplier = 2.1f;
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Mult(const Vector4 &v, float_t s)");
+        output = Mult(v4a, multiplier);
+        Validate(
+                IsEqualWithEpsilon((float_test_type)v4a.X() * multiplier, (float_test_type)output.X()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Y() * multiplier, (float_test_type)output.Y()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Z() * multiplier, (float_test_type)output.Z()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.W() * multiplier, (float_test_type)output.W())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        float_test_type multiplier = 2.1f;
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Divide(const Vector4 &v, float_t s, Vector4 &result)");
+        Divide(v4a, multiplier, output);
+        Validate(
+                IsEqualWithEpsilon((float_test_type)v4a.X() / multiplier, (float_test_type)output.X()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Y() / multiplier, (float_test_type)output.Y()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Z() / multiplier, (float_test_type)output.Z()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.W() / multiplier, (float_test_type)output.W())
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+        float_test_type multiplier = 2.1f;
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+
+        SetFunctionName("Divide(const Vector4 &v, float_t s)");
+        output= Divide(v4a, multiplier);
+        Validate(
+                IsEqualWithEpsilon((float_test_type)v4a.X() / multiplier, (float_test_type)output.X()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Y() / multiplier, (float_test_type)output.Y()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.Z() / multiplier, (float_test_type)output.Z()) &&
+                IsEqualWithEpsilon((float_test_type)v4a.W() / multiplier, (float_test_type)output.W())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+        v4b.Set(3.0f, 4.0f, 4.3f, 3.1f);
+
+        SetFunctionName("Add(const Vector4 &v, float_t s, Vector4 &result)");
+        Add(v4a, v4b, output);
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X() + (float)v4b.X(), (float)output.X()) &&
+                IsEqualWithEpsilon((float)v4a.Y() + (float)v4b.Y(), (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v4a.Z() + (float)v4b.Z(), (float)output.Z()) &&
+                IsEqualWithEpsilon((float)v4a.W() + (float)v4b.W(), (float)output.W())
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+        v4b.Set(3.0f, 4.0f, 4.3f, 3.1f);
+
+        SetFunctionName("Add(const Vector4 &v, float_t s)");
+        output = Add(v4a, v4b);
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X() + (float)v4b.X(), (float)output.X()) &&
+                IsEqualWithEpsilon((float)v4a.Y() + (float)v4b.Y(), (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v4a.Z() + (float)v4b.Z(), (float)output.Z()) &&
+                IsEqualWithEpsilon((float)v4a.W() + (float)v4b.W(), (float)output.W())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+        v4b.Set(3.0f, 4.0f, 4.3f, 3.1f);
+
+        SetFunctionName("Subtract(const Vector4 &a, const Vector4 &b, Vector4 &result)");
+        Subtract(v4a, v4b, output);
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X() - (float)v4b.X(), (float)output.X()) &&
+                IsEqualWithEpsilon((float)v4a.Y() - (float)v4b.Y(), (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v4a.Z() - (float)v4b.Z(), (float)output.Z()) &&
+                IsEqualWithEpsilon((float)v4a.W() - (float)v4b.W(), (float)output.W())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 2.0f, 4.0f);
+        v4b.Set(3.0f, 4.0f, 4.3f, 3.1f);
+
+        SetFunctionName("Subtract(const Vector4 &a, const Vector4 &b)");
+        output= Subtract(v4a, v4b);
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X() - (float)v4b.X(), (float)output.X()) &&
+                IsEqualWithEpsilon((float)v4a.Y() - (float)v4b.Y(), (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v4a.Z() - (float)v4b.Z(), (float)output.Z()) &&
+                IsEqualWithEpsilon((float)v4a.W() - (float)v4b.W(), (float)output.W())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("Magnitude(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag1 = (float)Magnitude(v4a);
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        float mag2 = (float)Magnitude(v4a);
+        v4a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float mag3 = (float)Magnitude(v4a);
+        v4a.Set(-0.0f, -0.0f, -0.0f, -0.0f);
+        float mag4 = (float)Magnitude(v4a);
+
+        Validate(IsEqualWithEpsilon(mag1, 4.6165462f) &&
+                 IsEqualWithEpsilon(mag2, 0.0f) &&
+                 IsEqualWithEpsilon(mag3, MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, 0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudefast">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("MagnitudeFast(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag1 = (float)MagnitudeFast(v4a);
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        float mag2 = (float)MagnitudeFast(v4a);
+        v4a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float mag3 = (float)MagnitudeFast(v4a);
+        v4a.Set(-0.0f, -0.0f, -0.0f, -0.0f);
+        float mag4 = (float)MagnitudeFast(v4a);
+
+        Validate(IsEqualWithEpsilon(mag1, 4.6165462f) &&
+                 IsEqualWithEpsilon(mag2, 0.0f) &&
+                 IsEqualWithEpsilon(mag3, MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, 0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudeestimate">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("MagnitudeEstimate(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag1 = (float)MagnitudeEstimate(v4a);
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        float mag2 = (float)MagnitudeEstimate(v4a);
+        v4a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float mag3 = (float)MagnitudeEstimate(v4a);
+        v4a.Set(-0.0f, -0.0f, -0.0f, -0.0f);
+        float mag4 = (float)MagnitudeEstimate(v4a);
+
+        Validate(IsEqualWithEpsilon(mag1, 4.6165462f) &&
+                 IsEqualWithEpsilon(mag2, 0.0f) &&
+                 IsEqualWithEpsilon(mag3, MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, 0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("MagnitudeSquared(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag = (float)MagnitudeSquared(v4a);
+        Validate(IsEqualWithEpsilon(mag, 21.312500f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("MagnitudeRecip(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag = (float)MagnitudeRecip(v4a);
+        Validate(IsEqualWithEpsilon(mag, 0.21661215f));
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, output;
+
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+
+        SetFunctionName("Normalize return by ref");
+        Normalize(v4a, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.21661215f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.43322429f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.74731189f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.45488548f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="normalize_estimate">
+      <![CDATA[
+
+        Vector4 v4a, output;
+
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+
+        SetFunctionName("NormalizeEstimate(const Vector4 &v)");
+        output = NormalizeEstimate(v4a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.21661215f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.43322429f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.74731189f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.45488548f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+        Vector4 v4a, output;
+
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+
+        SetFunctionName("Normalize(const Vector4 &v)");
+        output = Normalize(v4a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.21661215f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.43322429f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.74731189f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.45488548f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+        Vector4 v4a, output;
+
+        SetFunctionName("NormalizeFast(const Vector4 &v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        output = NormalizeFast(v4a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.21661215f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.43322429f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.74731189f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.45488548f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+        Vector4 v4a, output;
+
+        SetFunctionName("NormalizeReturnMagnitude(const Vector4 &v, Vector4 &result)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float fResult = (float)NormalizeReturnMagnitude(v4a, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.21661215f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.43322429f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.74731189f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.45488548f) &&
+                IsEqualWithEpsilon(fResult, 4.6165462f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="checked_normalize_return_magnitude">
+      <![CDATA[
+
+        Vector4 v4a, output;
+
+        float fResult;
+        bool success = true;
+        SetFunctionName("CheckedNormalizeReturnMagnitude(const Vector4 &v, Vector4 &result)");
+
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v4a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 0.21661215f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.43322429f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.74731189f);
+        success &= IsEqualWithEpsilon((float)output.W(), 0.45488548f);
+        success &= IsEqualWithEpsilon(fResult, 4.6165462f);
+
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v4a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.W(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, 0.0f);
+
+        v4a.Set(SMALL_FLOAT, 0.0f, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v4a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.W(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, 0.0f);
+
+        v4a.Set(MIN_FLOAT, 0.0f, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v4a, output);
+        // Two solutions are acceptable depending on the precision that
+        // calculations are carried out with.  Either the magnitude appears to
+        // be zero (e.g. for 32bit calculations), or the magnitude appears to
+        // be a very small number (i.e. MIN_FLOAT).
+        // The result vector will then be 0 (if magnitude is zero), or the X
+        // axis otherwise.
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f) || IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.W(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, 0.0f) || IsEqualWithEpsilon(fResult, MIN_FLOAT);
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test198">
+      <![CDATA[
+
+        Vector4 v4a, output;
+        SetFunctionName("returnVal of NormalizeReturnMagnitude(zero Vector4 &v, Vector4 &result)");
+        v4a.Set(0.0f, 0.0f, 0.f, 0.f);
+        float fResult = (float)NormalizeReturnMagnitude(v4a, output);
+        Validate(IsEqualWithEpsilon(fResult, 0.f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test83">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+
+        SetFunctionName("Dot(const Vector4 &a,const Vector4 &b)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+        float fResult = (float)Dot(v4a, v4b);
+        Validate(IsEqualWithEpsilon(fResult, 21.695000f));
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test199">
+      <![CDATA[
+
+#if defined( HOST_TESTING ) && RW_MATH_ENABLE_DEPRECATED_API 
+        Vector4 v4a, v4b;
+        VecFloat r;
+
+        SetFunctionName("Dot(const Vector4 &a,const Vector4 &b)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+        Dot(v4a, v4b, r);
+        Validate(IsEqualWithEpsilon(r, 21.695000f));
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Mult(const Vector4 &a,const Vector4 &b, Vector4 &result)");
+        Mult(v4a, v4b, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() * (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() * (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() * (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() * (float)v4b.W())
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test85a">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Vector4 * Vector4");
+        output = v4a * v4b;
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() * (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() * (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() * (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() * (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test85b">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Vector4 *= Vector4");
+        output = v4a;
+        output *= v4b;
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() * (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() * (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() * (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() * (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test85c">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Mult(const Vector4 &a,const Vector4 &b)");
+        output= Mult(v4a, v4b);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() * (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() * (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() * (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() * (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_divide_elements">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Divide(const Vector4 &a,const Vector4 &b)");
+        output = Divide(v4a, v4b);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() / (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() / (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() / (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() / (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_reciprocal">
+      <![CDATA[
+
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+
+        SetFunctionName("Reciprocal(const Vector4 &a)");
+        output = Reciprocal(v4a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 1.0f / (float)v4a.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.0f / (float)v4a.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), 1.0f / (float)v4a.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), 1.0f / (float)v4a.W())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test85d">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Vector4 / Vector4");
+        output = v4a / v4b;
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() / (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() / (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() / (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() / (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test85e">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Vector4 /= Vector4");
+        output = v4a;
+        output /= v4b;
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), (float)v4a.X() / (float)v4b.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), (float)v4a.Y() / (float)v4b.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), (float)v4a.Z() / (float)v4b.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), (float)v4a.W() / (float)v4b.W())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test86">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Lerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+        Lerp(v4a, v4b, (float_test_type)0.25f, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.0f) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.75f) &&
+                IsEqualWithEpsilon((float)output.Z(), 3.9125001f) &&
+                IsEqualWithEpsilon((float)output.W(), 2.0999999f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("Lerp( const Vector4 &v0, const Vector4 &v1, const float_t t)");
+        output= Lerp(v4a, v4b, (float_test_type)0.25f);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.0f) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.75f) &&
+                IsEqualWithEpsilon((float)output.Z(), 3.9125001f) &&
+                IsEqualWithEpsilon((float)output.W(), 2.0999999f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("NLerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+        NLerp(v4a, v4b, (float_test_type)0.15f, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.085500620f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.39544040f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.79675895f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.44887829f)
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_estimate">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("NLerpEstimate( const Vector4 &v0, const Vector4 &v1, const float_t t)");
+        output= NLerpEstimate(v4a, v4b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.085500620f, 0.003f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.39544040f, 0.003f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.79675895f, 0.003f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.44887829f, 0.003f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_fast">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("NLerpFast( const Vector4 &v0, const Vector4 &v1, const float_t t)");
+        output= NLerpFast(v4a, v4b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.085500620f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.39544040f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.79675895f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.44887829f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+
+        SetFunctionName("NLerp( const Vector4 &v0, const Vector4 &v1, const float_t t)");
+        output= NLerp(v4a, v4b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 0.085500620f) &&
+                IsEqualWithEpsilon((float)output.Y(), 0.39544040f) &&
+                IsEqualWithEpsilon((float)output.Z(), 0.79675895f) &&
+                IsEqualWithEpsilon((float)output.W(), 0.44887829f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        Vector4 v4a_normalized, v4b_normalized;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+        v4a_normalized= Normalize(v4a);
+        v4b_normalized= Normalize(v4b);
+
+        SetFunctionName("SLerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+        SLerp(v4a_normalized, v4b_normalized, (float_test_type)0.75f, output);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), -0.30123767f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.Y(),  0.23916793f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.Z(),  0.84240395f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.W(),  0.37737280f, 0.002f)
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test91">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        Vector4 v4a_normalized, v4b_normalized;
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+        v4a_normalized= Normalize(v4a);
+        v4b_normalized= Normalize(v4b);
+
+        SetFunctionName("SLerp( const Vector4 &v0, const Vector4 &v1, const float_t t)");
+        output= SLerp(v4a_normalized, v4b_normalized, (float_test_type)0.75f);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), -0.30123767f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.Y(),  0.23916793f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.Z(),  0.84240395f, 0.002f) &&
+                IsEqualWithEpsilon((float)output.W(),  0.37737280f, 0.002f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test92">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+        SetFunctionName("IsSimilar(const Vector4 &a, const Vector4 &b, float_t epsilon = SMALL_FLOAT)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        Vector4 v4a_test, v4b_test;
+        v4a_test.Set(1.01f, 2.0f, 1.2f, 2.1f);
+        v4b_test.Set(1.0f, 2.0f, 1.2f, 2.1f);
+        Validate(IsSimilar(v4a, v4b, (float_test_type)0.0f) && !IsSimilar(v4a_test, v4b_test, (float_test_type)0.0f) && IsSimilar(v4a_test, v4b_test, (float_test_type)0.1f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test93">
+      <![CDATA[
+
+        Vector4 v4a(0.0f, 0.0f, 0.0f, 0.0f);
+
+        SetFunctionName("void SetXYZ(Vector4Template<FloatType>& v, FloatType _x, FloatType _y, FloatType _z)");
+        SetXYZ(v4a, (float_test_type)1.1f, (float_test_type)2.2f, (float_test_type)3.4f);
+        Validate((float)v4a.X() == 1.1f && (float)v4a.Y() == 2.2f && (float)v4a.Z() == 3.4f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test94">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("Vector3Template<FloatType>& GetXYZ(const Vector4Template<FloatType>& v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        const Vector3 &v3 = GetXYZ(v4a);
+        Validate(v3.X()==v4a.X() && v3.Y()==v4a.Y() && v3.Z()==v4a.Z());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="getXY">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("Vector2Template<FloatType>& GetXY(const Vector4Template<FloatType>& v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        const Vector2 &v2 = GetXY(v4a);
+        Validate(v2.X()==v4a.X() && v2.Y()==v4a.Y());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test95">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("FloatType MagnitudeXYZ(const Vector4Template<FloatType>& v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag = (float)MagnitudeXYZ(v4a);
+        Validate(IsEqualWithEpsilon(mag, 4.1112650121f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test96">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("FloatType MagnitudeSquaredXYZ(const Vector4Template<FloatType>& v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag = (float)MagnitudeSquaredXYZ(v4a);
+        Validate(IsEqualWithEpsilon(mag, 16.9025f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test97">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("FloatType MagnitudeRecipXYZ(const Vector4Template<FloatType>& v)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        float mag = (float)MagnitudeRecipXYZ(v4a);
+        Validate(IsEqualWithEpsilon(mag, 0.243234137679f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test98">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+
+        SetFunctionName("FloatType DotXYZ(const Vector4Template<FloatType>& v0, const Vector4Template<FloatType>& v1)");
+        v4a.Set(1.0f, 2.0f, 3.45f, 2.1f);
+        v4b.Set(-3.0f, 1.0f, 5.3f, 2.1f);
+        float fResult = (float)DotXYZ(v4a, v4b);
+        Validate(IsEqualWithEpsilon(fResult, 17.285f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test99">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(4.0f, 3.0f, 2.0f, -3.0f);
+        v4b.Set(-3.0f, 1.0f, 3.0f, 2.0f);
+
+        SetFunctionName("CrossXYZ return by ref");
+        CrossXYZ(v4a, v4b, output);
+        Validate((float)output.X()==7.0f && (float)output.Y()==-18.0f && (float)output.Z()==13.0f && (float)output.W()==0.0f);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test100">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+        v4a.Set(4.0f, 3.0f, 2.0f, -3.0f);
+        v4b.Set(-3.0f, 1.0f, 3.0f, 2.0f);
+
+        SetFunctionName("CrossXYZ(const Vector4& v0, const Vector4& v1)");
+        output = CrossXYZ(v4a, v4b);
+        Validate((float)output.X()==7.0f && (float)output.Y()==-18.0f && (float)output.Z()==13.0f && (float)output.W()==0.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test101">
+      <![CDATA[
+
+#if !defined EA_PLATFORM_PS3_SPU
+
+        Vector4 v4a;
+
+        SetFunctionName("IsValid(Vector4 v)");
+        
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        bool result1 = IsValid(v4a);
+
+        float_basic_type nan = (float_basic_type)testing::GetNaN();
+        v4a.Set(nan, nan, nan, nan); 
+        bool result2 = IsValid(v4a);
+
+        Validate( result1 && !result2 );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test102">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("IsZero(Vector4 v)");
+
+        float_test_type tolerance = 0.1f;
+
+        v4a.Set(1.0f, 0.0f, 0.0f, 0.0f);
+        Validate( !IsZero(v4a) );
+
+        v4a.Set(0.0f, 0.0f, 0.0f, 0.0f);
+        Validate( IsZero(v4a) );
+
+        v4a.Set(-0.1f, -0.1f, -0.1f, -0.1f);
+        Validate( IsZero(v4a, tolerance) );
+
+        v4a.Set(0.1f, 0.1f, 0.1f, 0.1f);
+        Validate( IsZero(v4a, tolerance) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isanynan">
+      <![CDATA[
+
+
+#if !defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("IsAnyNaN(Vector4 v)");
+
+        float zero = 0.0f;
+        float_test_type nan = float_test_type(zero / zero);
+        int numPermutations = 1 << Vector4::NumberOfElement;
+        bool result = true;
+        for( int curPermutation=0;curPermutation<numPermutations;curPermutation++)
+        {
+            Vector4 vec = Vector4((float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f);
+            for( int elem = 0; elem < Vector4::NumberOfElement; elem++ )
+            {
+                if( curPermutation & (1<<elem) )
+                {
+                    vec.SetComponent( elem, nan );
+                }
+            }
+            if( curPermutation == 0 )
+            {
+                // All bits are zero so the vector has no NaN's
+                result &= !IsAnyNaN(vec);
+            }
+            else
+            {
+                // At least one element is NaN.
+                result &= IsAnyNaN(vec);
+            }
+        }
+        Validate(result);
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test103">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+
+        SetFunctionName("Min(Vector4 v1, Vector4 v2)");
+        v4a.Set(-1.0f, 3.0f, 2.0f, -3.0f);
+        v4b.Set(-3.0f, 1.0f, 3.0f, 2.0f);
+        Vector4 result = Min( v4a, v4b );
+        Validate( result == Vector4(-3.0f, 1.0f, 2.0f, -3.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test104">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+
+        SetFunctionName("Max(Vector4 v1, Vector4 v2)");
+        v4a.Set(-1.0f, 3.0f, 2.0f, -3.0f);
+        v4b.Set(-3.0f, 1.0f, 3.0f, 2.0f);
+        Vector4 result = Max( v4a, v4b );
+        Validate( result == Vector4(-1.0f, 3.0f, 3.0f, 2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test105">
+      <![CDATA[
+
+        Vector4 v4a;
+
+        SetFunctionName("Abs(Vector4 v1)");
+        v4a.Set(-1.0f, 3.0f, 2.0f, -3.0f);
+        Vector4 result = Abs( v4a );
+        Validate( result == Vector4(1.0f, 3.0f, 2.0f, 3.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test106">
+      <![CDATA[
+
+        Vector4 v4a, v4b;
+
+        SetFunctionName("MultAdd(Vector4 v0, Vector4 v1, Vector4 v2)");
+        v4a.Set(-1.0f, 3.0f, 2.0f, -3.0f);
+        v4b.Set(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector4 add(3.0f, 4.0f, 5.0f, 6.0f);
+        Vector4 result = MultAdd( v4a, v4b, add );
+        Validate( result == Vector4(2.0f, 10.0f, 11.0f, -6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test107">
+      <![CDATA[
+
+        Vector4 v4a, v4b, output;
+
+        SetFunctionName("DivideByW()");
+        v4a.Set(4.f, 3.f, 2.f, -3.f);
+        v4b.Set(-1.333333f, -1.0f, -0.6666666f, 1.0f);
+        output = DivideByW(v4a);
+        Validate(IsSimilar(output, v4b));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_vector4fromfloat">
+        <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector4FromFloat(float)");
+            Vector4 v = Vector4FromFloat( 3.8f );
+            Validate((float)v.X() == 3.8f && (float)v.Y() == 3.8f && (float)v.Z() == 3.8f && (float)v.W() == 3.8f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_max_component">
+        <![CDATA[
+
+        Vector4 v4(2.5f, 1.99f, -1.2f, 0.0f);
+
+        SetFunctionName("MaxComponent(Vector4)");
+        float_test_type vf = MaxComponent(v4);
+        Validate(vf == (float_test_type)2.5f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_min_component">
+        <![CDATA[
+
+        Vector4 v4(2.5f, 1.99f, -1.2f, 0.0f);
+
+        SetFunctionName("MinComponent(Vector4)");
+        float_test_type vf = MinComponent(v4);
+        Validate(vf == (float_test_type)-1.2f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_sqrtfast">
+        <![CDATA[
+
+        Vector4 v4a, output;
+        float smallFloat = 9.9600960e-020f;
+        float smallFloatSqr = smallFloat * smallFloat;
+        v4a.Set(100.0f, 34.23f, smallFloatSqr, 0.0f);
+
+        SetFunctionName("SqrtFast(const Vector4 &a)");
+        output = SqrtFast(v4a);
+        Validate(IsEqualWithEpsilon(output.X(), (float_test_type)10.0f));
+        Validate(IsEqualWithEpsilon(output.Y(), (float_test_type)5.8506409905f));
+        Validate(IsEqualWithEpsilon(output.Z(), (float_test_type)smallFloat));
+        Validate(IsEqualWithEpsilon(output.W(), (float_test_type)0.0f));
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_InvSqrtfast">
+        <![CDATA[
+
+        Vector4 v4a(100.0f, 34.23f, 0.01f, 1.0f);
+
+        SetFunctionName("InvSqrtFast(const Vector4 &a)");
+        Vector4 output = InvSqrtFast(v4a);
+        Validate(IsEqualWithEpsilon(output.X(), (float_test_type)0.1f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(output.Y(), (float_test_type)0.17092f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(output.Z(), (float_test_type)10.0f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(output.W(), (float_test_type)1.0f, (float_test_type)0.01f));
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_reciprocalfast">
+        <![CDATA[
+
+        Vector4 v4a, output;
+        v4a.Set(1.0f, 2.0f, 3.45f, 1.692f);
+
+        SetFunctionName("ReciprocalFast(const Vector4 &a)");
+        output = ReciprocalFast(v4a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 1.0f / (float)v4a.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.0f / (float)v4a.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), 1.0f / (float)v4a.Z()) &&
+                IsEqualWithEpsilon((float)output.W(), 1.0f / (float)v4a.W())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateleft">
+        <![CDATA[
+        
+        SetFunctionName("Vector3 RotateLeft(Vector4 v)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+        Vector4 v4(values[0], values[1], values[2], values[3]);
+        Vector4 v4r = RotateLeft(v4);
+        Validate( 
+            v4r.X() == (float_test_type)values[1] &&
+            v4r.Y() == (float_test_type)values[2] &&
+            v4r.Z() == (float_test_type)values[3] &&
+            v4r.W() == (float_test_type)values[0]
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateright">
+        <![CDATA[
+        
+        SetFunctionName("Vector3 RotateRight(Vector4 v)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f, 3.0f, 4.0f };
+        Vector4 v4(values[0], values[1], values[2], values[3]);
+        Vector4 v4r = RotateRight(v4);
+        Validate( 
+            v4r.X() == (float_test_type)values[3] &&
+            v4r.Y() == (float_test_type)values[0] &&
+            v4r.Z() == (float_test_type)values[1] &&
+            v4r.W() == (float_test_type)values[2]
+        );
+
+      ]]>
+      </TEST>
+      
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test108">
+      <![CDATA[
+
+        SetFunctionName("Negate(const Vector4 &v, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Negate(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test109">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector4 &v, float_t s, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Mult(v4a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test110">
+      <![CDATA[
+
+        SetFunctionName("Divide(const Vector4 &v, float_t s, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Divide(v4a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test111">
+      <![CDATA[
+
+        SetFunctionName("Add(const Vector4 &v, float_t s, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Add(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test112">
+      <![CDATA[
+
+        SetFunctionName("Subtract(const Vector4 &v, float_t s, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Subtract(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test113">
+      <![CDATA[
+
+        SetFunctionName("Magnitude(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Magnitude(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test114">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeSquared(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeSquared(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test115">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeRecip(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeRecip(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test116">
+      <![CDATA[
+
+        SetFunctionName("Normalize(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Normalize(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test117">
+      <![CDATA[
+
+        SetFunctionName("NormalizeFast(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= NormalizeFast(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_normalize_estimate">
+      <![CDATA[
+
+        SetFunctionName("NormalizeEstimate(const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= NormalizeEstimate(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test118">
+      <![CDATA[
+
+        SetFunctionName("NormalizeReturnMagnitude(const Vector4 &v, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = NormalizeReturnMagnitude(v4a_array[i], v4out_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test119">
+      <![CDATA[
+
+        SetFunctionName("Dot(const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Dot(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="min_perf_test">
+      <![CDATA[
+
+        SetFunctionName("Min(const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = Min(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="max_perf_test">
+      <![CDATA[
+
+        SetFunctionName("Max(const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = Max(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="abs_perf_test">
+      <![CDATA[
+
+        SetFunctionName("Abs(const Vector4 &a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = Abs(v4a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="crossxyz_perf_test">
+      <![CDATA[
+
+        SetFunctionName("CrossXYZ(const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = CrossXYZ(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test120">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector4 &a,const Vector4 &b, Vector4 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Mult(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test121">
+      <![CDATA[
+
+        SetFunctionName("Lerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= Lerp(v4a_array[i], v4b_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test122">
+      <![CDATA[
+
+        SetFunctionName("SLerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= SLerp(v4a_norm_array[i], v4b_norm_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test123">
+      <![CDATA[
+
+        SetFunctionName("NLerp( const Vector4 &v0, const Vector4 &v1, const float_t t, Vector4 &r)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i]= NLerp(v4a_array[i], v4b_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test124">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(const Vector4 &a, const Vector4 &b, float_t epsilon = SMALL_FLOAT)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = IsSimilar(v4a_array[i], v4b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+
+      <TEST NAME="test197">
+      <![CDATA[
+
+        SetFunctionName("Vector4&      operator = (Vector4::InParam v)");
+        Vector4 vRef( 1.0f, 2.1f, 3.2f, 4.3f );
+        Vector4 v;
+        v= vRef;
+        Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.W() == 4.3f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test125">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator *= (Vector4 &v, float_t a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a *= (float_test_type)1.5f;
+
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f * 1.5f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test126">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator /= (Vector4 &v, float_t a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a /= (float_test_type)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4a.X(), 1.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.Y(), 2.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.Z(), 3.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.W(), 1.0f / 1.5f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test127">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator * (const Vector4 &v, float_t s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a * (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test128">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator * (float_t s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = (float_test_type)1.24f * v4a;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test129">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator / (const Vector4 &v, float_t s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a / (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() / 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test130">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector4& operator *= (Vector4 &v, float_t a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a *= (float)1.5f;
+
+        Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f * 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f * 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test131">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector4& operator /= (Vector4 &v, float_t a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a /= (float)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4a.X(), 1.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.Y(), 2.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.Z(), 3.0f / 1.5f) &&
+            IsEqualWithEpsilon((float)v4a.W(), 1.0f / 1.5f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test132">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator * (const Vector4 &v, float_t s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a * (float)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test133">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator * (float_t s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = (float)1.24f * v4a;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test134">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator / (const Vector4 &v, float_t s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a / (float)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() / 1.24f) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() / 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test135">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("Vector4& operator *= (Vector4 &v, VecFloatRef<INDEX> a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a *= values.X();
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4a.X(), 1.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Y(), 2.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Z(), 3.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.W(), 1.0f * 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test136">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("Vector4& operator /= (Vector4 &v, VecFloatRef<INDEX> a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a /= values.X();
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4a.X(), 1.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Y(), 2.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Z(), 3.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.W(), 1.0f / 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test137">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator * (const Vector4 &v, VecFloatRef<INDEX> s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a * values.Y();
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test138">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator * (VecFloatRef<INDEX> s, const Vector4 &v)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = values.Y() * v4a;
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test139">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator / (const Vector4 &v, VecFloatRef<INDEX> s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a / values.Y();
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() / 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test140">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("Vector4& operator *= (Vector4 &v, VecFloatRefIndex a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a *= values.GetComponent(0);
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4a.X(), 1.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Y(), 2.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Z(), 3.0f * 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.W(), 1.0f * 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test141">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("Vector4& operator /= (Vector4 &v, VecFloatRefIndex a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a /= values.GetComponent(0);
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4a.X(), 1.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Y(), 2.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.Z(), 3.0f / 1.5f) &&
+                    IsEqualWithEpsilon((float)v4a.W(), 1.0f / 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test142">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator * (const Vector4 &v, VecFloatRefIndex s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a * values.GetComponent(1);
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test143">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator * (VecFloatRefIndex s, const Vector4 &v)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = values.GetComponent(1) * v4a;
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test144">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        Vector3 values(1.5f, 1.24f, 0.0f);
+
+            SetFunctionName("const Vector4 operator / (const Vector4 &v, VecFloatRefIndex s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a / values.GetComponent(1);
+
+            Validate(
+                    IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() / 1.24f) &&
+                    IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() / 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test145">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator - (Vector4 &v)");
+
+        Vector4 v4a;
+        Vector4 v4b;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b.Set(3.0f, 6.0f, 4.0f, 1.0f);
+
+        v4b = -v4a;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4a.X(), (float)-v4b.X()) &&
+            IsEqualWithEpsilon((float)v4a.Y(), (float)-v4b.Y()) &&
+            IsEqualWithEpsilon((float)v4a.Z(), (float)-v4b.Z()) &&
+            IsEqualWithEpsilon((float)v4a.W(), (float)-v4b.W())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test146">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator += (Vector4 &v, const Vector4 &b)");
+
+        Vector4 v4a;
+        Vector4 v4b;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b.Set(3.0f, 6.0f, 4.0f, 1.0f);
+
+        v4a += v4b;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4a.X(), 1.0f + 3.0f) &&
+            IsEqualWithEpsilon((float)v4a.Y(), 2.0f + 6.0f) &&
+            IsEqualWithEpsilon((float)v4a.Z(), 3.0f + 4.0f) &&
+            IsEqualWithEpsilon((float)v4a.W(), 1.0f + 1.0f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test147">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v, const Vector4 &b)");
+
+        Vector4 v4a;
+        Vector4 v4b;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b.Set(3.0f, 6.0f, 4.0f, 1.0f);
+
+        v4a -= v4b;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4a.X(), 1.0f - 3.0f) &&
+            IsEqualWithEpsilon((float)v4a.Y(), 2.0f - 6.0f) &&
+            IsEqualWithEpsilon((float)v4a.Z(), 3.0f - 4.0f) &&
+            IsEqualWithEpsilon((float)v4a.W(), 1.0f - 1.0f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test148">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &a, const Vector4 &b)");
+
+        Vector4 v4a, v4b, v4out;
+
+        v4a.Set(1.0f, 2.0f, 1.4f, 1.0f);
+        v4b.Set(1.2f, 2.3f, 4.5f, 1.0f);
+
+        v4out = v4a + v4b;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() + (float)v4b.X()) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() + (float)v4b.Y()) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() + (float)v4b.Z()) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() + (float)v4b.W())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test149">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &a, const Vector4 &b)");
+
+        Vector4 v4a, v4b, v4out;
+
+        v4a.Set(1.0f, 2.0f, 10.3f, 1.0f);
+        v4b.Set(1.2f, 2.3f, 4.23f, 1.0f);
+
+        v4out = v4a - v4b;
+
+        Validate(
+            IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() - (float)v4b.X()) &&
+            IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() - (float)v4b.Y()) &&
+            IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() - (float)v4b.Z()) &&
+            IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() - (float)v4b.W())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test150">
+      <![CDATA[
+
+        Vector4 v4a_equal, v4b_equal;
+        v4a_equal.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b_equal.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        SetFunctionName("bool operator == (const Vector4 &a, const Vector4 &b) (Test1)");
+        Validate(v4a_equal == v4b_equal);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test151">
+      <![CDATA[
+
+        Vector4 v4a_equal, v4b_equal;
+        v4a_equal.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b_equal.Set(1.1f, 2.0f, 3.0f, 1.0f);
+
+        SetFunctionName("bool operator == (const Vector4 &a, const Vector4 &b) (Test2)");
+        Validate(!(v4a_equal == v4b_equal));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test152">
+      <![CDATA[
+
+        Vector4 v4a_equal, v4b_equal;
+        v4a_equal.Set(1.0f, 2.0f, 3.0f, 1.2f);
+        v4b_equal.Set(1.0f, 3.0f, 3.0f, 1.0f);
+
+        SetFunctionName("bool operator != (const Vector4 &a, const Vector4 &b) (Test1)");
+        Validate(v4a_equal != v4b_equal);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test153">
+      <![CDATA[
+
+        Vector4 v4a_equal, v4b_equal;
+        v4a_equal.Set(1.0f, 2.0f, 3.0f, 1.0f);
+        v4b_equal.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        SetFunctionName("bool operator != (const Vector4 &a, const Vector4 &b) (Test2)");
+        Validate(!(v4a_equal != v4b_equal));
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test181">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator += (Vector4 &v, float_test_type a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a += (float_test_type)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon(v4a.X(), (float_test_type)1.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.Y(), (float_test_type)2.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.Z(), (float_test_type)3.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.W(), (float_test_type)1.0f + (float_test_type)1.5f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test182">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v, float_test_type a)");
+
+        Vector4 v4a;
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4a -= (float_test_type)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon(v4a.X(), (float_test_type)1.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.Y(), (float_test_type)2.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.Z(), (float_test_type)3.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v4a.W(), (float_test_type)1.0f - (float_test_type)1.5f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test181_2">
+      <![CDATA[
+
+            SetFunctionName("VecFloatRef::operator +=");
+            Vector4 v4(1.0f, 2.1f, 3.2f, 4.3f);
+            v4.X() += 1.0f;
+            v4.Y() += 1.0f;
+            v4.Z() += 1.0f;
+            v4.W() += 1.0f;
+            Validate(IsEqualWithEpsilon((float)v4.X(), 2.0f) && IsEqualWithEpsilon((float)v4.Y(), 3.1f) && IsEqualWithEpsilon((float)v4.Z(), 4.2f) && IsEqualWithEpsilon((float)v4.W(), 5.3f));
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test182_2">
+      <![CDATA[
+
+            SetFunctionName("VecFloatRefIndex::operator +=");
+            Vector4 v4(1.0f, 2.1f, 3.2f, 4.3f);
+            for (int i = 0; i < 4; ++i)
+                v4[i] += 1.0f;
+            
+            for (int i = 0; i < 4; ++i)
+                v4.GetComponent(i) += 1.0f;
+            
+            Validate(IsEqualWithEpsilon((float)v4.X(), 3.0f) && IsEqualWithEpsilon((float)v4.Y(), 4.1f) && IsEqualWithEpsilon((float)v4.Z(), 5.2f) && IsEqualWithEpsilon((float)v4.W(), 6.3f));
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &v, float_test_type s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a + (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() + (float_test_type)1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183_2">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator + (float_test_type s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = (float_test_type)1.24f + v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() + (float_test_type)1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183_3">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator + (float s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        // use a float type explicitly
+        v4out = 1.24f + v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() + (float_test_type)1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183_4">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator + (VecFloatRef<INDEX>, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+        v4out = VecFloatRefZ(vi) + v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() + (float_test_type)1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183_5">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator + (VecFloatRefIndex, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+        v4out = VecFloatRefIndex(vi, 2) + v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() + (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() + (float_test_type)1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test185">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &v, float_test_type s)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = v4a - (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), v4a.X() - (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Y(), v4a.Y() - (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.Z(), v4a.Z() - (float_test_type)1.24f) &&
+            IsEqualWithEpsilon(v4out.W(), v4a.W() - (float_test_type)1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185_2">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator - (float_test_type s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        v4out = (float_test_type)1.24f - v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), (float_test_type)1.24f - v4a.X()) &&
+            IsEqualWithEpsilon(v4out.Y(), (float_test_type)1.24f - v4a.Y()) &&
+            IsEqualWithEpsilon(v4out.Z(), (float_test_type)1.24f - v4a.Z()) &&
+            IsEqualWithEpsilon(v4out.W(), (float_test_type)1.24f - v4a.W()) 
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185_3">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator - (float s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        // use a float type explicitly
+        v4out = 1.24f - v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), (float_test_type)1.24f - v4a.X()) &&
+            IsEqualWithEpsilon(v4out.Y(), (float_test_type)1.24f - v4a.Y()) &&
+            IsEqualWithEpsilon(v4out.Z(), (float_test_type)1.24f - v4a.Z()) &&
+            IsEqualWithEpsilon(v4out.W(), (float_test_type)1.24f - v4a.W()) 
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185_4">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator - (VecFloatRef<INDEX> s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+        v4out = VecFloatRefZ(vi) - v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), (float_test_type)1.24f - v4a.X()) &&
+            IsEqualWithEpsilon(v4out.Y(), (float_test_type)1.24f - v4a.Y()) &&
+            IsEqualWithEpsilon(v4out.Z(), (float_test_type)1.24f - v4a.Z()) &&
+            IsEqualWithEpsilon(v4out.W(), (float_test_type)1.24f - v4a.W()) 
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185_5">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator - (VecFloatRefIndex s, const Vector4 &v)");
+
+        Vector4 v4a, v4out;
+
+        v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+        MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+        v4out = VecFloatRefIndex(vi, 2) - v4a;
+
+        Validate(
+            IsEqualWithEpsilon(v4out.X(), (float_test_type)1.24f - v4a.X()) &&
+            IsEqualWithEpsilon(v4out.Y(), (float_test_type)1.24f - v4a.Y()) &&
+            IsEqualWithEpsilon(v4out.Z(), (float_test_type)1.24f - v4a.Z()) &&
+            IsEqualWithEpsilon(v4out.W(), (float_test_type)1.24f - v4a.W()) 
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test186">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector4& operator += (Vector4 &v, VecFloatRef<INDEX> a)");
+
+            Vector4 v4a;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a += VecFloatRefX(vi);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f + 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test187">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector4& operator -= (Vector4 &v, VecFloatRef<INDEX> a)");
+
+            Vector4 v4a;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a -= VecFloatRefX(vi);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f - 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test188">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector4 operator + (const Vector4 &v, VecFloatRef<INDEX> s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a + VecFloatRefY(vi);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() + 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test190">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector4 operator - (const Vector4 &v, VecFloatRef<INDEX> s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a - VecFloatRefY(vi);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() - 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test191">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector4& operator += (Vector4 &v, VecFloatRefIndex a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a += VecFloatRefIndex(vi, 0);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f + 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f + 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test192">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector4& operator -= (Vector4 &v, VecFloatRefIndex a)");
+
+            Vector4 v4a;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4a -= VecFloatRefIndex(vi, 0);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4a.X(), 1.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Y(), 2.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.Z(), 3.0f - 1.5f) &&
+                IsEqualWithEpsilon((float)v4a.W(), 1.0f - 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test193">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector4 operator + (const Vector4 &v, VecFloatRefIndex s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a + VecFloatRefIndex(vi, 1);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() + 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() + 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test195">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector4 operator - (const Vector4 &v, VecFloatRefIndex s)");
+
+            Vector4 v4a, v4out;
+
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+
+            v4out = v4a - VecFloatRefIndex(vi, 1);
+
+            Validate(
+                IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() - 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() - 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test196">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+            SetFunctionName("Vector4 Mult(Vector4::InParam v, VecFloatRefIndex::InParam s)");
+            Vector4 v4a, v4out;
+            v4a.Set(1.0f, 2.0f, 3.0f, 1.0f);
+            v4out = Mult(v4a, VecFloatRefIndex(vi, 1));
+            Validate(
+                IsEqualWithEpsilon((float)v4out.X(), (float)v4a.X() * 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Y(), (float)v4a.Y() * 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.Z(), (float)v4a.Z() * 1.24f) &&
+                IsEqualWithEpsilon((float)v4out.W(), (float)v4a.W() * 1.24f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test154">
+      <![CDATA[
+
+        SetFunctionName("bool operator == (const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v4a_array[i] == v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test155">
+      <![CDATA[
+
+        SetFunctionName("bool operator != (const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v4a_array[i] != v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test156">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator *= (Vector4 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] *= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test157">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator /= (Vector4 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] /= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator += (Vector4 &v,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] += v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test159">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] -= v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = -v4a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test161">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator * (const Vector4 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] * (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test162">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator * (float_t s,const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = (float_test_type)1.543f * v4a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test163">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator / (const Vector4 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] / (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test164">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] + v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test165">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &a,const Vector4 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] - v4b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test166">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector4& operator += (Vector4 &v,VecFloat a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] += (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test167">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v,VecFloat a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] -= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test168">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &v,VecFloat s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] + (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test169">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator + (VecFloat s,const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = (float_test_type)1.543f + v4a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test170">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &v,VecFloat s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] - (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test171">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector4& operator += (Vector4 &v,VecFloatRef<INDEX> a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] += VecFloatRefX(vt);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test172">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v,VecFloatRef<INDEX> a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] -= VecFloatRefX(vt);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test173">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &v,VecFloatRef<INDEX> s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] + VecFloatRefY(vt);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test174">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator + (VecFloatRef<INDEX> s,const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = VecFloatRefY(vt) + v4a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test175">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &v,VecFloatRef<INDEX> s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] - VecFloatRefY(vt);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test176">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector4& operator += (Vector4 &v,VecFloatRefIndex a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] += VecFloatRefIndex(vt, 0);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test177">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector4& operator -= (Vector4 &v,VecFloatRefIndex a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4a_array[i] -= VecFloatRefIndex(vt, 0);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test178">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator + (const Vector4 &v,VecFloatRefIndex s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] + VecFloatRefIndex(vt, 1);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test179">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator + (VecFloatRefIndex s,const Vector4 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = VecFloatRefIndex(vt, 1) + v4a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test180">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vt, 1.33f, 1.543f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector4 operator - (const Vector4 &v,VecFloatRefIndex s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v4out_array[i] = v4a_array[i] - VecFloatRefIndex(vt, 1);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+      
+    </TYPE>
+
+  </TYPE>
+  
+</CLASS>
+
+</TESTCLASS>

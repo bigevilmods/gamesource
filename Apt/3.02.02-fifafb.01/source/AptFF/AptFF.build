@@ -1,0 +1,47 @@
+<project default="AptFF">   
+    <!-- include package build file to get dependency and configuration information -->
+	<property name="runtime.AptFF.buildtype" value="Library"/>
+	<property name="runtime.AptFF.usedependencies.pc">
+		DirectX
+	</property>
+	<property name="runtime.AptFF.usedependencies.xenon">
+		xenonsdk
+	</property>
+	<property name="runtime.AptFF.usedependencies">
+	    EABase
+	    coreallocator
+		FontFusion
+	</property>	
+    
+	<property name="runtime.AptFF.commonwarningsuppression">
+	    -wd4512     <!-- assignment operator could not be generated -->
+	    -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4244     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4365     <!-- conversion from 'int' to 'unsigned int', signed/unsigned mismatch -->
+	</property>
+	<property name="runtime.AptFF.warningsuppression.pc">
+        ${runtime.AptFF.commonwarningsuppression}
+	</property>	
+	<property name="runtime.AptFF.warningsuppression.xbox">
+        ${runtime.AptFF.commonwarningsuppression}
+	</property>	
+	<property name="runtime.AptFF.warningsuppression.ps2">
+	</property>	
+	<property name="runtime.AptFF.warningsuppression.gc">
+	</property>				
+    
+	<property name="runtime.AptFF.defines">
+	    ${runtime.defines}
+	</property>
+    
+	<property name="runtime.AptFF.includedirs">
+	    ${runtime.Apt.includedirs}
+		${package.Apt.dir}/include/AptFF
+		${package.Apt.dir}/source/AptFF
+	</property>
+	
+	<fileset name="runtime.AptFF.sourcefiles">
+		<includes name="${package.Apt.dir}/source/AptFF/*.cpp"/>
+	</fileset>
+</project>
+

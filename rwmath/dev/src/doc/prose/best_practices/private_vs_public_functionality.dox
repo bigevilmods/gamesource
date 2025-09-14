@@ -1,0 +1,63 @@
+/*!
+\page p_private_vs_public_functionality Private vs Public Functionality
+
+The math library can be viewed as having two independent layers.
+-# A platform independent C++ API for operating on scalars, vectors, quaternion, matrices, etc.
+-# A platform specific function and macro <em>implementation layer</em> that operates on floats and vector intrinsics.
+
+Because math is somewhat unique in its implementation (i.e. virtually the entire library consists of header files),
+it has been difficult for us to create a strict division between what is public API, and what are private utility
+functions.  This lack of strict separation has caused difficulty for math library development, and math users.
+
+\section math_supported What is supported?
+
+The high level cross platform C++ API is fully supported.  All C++ \e classes
+and their functions are fully supported.  Users are encouraged to use these
+classes and operations where possible.
+
+\section math_unsupported What is unsupported?
+
+The low level "middle" layer is not supported \e yet.  We are currently not
+supporting this layer because the functions/macros that make up the layer have
+been in a state of constant development.  Often functions/macros are renamed or
+modified as we develop the library.  The organization of the middle layer is
+more complex than the C++ API because it varies between platforms.  In fact
+many functions/macros are only available on specific platforms.
+
+Some examples of unsupported functions/macros are:
+- Functions beginning with _asm.  For example \c _asmAdd, \c _asmMult, or \c _asmCreateVector.
+- All macros.  For example, \c RW_MATH_VPU_Abs, \c RW_MATH_VPU_IsZeroA3V3, \c rwmath_vpu_detail_VecPerm, \c rwmath_vpu_detail_VecSrw. 
+- Any functions/macros that only appear in headers within a 'detail' subdirectory.
+
+Many users are using these functions right now, but please be advised that we
+are not officially supporting these functions.  It is quite likely that their
+names or calling conventions could be modified in the near future.
+
+\section future_support What will be supported?
+
+Obviously, direct access to low-level vector operations in a cross platform
+manner would be very useful to expose publicly.  We are intending on
+creating an officially supported "middle layer".  Creating such a layer is
+not as easy as it may seem initially.
+-# Vector instructions may vary greatly between platforms.  A middle layer must
+either limit itself to the lowest common denominator, emulate instructions on
+platforms that don't support the instrinsic natively (possibly very slow), or
+provide an API that differs between platforms.
+-# We have had issues inlining code effectively on some compilers.  The current
+middle layer is implemented entirely as macros to avoid this problem.  However,
+macros are more error prone, difficult to debug, and have different "calling"
+semantics than a real function.
+
+Providing a sensible middle layer that is a useful compromise of the inherent
+tradeoffs involved is one of our goals.  We will be working on a design that
+tries to carefully balance the issues involved.  The design will be done
+in an open manner (on the math wiki) so customers will be able to provide
+feedback and help create an effective middle layer.
+
+Until an officially supported middle layer is available, please avoid using
+the existing middle layer, or at the very least be aware that the layer is
+subject to change, and will most likely cause code that relies on it to break
+in the future.
+
+
+*/

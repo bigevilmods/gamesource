@@ -1,0 +1,4 @@
+<project>
+	<include file="${package.tlconfig.dir}/config/xbox-vc7-debug.xml" />
+	<include file="platform/xbox-vc7.xml"/>
+</project>

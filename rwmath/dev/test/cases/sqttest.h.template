@@ -1,0 +1,27 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestSqt :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestSqt();
+    virtual ~UnitTestSqt();
+    void Test();
+     
+//#BLOCK
+
+private:
+
+
+
+};
+

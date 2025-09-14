@@ -1,0 +1,10 @@
+<project>
+    <property name="config-type" value="p"/>
+    <optionset name="config-options-common">
+      <option name="buildset.cc.defines" >
+        @{OptionSetGetValue('config-options-common', 'buildset.cc.defines')}
+		APT_DO_PROFILE
+      </option>
+    </optionset>  
+
+</project>

@@ -1,0 +1,82 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#include "trigonometry.h"
+
+class UnitTestSoa4Trig :
+    public UnitTest
+{
+public:
+
+    UnitTestSoa4Trig();
+    virtual ~UnitTestSoa4Trig();
+    void Test();
+
+    bool IsEqual(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        return !memcmp( &a.mV, &b.mV, sizeof(::rw::math::vpu::VectorIntrinsic) );
+    }
+
+    bool IsEqualWithEpsilon(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b, ::rw::math::vpu::Soa4Float::InParam epsilon)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU, epsilonU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        epsilonU.vector = epsilon.mV;
+        return
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[0], bU.scalarFloat[0], epsilonU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[1], bU.scalarFloat[1], epsilonU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[2], bU.scalarFloat[2], epsilonU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[3], bU.scalarFloat[3], epsilonU.scalarFloat[3] );
+    }
+
+    bool IsEqualWithEpsilon(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        return
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[0], bU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[1], bU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[2], bU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[3], bU.scalarFloat[3] );
+    }
+
+    bool IsEqualWithinPercent(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b, ::rw::math::vpu::Soa4Float::InParam epsilon)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU, epsilonU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        epsilonU.vector = epsilon.mV;
+        return
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[0], bU.scalarFloat[0], epsilonU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[1], bU.scalarFloat[1], epsilonU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[2], bU.scalarFloat[2], epsilonU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[3], bU.scalarFloat[3], epsilonU.scalarFloat[3] );
+    }
+
+    bool IsEqualWithinPercent(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        return
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[0], bU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[1], bU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[2], bU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithinPercent( aU.scalarFloat[3], bU.scalarFloat[3] );
+    }
+
+//#BLOCK
+
+private:
+
+    ::rw::math::vpu::Soa4Float fOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    ::rw::math::vpu::Soa4Float fCosOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    ::rw::math::vpu::Soa4Float xArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    ::rw::math::vpu::Soa4Float yArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+};
+
+
+

@@ -1,0 +1,82 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestVecFloat :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestVecFloat();
+    virtual ~UnitTestVecFloat();
+    void Test();
+
+//#BLOCK
+
+private:
+
+
+
+};
+
+class VecFloatCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) == ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) != ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) > ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) < ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) >= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        return ::rw::math::vpu::VecFloat(a) <= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+

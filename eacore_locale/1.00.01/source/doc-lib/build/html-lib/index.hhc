@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD></HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="FrameName" value="right">
+</OBJECT>
+<UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Main Page"><param name="Local" value="index.html"><param name="ImageNumber" value="11"></OBJECT>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Overview of eacore_locale help"><param name="Local" value="p_overview.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Overview - eacore_locale help"><param name="Local" value="p_overview.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Copyright and trademark information"><param name="Local" value="p_copyright.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Document History"><param name="Local" value="p_documenthistory.html"><param name="ImageNumber" value="11"></OBJECT>
+  </UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Introduction to eacore_locale"><param name="Local" value="p_whatis.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="What is eacore_locale?"><param name="Local" value="p_whatis.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="What do you get?"><param name="Local" value="p_tools.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Technical Support"><param name="Local" value="p_support.html"><param name="ImageNumber" value="11"></OBJECT>
+  </UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Getting Started"><param name="Local" value="p_gettingstarted_overview.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Overview"><param name="Local" value="p_gettingstarted_overview.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Using eacore_locale library"><param name="Local" value="p_gettingstarted_locale_overview.html"><param name="ImageNumber" value="1"></OBJECT>
+    <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="eacore_locale Overview"><param name="Local" value="p_gettingstarted_locale_overview.html"><param name="ImageNumber" value="11"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Working with localized strings"><param name="Local" value="p_gettingstarted_locale.html"><param name="ImageNumber" value="11"></OBJECT>
+    </UL>
+  </UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Reference Guides"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="eacore_locale library reference"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html"><param name="ImageNumber" value="1"></OBJECT>
+    <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Classes"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="EA::Core::Locale"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html"><param name="ImageNumber" value="41"></OBJECT>
+      </UL>
+    <LI><OBJECT type="text/sitemap"><param name="Name" value="Files"><param name="Local" value="locale_8cpp.html"><param name="ImageNumber" value="1"></OBJECT>
+      <UL>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="locale.cpp"><param name="Local" value="locale_8cpp.html"><param name="ImageNumber" value="11"></OBJECT>
+      <LI><OBJECT type="text/sitemap"><param name="Name" value="locale.h"><param name="Local" value="locale_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+      </UL>
+    </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Library Reference Overview"><param name="Local" value="p_lib_ref_overview.html"><param name="ImageNumber" value="11"></OBJECT>
+  </UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Development Log"><param name="Local" value="p_devlog.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="EA Core Locale Changelog"><param name="Local" value="p_devlog.html"><param name="ImageNumber" value="11"></OBJECT>
+  </UL>
+<LI><OBJECT type="text/sitemap"><param name="Name" value="Appendices"><param name="Local" value="files.html"><param name="ImageNumber" value="1"></OBJECT>
+  <UL>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="File List"><param name="Local" value="files.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Compound List"><param name="Local" value="annotated.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Compound Members"><param name="Local" value="functions.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="Examples"><param name="Local" value="examples.html"><param name="ImageNumber" value="11"></OBJECT>
+  </UL>
+</UL>

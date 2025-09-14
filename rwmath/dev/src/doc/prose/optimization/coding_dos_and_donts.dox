@@ -1,0 +1,9 @@
+/*!
+\page p_coding_dos_and_donts Coding Dos and Donts
+
+This section provides some concrete examples of how code can be modified to
+more efficiently use the math library.
+    - \ref p_min_and_max "Min and Max"
+    - \ref p_matrix_column_access "Matrix Column Access"
+
+ */

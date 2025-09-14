@@ -1,0 +1,45 @@
+/*!
+************************************************************************
+\page       p_whatis    What is eacore_locale?
+
+eacore_locale is a run-time library for accessing strings from .loc files built by a 
+tool called Locomoto.  eacore_locale and Locomoto were previously part of the RealCore 
+and RealCoreTools packages.
+
+\section s_benefits Features
+
+	The following is a list of the major features of eacore_locale
+	- Full C++ class/interface based API.
+	- Supports Xenon platform.
+
+*/
+
+/*!
+********************************************************************************
+\page   p_tools     What do you get?
+
+These are the components installed with the eacore_locale package:
+- \bold run-time library \endbold \n 
+	The eacore_locale library comes in source form and need to be built by the 
+- \bold Locomoto tool \endbold \n 
+	The user needs to build the tool using the pc-vc1-release config.
+- \bold examples \endbold \n 
+	An example can be found in the 'examples' directory under the Locale 
+package root.
+- \bold eacore_locale help \endbold \n
+	This help file is included with your install.
+- \bold Locomoto help \endbold \n
+	Build the Locomoto executable and type 'locomoto -help' to bring up the
+notes in a browser window.
+*/
+
+/*!
+********************************************************************************
+\page   p_support       Technical Support
+
+There are several sources of technical support for eacore_locale:
+- The help system you are reading now. 
+- <a href="mailto:ignitionsupport@ea.com">Ignition Support</a>. Send an email to 
+Ignition Support and our Developer Relations staff will direct your query to the 
+developer responsible for this technology.
+*/

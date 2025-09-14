@@ -1,0 +1,48 @@
+/*!
+\page p_ambiguous_function_calls Ambiguous Function Calls
+
+The <code>VecFloatRef<INDEX></code> and \c VecFloatRefIndex classes are designed to be as transparent as possible.
+They were introduced to make Vector types appear to be composed of 4 individual
+elements, when they are in fact a single vector element.  The types also let
+you treat elements as if they were floats (when implicit conversions are
+enabled).  Usually the abstraction works well, but occasionally it breaks down.
+One common problem, is that function calls are ambiguous because \c VecFloatRef types can
+be converted to either \c VecFloat's or \c float's.
+
+Consider this example:
+
+\code
+
+VecFloat minValue(0.0f);
+VecFloat minValue(1.0f);
+VecFloat result = Clamp( vec4.X(), minValue, maxValue );
+
+\endcode
+
+If both the fpu and vpu libraries are imported, this is an ambiguous function
+call.  That is because the \c rw::math::vpu::Clamp function or the \c
+rw::math::fpu::Clamp function call could be invoked by converting all arguments
+to either \c VecFloat or \c float.  
+
+The only way to make this code unambigous is to convert all the types to either \c VecFloat or \c float.
+For example, this code will compile fine:
+
+\code
+
+VecFloat minValue(0.0f);
+VecFloat minValue(1.0f);
+VecFloat result = Clamp( VecFloat(vec4.X()), minValue, maxValue );
+
+\endcode
+
+An alternative, would be for the math library to implement overloaded function calls for \c Clamp that take
+all possible arguments.  For example, we could add <code>Clamp( VecFloatRef<INDEX>, VecFloat, VecFloat )</code>.  That would
+allow the original code to compile.  However, this is a slippery slope.  We would also need to worry about
+clamping other argument types.  For example we also need <code>Clamp( VecFloatRef<INDEX>, VecFloatRefIndex, VecFloat )</code>.
+The number of permutations is extremely large, and would quickly bloat the library.  So, to avoid this situation
+the current solution is to explicity cast reference types to a scalar (i.e. \c VecFloat) to avoid ambiguity.
+
+In general, the math library tries to provide overloads to avoid ambiguities, but in situations where there are more than
+2 arguments, this solution becomes impractical.
+
+*/

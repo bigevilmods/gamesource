@@ -1,0 +1,19 @@
+/*!
+\page p_deprecation Deprecation
+
+Although, the RWMath library is a fairly new system, it stills carries with it
+a lot of legacy API's.  (See the \ref p_history "history" page for more
+information.)  In an attempt to keep the libraries API clean, we have marked
+some API's as deprecated.  Deprecated functions are code that we support for
+legacy reasons, but we feel users should avoid using.  In the future we would
+like to drop support for this functionality entirely.
+
+The RW_MATH_ENABLE_DEPRECATED_API define is used to control whether or not the
+old deprecated functionality is supported.  By default
+RW_MATH_ENABLE_DEPRECATED_API is set to 1.  This define enables support for the
+deprecated API.  If you would like to avoid using deprecated functionality,
+please define RW_MATH_ENABLE_DEPRECATED_API to
+0 before including any rwmath headers. 
+
+    
+*/

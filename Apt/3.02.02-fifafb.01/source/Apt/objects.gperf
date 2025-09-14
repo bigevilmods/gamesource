@@ -1,0 +1,43 @@
+struct Objects { char *szName; int nIndex; };
+%%
+_target, 1
+this, 2
+_root, 3
+Key, 4
+Math, 5
+_level0, 6
+_level1, 7
+_level2, 8
+_level3, 9
+_level4, 10
+_level5, 11
+_level6, 12
+_level7, 13
+_level8, 14
+_level9, 15
+_parent, 16
+extern, 17
+super, 18
+_global, 19
+Mouse,20
+_level10,21
+_level11,22
+_level12,23
+_level13,24
+_level14,25
+_level15,26
+_level16,27
+_level17,28
+_level18,29
+_level19,30
+_level20,31
+_level21,32
+_level22,33
+_level23,34
+_level24,35
+String,36
+Stage,37
+AlternateInput,38
+AptUtil,39
+setInterval,50
+clearInterval,51

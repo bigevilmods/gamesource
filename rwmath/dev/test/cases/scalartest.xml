@@ -1,0 +1,2026 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestScalar" HEADER="scalartest.h" SOURCE="scalartest.inc" RWHOSTHEADER="rw/math/vpu/scalar.h" RWGENERICHEADER="rw/math/fpu/scalar.h" RWOPTIMALHEADER="rw/math/optimal/scalar.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+<!-- The Last Test is test66, please change this number when you add more tests, make sure test names do not repeat-->
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("FastFloatToInt32(%s)", typeName);
+        Validate( FastFloatToInt32((float_test_type)6.3f) == 6 );
+#if defined RW_MATH_TARGET_SUPPORTS_SSE && defined HOST_TESTING && !defined RWCROSS
+        Validate( FastFloatToInt32((float_test_type)6.9f) == 7 );
+        Validate( FastFloatToInt32((float_test_type)-5.9f) == -6 );
+#else
+        Validate( FastFloatToInt32((float_test_type)6.9f) == 6 );
+        Validate( FastFloatToInt32((float_test_type)-5.9f) == -5 );
+#endif
+        Validate( FastFloatToInt32((float_test_type)-5.0f) == -5 );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Floor(%s)", typeName);
+        Validate(Floor((float_test_type)3.9f) == (float_test_type)3.f);
+        Validate(Floor((float_test_type)2.5f) == (float_test_type)2.0f);
+        Validate(Floor((float_test_type)3.5f) == (float_test_type)3.0f);
+        Validate(Floor((float_test_type)1.01f) == (float_test_type)1.0f);
+        Validate(Floor((float_test_type)-3.9f) == (float_test_type)-4.f);
+        Validate(Floor((float_test_type)-2.5f) == (float_test_type)-3.0f);
+        Validate(Floor((float_test_type)-1.01f) == (float_test_type)-2.0f);
+
+        // Ensure large numbers Floor properly.
+        Validate(Floor((float_test_type)2.5521178e38f) == (float_test_type)2.5521178e38f);
+        Validate(Floor((float_test_type)-2.5521178e38f) == (float_test_type)-2.5521178e38f);
+
+        // Check a range of numbers around 0
+        bool success = true;
+        const int numDivisions = 100;
+        for(int rangeStart = -10; rangeStart < 10; rangeStart++)
+        {
+            for(int division=0; division<numDivisions; division++)
+            {
+                float value = ((float)rangeStart) + ((float)division) / ((float)numDivisions);
+                success &= ( Floor((float_test_type)value) == (float_test_type)(float)rangeStart );
+            }
+        }
+        Validate(success);
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntFloor(%s)", typeName);
+        Validate(IntFloor((float_test_type)3.9f) == 3);
+        Validate(IntFloor((float_test_type)2.5f) == 2);
+        Validate(IntFloor((float_test_type)1.01f) == 1);
+        Validate(IntFloor((float_test_type)-3.9f) == -4.f);
+        Validate(IntFloor((float_test_type)-2.5f) == -3.0f);
+        Validate(IntFloor((float_test_type)-1.01f) == -2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Ceil(%s)", typeName);
+        Validate(Ceil((float_test_type)3.9f) == (float_test_type)4.f);
+        Validate(Ceil((float_test_type)2.5f) == (float_test_type)3.0f);
+        Validate(Ceil((float_test_type)1.01f) == (float_test_type)2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntCeil(%s)", typeName);
+        Validate(IntCeil((float_test_type)3.9f) == 4);
+        Validate(IntCeil((float_test_type)2.5f) == 3);
+        Validate(IntCeil((float_test_type)1.01f) == 2);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Round(%s)", typeName);
+        Validate(Round((float_test_type)3.9f) == (float_test_type)4.f);
+        Validate(Round((float_test_type)2.5001f) == (float_test_type)3.0f);
+        Validate(Round((float_test_type)2.5f) == (float_test_type)3.0f);
+        Validate(Round((float_test_type)2.4999f) == (float_test_type)2.0f);
+        Validate(Round((float_test_type)1.01f) == (float_test_type)1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntRound(%s)", typeName);
+        Validate(IntRound((float_test_type)3.9f) == 4);
+        Validate(IntRound((float_test_type)2.5001f) == 3);
+        //"IEEE Standard 754 defines four rounding modes (see Table 4-8): round to nearest, round
+        //up, round down, and round toward zero. The default rounding mode for the IA-32 [pentium4] architecture
+        //is round to nearest. This mode provides the most accurate and statistically unbiased estimate of
+        //the true result and is suitable for most applications."
+        //Given an x.5 value, this rounding mode rounds up OR down such that the result will be an EVEN #
+        //eg 2.5->2, 3.5->4
+        Validate(IntRound((float_test_type)3.5f) == 4);
+        Validate(IntRound((float_test_type)2.4999f) == 2);
+        Validate(IntRound((float_test_type)1.01f) == 1);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Modulo(%s a, %s b)", typeName, typeName);
+        Validate(IsEqualWithEpsilon( Modulo((float_test_type)2.05f, (float_test_type)1.0f), (float_test_type)0.05f ));
+        Validate(IsEqualWithEpsilon( Modulo((float_test_type)2.5f, (float_test_type)1.0f), (float_test_type)0.5f ));
+        Validate(IsEqualWithEpsilon( Modulo((float_test_type)3.5f, (float_test_type)1.0f), (float_test_type)0.5f ));
+        Validate(IsEqualWithEpsilon( Modulo((float_test_type)-3.2f, (float_test_type)1.0f), (float_test_type)-0.2f ));
+        Validate(IsEqualWithEpsilon( Modulo((float_test_type)-3.5f, (float_test_type)1.0f), (float_test_type)-0.5f ));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Abs(%s)", typeName);
+        Validate(Abs((float_test_type)3.9f) == (float_test_type)3.9f);
+        Validate(Abs((float_test_type)-2.5001f) == (float_test_type)2.5001f);
+        
+        #if defined HOST_TESTING
+        
+        Validate((rw::math::vpu::Abs((float)-3.9) == (float) 3.9) && 
+                 (rw::math::vpu::Abs((double)-2.0) == (double) 2.0) &&
+                 (rw::math::vpu::Abs((float)-0.0) == (float) 0.0) &&
+                 (rw::math::vpu::Abs((double)-0.0) == (double) 0.0) &&
+                 (rw::math::vpu::Abs((float) 0.0) == (float) 0.0) &&
+                 (rw::math::vpu::Abs((double) 0.0) == (double) 0.0));
+        
+        #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Min(%s a, %s b)", typeName, typeName);
+        Validate(Min((float_test_type)3.9f, (float_test_type)3.8f) == (float_test_type)3.8f);
+        Validate(Min((float_test_type)0.0f, (float_test_type)3.8f) == (float_test_type)0.0f);
+        Validate(Min((float_test_type)-2.5001f, (float_test_type)-2.5f) == (float_test_type)-2.5001f);
+
+        #if defined HOST_TESTING
+        
+        Validate((rw::math::vpu::Min((float)-3.9, (float)-0.9) == (float)-3.9) && 
+                 (rw::math::vpu::Min((float)-0.9, (float)-2.0) == (float)-2.0) &&
+                 (rw::math::vpu::Min((float) 0.9, (float)-2.0) == (float)-2.0) &&
+                 (rw::math::vpu::Min((float) 0.9, (float) 2.0) == (float) 0.9) &&
+                 (rw::math::vpu::Min((float) 0.0, (float) 0.0) == (float) 0.0) &&
+
+                 (rw::math::vpu::Min((double)-3.9, (double)-0.9) == (double)-3.9) && 
+                 (rw::math::vpu::Min((double)-0.9, (double)-2.0) == (double)-2.0) &&
+                 (rw::math::vpu::Min((double) 0.9, (double)-2.0) == (double)-2.0) &&
+                 (rw::math::vpu::Min((double) 0.9, (double) 2.0) == (double) 0.9) &&
+                 (rw::math::vpu::Min((double) 0.0, (double) 0.0) == (double) 0.0));
+        
+        #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Min(%s a, %s b, %s c)", typeName, typeName, typeName);
+        Validate(Min((float_test_type)3.9f, (float_test_type)3.8f, (float_test_type)10.0f) == (float_test_type)3.8f);
+        Validate(Min((float_test_type)-2.5001f, (float_test_type)-2.5f, (float_test_type)-2.6f) == (float_test_type)-2.6f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Max(%s a, %s b)", typeName, typeName, typeName);
+        Validate(Max((float_test_type)3.9f, (float_test_type)3.8f) == (float_test_type)3.9f);
+        Validate(Max((float_test_type)-2.5001f, (float_test_type)-2.5f) == (float_test_type)-2.5f);
+
+        #if defined HOST_TESTING
+        
+        Validate((rw::math::vpu::Max((float)-3.9, (float)-0.9) == (float)-0.9) && 
+                 (rw::math::vpu::Max((float)-0.9, (float)-2.0) == (float)-0.9) &&
+                 (rw::math::vpu::Max((float) 0.9, (float)-2.0) == (float) 0.9) &&
+                 (rw::math::vpu::Max((float) 0.9, (float) 2.0) == (float) 2.0) &&
+                 (rw::math::vpu::Max((float) 0.0, (float) 0.0) == (float) 0.0) &&
+
+                 (rw::math::vpu::Max((double)-3.9, (double)-0.9) == (double)-0.9) && 
+                 (rw::math::vpu::Max((double)-0.9, (double)-2.0) == (double)-0.9) &&
+                 (rw::math::vpu::Max((double) 0.9, (double)-2.0) == (double) 0.9) &&
+                 (rw::math::vpu::Max((double) 0.9, (double) 2.0) == (double) 2.0) &&
+                 (rw::math::vpu::Max((double) 0.0, (double) 0.0) == (double) 0.0));
+        
+        #endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Max(%s a, %s b, %s c)", typeName, typeName, typeName);
+        Validate(Max((float_test_type)3.9f, (float_test_type)3.8f, (float_test_type)-4.0f) == (float_test_type)3.9f);
+        Validate(Max((float_test_type)-2.5001f, (float_test_type)-2.5f, (float_test_type)-2.0f) == (float_test_type)-2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Lerp(%s a, %s b, %s t)", typeName, typeName, typeName);
+        Validate(IsEqualWithEpsilon(Lerp((float_test_type)2.0f,(float_test_type)6.0f,(float_test_type)0.2f), (float_basic_type)2.8f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Reciprocal(%s)", typeName);
+        Validate(IsEqualWithEpsilon(Reciprocal((float_test_type)-8.0f), (float_test_type)-0.125f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("ReciprocalFast(%s)", typeName);
+        Validate(IsEqualWithEpsilon(ReciprocalFast((float_test_type)-8.0f), (float_basic_type)-0.125f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="reciprocalestimate">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("ReciprocalEstimate(%s)", typeName);
+        Validate(IsEqualWithEpsilon(ReciprocalEstimate((float_test_type)-8.0f), (float_basic_type)-0.125f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Sqrt(%s)", typeName);
+        Validate(IsEqualWithEpsilon(Sqrt((float_test_type)100.f), (float_basic_type)10.0f));
+        Validate(IsEqualWithEpsilon(Sqrt((float_test_type)34.23f), (float_basic_type)5.8506409905f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        Validate(IsEqualWithEpsilon(Sqrt((float_test_type)(smallFloat*smallFloat)), (float_basic_type)smallFloat));
+        Validate(IsEqualWithEpsilon(Sqrt((float_test_type)0.0f), (float_basic_type)0.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("SqrtFast(%s)", typeName);
+        Validate(IsEqualWithEpsilon(SqrtFast((float_test_type)100.f), (float_basic_type)10.0f));
+        Validate(IsEqualWithEpsilon(SqrtFast((float_test_type)34.23f), (float_basic_type)5.8506409905f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        Validate(IsEqualWithEpsilon(SqrtFast((float_test_type)(smallFloat*smallFloat)), (float_basic_type)smallFloat));
+        Validate(IsEqualWithEpsilon(SqrtFast((float_test_type)0.0f), (float_basic_type)0.0f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sqrtestimate">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("SqrtEstimate(%s)", typeName);
+        Validate(IsEqualWithEpsilon(SqrtEstimate((float_test_type)100.f), (float_basic_type)10.0f, (float_basic_type)0.02f));
+        Validate(IsEqualWithEpsilon(SqrtEstimate((float_test_type)34.23f), (float_basic_type)5.8506409905f, (float_basic_type)0.02f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        Validate(IsEqualWithEpsilon(SqrtEstimate((float_test_type)(smallFloat*smallFloat)), (float_basic_type)smallFloat));
+        Validate(IsEqualWithEpsilon(SqrtEstimate((float_test_type)0.0f), (float_basic_type)0.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("InvSqrt(%s)", typeName);
+        Validate(IsEqualWithEpsilon(InvSqrt((float_test_type)100.f), (float_basic_type)0.1f));
+        Validate(IsEqualWithEpsilon(InvSqrt((float_test_type)34.23f), (float_basic_type)0.17092f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("InvSqrtFast(%s)", typeName);
+        Validate(IsEqualWithEpsilon(InvSqrtFast((float_test_type)100.f), (float_basic_type)0.1f, (float_basic_type)0.01f));
+        Validate(IsEqualWithEpsilon(InvSqrtFast((float_test_type)34.23f), (float_basic_type)0.17092f, (float_basic_type)0.01f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("DivSqrt(%s)", typeName);
+        Validate(IsEqualWithEpsilon(DivSqrt((float_test_type)100.f, (float_test_type)4.0f), (float_basic_type)4.0f*0.1f));
+        Validate(IsEqualWithEpsilon(DivSqrt((float_test_type)34.23f, (float_test_type)7.0f), (float_basic_type)7.0f*0.17092f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("DivSqrtFast(%s)", typeName);
+        Validate(IsEqualWithEpsilon(DivSqrtFast((float_test_type)100.f, (float_test_type)4.0f), (float_basic_type)4.0f*0.1f));
+        Validate(IsEqualWithEpsilon(DivSqrtFast((float_test_type)34.23f, (float_test_type)7.0f), (float_basic_type)7.0f*0.17092f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Pow(%s)", typeName);
+        // Test values less than 1
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)0.01f, (float_test_type)126.0f), (float_basic_type)0.0f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)0.001f, (float_test_type)126.0f), (float_basic_type)0.0f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)0.7f, (float_test_type)126.0f), (float_basic_type)0.0f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)0.0f, (float_test_type)126.0f), (float_basic_type)0.0f));
+
+        // Test 1
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)1.0f, (float_test_type)126.0f), (float_basic_type)1.0f));
+
+        // Test values greater than 1
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)2.0f, (float_test_type)24.0f), (float_basic_type)16777216.0f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)4.0f, (float_test_type)4.0f), (float_basic_type)256.0f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)7.0f, (float_test_type)3.0f), (float_basic_type)343.0f));
+        Validate(IsEqualWithinPercent(Pow((float_test_type)5.32f, (float_test_type)7.12f), (float_basic_type)147397.739069364f, (float_basic_type)0.05f));
+        Validate(IsEqualWithEpsilon(Pow((float_test_type)-1.5f, (float_test_type)3.0f), (float_basic_type)-3.375f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Clamp(%s val, %s min, %s max)", typeName, typeName, typeName);
+        Validate((float_test_type)Clamp( (float_test_type)2.5f, (float_test_type)1.0f, (float_test_type)2.0f) == (float_test_type)2.0f);
+        Validate((float_test_type)Clamp((float_test_type)1.99f, (float_test_type)1.0f, (float_test_type)2.0f) == (float_test_type)1.99f);
+        Validate((float_test_type)Clamp((float_test_type)1.01f, (float_test_type)1.0f, (float_test_type)2.0f) == (float_test_type)1.01f);
+        Validate((float_test_type)Clamp((float_test_type)-2.5f, (float_test_type)1.0f, (float_test_type)2.0f) == (float_test_type)1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Log(%s)", typeName);
+        Validate(IsEqualWithEpsilon(Log((float_test_type)100.0f), (float_basic_type)4.60517f));
+        Validate(IsEqualWithEpsilon(Log((float_test_type)10.0f), (float_basic_type)2.30259f));
+        Validate(IsEqualWithEpsilon(Log((float_test_type)365.0f), (float_basic_type)5.89989f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Exp(%s)", typeName);
+        Validate(IsEqualWithEpsilon(Exp((float_test_type)10.0f), (float_basic_type)22026.466f, (float_basic_type)0.05f));
+#if defined EA_PLATFORM_PS3 || EA_PLATFORM_PSP2 || (defined(EA_PLATFORM_PLAYBOOK) && defined(__ARM__))
+        Validate(IsEqualWithEpsilon(Exp((float_test_type)12.2f), (float_basic_type)198789.15f, (float_basic_type)0.1f));
+#else
+        Validate(IsEqualWithEpsilon(Exp((float_test_type)12.2f), (float_basic_type)198789.15f, (float_basic_type)0.05f));
+#endif
+        Validate(IsEqualWithEpsilon(Exp((float_test_type)-3.6f), (float_basic_type)0.0273237f, (float_basic_type)0.05f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Sgn(%s)", typeName);
+        Validate(Sgn((float_test_type)0.1f) == (float_test_type)1.f);
+        Validate(Sgn((float_test_type)10.f) == (float_test_type)1.f);
+        Validate(Sgn((float_test_type)-0.1f) == (float_test_type)-1.f);
+        Validate(Sgn((float_test_type)-1.f) == (float_test_type)-1.f);
+        Validate(Sgn((float_test_type)0.f) == (float_test_type)0.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="sgnnonzero">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("SgnNonZero(%s)", typeName);
+        Validate(SgnNonZero((float_test_type)0.1f) == (float_test_type)1.f);
+        Validate(SgnNonZero((float_test_type)10.f) == (float_test_type)1.f);
+        Validate(SgnNonZero((float_test_type)-0.1f) == (float_test_type)-1.f);
+        Validate(SgnNonZero((float_test_type)-1.f) == (float_test_type)-1.f);
+        Validate(SgnNonZero((float_test_type)0.f) == (float_test_type)1.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IsValid(%s)", typeName);
+        float_test_type one = 1.0f;
+        float_test_type zero = 0.0f;
+#if !(defined EA_PLATFORM_XENON) && defined HOST_TESTING && \
+    !(defined EA_PLATFORM_PS3 && defined HOST_TESTING) && \
+    !(defined EA_PLATFORM_PS3_SPU) && defined GENERIC_TESTING
+        Validate( IsValid(one / zero));
+#endif
+        Validate( IsValid(zero / one));
+
+#if !defined EA_PLATFORM_PS3_SPU
+        Validate(!IsValid((float_test_type)(float_basic_type)testing::GetNaN()));
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IsNan(%s)", typeName);
+        float_test_type one = 1.0f;
+        float_test_type zero = 0.0f;
+
+#if !(defined EA_PLATFORM_XENON) && defined HOST_TESTING && \
+    !(defined EA_PLATFORM_PS3 && defined HOST_TESTING) && \
+    !defined EA_PLATFORM_PS3_SPU && defined GENERIC_TESTING
+        Validate(!IsNaN(one / zero));
+#endif
+        Validate(!IsNaN(zero / one));
+#if !defined EA_PLATFORM_PS3_SPU 
+        Validate(IsNaN((float_test_type)(float_basic_type)testing::GetNaN()));
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IsZero(%s)", typeName);
+        float_test_type one = 1.0f;
+        float_test_type zero = 0.0f;
+#if !defined EA_PLATFORM_XENON
+        Validate(!IsZero(one / zero));
+#endif
+        Validate(IsZero(zero / one));
+        Validate(IsZero(zero));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IsSimilar(%s, %s)", typeName, typeName);
+        Validate(IsSimilar((float_test_type)3.0f, (float_test_type)3.0f));
+        Validate(IsSimilar((float_test_type)3.2f, (float_test_type)3.0f, (float_test_type)0.21f));
+        Validate(IsSimilar((float_test_type)3.0f, (float_test_type)3.2f, (float_test_type)0.21f));
+        Validate(!IsSimilar((float_test_type)3.0f, (float_test_type)3.3f, (float_test_type)0.21f));
+        Validate(!IsSimilar((float_test_type)3.0f, (float_test_type)2.7f, (float_test_type)0.21f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("IsSimilar(VecFloatRef<INDEX>, VecFloatRef<INDEX>)");
+        VectorIntrinsic vi1 = VecFloat(3.0f).GetVector();
+        VectorIntrinsic vi2 = VecFloat(3.2f).GetVector();
+        VectorIntrinsic vi3 = VecFloat(3.3f).GetVector();
+        VectorIntrinsic vi4 = VecFloat(2.7f).GetVector();
+        Validate( IsSimilar(VecFloatRefX(vi1), VecFloatRefX(vi1)));
+        Validate( IsSimilar(VecFloatRefY(vi2), VecFloatRefX(vi1), (float_test_type)0.21f));
+        Validate( IsSimilar(VecFloatRefZ(vi1), VecFloatRefZ(vi2), (float_test_type)0.21f));
+        Validate(!IsSimilar(VecFloatRefW(vi1), VecFloatRefW(vi3), (float_test_type)0.21f));
+        Validate(!IsSimilar(VecFloatRefX(vi1), VecFloatRefX(vi4), (float_test_type)0.21f));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        
+        for (int i = 0; i < NUM_LOG_VALUES; ++i)
+        {
+            SetFunctionName("Log test[%d]", i);
+#if defined EA_PLATFORM_PS3_SPU
+            // TODO: log function is not very accurate for SPU          
+            Validate(IsEqualWithinPercent(Log((float_test_type)log_values[i].input), (float_test_type)log_values[i].output, 0.001f));
+#else
+            Validate(IsEqualWithEpsilon(Log((float_test_type)log_values[i].input),
+                (float_test_type)log_values[i].output, (float_test_type)FLOG_EPSILON));
+#endif          
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_EXP_VALUES; ++i)
+        {
+            SetFunctionName("Exp test[%d]", i);
+
+            // Useful for printing out results to determine amount of error.
+            #if 0
+                char verboseBuffer[512];
+                sprintf( verboseBuffer, "Input: %f Output: %f Expected Output: %f\n", (float)exp_values[i].input, (float)Exp((float_test_type)exp_values[i].input), (float)exp_values[i].output  );
+                DebugPrintf( "%s", verboseBuffer );
+            #endif
+
+#if defined(EA_PLATFORM_PS3_SPU) || defined(EA_PLATFORM_XENON)
+            bool passCondition = IsEqualWithinPercent(Exp((float_test_type)exp_values[i].input), (float_test_type)exp_values[i].output, (float_test_type)0.00001f) ||
+                                 IsEqualWithEpsilon(Exp((float_test_type)exp_values[i].input), (float_test_type)exp_values[i].output, (float_test_type)FEXP_EPSILON);
+            Validate(passCondition);
+#else
+            Validate(IsEqualWithEpsilon(Exp((float_test_type)exp_values[i].input),
+                (float_test_type)exp_values[i].output, (float_test_type)FEXP_EPSILON));
+#endif
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SQRT_VALUES; ++i)
+        {
+            SetFunctionName("Sqrt test[%d]", i);
+            Validate(IsEqualWithEpsilon(Sqrt((float_test_type)sqrt_values[i].input),
+                (float_test_type)sqrt_values[i].output, (float_test_type)FSQRT_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="regressLog">
+      <![CDATA[
+
+#ifdef GENERIC_TESTING
+        //regression test passing an int
+        const char *typeName = "Regression w/int";
+
+        SetFunctionName("Log(%s)", typeName);
+        Validate(Log(10) == 2);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="regressExp">
+      <![CDATA[
+
+#ifdef GENERIC_TESTING
+        //regression test passing an int
+        const char *typeName = "Regression w/int";
+
+        SetFunctionName("Exp(%s)", typeName);
+        Validate(Exp(10) == 22026);
+
+#endif
+
+      ]]>
+      </TEST>
+      
+            
+      <TEST NAME="test50">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRefIndex::InParam a, VecFloat::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex refX(v1, 0);
+        VecFloat v2(1.0f);
+        Validate(IsSimilar(refX, v2));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test51">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloat::InParam a, VecFloat::InParam b, VecFloat::InParam epsilon)");
+        VecFloat v1(1.0f);
+        VecFloat v2(1.0f);
+        Validate(IsSimilar(v1, v2));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test52">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloat::InParam a, VecFloatRef<INDEX> b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v2, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefZ refZ(v2);
+        VecFloat v1(3.0f);
+        Validate(IsSimilar(v1, refZ));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test53">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloat::InParam a, VecFloatRefIndex::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v2, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex refY(v2, 1);
+        VecFloat v1(2.0f);
+        Validate(IsSimilar(v1, refY));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test54">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloat::InParam a, const float& b, VecFloat::InParam epsilon)");
+        VecFloat v1(2.0f);
+        Validate(IsSimilar(v1, (float)2.0f));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test55">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRef<INDEX> a, VecFloat::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefX refX(v1);
+        VecFloat v2(1.0f);
+        Validate(IsSimilar(refX, v2));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test56">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        MakeVectorIntrinsic(v2, 4.0f, 5.0f, 6.0f, 7.0f);
+        VecFloatRefW refW(v1);
+        VecFloatRefX refX(v2);
+        Validate(IsSimilar(refW, refX));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test57">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        MakeVectorIntrinsic(v2, 4.0f, 5.0f, 6.0f, 7.0f);
+        VecFloatRefW refW(v1);
+        VecFloatRefX refX(v2);
+        Validate(IsSimilar(refW, refX));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test58">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        MakeVectorIntrinsic(v2, 4.0f, 5.0f, 6.0f, 7.0f);
+        VecFloatRefW refW(v1);
+        VecFloatRefIndex refX(v2, 0);
+        Validate(IsSimilar(refW, refX));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test59">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRef<INDEX> a, const float& b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefW refW(v1);
+        Validate(IsSimilar(refW, (float)4.0f));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test60">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefW refW(v1);
+        Validate(IsSimilar(refW, (float)4.0f));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test61">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        MakeVectorIntrinsic(v2, 4.0f, 5.0f, 6.0f, 7.0f);
+        VecFloatRefIndex refW(v1, 3);
+        VecFloatRefIndex refX(v2, 0);
+        Validate(IsSimilar(refW, refX));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test62">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(VecFloatRefIndex::InParam a, const float& b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex refW(v1, 3);
+        Validate(IsSimilar(refW, (float)4.0f));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test63">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(const float& a, VecFloat::InParam b, VecFloat::InParam epsilon)");
+        VecFloat v1(1.0f);
+        Validate(IsSimilar((float)1.0f, v1));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test64">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(const float& a, VecFloatRef<INDEX> b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefW refW(v1);
+        Validate(IsSimilar((float)4.0f, refW));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test65">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(const float& a, VecFloatRefIndex::InParam b, VecFloat::InParam epsilon)");
+        MakeVectorIntrinsic(v1, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex refW(v1, 3);
+        Validate(IsSimilar((float)4.0f, refW));
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test66">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("bool IsSimilar(const float& a, const float& b, VecFloat::InParam epsilon)");
+        Validate(IsSimilar((float)2.0f, (float)2.0f));
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult_add_scalar">
+      <![CDATA[
+      
+        SetFunctionName("float_test_type MultAdd(a, b, c)");
+        float_test_type a = 3.0f;
+        float_test_type b = 4.0f;
+        float_test_type c = 7.0f;
+        float_test_type result = MultAdd(a, b, c);
+        Validate(IsSimilar(result, float_test_type(19.0f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult_add_scalar_using_ref_index">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("VecFloat MultAdd(VecFloat a, VecFloat b, VecFloat c) (a,b,c are VecFloatRefIndex's)");
+        MakeVectorIntrinsic(v1, 3.0f, 4.0f, 7.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        float_test_type result = MultAdd(a, b, c);
+        Validate(IsSimilar(result, float_test_type(19.0f)));
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult_add_scalar_using_ref_template">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("VecFloat MultAdd(VecFloat a, VecFloat b, VecFloat c) (a,b,c are VecFloatRef<INDEX>'s)");
+        MakeVectorIntrinsic(v1, 3.0f, 4.0f, 7.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        float_test_type result = MultAdd(a, b, c);
+        Validate(IsSimilar(result, float_test_type(19.0f)));
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompLessThan(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+            !CompLessThan(a, b).GetBool() &&
+             CompLessThan(a, c).GetBool() &&
+            !CompLessThan(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompLessThan(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+            !CompLessThan(a, b).GetBool() &&
+             CompLessThan(a, c).GetBool() &&
+            !CompLessThan(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompLessThan(float_test_type a, float_test_type b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+            !CompLessThan(a, b).GetBool() &&
+             CompLessThan(a, c).GetBool() &&
+            !CompLessThan(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompGreaterThan(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+            !CompGreaterThan(a, b).GetBool() &&
+            !CompGreaterThan(a, c).GetBool() &&
+             CompGreaterThan(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompGreaterThan(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+            !CompGreaterThan(a, b).GetBool() &&
+            !CompGreaterThan(a, c).GetBool() &&
+             CompGreaterThan(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompGreaterThan(VecFloatRefIndex a, VecFloatRefIndex b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+            !CompGreaterThan(a, b).GetBool() &&
+            !CompGreaterThan(a, c).GetBool() &&
+             CompGreaterThan(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompLessEqual(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+             CompLessEqual(a, b).GetBool() &&
+             CompLessEqual(a, c).GetBool() &&
+            !CompLessEqual(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompLessEqual(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+             CompLessEqual(a, b).GetBool() &&
+             CompLessEqual(a, c).GetBool() &&
+            !CompLessEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompLessEqual(VecFloatRefIndex a, VecFloatRefIndex b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+             CompLessEqual(a, b).GetBool() &&
+             CompLessEqual(a, c).GetBool() &&
+            !CompLessEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompGreaterEqual(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+             CompGreaterEqual(a, b).GetBool() &&
+            !CompGreaterEqual(a, c).GetBool() &&
+             CompGreaterEqual(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompGreaterEqual(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+             CompGreaterEqual(a, b).GetBool() &&
+            !CompGreaterEqual(a, c).GetBool() &&
+             CompGreaterEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompGreaterEqual(VecFloatRefIndex a, VecFloatRefIndex b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+             CompGreaterEqual(a, b).GetBool() &&
+            !CompGreaterEqual(a, c).GetBool() &&
+             CompGreaterEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompEqual(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+             CompEqual(a, b).GetBool() &&
+            !CompEqual(a, c).GetBool() &&
+            !CompEqual(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompEqual(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+             CompEqual(a, b).GetBool() &&
+            !CompEqual(a, c).GetBool() &&
+            !CompEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompEqual(VecFloatRefIndex a, VecFloatRefIndex b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+             CompEqual(a, b).GetBool() &&
+            !CompEqual(a, c).GetBool() &&
+            !CompEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar CompNotEqual(float_test_type a, float_test_type b)");
+        float_test_type a = 1.0f;
+        float_test_type b = 1.0f;
+        float_test_type c = 2.0f;
+        Validate(
+            !CompNotEqual(a, b).GetBool() &&
+             CompNotEqual(a, c).GetBool() &&
+             CompNotEqual(c, a).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal_vecfloatreftemplate">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompNotEqual(VecFloatRef<INDEX> a, VecFloatRef<INDEX> b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefX a(v1);
+        VecFloatRefY b(v1);
+        VecFloatRefZ c(v1);
+        Validate(
+            !CompNotEqual(a, b).GetBool() &&
+             CompNotEqual(a, c).GetBool() &&
+             CompNotEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal_vecfloatrefindex">
+      <![CDATA[
+      
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar CompNotEqual(VecFloatRefIndex a, VecFloatRefIndex b)");
+        MakeVectorIntrinsic(v1, 1.0f, 1.0f, 2.0f, 0.0f);
+        VecFloatRefIndex a(v1, 0);
+        VecFloatRefIndex b(v1, 1);
+        VecFloatRefIndex c(v1, 2);
+        Validate(
+            !CompNotEqual(a, b).GetBool() &&
+             CompNotEqual(a, c).GetBool() &&
+             CompNotEqual(c, a).GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select">
+      <![CDATA[
+      
+        SetFunctionName("float_test_type Select(MaskScalar mask, float_test_type a, float_test_type b)");
+        float_test_type result1 = Select( MaskScalar(true), (float_test_type)7.0f, (float_test_type)-26.0f );
+        float_test_type result2 = Select( MaskScalar(false), (float_test_type)7.0f, (float_test_type)-26.0f );
+        Validate(
+            result1 == (float_test_type)7.0f &&
+            result2 == (float_test_type)-26.0f
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamptonegposrange">
+      <![CDATA[
+      
+        SetFunctionName("float_test_type ClampToNegPosRange(float_test_type value, float_test_type range)");
+        Validate(
+            ClampToNegPosRange( float_test_type(7.0f), float_test_type(5.0f) ) == float_test_type(5.0f) &&
+            ClampToNegPosRange( float_test_type(3.0f), float_test_type(5.0f) ) == float_test_type(3.0f) &&
+            ClampToNegPosRange( float_test_type(-7.0f), float_test_type(5.0f) ) == float_test_type(-5.0f) &&
+            ClampToNegPosRange( float_test_type(-3.0f), float_test_type(5.0f) ) == float_test_type(-3.0f)
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Floor(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Floor(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntFloor(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                iOutArray[i]= IntFloor(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Ceil(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Ceil(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntCeil(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                iOutArray[i]= IntCeil(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Round(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Round(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("IntRound(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                iOutArray[i]= IntRound(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Abs(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Abs(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="InvSqrt_performance">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("InvSqrt(%s)", typeName);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                xArray[i]= Abs(xArray[i]);
+            }
+        }
+        
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= InvSqrt(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="InvSqrtfast_performance">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("InvSqrtFast(%s)", typeName);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                xArray[i]= Abs(xArray[i]);
+            }
+        }
+        
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= InvSqrtFast(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Sgn(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Sgn(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Min(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Min(xArray[i], yArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Max(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Max(xArray[i], yArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Clamp(%s val, %s min, %s max)", typeName, typeName, typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Clamp(xArray[i], yArray[i], zArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Exp(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Exp(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Log(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Log(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="Sqrt_performance">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Sqrt(%s)", typeName);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                xArray[i]= Abs(xArray[i]);
+            }
+        }
+        
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Sqrt(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="SqrtFast_performance">
+        <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("SqrtFast(%s)", typeName);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                xArray[i]= Abs(xArray[i]);
+            }
+        }
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= SqrtFast(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="Reciprocal_performance">
+        <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Reciprocal(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Reciprocal(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="ReciprocalFast_performance">
+        <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("ReciprocalFast(%s)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= ReciprocalFast(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sum_negatives_and_positives_select">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("              Sum negatives and positives using Select", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        float_test_type zero(0.0f);
+        float_test_type positiveSum(zero);
+        float_test_type negativeSum(zero);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                MaskScalar positiveMask = CompGreaterEqual(xArray[i], zero);
+                positiveSum += Select( positiveMask, xArray[i], zero );
+                negativeSum += Select( positiveMask, zero, xArray[i] );
+            }
+            // Make sure results are used so the compiler calculates them.
+            fOutArray[0] += positiveSum;
+            fOutArray[1] += negativeSum;
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sum_negatives_and_positives_select_unrolled_four">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Unrolled (x4) Sum negatives and positives using Select", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        float_test_type zero(0.0f);
+        float_test_type positiveSum0(zero);
+        float_test_type positiveSum1(zero);
+        float_test_type positiveSum2(zero);
+        float_test_type positiveSum3(zero);
+        float_test_type negativeSum0(zero);
+        float_test_type negativeSum1(zero);
+        float_test_type negativeSum2(zero);
+        float_test_type negativeSum3(zero);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=4)
+            {
+                MaskScalar positiveMask0 = CompGreaterEqual(xArray[i+0], zero);
+                positiveSum0 += Select( positiveMask0, xArray[i+0], zero );
+                negativeSum0 += Select( positiveMask0, zero, xArray[i+0] );
+
+                MaskScalar positiveMask1 = CompGreaterEqual(xArray[i+1], zero);
+                positiveSum1 += Select( positiveMask1, xArray[i+1], zero );
+                negativeSum1 += Select( positiveMask1, zero, xArray[i+1] );
+
+                MaskScalar positiveMask2 = CompGreaterEqual(xArray[i+2], zero);
+                positiveSum2 += Select( positiveMask2, xArray[i+2], zero );
+                negativeSum2 += Select( positiveMask2, zero, xArray[i+2] );
+
+                MaskScalar positiveMask3 = CompGreaterEqual(xArray[i+3], zero);
+                positiveSum3 += Select( positiveMask3, xArray[i+3], zero );
+                negativeSum3 += Select( positiveMask3, zero, xArray[i+3] );
+            }
+            // Make sure results are used so the compiler calculates them.
+            fOutArray[0] += positiveSum0 + positiveSum1 + positiveSum2 + positiveSum3;
+            fOutArray[1] += negativeSum0 + negativeSum1 + negativeSum2 + negativeSum3;
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sum_negatives_and_positives_branching">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("              Sum negatives and positives using branching (for comparison purposes)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        float_test_type zero(0.0f);
+        float_test_type positiveSum(zero);
+        float_test_type negativeSum(zero);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                if( xArray[i] >= zero )
+                {
+                    positiveSum += xArray[i];
+                }
+                else
+                {
+                    negativeSum += xArray[i];
+                }
+            }
+            // Make sure results are used so the compiler calculates them.
+            fOutArray[0] += positiveSum;
+            fOutArray[1] += negativeSum;
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sum_negatives_and_positives_branching_unrolled_four">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Unrolled (x4) Sum negatives and positives using branching (for comparison purposes)", typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        float_test_type zero(0.0f);
+        float_test_type positiveSum0(zero);
+        float_test_type positiveSum1(zero);
+        float_test_type positiveSum2(zero);
+        float_test_type positiveSum3(zero);
+        float_test_type negativeSum0(zero);
+        float_test_type negativeSum1(zero);
+        float_test_type negativeSum2(zero);
+        float_test_type negativeSum3(zero);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=4)
+            {
+                if( xArray[i+0] >= zero )
+                {
+                    positiveSum0 += xArray[i+0];
+                }
+                else
+                {
+                    negativeSum0 += xArray[i+0];
+                }
+
+                if( xArray[i+1] >= zero )
+                {
+                    positiveSum1 += xArray[i+1];
+                }
+                else
+                {
+                    negativeSum1 += xArray[i+1];
+                }
+
+                if( xArray[i+2] >= zero )
+                {
+                    positiveSum2 += xArray[i+2];
+                }
+                else
+                {
+                    negativeSum2 += xArray[i+2];
+                }
+
+                if( xArray[i+3] >= zero )
+                {
+                    positiveSum3 += xArray[i+3];
+                }
+                else
+                {
+                    negativeSum3 += xArray[i+3];
+                }
+
+            }
+            // Make sure results are used so the compiler calculates them.
+            fOutArray[0] += positiveSum0 + positiveSum1 + positiveSum2 + positiveSum3;
+            fOutArray[1] += negativeSum0 + negativeSum1 + negativeSum2 + negativeSum3;
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="ModuloPerf">
+      <![CDATA[
+
+        const char *typeName = GetTypeName<float_test_type>();
+
+        SetFunctionName("Modulo(%s, %s)", typeName, typeName);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i] = Modulo(xArray[i], yArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+<!-- The Last Test is test66, please change this number when you add more tests, make sure test names do not repeat-->
+
+</CLASS>
+
+</TESTCLASS>

@@ -1,0 +1,22 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestRandom :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestRandom();
+    virtual ~UnitTestRandom();
+    void Test();
+
+//#BLOCK
+
+};
+
+
+

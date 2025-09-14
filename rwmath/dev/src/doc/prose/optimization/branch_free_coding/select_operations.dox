@@ -1,0 +1,60 @@
+/*!
+\page p_select_operations Select Operations
+
+\par Introduction
+
+Being able to generate and operate on masks is important, but not entirely
+useful operations on there own.  The real power of masks is the ability to
+\e select between two results based on a mask value.
+
+\par Behavior
+
+The \c Select function acts much like the C ternary operator.  Here is some pseudo code
+for how the \c Select function works:
+
+<pre>
+    Select( mask, trueValue, falseValue )
+    {
+        if mask is true:
+            return trueValue
+        else:
+            return falseValue
+    }
+</pre>
+
+The \c Select function is quite similar to the ternary operator in C.
+
+\par Supported Data Types
+
+The Select operator has been implemented for all of the "standard" math types.
+Some types have two different Select functions available.  
+
+Virtually all data types can be selected using a \c MaskScalar type.  For example:
+
+\code
+    // This statement will initialize result with the value of matrixA.
+    Matrix44 result = Select(MaskScalar(true), matrixA, matrixB );
+\endcode
+
+Using a \c Select function that takes a \c MaskScalar as the first argument will select
+either the second or third argument to the function.
+
+
+Some other datatypes also have a element-wise \c Select function.  For example, you may
+perform a \c Select using a \c Mask4 and two \c Vector4's.
+
+\code
+    Vector4 vA( 1.0f,  2.0f,  3.0f,  4.0f);
+    Vector4 vA(10.0f, 20.0f, 30.0f, 40.0f);
+    // This statement will initialize result with (1.0f, 20.0f, 30.0f, 4.0f).
+    Vector4 result = Select(Mask4(true, false, false,true), vA, vB);
+\endcode
+
+\par VPU Specific Functionality
+
+The underlying VPU implementation for selection is a vector select.  Vector selection,
+at the hardware level, is actually a bitwise operation.  By generating a specific
+bit pattern for Mask, it is possible to perform a bitwise select.  However, for efficiency
+reasons, this functionality only exists for the VPU Mask types.
+
+*/

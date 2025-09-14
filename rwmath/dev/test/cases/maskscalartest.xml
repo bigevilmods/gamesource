@@ -1,0 +1,258 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestMaskScalar" HEADER="maskscalartest.h" SOURCE="maskscalartest.inc" RWGENERICHEADER="rw/math/fpu/maskscalar.h rw/math/fpu/maskscalar_operation.h" RWHOSTHEADER="rw/math/vpu/maskscalar.h rw/math/vpu/maskscalar_operation.h" RWOPTIMALHEADER="rw/math/optimal/maskscalar.h rw/math/optimal/maskscalar_operation.h" GENERIC="true" HOST="true" OPTIMAL="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="construct_from_bool">
+      <![CDATA[
+
+        SetFunctionName("MaskScalar(bool)");
+
+        MaskScalar maskA(true);
+        MaskScalar maskB(false);
+        
+        Validate( maskA.GetBool() && (!maskB.GetBool()) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_uint32">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar(uint32_t)");
+
+        uint32_t maskValue = 0x01020304;
+        MaskScalar mask(maskValue);
+        
+        Validate( mask.ToUInt32() == maskValue );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_mask">
+      <![CDATA[
+
+        SetFunctionName("MaskScalar(const MaskScalar&)");
+
+        MaskScalar maskATemp(true);
+        MaskScalar maskBTemp(false);
+        MaskScalar maskA(maskATemp);
+        MaskScalar maskB(maskBTemp);
+        
+        Validate( maskA.GetBool() && (!maskB.GetBool()) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="assignment_operator">
+      <![CDATA[
+
+        SetFunctionName("MaskScalar& operator =(const MaskScalar&)");
+
+        MaskScalar maskATemp(true);
+        MaskScalar maskBTemp(false);
+        MaskScalar maskA;
+        MaskScalar maskB;
+        maskA = maskATemp;
+        maskB = maskBTemp;
+        
+        Validate( maskA.GetBool() && (!maskB.GetBool()) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_float">
+      <![CDATA[
+
+#ifdef GENERIC_TESTING
+        SetFunctionName("MaskScalar(float_test_type)");
+
+        MaskScalar maskA((float_test_type)20.0f);
+        MaskScalar maskB((float_test_type)-7.0f);
+        
+        Validate( maskA.GetBool() && (!maskB.GetBool()) );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_vectorintrinsic">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("MaskScalar(VectorIntrinsic)");
+
+        MaskScalar maskATemp(true);
+        MaskScalar maskBTemp(false);
+        MaskScalar maskA(maskATemp.mV);
+        MaskScalar maskB(maskBTemp.mV);
+        
+        Validate( maskA.GetBool() && (!maskB.GetBool()) );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_not">
+      <![CDATA[
+
+        SetFunctionName("Not(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( !Not(trueMask).GetBool() && Not(falseMask).GetBool() );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_and">
+      <![CDATA[
+
+        SetFunctionName("And(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( 
+            (!And( falseMask, falseMask ).GetBool()) &&
+            (!And( falseMask,  trueMask ).GetBool()) &&
+            (!And(  trueMask, falseMask ).GetBool()) &&
+            ( And(  trueMask,  trueMask ).GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_or">
+      <![CDATA[
+
+        SetFunctionName("Or(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( 
+            (!Or( falseMask, falseMask ).GetBool()) &&
+            ( Or( falseMask,  trueMask ).GetBool()) &&
+            ( Or(  trueMask, falseMask ).GetBool()) &&
+            ( Or(  trueMask,  trueMask ).GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_xor">
+      <![CDATA[
+
+        SetFunctionName("Xor(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( 
+            (!Xor( falseMask, falseMask ).GetBool()) &&
+            ( Xor( falseMask,  trueMask ).GetBool()) &&
+            ( Xor(  trueMask, falseMask ).GetBool()) &&
+            (!Xor(  trueMask,  trueMask ).GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+
+        SetFunctionName("CompEqual(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( 
+            ( CompEqual( falseMask, falseMask ).GetBool()) &&
+            (!CompEqual( falseMask,  trueMask ).GetBool()) &&
+            (!CompEqual(  trueMask, falseMask ).GetBool()) &&
+            ( CompEqual(  trueMask,  trueMask ).GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+
+        SetFunctionName("CompNotEqual(MaskScalar)");
+
+        MaskScalar trueMask(true);
+        MaskScalar falseMask(false);
+        
+        Validate( 
+            (!CompNotEqual( falseMask, falseMask ).GetBool()) &&
+            ( CompNotEqual( falseMask,  trueMask ).GetBool()) &&
+            ( CompNotEqual(  trueMask, falseMask ).GetBool()) &&
+            (!CompNotEqual(  trueMask,  trueMask ).GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="settrue">
+      <![CDATA[
+
+        SetFunctionName("SetTrue()");
+
+        MaskScalar mask;
+        mask.SetTrue();
+        
+        Validate( mask.GetBool() );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="setfalse">
+      <![CDATA[
+
+        SetFunctionName("SetFalse()");
+
+        MaskScalar mask;
+        mask.SetFalse();
+        
+        Validate( !mask.GetBool() );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("MaskScalar Select(MaskScalar mask, MaskScalar a, MaskScalar b)");
+        MaskScalar v1(true);
+        MaskScalar v2(false);
+
+        MaskScalar result1 = Select( MaskScalar(true), v1, v2 );
+        MaskScalar result2 = Select( MaskScalar(false), v1, v2 );
+        Validate(
+            CompEqual(result1, v1).GetBool() &&
+            CompEqual(result2, v2).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

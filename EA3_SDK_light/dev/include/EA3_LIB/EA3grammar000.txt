@@ -1,0 +1,229 @@
+history {
+  XbQString("tool")
+  XbQString("date")
+  XbQString("user")
+  XbQString("comment")
+}
+history[] {
+}
+geoPrim {
+  int("coord")[]
+  layer[] {
+  }
+  material[]
+}
+triMesh : geoPrim {
+}
+polygon : geoPrim {
+}
+triStrip : geoPrim {
+}
+sdsStrip : geoPrim {
+}
+sdsIrregularPatch : geoPrim {
+}
+sdsSimplePatch : geoPrim {
+}
+nurbsSurface : geoPrim {
+  float("weight")[] {
+  }
+  float("uknot")[] {
+  }
+  float("vknot")[] {
+  }
+  int("uDegree") 3
+  int("vDegree") 3
+  XbIdentifier("uForm") OPEN
+  XbIdentifier("vForm") OPEN
+  int("numVpoints") 0
+  int("numUpoints") 0
+  int("vStride") 0
+  int("uStride") 0
+}
+nurbsCurve {
+  coord[] 
+  float("weight")[] {
+  }
+  float("knots")[] {
+  }
+  int("degree") 3
+  XbIdentifier("form") OPEN
+}
+geoPrim[] {
+  triMesh {
+  }
+  triStrip {
+  }
+  polygon {
+  }
+  nurbsSurface {
+  }
+  sdsStrip {
+  }
+  sdsIrregularPatch {
+  }
+  sdsSimplePatch {
+  }
+}
+layer {
+  int("normal")[]
+  int("uv")[]
+  int("colour")[]
+}
+xform {
+  XbIdentifier("type") local
+  float16("matrix") 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1
+  float4("quaternion") 1 0 0 0
+  float3("euler") 0 0 0
+  float3("translation") 0 0 0
+  float3("scale") 1 1 1
+}
+bone {
+  XbIdentifier("type") unknown
+  xform[] {
+  }
+  instanceOf[]
+}
+skeleton {
+  bone {
+  }
+  skeleton("children")[] {
+  }
+}
+material {
+  float4("diffuse") 0 0 0 0
+  float4("ambient") 0 0 0 0
+  float4("specular") 0 0 0 0
+  float("shininess") 0
+  XbIdentifier("src") ZERO
+  XbIdentifier("dst") ONE
+  texture[]
+  material[]
+}
+texture {
+  XbQString("filename") "not_set"
+  float4("texcolour") 0 0 0 0
+  XbIdentifier("texenv") MODULATE
+  int("wrapU") 1
+  int("wrapV") 1
+  XbIdentifier("minfilter") LINEAR
+  XbIdentifier("magfilter") LINEAR
+  uvGen[] {
+  }
+}
+uvGen {
+  XbIdentifier("coord") S
+  XbIdentifier("mode") OBJECT
+  float4("params") 1 0 0 0
+}
+material[] {
+}
+texture[] {
+}
+geometry {
+  float3("coord")[] {
+  }
+  float3("normal")[] {
+  }
+  float3("uv")[] {
+  }
+  XbColour("colour")[] {
+  }
+  edge[] {
+  }
+  coordGroup[] {
+  }
+  lod[] {
+  }
+  morphTarget[] {
+  }
+  instanceOf[]
+}
+morphTarget {
+  coord[]
+  normal[]
+  uv[]
+  colour[]
+  float3("coordDelta")[] {
+  }
+  float3("normalDelta")[] {
+  }
+  float2("uvDelta")[] {
+  }
+  XbColour("colourDelta")[] {
+  }
+}
+edge {
+  int("coord")[]
+}
+lod {
+  envelope[]
+  geoPrim[] {
+  }
+}
+coordGroup {
+  int("coord")[]
+}
+envelope {
+  skeleton[]
+  cluster[] {
+  }
+}
+cluster {
+  bone[]
+  float("weight")[] {
+  }
+  int("coord")[]
+  int("normal")[]
+}
+animation {
+  float("FPS") 30
+  int("startFrame") 0
+  int("endFrame") 1
+  channel[] {
+  }
+  trigger[] {
+  }
+}
+trigger {
+  int("frame") 0
+  XbQString("message") ""
+  XbIdentifier("type") AUDIO
+}
+continuousF1Channel {
+  XbIdentifier("what") _
+  int("index") 0
+# time, val ,left_slope[0], left_slope[1], right_slope[0], right_slope[1]
+# interpolation type
+  ffffffd("key")[] {
+  }
+}
+discreteF3Channel {
+  XbIdentifier("what") _
+  float3("data")[] {
+  }
+}
+discreteF1Channel {
+  XbIdentifier("what") _
+  int("index") 0
+  float("data")[] {
+  }
+}
+channel[] {
+  discreteF3Channel {
+  }
+  discreteF1Channel {
+  }
+  continuousF1Channel {
+  }
+}
+model {
+  skeleton[] {
+  }
+  geometry[] {
+  }
+  envelope[] {
+  }
+  animation[] {
+  }
+}

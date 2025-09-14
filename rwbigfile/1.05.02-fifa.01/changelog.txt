@@ -1,0 +1,168 @@
+/*!
+\page p_devlog rwbigfile Changelog
+
+\n
+\n
+
+rwbigfile library ChangeLog
+
+\n
+\n
+
+==============================================================================
+    Version 1.05.02
+
+    Changes.
+      - Support for rwstdc has been removed.
+
+      - Critical sections added in parts of the bigfile handler to improve
+      thread safety.
+
+      - A flag was added to the bigfile handler to indicate that it should not
+      decompress data automatically but pass it compressed back to the user. 
+
+      - The bigfile tool has added -toUpper and -toLower command line options.
+
+      - The bigfile tool now does not sort the index by default but includes
+      files in the order they are specified on the command line or via
+      response file, to maintain compatibility with Glump's conventions.
+
+      - A "permanent head" file has been added to the handler that lets the
+      user specify a big file that will always remain at the head of the list
+      and, hence, will always be searched first.
+
+      - Support for in-memory big files has been added.
+
+      - The bigfile handler now can pass through the appropriate SDATA flag to the
+      underlying PS3 rwfilesystem driver.
+
+      - The bigfile tool has been ported to Linux and OS X.
+
+    Version 1.05.01 - (March 3, 2010)
+
+    New features.
+      - Bigfile has the added ability to merge big file archives.
+      - Files contained in a big file can now be opened via their index. For
+        example:
+          \code
+          AsyncOp op;
+          op.Open("big:mybigfile.big,5"); // Opens the fifth file in mybigfile.big
+          \endcode
+      - Bigfile allows files to be serialized into the archive in either the
+        order they are specified on the command line or alphabetically.
+      - Bigfile allows the index to be sorted by file offset which is required
+        for consistent behavior with the index lookup feature mentioned above.
+
+    Changes.
+      - WinBig was updated to read new big file formats, including those whose
+        contents have been packed using the new chunk compression formats.
+
+    Bug fixes. The following bugs have been fixed in this release:
+      - Avoid reading the next chunk info if we have read the last chunk which
+        was causing crashes when the chunk abuts unrelated data.
+      - WinBig would crash when opening files created with the -fat option.
+      - Bigfile would not extract files from a big file archive that were 
+        compressed.
+
+    Version 1.05.00 - (December 11, 2009)
+
+    New features.  The following features have been added in this release:
+
+      - ETCR-240. A command line option, -compressThreshold, analogous to
+        glump's -packthresh was added to the bigfile tool to specify the 
+        minimum size of a file to be compressed.
+
+      - ETCR-243. A feature was added to the bigfile tool allow file names 
+        within the big file archive to be specified. The format,
+        sourcefilename=destinationfilename, follows glump's convention and
+        an additional command line parameter, -sourcefile, was introduced
+        to disable this renaming.
+
+      - ETCR-244. The bigfile tool returns a non-zero result when a failure
+        occurs.
+
+      - ETCR-245. The bigfile tool has the ability to sort alphabetically,
+        analagous to glump's -sort3 option.
+
+      - A new constructor has been added to the Big class that takes an
+        option indicating whether or not it should load the name index
+        automatically. This only works with new-style big files.
+
+      - A new method, GetBaseAddress(), has been added to the Big class to
+        fetch the base address of the bigfile data in memory.
+
+    Bug fixes.  The following bugs have been fixed in this release:
+
+      - ETCR-238. Wildcards searches in big files were greedily matching
+        subdirectories causing unexpected and inconsistent behavior with
+        other file system components.
+
+      - ETCR-259. Files previously could have been compressed using the
+        bigfile tool using LZX but the runtime would not be able to read them.
+
+      - Loading an old-format bigfile after a new-format bigfile would cause
+        reads of files from the old-format file to fail.
+
+    Version 1.04.00 - (September 30, 2009)
+
+    Changes.  The following API changes have been made in this release:
+
+      - the glump and bighead tools are deprecated.  They have been superceded
+        by a new tool called "bigfile", which authors bigfiles using a format
+        similar to what bighead uses.  Refer to the documentation included
+        in the tool for how to use it.  The bigfile tool is basically a
+        stripped-down glump.  If there are features in glump that would prevent
+        you from using the bigfile tool, please let us know at and we'll add
+        them back in after the use case is understood.
+
+    New features.  The following features have been added in this release:
+
+      - ETCR-106.  If you're using rwfilesystem 1.12.00 or later, the bigfile
+        handler will spawn another thread to decompress the data.  This can
+        result in improved performance on data being read from the hard drive
+        because the next read can start while the current one is still
+        decompressing.  You don't need to take any special action to enable
+        this feature, it will be automatically enabled if you build rwbigfile
+        with rwfilesystem 1.12.00 or later.
+
+      - ETCR-149.  It is now possible to search other bigfiles if the file
+        you requested wasn't found in the bigfile specified.  Pass the flag
+        rw::core::BigHandler::FOPEN_SEARCH_OTHER_BIGFILES to the
+        AsyncOp::Open function.  If the file is located in the specified
+        bigfile, that file is returned.. If the file is not located in the
+        specified bigfile, all other bigfiles will be searched and the first
+        match will be returned.
+
+      - ETCR-150.  Wildcarded file names can be used with the HASH16 index
+        format.  In order to do this, the name index must be loaded in addition
+        to the hashed index.  This feature is only available in BFTYPE_FAST
+        bigfiles, which must be created with the new bigfile tool.  The header
+        rw/core/bigfile/fileformat.h describe the new format.  Three new
+        functions have been added to the runtime library,
+        rw::core::Big::GetNameIndexSize(), rw::core::Big::SetNameIndex(), and
+        rw::core::Big::FindNameByIndex().  Pass the flag
+        rw::core::BigHandler::ADDFLAG_LOAD_NAME_INDEX to AddArchiveFromFile if
+        you want to be able to perform wildcard searches on the loaded bigfile.
+        The runtime library continues to handle all formats (new bigfile, legacy
+        bigfile, and bighead) for now.  At some point in the future, support
+        for the legacy formats may be removed, and they are generally
+        inefficient so we encourage you to migrate your toolchain to the
+        bigfile tool.
+
+      - ETCR-226.  The bigfile tool and runtime library support chunked asset
+        decompression.  rwcodec-1.04.00 or later is required to use this feature.
+        Set a decompression job with rw::core::BigHandler::SetDecompressJobInfo().
+
+    Bug fixes.  The following bugs have been fixed in this release:
+
+      - ETCR-118.  When extracting files from a bigfile using the glump tool,
+        if the file was in a non-existent subdirectory, it was skipped.  This
+        bug has been fixed.
+
+    Version 1.03.00 - (September 11, 2008)
+
+      - Links to release notes for this and older versions are available on
+        the package server.
+
+*/
+

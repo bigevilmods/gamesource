@@ -1,0 +1,48 @@
+/*!
+\page p_constistency_of_results Consistency of Results
+
+\section s_constistency_of_results_intro Introduction
+
+For many applications it is important for mathematical calculations to give
+exactly the same answer each time a specific input is given.  For example, network
+code often requires that all instances of a network game calculate exactly the same
+values.  If this is not the case, slight differences in results will eventually
+cause the game to fall out of synch.
+
+\section s_constistency_of_results_factors Factors that affect determinism
+
+\subsection ss_constistency_of_results_platform Platform
+
+Generally speaking different hardware platforms will have slightly different
+results.  For example the floating point units may have a different internal
+precision, or the way the hardware implements a different instruction may
+affect determinism.
+
+Even within a family of processors, results may vary to some degree.  For example the 
+\c rsqrtps instruction in SSE may give different results for AMD and Intel processors.
+So PC's with different processors may give results that vary slightly from one another.
+
+\subsection ss_constistency_of_results_compiler_optimization Compiler / Optimizations
+
+Changing between compilers or even rebuilding code with different optimization settings
+can effect the exact results given.  That is because many factors can affect the exact
+result of a computation.
+- The order that computations are performed in will affect rounding of the final result.
+- At higher levels of optimization a compiler may take a few short cuts that affect precision.
+- Debug builds often save/restore floating point values.  This can reduce precision if the
+  FPU has higher internal precision than the intermediate results that are
+  stored to memory.  (e.g. the 80-bit x87 FPU).
+- Standard functions or SDK functions may vary between compilers.
+
+Note: Even changing unrelated code in a game could cause the optimizer to produce slightly
+different code generation (for example whether or not a function is inlined).  This, in turn,
+could slightly change the precision of a calculated value.
+
+\subsection ss_constistency_of_results_fpu_vs_vpu FPU vs VPU
+
+Since the implementation of FPU and VPU code is often quite different, and the
+registers/instructions used can be quite different as well, FPU and VPU math
+routines will usually give different results.  Users should not expect
+equivalent FPU and VPU routines to give identical answers.
+
+*/

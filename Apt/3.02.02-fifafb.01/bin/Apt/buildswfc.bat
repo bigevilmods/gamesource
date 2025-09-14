@@ -1,0 +1,1 @@
+perlapp swfc.pl --clean --force --nologo --lib Data-TemporaryBag-0.08\lib;SWF-File-0.36\lib --add SWF::BinStream::Codec::Zlib

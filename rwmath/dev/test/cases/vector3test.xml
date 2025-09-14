@@ -1,0 +1,4932 @@
+<!-- (c) Electronic Arts. All Rights Reserved.-->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestVector3" HEADER="vector3test.h" SOURCE="vector3test.inc" RWHOSTHEADER="rw/math/vpu/vector3_operation.h" RWGENERICHEADER="rw/math/fpu/vector3_operation.h" RWOPTIMALHEADER="rw/math/optimal/vector3_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("Set(float, float, float)");
+        Vector3 v3;
+        v3.Set(1.1f, 2.2f, 3.4f);
+        Validate((float)v3.X() == 1.1f && (float)v3.Y() == 2.2f && (float)v3.Z() == 3.4f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3(const fpu::Vector3Template<FloatClassRHS> &_v)");
+        ::rw::math::fpu::Vector3Template<double> doubleUnalignedVector;
+        ::rw::math::fpu::Vector3Template<float> floatUnalignedVector;
+        ::rw::math::fpu::Vector3Template<double> doubleAlignedVector;
+        ::rw::math::fpu::Vector3Template<float> floatAlignedVector;
+
+        doubleUnalignedVector.Set(
+            0, 1, 2
+            );
+        floatUnalignedVector.Set(
+            0, 1, 2
+            );
+        doubleAlignedVector.Set(
+            0, 1, 2
+            );
+        floatAlignedVector.Set(
+            0, 1, 2
+            );
+
+        Vector3 ref;
+        ref.Set(
+            0, 1, 2
+            );
+
+        Vector3 test_doubleUnalignedVector(doubleUnalignedVector);
+        Vector3 test_floatUnalignedVector(floatUnalignedVector);
+        Vector3 test_doubleAlignedVector(doubleAlignedVector);
+        Vector3 test_floatAlignedVector(floatAlignedVector);
+
+        Validate(IsSimilar(test_doubleUnalignedVector, ref) &&
+                 IsSimilar(test_floatUnalignedVector, ref) &&
+                 IsSimilar(test_doubleAlignedVector, ref) &&
+                 IsSimilar(test_floatAlignedVector, ref));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector3(VecFloat, VecFloat, VecFloat)");
+            Vector3 v(VecFloat(1.2f), VecFloat(2.3f), VecFloat(3.5f));
+            Validate((float)v.X() == 1.2f && (float)v.Y() == 2.3f && (float)v.Z() == 3.5f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 0.0f);
+
+            SetFunctionName("Vector3(VecFloatRef, VecFloatRef, VecFloatRef)");
+            Vector3 v0 = Vector3(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi));
+            Validate((float)v0.X() == 1.0f && (float)v0.Y() == 2.0f && (float)v0.Z() == 3.0f);
+            Vector3 v1 = Vector3(VecFloatRefY(vi), VecFloatRefX(vi), VecFloatRefZ(vi));
+            Validate((float)v1.X() == 2.0f && (float)v1.Y() == 1.0f && (float)v1.Z() == 3.0f);
+            Vector3 v2 = Vector3(VecFloatRefZ(vi), VecFloatRefX(vi), VecFloatRefZ(vi));
+            Validate((float)v2.X() == 3.0f && (float)v2.Y() == 1.0f && (float)v2.Z() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 0.0f);
+
+            SetFunctionName("Vector3(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            Vector3 v0(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2));
+            Validate((float)v0.X() == 1.1f && (float)v0.Y() == 2.1f && (float)v0.Z() == 3.1f);
+            Vector3 v1(VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,2));
+            Validate((float)v1.X() == 2.1f && (float)v1.Y() == 1.1f && (float)v1.Z() == 3.1f);
+            Vector3 v2(VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2));
+            Validate((float)v2.X() == 3.1f && (float)v2.Y() == 2.1f && (float)v2.Z() == 3.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Set(VecFloat, VecFloat, VecFloat)");
+            Vector3 v3;
+            v3.Set(VecFloat(1.2f), VecFloat(2.3f), VecFloat(3.5f));
+            Validate((float)v3.X() == 1.2f && (float)v3.Y() == 2.3f && (float)v3.Z() == 3.5f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 0.0f);
+
+            SetFunctionName("Set(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            Vector3 v3;
+            v3.Set(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2));
+            Validate((float)v3.X() == 1.1f && (float)v3.Y() == 2.1f && (float)v3.Z() == 3.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 0.0f);
+
+            SetFunctionName("Set(VecFloatRef, VecFloatRef, VecFloatRef)");
+            Vector3 v3;
+            v3.Set(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi));
+            Validate((float)v3.X() == 1.0f && (float)v3.Y() == 2.0f && (float)v3.Z() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloat value)");
+            Vector3 v( 1.0f, 2.0f, 3.0f );
+            v.SetComponent(1, VecFloat(12.0) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 12.0f && (float)v.Z() == 3.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRefIndex value)");
+            Vector3 v( 1.0f, 2.0f, 3.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefIndex(vi,3));
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 4.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRef<INDEX> value)");
+            Vector3 v( 1.0f, 2.0f, 3.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefZ(vi)  );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(0, float value)");
+            Vector3 v( 1.0f, 2.0f, 3.0f );
+            v.SetComponent( 0, 101.0f);
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(1, float value)");
+            Vector3 v( 101.0f, 2.0f, 3.0f );
+            v.SetComponent( 1, 10.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 10.0f && (float)v.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(2, float value)");
+            Vector3 v( 101.0f, 10.0f, 3.0f );
+            v.SetComponent( 2, 69.0f );
+            Validate((float)v.X() == 101.0f && (float)v.Y() == 10.0f && (float)v.Z() == 69.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+            SetFunctionName("SetZero()");
+            Vector3 v( 1.0f, 2.0f, 3.0f );
+            v.SetZero();
+            Validate(v == Vector3(0.0f, 0.0f, 0.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(0)");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(v3.X() == v3.GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(0) const");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(const_cast<const Vector3*>(&v3)->X() == const_cast<const Vector3*>(&v3)->GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(1)");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(v3.Y() == v3.GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(1) const");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(const_cast<const Vector3*>(&v3)->Y() == const_cast<const Vector3*>(&v3)->GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(2)");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(v3.Z() == v3.GetComponent(2));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        SetFunctionName("GetComponent(2) const");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        Validate(const_cast<const Vector3*>(&v3)->Z() == const_cast<const Vector3*>(&v3)->GetComponent(2));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test_scalar_construction">
+      <![CDATA[
+
+            SetFunctionName("Vector3(scalar)");
+            Vector3 v( float_test_type(7.0f) );
+            Validate((float)v.X() == 7.0f && (float)v.Y() == 7.0f && (float)v.Z() == 7.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+            Vector3 v(1.23f, 4.56f, 7.89f);
+            SetFunctionName("Vector3(float, float, float)");
+            Validate((float)v.X() == 1.23f && (float)v.Y() == 4.56f && (float)v.Z() == 7.89f);
+
+      ]]>
+      </TEST>
+      
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+            SetFunctionName("Vector3(const Vector3&)");
+            Vector3 v(1.23f, 4.56f, 7.89f);
+            Vector3 vA(v);
+            Validate((float)vA.X() == 1.23f && (float)vA.Y() == 4.56f && (float)vA.Z() == 7.89f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+      
+            SetFunctionName("Vector3(const FloatClass _xyz[3])");
+
+#ifdef HOST_TESTING
+            {
+                float floatData[] = { 1.23f, 4.56f, 7.89f, 0.0f };
+                AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+                Vector3 vB(floatBuffer.GetFloatData());
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f);
+            }
+#else
+            {
+                float_basic_type fArray[3]={1.23f, 4.56f, 7.89f};
+                Vector3 vB(fArray);
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f);
+            }
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("X() = float");
+        Vector3 v3(0.0f, 0.0f, 0.0f);
+        v3.X() = 1.0f;
+        Validate((float)v3.X() == 1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("Y() = float");
+        Vector3 v3(0.0f, 0.0f, 0.0f);
+        v3.Y() = 2.0f;
+        Validate((float)v3.Y() == 2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("Z() = float");
+        Vector3 v3(0.0f, 0.0f, 0.0f);
+        v3.Z() = 3.0f;
+        Validate((float)v3.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("operator[0]");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        v3[0] = 99.0f;
+        Validate((float)v3.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("operator[1]");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        v3[1] = 100.0f;
+        Validate((float)v3.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("operator[2]");
+        Vector3 v3(1.0f, 2.0f, 3.0f);
+        v3[2] = 55.0f;
+        Validate((float)v3.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        SetFunctionName("X()");
+        Vector3 v3(99.0f, 2.0f, 3.0f);
+        Validate((float)v3.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        SetFunctionName("Y()");
+        Vector3 v3(1.0f, 100.0f, 3.0f);
+        Validate((float)v3.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        SetFunctionName("Z()");
+        Vector3 v3(1.0f, 2.0f, 55.0f);
+        Validate((float)v3.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        SetFunctionName("X() const");
+        Vector3 v3(99.0f, 2.0f, 3.0f);
+        Validate((float)const_cast<const Vector3*>(&v3)->X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        SetFunctionName("Y() const");
+        Vector3 v3(1.0f, 100.0f, 3.0f);
+        Validate((float)const_cast<const Vector3*>(&v3)->Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        SetFunctionName("Z() const");
+        Vector3 v3(1.0f, 2.0f, 55.0f);
+        Validate((float)const_cast<const Vector3*>(&v3)->Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamp_vector">
+      <![CDATA[
+
+        Vector3 vIn0(2.5f, 1.99f, 1.01f);
+        Vector3 vIn1(-2.5f, 0.0f, 0.0f);
+        Vector3 one = Vector3(1.0f, 1.0f, 1.0f);
+        Vector3 two = float_test_type(2.0f) * one;
+        Vector3 ref0(2.0f, 1.99f, 1.01f);
+        Vector3 ref1(1.0f, 1.0f, 1.0f);
+        Vector3 result0 = Clamp( vIn0, one, two );
+        Vector3 result1 = Clamp( vIn1, one, two );
+
+        SetFunctionName("Clamp(Vector3, Vector3, Vector3");
+        Validate( result0 == ref0 && result1 == ref1 );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompLessThan(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompLessThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompGreaterThan(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompGreaterThan(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompLessEqual(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompLessEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompGreaterEqual(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompGreaterEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompEqual(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompEqual(va, vb));
+        Validate(
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+            !mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 CompNotEqual(Vector3 a, Vector3 b)");
+        Vector3 va(1.0f, 1.0f, 2.0f);
+        Vector3 vb(1.0f, 2.0f, 1.0f);
+
+        Mask3 mask(CompNotEqual(va, vb));
+        Validate(
+            !mask.GetX().GetBool() &&
+             mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Vector3 Select(MaskScalar mask, Vector3 a, Vector3 b)");
+        Vector3 v1(1.0f, 2.0f, 3.0f);
+        Vector3 v2(10.0f, 20.0f, 30.0f);
+
+        Vector3 result1 = Select( MaskScalar(true), v1, v2 );
+        Vector3 result2 = Select( MaskScalar(false), v1, v2 );
+        Validate(
+            result1 == v1 &&
+            result2 == v2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask3_bitwise">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("Vector3 Select(MaskScalar mask, Vector3 a, Vector3 b)");
+        Vector3 v1(1.0f, 2.0f, 3.0f);
+        Vector3 v2(-10.0f, -20.0f, -30.0f);
+        Vector3 ref1( -1.0f, 20.0f, -3.0f);
+
+        uint32_t values[] = { 0x7fffffff, 0x80000000, 0x7fffffff };
+        Mask3 mask(values[0], values[1], values[2]);
+
+        Vector3 result1 = Select( mask, v1, v2 );
+        Validate( result1 == ref1 );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask3">
+      <![CDATA[
+      
+        SetFunctionName("Vector3 Select(Mask3 mask, Vector3 a, Vector3 b)");
+        Vector3 v1(1.0f, 2.0f, 3.0f);
+        Vector3 v2(10.0f, 20.0f, 30.0f);
+        Vector3 ref1(1.0f, 2.0f, 30.0f);
+        Vector3 ref2(10.0f, 20.0f, 3.0f);
+        Mask3 mask1(true, true, false);
+        Mask3 mask2(false, false, true);
+
+        Vector3 result1 = Select( mask1, v1, v2 );
+        Vector3 result2 = Select( mask2, v1, v2 );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="permute">
+      <![CDATA[
+      
+        SetFunctionName("Vector3 Permute<pattern>(value)");
+        Vector3 v(0.0f, 1.0f, 2.0f);
+        Vector3 ref1( 2.0f, 0.0f, 1.0f);
+        Vector3 ref2( 1.0f, 2.0f, 2.0f);
+        Vector3 result1 = Permute<0x201>(v);
+        Vector3 result2 = Permute<0x122>(v);
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="unalignedLoad">
+        <![CDATA[
+
+        SetFunctionName("Vector3 unaligned load/store tests");
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = static_cast<float>(i+1);
+        
+        ::rw::math::fpu::Vector3Template<float>* alignedVec = reinterpret_cast< ::rw::math::fpu::Vector3Template<float>*>(&buffer[0]);
+        Vector3 v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 1.0f && v.Y() == 2.0f && v.Z() == 3.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector3Template<float>*>(&buffer[1]);
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 2.0f && v.Y() == 3.0f && v.Z() == 4.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector3Template<float>*>(&buffer[2]);
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 3.0f && v.Y() == 4.0f && v.Z() == 5.0f);        
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector3Template<float>*>(&buffer[3]);         
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 4.0f && v.Y() == 5.0f && v.Z() == 6.0f);  
+        
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="UnalignedStore">
+        <![CDATA[
+
+        SetFunctionName("Vector3 unaligned store tests");
+
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = 0.0f;
+          
+        Vector3 v2;
+
+        v2.Set(1.1f, 2.2f, 3.3f);
+        ::rw::math::fpu::Vector3* unaligned = reinterpret_cast< ::rw::math::fpu::Vector3*>(&buffer[0]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[0] == 1.1f && buffer[1] == 2.2f && buffer[2] == 3.3f && buffer[3] == 0);    
+
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector3*>(&buffer[1]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[1] == 1.1f && buffer[2] == 2.2f && buffer[3] == 3.3f && buffer[4] == 0);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector3*>(&buffer[2]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[2] == 1.1f && buffer[3] == 2.2f && buffer[4] == 3.3f && buffer[5] == 0);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector3*>(&buffer[3]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[3] == 1.1f && buffer[4] == 2.2f && buffer[5] == 3.3f && buffer[6] == 0);            
+
+      ]]>
+      </TEST>
+      
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        SetFunctionName("Set(float, float, float)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Set(x_array[i], y_array[i], z_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        SetFunctionName("X() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].X() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        SetFunctionName("Y() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Y() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        SetFunctionName("Z() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Z() = z_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        SetFunctionName("SetZero()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].SetZero();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        SetFunctionName("X()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+        SetFunctionName("Y()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        SetFunctionName("Z()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        SetFunctionName("float_t& operator [] (int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        SetFunctionName("float_t operator [] (int i) const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        SetFunctionName("X() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3*>(&v3out_array[i])->X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        SetFunctionName("Y() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3*>(&v3out_array[i])->Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        SetFunctionName("Z() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3*>(&v3out_array[i])->Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+        v3b.Set(3.0f, 4.0f, 4.3f);
+
+        SetFunctionName("IsSimilar(const Vector3 &a, const Vector3 &b, float epsilon = SMALL_FLOAT)");
+        v3a.Set(1.0f, 2.0f, 4.2f);
+        v3b.Set(1.0f, 2.0f, 4.2f);
+        Vector3 v3a_test, v3b_test;
+        v3a_test.Set(1.01f, 2.0f, 1.2f);
+        v3b_test.Set(1.0f, 2.0f, 1.2f);
+        Validate(IsSimilar(v3a, v3b, (float_test_type) 0.0f) && !IsSimilar(v3a_test, v3b_test, (float_test_type)0.0f) && IsSimilar(v3a_test, v3b_test, (float_test_type)0.1f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="getXY">
+      <![CDATA[
+
+        Vector3 v3a;
+
+        SetFunctionName("Vector2Template<FloatType>& GetXY(const Vector3Template<FloatType>& v)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        const Vector2 &v2 = GetXY(v3a);
+        Validate(v2.X()==v3a.X() && v2.Y()==v3a.Y());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        SetFunctionName("Negate(Vector3 v)");
+        output = Negate(v3a);
+        Validate(IsEqualWithEpsilon((float_basic_type)v3a.X(), (float_basic_type)-output.X()) && IsEqualWithEpsilon((float_basic_type)v3a.Y(), (float_basic_type)-output.Y()) && IsEqualWithEpsilon((float_basic_type)v3a.Z(), (float_basic_type)-output.Z()));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+        float_test_type multiplier((float_basic_type)2.1);
+
+        SetFunctionName("Mult(Vector3 v, float s)");
+        output = Mult(v3a, multiplier);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() * (float_basic_type)multiplier, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() * (float_basic_type)multiplier, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() * (float_basic_type)multiplier, (float_basic_type)output.Z())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        SetFunctionName("Mult(Vector3 vi, VecFloatRef<INDEX>)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX multiplier(vi);
+        output = Mult(v3a, multiplier);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() * (float_basic_type)multiplier, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() * (float_basic_type)multiplier, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() * (float_basic_type)multiplier, (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        SetFunctionName("Mult(Vector3 vi, VecFloatRefIndex)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefIndex multiplier(vi,0);
+        output = Mult(v3a, multiplier);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() * (float_basic_type)multiplier, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() * (float_basic_type)multiplier, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() * (float_basic_type)multiplier, (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        float_basic_type divisor = 2.1f;
+
+        SetFunctionName("Divide(const Vector3 &v, float s)");
+        output = Divide(v3a, divisor);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        SetFunctionName("Divide(Vector3 v, VecFloatRef<INDEX> s)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX divisor(vi);
+        output = Divide(v3a, divisor);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+
+        SetFunctionName("Divide(Vector3 v, VecFloatRefIndex s)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefIndex divisor(vi, 0);
+        output = Divide(v3a, divisor);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+        v3b.Set(3.0f, 4.0f, 4.3f);
+
+        SetFunctionName("Add(const Vector3 &v, float s)");
+        output = Add(v3a, v3b);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() + (float_basic_type)v3b.X(), (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() + (float_basic_type)v3b.Y(), (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() + (float_basic_type)v3b.Z(), (float_basic_type)output.Z())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        v3a.Set(1.0f, 2.0f, 2.0f);
+        v3b.Set(3.0f, 4.0f, 4.3f);
+
+        SetFunctionName("Subtract(const Vector3 &a, const Vector3 &b)");
+        output = Subtract(v3a, v3b);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() - (float_basic_type)v3b.X(), output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() - (float_basic_type)v3b.Y(), output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() - (float_basic_type)v3b.Z(), output.Z())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("Dot(Vector3 v0, Vector3 v1)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        float_basic_type fResult = Dot(v3a, v3b);
+        Validate(IsEqualWithEpsilon(fResult, (float_basic_type) 17.285f));
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test183">
+      <![CDATA[
+
+#if defined( HOST_TESTING ) && RW_MATH_ENABLE_DEPRECATED_API 
+        Vector3 v3a, v3b;
+        VecFloat r;
+        SetFunctionName("Dot(Vector3 v0, Vector3 v1, VecFloat r)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        Dot(v3a, v3b, r);
+        Validate(IsEqualWithEpsilon((float_basic_type)r, (float_basic_type) 17.285f));
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Cross(Vector3 v0, Vector3 v1)");
+        v3a.Set(4.0f, 3.0f, 2.0f);
+        v3b.Set(-3.0f, 1.0f, 3.0f);
+        output = Cross(v3a, v3b);
+        Validate((float_basic_type) output.X()==7.0f && (float_basic_type) output.Y()==-18.0f && (float_basic_type) output.Z()==13.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61a">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Mult(Vector3 a, Vector3 b)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = Mult(v3a, v3b);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() * (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() * (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() * (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test61b">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Vector3 * Vector3");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = v3a * v3b;
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() * (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() * (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() * (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test61c">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Vector3 *= Vector3)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = v3a;
+        output *= v3b;
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() * (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() * (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() * (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_divide_elements">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Divide(const Vector3 &a,const Vector3 &b)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = Divide(v3a, v3b);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() / (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() / (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() / (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="vector_reciprocal">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 3.45f);
+
+        SetFunctionName("Reciprocal(const Vector3 &a)");
+        output = Reciprocal(v3a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 1.0f / (float)v3a.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.0f / (float)v3a.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), 1.0f / (float)v3a.Z())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test61d">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Vector3 / Vector3");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = v3a / v3b;
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() / (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() / (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() / (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test61e">
+      <![CDATA[
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Vector3 /= Vector3)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        v3b.Set(-3.0f, 1.0f, 5.3f);
+        output = v3a;
+        output /= v3b;
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) output.X(), (float_basic_type) v3a.X() / (float_basic_type) v3b.X()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Y(), (float_basic_type) v3a.Y() / (float_basic_type) v3b.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) output.Z(), (float_basic_type) v3a.Z() / (float_basic_type) v3b.Z())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("MultAdd(Vector3 v0, Vector3 v1, Vector3 v2)");
+        v3a.Set((float_basic_type) -1.0f, (float_basic_type) 3.0f, (float_basic_type) 2.0f);
+        v3b.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.0f);
+        Vector3 add((float_basic_type) 3.0f, (float_basic_type) 4.0f, (float_basic_type) 5.0f);
+        Vector3 result = MultAdd( v3a, v3b, add );
+        Validate( result == Vector3((float_basic_type) 2.0f, (float_basic_type) 10.0f, (float_basic_type) 11.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("Magnitude(const Vector3 &v)");
+        v3a.Set((float_basic_type)1.0f, (float_basic_type)2.0f, (float_basic_type)3.45f);
+        float_basic_type mag1 = Magnitude(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)0.0f, (float_basic_type)0.0f);
+        float_basic_type mag2 = Magnitude(v3a);
+        v3a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = Magnitude(v3a);
+        v3a.Set((float_basic_type)-0.0f, (float_basic_type)-0.0f, (float_basic_type)-0.0f);
+        float_basic_type mag4 = Magnitude(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)-1.05e-19f, (float_basic_type)0.0f);
+        float_basic_type mag5 = Magnitude(v3a);
+        Validate(IsEqualWithEpsilon(mag1, (float_basic_type)4.1112652f) &&
+                 IsEqualWithEpsilon(mag2, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag3, (float_basic_type)MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag5, (float_basic_type)0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudefast">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("MagnitudeFast(const Vector3 &v)");
+        v3a.Set((float_basic_type)1.0f, (float_basic_type)2.0f, (float_basic_type)3.45f);
+        float_basic_type mag1 = MagnitudeFast(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)0.0f, (float_basic_type)0.0f);
+        float_basic_type mag2 = MagnitudeFast(v3a);
+        v3a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = MagnitudeFast(v3a);
+        v3a.Set((float_basic_type)-0.0f, (float_basic_type)-0.0f, (float_basic_type)-0.0f);
+        float_basic_type mag4 = MagnitudeFast(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)-1.05e-19f, (float_basic_type)0.0f);
+        float_basic_type mag5 = MagnitudeFast(v3a);
+        Validate(IsEqualWithEpsilon(mag1, (float_basic_type)4.1112652f) &&
+                 IsEqualWithEpsilon(mag2, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag3, (float_basic_type)MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag5, (float_basic_type)0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudeestimate">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("MagnitudeEstimate(const Vector3 &v)");
+        v3a.Set((float_basic_type)1.0f, (float_basic_type)2.0f, (float_basic_type)3.45f);
+        float_basic_type mag1 = MagnitudeEstimate(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)0.0f, (float_basic_type)0.0f);
+        float_basic_type mag2 = MagnitudeEstimate(v3a);
+        v3a.Set(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = MagnitudeEstimate(v3a);
+        v3a.Set((float_basic_type)-0.0f, (float_basic_type)-0.0f, (float_basic_type)-0.0f);
+        float_basic_type mag4 = MagnitudeEstimate(v3a);
+        v3a.Set((float_basic_type)0.0f, (float_basic_type)-1.05e-19f, (float_basic_type)0.0f);
+        float_basic_type mag5 = MagnitudeEstimate(v3a);
+        Validate(IsEqualWithEpsilon(mag1, (float_basic_type)4.1112652f) &&
+                 IsEqualWithEpsilon(mag2, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag3, (float_basic_type)MIN_FLOAT) &&
+                 IsEqualWithEpsilon(mag4, (float_basic_type)0.0f) &&
+                 IsEqualWithEpsilon(mag5, (float_basic_type)0.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("MagnitudeSquared(const Vector3 &v)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        float_basic_type mag = MagnitudeSquared(v3a);
+        Validate(IsEqualWithEpsilon(mag, (float_basic_type) 16.902500f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("MagnitudeRecip(const Vector3 &v)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        float_basic_type mag = MagnitudeRecip(v3a);
+        Validate(IsEqualWithEpsilon(mag, (float_basic_type) 0.24323414f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="normalize_estimate">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("NormalizeEstimate(const Vector3 &v)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        output = NormalizeEstimate(v3a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("NormalizeFast(const Vector3 &v)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        output = NormalizeFast(v3a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("Normalize(const Vector3 &v)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        output = Normalize(v3a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("Normalize(const Vector3 &v)");
+        float_test_type magnitude;
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        output = Normalize(v3a, magnitude);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f) &&
+                IsEqualWithEpsilon(magnitude, (float_basic_type) 4.1112652f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("NormalizeReturnMagnitude(const Vector3 &v, Vector3 &result)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.45f);
+        float_basic_type fResult = NormalizeReturnMagnitude(v3a, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f) &&
+                IsEqualWithEpsilon(fResult, (float_basic_type) 4.1112652f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="checked_normalize_return_magnitude">
+      <![CDATA[
+
+        Vector3 v3a, output;
+
+        float_basic_type fResult;
+        bool success = true;
+        SetFunctionName("CheckedNormalizeReturnMagnitude(const Vector3 &v, Vector3 &result)");
+
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v3a, output);
+        success &= IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f);
+        success &= IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f);
+        success &= IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f);
+        success &= IsEqualWithEpsilon(fResult, (float_basic_type) 4.1112652f);
+
+        v3a.Set(0.0f, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v3a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_basic_type)0.0f);
+
+        v3a.Set(SMALL_FLOAT, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v3a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_basic_type)0.0f);
+
+        v3a.Set(MIN_FLOAT, 0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v3a, output);
+        // Two solutions are acceptable depending on the precision that
+        // calculations are carried out with.  Either the magnitude appears to
+        // be zero (e.g. for 32bit calculations), or the magnitude appears to
+        // be a very small number (i.e. MIN_FLOAT).
+        // The result vector will then be 0 (if magnitude is zero), or the X
+        // axis otherwise.
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f) || IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Z(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_basic_type)0.0f) || IsEqualWithEpsilon(fResult, (float_basic_type)MIN_FLOAT);
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test182">
+      <![CDATA[
+
+        Vector3 v3a, output;
+        SetFunctionName("returnVal of NormalizeReturnMagnitude(zero Vector3 &v, Vector3 &result)");
+        v3a.Set(0.0f, 0.f, 0.f);
+        float fResult = (float)NormalizeReturnMagnitude(v3a, output);
+        Validate(IsEqualWithEpsilon(fResult, 0.f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("CosAngleBetweenNormalizedVectors(Vector3 v1, Vector3 v2)");
+        v3a.Set(  0.2672612f, 0.5345225f, 0.8017837f );
+        v3b.Set( -0.3810004f, 0.8890009f, 0.2540003f );
+        float fResult = (float)CosAngleBetweenNormalizedVectors(v3a, v3b);
+        Validate( IsEqualWithEpsilon(fResult,  0.5770176f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+#if !defined EA_PLATFORM_PS3_SPU
+
+        Vector3 v3a;
+        SetFunctionName("IsValid(Vector3 v)");
+        
+        v3a.Set((float_basic_type) 0.0f, (float_basic_type) 0.0f, (float_basic_type) 0.0f);     
+        
+        bool result1 = IsValid(v3a);
+
+        float_basic_type nan = (float_basic_type)testing::GetNaN();
+        v3a.Set(nan, nan, nan); 
+        bool result2 = IsValid(v3a);
+
+        Validate( result1 && !result2 );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="isanynan">
+      <![CDATA[
+
+
+#if !defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("IsAnyNaN(Vector3 v)");
+
+        float zero = 0.0f;
+        float_test_type nan = float_test_type(zero / zero);
+        int numPermutations = 1 << Vector3::NumberOfElement;
+        bool result = true;
+        for( int curPermutation=0;curPermutation<numPermutations;curPermutation++)
+        {
+            Vector3 vec = Vector3((float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f);
+            for( int elem = 0; elem < Vector3::NumberOfElement; elem++ )
+            {
+                if( curPermutation & (1<<elem) )
+                {
+                    vec.SetComponent( elem, nan );
+                }
+            }
+            if( curPermutation == 0 )
+            {
+                // All bits are zero so the vector has no NaN's
+                result &= !IsAnyNaN(vec);
+            }
+            else
+            {
+                // At least one element is NaN.
+                result &= IsAnyNaN(vec);
+            }
+        }
+        Validate(result);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("IsZero(Vector3 v)");
+
+        float_test_type tolerance = 0.1f;
+
+        v3a.Set(1.0f, 0.0f, 0.0f);
+        Validate( !IsZero(v3a) );
+
+        v3a.Set(0.0f, 0.0f, 0.0f);
+        Validate( IsZero(v3a) );
+
+        v3a.Set(-0.1f, -0.1f, -0.1f);
+        Validate( IsZero(v3a, tolerance) );
+
+        v3a.Set(0.1f, 0.1f, 0.1f);
+        Validate( IsZero(v3a, tolerance) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("VectorMin(Vector3 v1, Vector3 v2)");
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        v3b.Set(-3.0f, 1.0f, 3.0f);
+        Vector3 result = Min( v3a, v3b );
+        Validate( result == Vector3(-3.0f, 1.0f, 2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("VectorMax(Vector3 v1, Vector3 v2)");
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        v3b.Set(-3.0f, 1.0f, 3.0f);
+        Vector3 result = Max( v3a, v3b );
+        Validate( result == Vector3(-1.0f, 3.0f, 3.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+        Vector3 v3a;
+        SetFunctionName("VectorAbs(Vector3 v1)");
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        Vector3 result = Abs( v3a );
+        Validate( result == Vector3(1.0f, 3.0f, 2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("AngleBetweenVectors(Vector3 v1, Vector3 v2)");
+        v3a.Set( (float_basic_type)  0.2672612f,(float_basic_type)  0.5345225f, (float_basic_type) 0.8017837f );
+        v3b.Set( (float_basic_type) -0.3810004f, (float_basic_type) 0.8890009f, (float_basic_type) 0.2540003f );
+        v3a = Mult( v3a, (float_test_type) 5.0f );
+        v3b = Mult( v3b, (float_test_type) 7.0f );
+        float fResult = (float)AngleBetweenVectors(v3a, v3b);
+        Validate( IsEqualWithEpsilon(fResult, 0.955724f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+        Vector3 v3a, v3b;
+        SetFunctionName("AngleBetweenVectors(Vector3 v1, Vector3 v2, Vector3 windAxis)");
+        v3a.Set( (float_basic_type)  0.2672612f, (float_basic_type) 0.5345225f, (float_basic_type) 0.8017837f );
+        v3b.Set( (float_basic_type) -0.3810004f, (float_basic_type) 0.8890009f, (float_basic_type) 0.2540003f );
+        Vector3 windAxis = Cross(v3a, v3b);
+        v3a = Mult( v3a, (float_test_type) 5.0f );
+        v3b = Mult( v3b, (float_test_type) 7.0f );
+        float fResult1 = (float)AngleBetweenVectors(v3a, v3b, windAxis);
+        float fResult2 = (float)AngleBetweenVectors(v3a, v3b, -windAxis);
+        Validate(   IsEqualWithEpsilon(fResult1, 0.955724f) &&
+                    IsEqualWithEpsilon(fResult2, 5.327461f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        SetFunctionName("Negate(const Vector3 &v, Vector3 &result)");
+        Negate(v3a, output);
+        Validate(IsEqualWithEpsilon((float_basic_type)v3a.X(), (float_basic_type)-output.X()) &&
+                 IsEqualWithEpsilon((float_basic_type)v3a.Y(), (float_basic_type)-output.Y()) &&
+                 IsEqualWithEpsilon((float_basic_type)v3a.Z(), (float_basic_type)-output.Z()));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        float_test_type  multiplier = 2.1f;
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+
+        SetFunctionName("Mult(const Vector3 &v, float s, Vector3 &result)");
+        Mult(v3a, multiplier, output);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type) v3a.X() * (float_basic_type)multiplier, (float_basic_type) output.X()) &&
+                IsEqualWithEpsilon((float_basic_type) v3a.Y() * (float_basic_type)multiplier, (float_basic_type) output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type) v3a.Z() * (float_basic_type)multiplier, (float_basic_type) output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        SetFunctionName("Mult(Vector3 vi, VecFloatRef<INDEX>, Vector3 result)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX multiplier(vi);
+        Mult(v3a, multiplier, output);
+        Validate(
+                IsEqualWithEpsilon((float)v3a.X() * (float_basic_type)multiplier, (float)output.X()) &&
+                IsEqualWithEpsilon((float)v3a.Y() * (float_basic_type)multiplier, (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v3a.Z() * (float_basic_type)multiplier, (float)output.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        SetFunctionName("Mult(Vector3 vi, VecFloatRefIndex, Vector3 result)");
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefIndex multiplier(vi,0);
+        Mult(v3a, multiplier, output);
+        Validate(
+                IsEqualWithEpsilon((float)v3a.X() * (float_basic_type)multiplier, (float)output.X()) &&
+                IsEqualWithEpsilon((float)v3a.Y() * (float_basic_type)multiplier, (float)output.Y()) &&
+                IsEqualWithEpsilon((float)v3a.Z() * (float_basic_type)multiplier, (float)output.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        float_basic_type  divisor = 2.1f;
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+
+        SetFunctionName("Divide(const Vector3 &v, float s, Vector3 &result)");
+        Divide(v3a, divisor, output);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test83">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        SetFunctionName("Divide(Vector3 v, VecFloatRef<INDEX> s, Vector3 result)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX divisor(vi);
+        Divide(v3a, divisor, output);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        SetFunctionName("Divide(Vector3 v, VecFloatRefIndex s, Vector3 result)");
+        MakeVectorIntrinsic(vi, 2.1f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefIndex divisor(vi, 0);
+        Divide(v3a, divisor, output);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() / (float_basic_type)divisor, (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() / (float_basic_type)divisor, (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() / (float_basic_type)divisor, (float_basic_type)output.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test85">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        v3b.Set(1.0f, -5.0f, 6.0f);
+        SetFunctionName("Add(const Vector3 &v, float s, Vector3 &result)");
+        Add(v3a, v3b, output);
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)v3a.X() + (float_basic_type)v3b.X(), (float_basic_type)output.X()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Y() + (float_basic_type)v3b.Y(), (float_basic_type)output.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)v3a.Z() + (float_basic_type)v3b.Z(), (float_basic_type)output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test86">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+        v3a.Set(-1.0f, 3.0f, 2.0f);
+        v3b.Set(1.0f, -5.0f, 6.0f);
+        SetFunctionName("Subtract(const Vector3 &a, const Vector3 &b, Vector3 &result)");
+        Subtract(v3a, v3b, output);
+        Validate(
+                IsEqualWithEpsilon(v3a.X() - (float_basic_type)v3b.X(), output.X()) &&
+                IsEqualWithEpsilon(v3a.Y() - (float_basic_type)v3b.Y(), output.Y()) &&
+                IsEqualWithEpsilon(v3a.Z() - (float_basic_type)v3b.Z(), output.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b;
+        SetFunctionName("Cross(Vector3 v0, Vector3 v1)");
+        v3a.Set(4.0f, 3.0f, 2.0f);
+        v3b.Set(-3.0f, 1.0f, 3.0f);
+        Vector3 vecResult;
+        Cross(v3a, v3b, vecResult);
+        Validate((float)vecResult.X()==7.0f && (float)vecResult.Y()==-18.0f && (float)vecResult.Z()==13.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Mult(const Vector3 &a,const Vector3 &b, Vector3 &result)");
+        v3a.Set(1.0f, 2.0f, 73.2f);
+        v3b.Set(-3.0f, 1.0f, 5.32f);
+        Mult(v3a, v3b, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type)v3a.X() * (float_basic_type)v3b.X()) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type)v3a.Y() * (float_basic_type)v3b.Y()) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type)v3a.Z() * (float_basic_type)v3b.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, output;
+        SetFunctionName("Normalize(const Vector3 &v, Vector3 &result)");
+        v3a.Set(1.0f, 2.0f, 3.45f);
+        Normalize(v3a, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.24323414f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.48646829f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.83915782f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Lerp( const Vector3 &v0, const Vector3 &v1, const float t, Vector3 &r)");
+        v3a.Set(1.0f, 2.0f, -3.9f);
+        v3b.Set(-3.0f, 1.0f, 2.3f);
+        Lerp(v3a, v3b, (float_basic_type) 0.25f, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.0f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 1.75f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) -2.3500001f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test91">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Lerp( const Vector3 &v0, const Vector3 &v1, VecFloatRef<INDEX>, Vector3 &r)");
+        v3a.Set(1.0f, 2.0f, -3.9f);
+        v3b.Set(-3.0f, 1.0f, 2.3f);
+        MakeVectorIntrinsic(vi, 0.25f, 0.0f, 0.0f, 0.0f);
+        Lerp(v3a, v3b, VecFloatRefX(vi), output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.0f) &&
+                IsEqualWithEpsilon(output.Y(), 1.75f) &&
+                IsEqualWithEpsilon(output.Z(), -2.3500001f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test92">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+        SetFunctionName("Lerp( const Vector3 &v0, const Vector3 &v1, VecFloatRefIndex, Vector3 &r)");
+        v3a.Set(1.0f, 2.0f, -3.9f);
+        v3b.Set(-3.0f, 1.0f, 2.3f);
+        MakeVectorIntrinsic(vi, 0.25f, 0.0f, 0.0f, 0.0f);
+        Lerp(v3a, v3b, VecFloatRefIndex(vi,0), output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.0f) &&
+                IsEqualWithEpsilon(output.Y(), 1.75f) &&
+                IsEqualWithEpsilon(output.Z(), -2.3500001f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test93">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("SLerp( const Vector3 &v0, const Vector3 &v1, const float t, Vector3 &r)");
+
+        Vector3 v3a_normalized, v3b_normalized;
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        Normalize(v3a, v3a_normalized);
+        Normalize(v3b, v3b_normalized);
+        SLerp(v3a_normalized, v3b_normalized, (float_basic_type) 0.75f, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) -0.56233941545710642f, (float_basic_type) 0.02f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type)  0.65999988092828232f, (float_basic_type) 0.02f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) -0.50302293780669616f, (float_basic_type) 0.02f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test94">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("SLerp( const Vector3 &v0, const Vector3 &v1, VecFloatRef<INDEX> t, Vector3 &r)");
+
+        Vector3 v3a_normalized, v3b_normalized;
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        Normalize(v3a, v3a_normalized);
+        Normalize(v3b, v3b_normalized);
+        MakeVectorIntrinsic(vi, 0.75f, 0.0f, 0.0f, 0.0f);
+        SLerp(v3a_normalized, v3b_normalized, VecFloatRefX(vi), output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), -0.56233941545710642f, 0.02f) &&
+                IsEqualWithEpsilon(output.Y(),  0.65999988092828232f, 0.02f) &&
+                IsEqualWithEpsilon(output.Z(), -0.50302293780669616f, 0.02f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test95">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("SLerp( const Vector3 &v0, const Vector3 &v1, VecFloatRefIndex t, Vector3 &r)");
+
+        Vector3 v3a_normalized, v3b_normalized;
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        Normalize(v3a, v3a_normalized);
+        Normalize(v3b, v3b_normalized);
+        MakeVectorIntrinsic(vi, 0.75f, 0.0f, 0.0f, 0.0f);
+        SLerp(v3a_normalized, v3b_normalized, VecFloatRefIndex(vi,0), output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), -0.56233941545710642f, 0.02f) &&
+                IsEqualWithEpsilon(output.Y(),  0.65999988092828232f, 0.02f) &&
+                IsEqualWithEpsilon(output.Z(), -0.50302293780669616f, 0.02f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test96">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("NLerp( const Vector3 &v0, const Vector3 &v1, const float t, Vector3 &r)");
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 2.3f);
+        v3b.Set((float_basic_type) -3.0f, (float_basic_type) 1.0f, (float_basic_type) -3.8f);
+        NLerp(v3a, v3b, (float_basic_type) 0.15f, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_basic_type) 0.17054932f) &&
+                IsEqualWithEpsilon(output.Y(), (float_basic_type) 0.78879070f) &&
+                IsEqualWithEpsilon(output.Z(), (float_basic_type) 0.59052706f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_estimate">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("NLerpEstimate( const Vector3 &v0, const Vector3 &v1, VecFloatRef<INDEX> t)");
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        MakeVectorIntrinsic(vi, 0.15f, 0.0f, 0.0f, 0.0f);
+        output = NLerpEstimate(v3a, v3b, VecFloatRefX(vi));
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.17054932f, 0.003f) &&
+                IsEqualWithEpsilon(output.Y(), 0.78879070f, 0.003f) &&
+                IsEqualWithEpsilon(output.Z(), 0.59052706f, 0.003f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_fast">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("NLerpFast( const Vector3 &v0, const Vector3 &v1, VecFloatRef<INDEX> t)");
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        MakeVectorIntrinsic(vi, 0.15f, 0.0f, 0.0f, 0.0f);
+        output = NLerpFast(v3a, v3b, VecFloatRefX(vi));
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.17054932f) &&
+                IsEqualWithEpsilon(output.Y(), 0.78879070f) &&
+                IsEqualWithEpsilon(output.Z(), 0.59052706f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test97">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("NLerp( const Vector3 &v0, const Vector3 &v1, VecFloatRef<INDEX> t)");
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        MakeVectorIntrinsic(vi, 0.15f, 0.0f, 0.0f, 0.0f);
+        output = NLerp(v3a, v3b, VecFloatRefX(vi));
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.17054932f) &&
+                IsEqualWithEpsilon(output.Y(), 0.78879070f) &&
+                IsEqualWithEpsilon(output.Z(), 0.59052706f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test98">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+#ifdef HOST_TESTING
+
+        Vector3 v3a, v3b, output;
+
+        SetFunctionName("NLerp( const Vector3 &v0, const Vector3 &v1, VecFloatRefIndex t, Vector3 &r)");
+        v3a.Set(1.0f, 2.0f, 2.3f);
+        v3b.Set(-3.0f, 1.0f, -3.8f);
+        MakeVectorIntrinsic(vi, 0.15f, 0.0f, 0.0f, 0.0f);
+        NLerp(v3a, v3b, VecFloatRefIndex(vi,0), output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), 0.17054932f) &&
+                IsEqualWithEpsilon(output.Y(), 0.78879070f) &&
+                IsEqualWithEpsilon(output.Z(), 0.59052706f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_vector3fromfloat">
+        <![CDATA[
+        
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3FromFloat(float)");
+        Vector3 v3;
+        v3 = Vector3FromFloat(3.4f);
+        Validate((float)v3.X() == 3.4f && (float)v3.Y() == 3.4f && (float)v3.Z() == 3.4f);
+        
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_max_component">
+        <![CDATA[
+
+        Vector3 v3(2.5f, 1.99f, -1.2f);
+
+        SetFunctionName("MaxComponent(Vector3)");
+        float_test_type vf = MaxComponent(v3);
+        Validate(vf == (float_test_type)2.5f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_min_component">
+        <![CDATA[
+
+        Vector3 v3(2.5f, 1.99f, -1.2f);
+
+        SetFunctionName("MinComponent(Vector3)");
+        float_test_type vf = MinComponent(v3);
+        Validate(vf == (float_test_type)-1.2f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_sqrtfast">
+        <![CDATA[
+
+        Vector3 v3a, output;
+        float smallFloat = 9.9600960e-020f;
+        float smallFloatSqr = smallFloat * smallFloat;
+        v3a.Set(100.0f, 34.23f, smallFloatSqr);
+
+        SetFunctionName("SqrtFast(const Vector3 &a)");
+        output = SqrtFast(v3a);
+        Validate(IsEqualWithEpsilon(output.X(), (float_test_type)10.0f));
+        Validate(IsEqualWithEpsilon(output.Y(), (float_test_type)5.8506409905f));
+        Validate(IsEqualWithEpsilon(output.Z(), (float_test_type)smallFloat));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_InvSqrtfast">
+        <![CDATA[
+
+        Vector3 v3a(100.0f, 34.23f, 0.01f);
+
+        SetFunctionName("InvSqrtFast(const Vector3 &a)");
+        Vector3 output = InvSqrtFast(v3a);
+        Validate(IsEqualWithEpsilon(output.X(), (float_test_type)0.1f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(output.Y(), (float_test_type)0.17092f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(output.Z(), (float_test_type)10.0f, (float_test_type)0.01f));
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test_reciprocalfast">
+        <![CDATA[
+
+        Vector3 v3a, output;
+        v3a.Set(1.0f, 2.0f, 3.45f);
+
+        SetFunctionName("ReciprocalFast(const Vector3 &a)");
+        output = ReciprocalFast(v3a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 1.0f / (float)v3a.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.0f / (float)v3a.Y()) &&
+                IsEqualWithEpsilon((float)output.Z(), 1.0f / (float)v3a.Z())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateleft">
+        <![CDATA[
+        
+        SetFunctionName("Vector3 RotateLeft(Vector3 v)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f, 3.0f };
+        Vector3 v3(values[0], values[1], values[2]);
+        Vector3 v3r = RotateLeft(v3);
+        Validate( 
+            v3r.X() == (float_test_type)values[1] &&
+            v3r.Y() == (float_test_type)values[2] &&
+            v3r.Z() == (float_test_type)values[0]
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateright">
+        <![CDATA[
+        
+        SetFunctionName("Vector3 RotateRight(Vector3 v)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f, 3.0f };
+        Vector3 v3(values[0], values[1], values[2]);
+        Vector3 v3r = RotateRight(v3);
+        Validate( 
+            v3r.X() == (float_test_type)values[2] &&
+            v3r.Y() == (float_test_type)values[0] &&
+            v3r.Z() == (float_test_type)values[1]
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test99">
+      <![CDATA[
+
+        SetFunctionName("Negate(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Negate(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test100">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector3 &v, float s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Mult(v3a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test101">
+      <![CDATA[
+
+        SetFunctionName("Divide(const Vector3 &v, float s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Divide(v3a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test102">
+      <![CDATA[
+
+        SetFunctionName("Add(const Vector3 &v1, const Vector3 &v2)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Add(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test103">
+      <![CDATA[
+
+        SetFunctionName("Subtract(const Vector3 &v1, const Vector3 &v2)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Subtract(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test104">
+      <![CDATA[
+
+        SetFunctionName("Magnitude(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Magnitude(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test105">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeSquared(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeSquared(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test106">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeRecip(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeRecip(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test107">
+      <![CDATA[
+
+        SetFunctionName("Normalize(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Normalize(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_normalize_estimate">
+      <![CDATA[
+
+        SetFunctionName("NormalizeEstimate(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = NormalizeEstimate(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_normalize_fast">
+      <![CDATA[
+
+        SetFunctionName("NormalizeFast(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = NormalizeFast(v3a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test108">
+      <![CDATA[
+
+        SetFunctionName("NormalizeReturnMagnitude(const Vector3 &v, Vector3 &result)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = NormalizeReturnMagnitude(v3a_array[i], v3out_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test109">
+      <![CDATA[
+
+        SetFunctionName("Dot(const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Dot(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test110">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Mult(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test111">
+      <![CDATA[
+
+        SetFunctionName("Lerp( const Vector3 &v0, const Vector3 &v1, const float t)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Lerp(v3a_array[i], v3b_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test112">
+      <![CDATA[
+
+        SetFunctionName("SLerp( const Vector3 &v0, const Vector3 &v1, const float t)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = SLerp(v3a_norm_array[i], v3b_norm_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test113">
+      <![CDATA[
+
+        SetFunctionName("NLerp( const Vector3 &v0, const Vector3 &v1, const float t)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = NLerp(v3a_array[i], v3b_array[i], (float_test_type)0.25f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test114">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(const Vector3 &a, const Vector3 &b, float epsilon = SMALL_FLOAT)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = IsSimilar(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test115">
+      <![CDATA[
+
+        SetFunctionName("Cross(const Vector3 &a, const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = Cross(v3a_array[i], v3b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+
+      <TEST NAME="test181">
+      <![CDATA[
+
+        SetFunctionName("Vector3&      operator = (Vector3::InParam v)");
+        Vector3 vRef( 1.0f, 2.1f, 3.2f);
+        Vector3 v;
+        v= vRef;
+        Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test116">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3& operator *= (Vector3 &v, float_t a)");
+
+        Vector3 v3a;
+        v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.0f);
+
+        v3a *= (float_test_type) 1.5f;
+
+        Validate(
+                IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f * 1.5f) &&
+                IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f * 1.5f) &&
+                IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f * 1.5f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test117">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3& operator /= (Vector3 &v, float_t a)");
+
+        Vector3 v3a;
+        v3a.Set(1.0f, 2.0f, 3.0f);
+
+        v3a /= (float_test_type) 1.5f;
+
+        Validate(
+            IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f / 1.5f) &&
+            IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f / 1.5f) &&
+            IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f / 1.5f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test118">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("const Vector3 operator * (const Vector3 &v, float_t s)");
+
+        Vector3 v3a, v3out;
+
+        v3a.Set(1.0f, 2.0f, 3.0f);
+
+        v3out = v3a * (float_test_type) 1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * (float_basic_type) 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test119">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3 operator * (s, Vector3 &v)");
+
+        Vector3 v3a, v3out;
+
+        v3a.Set(1.0f, 2.0f, 3.0f);
+
+        v3out = (float_test_type) 1.24f * v3a;
+
+        Validate(
+            IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * (float_basic_type) 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test120">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("const Vector3 operator / (const Vector3 &v, float_t s)");
+
+        Vector3 v3a, v3out;
+
+        v3a.Set(1.0f, 2.0f, 3.0f);
+
+        v3out = v3a / (float_test_type) 1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() / (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() / (float_basic_type) 1.24f) &&
+            IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() / (float_basic_type) 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test121">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+
+            SetFunctionName("Vector3& operator *= (Vector3 &v, float_t a)");
+
+            Vector3 v3a;
+            v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.0f);
+
+            v3a *= (float) 1.5f;
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f * 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test122">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+
+            SetFunctionName("Vector3& operator /= (Vector3 &v, float_t a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a /= (float) 1.5f;
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f / 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test123">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator * (const Vector3 &v, float_t s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a * (float) 1.24f;
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * (float_basic_type) 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test124">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector3 operator * (s, Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = (float) 1.24f * v3a;
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * (float_basic_type) 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test125">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator / (const Vector3 &v, float_t s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a / (float) 1.24f;
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() / (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() / (float_basic_type) 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() / (float_basic_type) 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test126">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator *= (Vector3 &v, VecFloatRef<INDEX> a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a *= VecFloatRefX(vi);
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), 1.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), 2.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), 3.0f * 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test127">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator /= (Vector3 &v, VecFloatRef<INDEX> a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a /= VecFloatRefX(vi);
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), 1.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), 2.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), 3.0f / 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test128">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator * (const Vector3 &v, VecFloatRef<INDEX> s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a * VecFloatRefY(vi);
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test129">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3 operator * (s, Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = VecFloatRefY(vi) * v3a;
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test130">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator / (const Vector3 &v, VecFloatRef<INDEX> s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a / VecFloatRefY(vi);
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() / 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() / 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() / 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test131">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator *= (Vector3 &v, VecFloatRefIndex a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a *= VecFloatRefIndex(vi,0);
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), 1.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), 2.0f * 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), 3.0f * 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test132">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator /= (Vector3 &v, VecFloatRefIndex a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a /= VecFloatRefIndex(vi,0);
+
+            Validate(
+                    IsEqualWithEpsilon(v3a.X(), 1.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Y(), 2.0f / 1.5f) &&
+                    IsEqualWithEpsilon(v3a.Z(), 3.0f / 1.5f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test133">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator * (const Vector3 &v, VecFloatRefIndex s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a * VecFloatRefIndex(vi,1);
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test134">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3 operator * (s, Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = VecFloatRefIndex(vi,1) * v3a;
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() * 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() * 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test135">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator / (const Vector3 &v, VecFloatRefIndex s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a / VecFloatRefIndex(vi,1);
+
+            Validate(
+                    IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() / 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() / 1.24f) &&
+                    IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() / 1.24f)
+                    );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test136">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3& operator - (Vector3 &v)");
+
+        Vector3 v3a;
+        Vector3 v3b;
+        v3a.Set(1.0f, 2.0f, 3.0f);
+        v3b.Set(3.0f, 6.0f, 4.0f);
+
+        v3b = -v3a;
+
+        Validate(
+            IsEqualWithEpsilon(v3a.X(), -v3b.X()) &&
+            IsEqualWithEpsilon(v3a.Y(), -v3b.Y()) &&
+            IsEqualWithEpsilon(v3a.Z(), -v3b.Z())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test137">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3& operator += (Vector3 &v, const Vector3 &b)");
+
+        Vector3 v3a;
+        Vector3 v3b;
+        v3a.Set(1.0f, 2.0f, 3.0f);
+        v3b.Set(3.0f, 6.0f, 4.0f);
+
+        v3a += v3b;
+
+        Validate(
+            IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f + 3.0f) &&
+            IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f + 6.0f) &&
+            IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f + 4.0f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test138">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("Vector3& operator -= (Vector3 &v, const Vector3 &b)");
+
+        Vector3 v3a;
+        Vector3 v3b;
+        v3a.Set(1.0f, 2.0f, 3.0f);
+        v3b.Set(3.0f, 6.0f, 4.0f);
+
+        v3a -= v3b;
+
+        Validate(
+            IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f - 3.0f) &&
+            IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f - 6.0f) &&
+            IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f - 4.0f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test139">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("const Vector3 operator - (const Vector3 &a, const Vector3 &b)");
+
+        Vector3 v3a, v3b, v3out;
+
+        v3a.Set(1.0f, 2.0f, 10.3f);
+        v3b.Set(1.2f, 2.3f, 4.23f);
+
+        v3out = v3a - v3b;
+
+        Validate(
+            IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() - (float_basic_type)v3b.X()) &&
+            IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() - (float_basic_type)v3b.Y()) &&
+            IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() - (float_basic_type)v3b.Z())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test140">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("const Vector3 operator + (const Vector3 &a, const Vector3 &b)");
+
+        Vector3 v3a, v3b, v3out;
+
+        v3a.Set(1.0f, 2.0f, 1.4f);
+        v3b.Set(1.2f, 2.3f, 4.5f);
+
+        v3out = v3a + v3b;
+
+        Validate(
+            IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type)v3b.X()) &&
+            IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type)v3b.Y()) &&
+            IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type)v3b.Z())
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test141">
+      <![CDATA[
+
+        Vector3 v3a_equal, v3b_equal, v3c_notequal;
+        v3a_equal.Set(1.0f, 2.0f, 3.0f);
+        v3b_equal.Set(1.0f, 2.0f, 3.0f);
+        v3c_notequal.Set(1.0f, 2.0f, 4.0f);
+
+        SetFunctionName("bool operator == (const Vector3 &a, const Vector3 &b)");
+        Validate(v3a_equal == v3b_equal &&
+                 !(v3a_equal == v3c_notequal) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test142">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        Vector3 v3a_equal, v3b_equal;
+        // Note: even though the fourth component of the vectors are different, the Vector3 objects
+        // should be equal because the fourth component is always assumed to be of an arbitrary value.
+        MakeVectorIntrinsic(via, 1.0f, 2.0f, 3.0f, 10.0f);
+        MakeVectorIntrinsic(vib, 1.0f, 2.0f, 3.0f, 20.0f);
+        v3a_equal.SetVector(via);
+        v3b_equal.SetVector(vib);
+
+        SetFunctionName("bool operator == (const Vector3 &a, const Vector3 &b)");
+        Validate(v3a_equal == v3b_equal);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test143">
+      <![CDATA[
+
+        Vector3 v3a_equal, v3b_equal, v3c_notequal;
+        v3a_equal.Set(1.0f, 2.0f, 3.0f);
+        v3b_equal.Set(1.0f, 2.0f, 3.0f);
+        v3c_notequal.Set(1.0f, 2.0f, 4.0f);
+
+        SetFunctionName("bool operator != (const Vector3 &a, const Vector3 &b)");
+        Validate( !(v3a_equal != v3b_equal) &&
+                    v3a_equal != v3c_notequal );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test156">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("Vector3& operator += (Vector3 &v, float_test_type a)");
+
+            Vector3 v3a;
+            v3a.Set((float_basic_type) 1.0f, (float_basic_type) 2.0f, (float_basic_type) 3.0f);
+
+            v3a += float_test_type(1.5f);
+
+            Validate(
+                IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f + 1.5f) &&
+                IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f + 1.5f) &&
+                IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f + 1.5f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test157">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("Vector3& operator -= (Vector3 &v, float_test_type a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a -= float_test_type(1.5f);
+
+            Validate(
+                IsEqualWithEpsilon(v3a.X(), (float_basic_type) 1.0f - 1.5f) &&
+                IsEqualWithEpsilon(v3a.Y(), (float_basic_type) 2.0f - 1.5f) &&
+                IsEqualWithEpsilon(v3a.Z(), (float_basic_type) 3.0f - 1.5f)
+                );
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("const Vector3 operator + (const Vector3 &v, float_test_type s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a + float_test_type(1.24f);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type) 1.24f)
+                );
+
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158_2">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("const Vector3 operator + (float_test_type s, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = float_test_type(1.24f) + v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type) 1.24f)
+                );
+
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158_3">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator + (float s, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            // use a float type explicitly
+            v3out = 1.24f + v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type) 1.24f)
+                );
+
+#endif
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158_4">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator + (VecFloatRef<INDEX>, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+            v3out = VecFloatRefZ(vi) + v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type) 1.24f)
+                );
+
+#endif
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158_5">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator + (VecFloatRefIndex, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+            v3out = VecFloatRefIndex(vi, 2) + v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + (float_basic_type) 1.24f)
+                );
+
+#endif
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("const Vector3 operator - (const Vector3 &v, float_test_type s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a - float_test_type(1.24f);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() - (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() - (float_basic_type) 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() - (float_basic_type) 1.24f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160_2">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+            SetFunctionName("const Vector3 operator - (float_test_type s, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = (float_test_type)1.24f - v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)1.24f - (float_basic_type)v3a.X()) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)1.24f - (float_basic_type)v3a.Y()) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)1.24f - (float_basic_type)v3a.Z())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160_3">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator - (float s, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            // use a float type explicitly
+            v3out = 1.24f - v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)1.24f - (float_basic_type)v3a.X()) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)1.24f - (float_basic_type)v3a.Y()) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)1.24f - (float_basic_type)v3a.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160_4">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+SetFunctionName("const Vector3 operator - (VecFloatRef<INDEX>, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+            v3out = VecFloatRefZ(vi) - v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)1.24f - (float_basic_type)v3a.X()) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)1.24f - (float_basic_type)v3a.Y()) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)1.24f - (float_basic_type)v3a.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160_5">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+            SetFunctionName("const Vector3 operator - (VecFloatRefIndex, const Vector3 &v)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 1.24f, 4.1f);
+            v3out = VecFloatRefIndex(vi, 2) - v3a;
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)1.24f - (float_basic_type)v3a.X()) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)1.24f - (float_basic_type)v3a.Y()) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)1.24f - (float_basic_type)v3a.Z())
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test161">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+                    SetFunctionName("Vector3& operator += (Vector3 &v, VecFloatRef<INDEX> a)");
+
+                    Vector3 v3a;
+                    v3a.Set(1.0f, 2.0f, 3.0f);
+
+                    v3a += VecFloatRefX(vi);
+
+                    Validate(
+                        IsEqualWithEpsilon(v3a.X(), 1.0f + 1.5f) &&
+                        IsEqualWithEpsilon(v3a.Y(), 2.0f + 1.5f) &&
+                        IsEqualWithEpsilon(v3a.Z(), 3.0f + 1.5f)
+                        );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test162">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+                    SetFunctionName("Vector3& operator -= (Vector3 &v, VecFloatRef<INDEX> a)");
+
+                    Vector3 v3a;
+                    v3a.Set(1.0f, 2.0f, 3.0f);
+
+                    v3a -= VecFloatRefX(vi);
+
+                    Validate(
+                        IsEqualWithEpsilon(v3a.X(), 1.0f - 1.5f) &&
+                        IsEqualWithEpsilon(v3a.Y(), 2.0f - 1.5f) &&
+                        IsEqualWithEpsilon(v3a.Z(), 3.0f - 1.5f)
+                        );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test163">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator + (const Vector3 &v, VecFloatRef<INDEX> s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a + VecFloatRefY(vi);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test165">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator - (const Vector3 &v, VecFloatRef<INDEX> s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a - VecFloatRefY(vi);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() - 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() - 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() - 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test166">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator += (Vector3 &v, VecFloatRefIndex a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a += VecFloatRefIndex(vi,0);
+
+            Validate(
+                IsEqualWithEpsilon(v3a.X(), 1.0f + 1.5f) &&
+                IsEqualWithEpsilon(v3a.Y(), 2.0f + 1.5f) &&
+                IsEqualWithEpsilon(v3a.Z(), 3.0f + 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test167">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3& operator -= (Vector3 &v, VecFloatRefIndex a)");
+
+            Vector3 v3a;
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3a -= VecFloatRefIndex(vi,0);
+
+            Validate(
+                IsEqualWithEpsilon(v3a.X(), 1.0f - 1.5f) &&
+                IsEqualWithEpsilon(v3a.Y(), 2.0f - 1.5f) &&
+                IsEqualWithEpsilon(v3a.Z(), 3.0f - 1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test168">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("Vector3 operator + (const Vector3 &v, VecFloatRefIndex s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a + VecFloatRefIndex(vi,1);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() + 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() + 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() + 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test170">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+            SetFunctionName("const Vector3 operator - (const Vector3 &v, VecFloatRefIndex s)");
+
+            Vector3 v3a, v3out;
+
+            v3a.Set(1.0f, 2.0f, 3.0f);
+
+            v3out = v3a - VecFloatRefIndex(vi,1);
+
+            Validate(
+                IsEqualWithEpsilon(v3out.X(), (float_basic_type)v3a.X() - 1.24f) &&
+                IsEqualWithEpsilon(v3out.Y(), (float_basic_type)v3a.Y() - 1.24f) &&
+                IsEqualWithEpsilon(v3out.Z(), (float_basic_type)v3a.Z() - 1.24f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamptonegposrange">
+      <![CDATA[
+      
+        SetFunctionName("Vector3 ClampToNegPosRange(value, range)");
+        Vector3 range(5.0f,  5.0f, 5.0f);
+        Vector3   v1( 7.0f,  3.0f, 0.0f);
+        Vector3   v2(-7.0f, -3.0f, 0.0f);
+        Vector3 ref1( 5.0f,  3.0f, 0.0f);
+        Vector3 ref2(-5.0f, -3.0f, 0.0f);
+        Vector3 result1 = ClampToNegPosRange( v1, range );
+        Vector3 result2 = ClampToNegPosRange( v2, range );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector3_vector2_construction">
+      <![CDATA[
+      
+        SetFunctionName("Vector3::Vector3(Vector2, scalar)");
+        Vector2 v2(10.0f, 20.0f);
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+
+        bool result1 = Vector3(v2, 5.0f) == Vector3(10.0f, 20.0f, 5.0f);
+        bool result2 = Vector3(v2, v4.X()) == Vector3(10.0f, 20.0f, 1.0f);
+        bool result3 = Vector3(v2, v4.Y()) == Vector3(10.0f, 20.0f, 2.0f);
+        bool result4 = Vector3(v2, v4.Z()) == Vector3(10.0f, 20.0f, 3.0f);
+        bool result5 = Vector3(v2, v4.W()) == Vector3(10.0f, 20.0f, 4.0f);
+        bool result6 = Vector3(v2, v4[1]) == Vector3(10.0f, 20.0f, 2.0f);
+        Validate(
+            result1 && result2 && result3 && result4 && result5 && result6
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test144">
+      <![CDATA[
+
+        SetFunctionName("bool operator == (const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v3a_array[i] == v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test145">
+      <![CDATA[
+
+        SetFunctionName("bool operator != (const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v3a_array[i] != v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test146">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector3& operator *= (Vector3 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] *= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test147">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector3& operator /= (Vector3 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] /= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test148">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector3& operator += (Vector3 &v,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] += v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test149">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector3& operator -= (Vector3 &v,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] -= v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test150">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator - (const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = -v3a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test151">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator * (const Vector3 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] * (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test152">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator * (float_t s,const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = (float_test_type)1.543f * v3a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test153">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator / (const Vector3 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] / (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test154">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator + (const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] + v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test155">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector3 operator - (const Vector3 &a,const Vector3 &b)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] - v3b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test171">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3& operator *= (Vector3 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] *= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test172">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3& operator /= (Vector3 &v,float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] /= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test173">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3& operator += (Vector3 &v, VecFloat a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] += (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test174">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector3& operator -= (Vector3 &v, VecFloat a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3a_array[i] -= (float_test_type)1.33f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test175">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator * (const Vector3 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] * (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test176">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator * (float_t s,const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = (float_test_type)1.543f * v3a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test177">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator / (const Vector3 &v,float_t s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] / (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test178">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator + (const Vector3 &v, VecFloat s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] + (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test179">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator + (VecFloat s,const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = (float_test_type)1.543f + v3a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test180">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector3 operator - (const Vector3 &v, VecFloat s)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i] = v3a_array[i] - (float_test_type)1.543f;
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="update_bb_test_min_max">
+      <![CDATA[
+
+        SetFunctionName("Updating of bounding box - Using Vector Min/Max");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        Vector3 bbMin = v3a_array[0];
+        Vector3 bbMax = v3a_array[0];
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                bbMin = Min(v3a_array[i], bbMin );
+                bbMax = Max(v3a_array[i], bbMax );
+            }
+        }
+
+        // Write values out to memory to make sure the compiler doesn't optimize the loop away.
+        v3out_array[0] = bbMin;
+        v3out_array[1] = bbMax;
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="update_bb_test_scalar_with_branches">
+      <![CDATA[
+
+        SetFunctionName("Updating of bounding box - Using scalar access and branches");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        Vector3 bbMin = v3a_array[0];
+        Vector3 bbMax = v3a_array[0];
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                if(v3a_array[i].GetX() < bbMin.GetX())		bbMin.SetX(v3a_array[i].GetX());
+                if(v3a_array[i].GetY() < bbMin.GetY())		bbMin.SetY(v3a_array[i].GetY());
+                if(v3a_array[i].GetZ() < bbMin.GetZ())		bbMin.SetZ(v3a_array[i].GetZ());
+
+                if(v3a_array[i].GetX() > bbMax.GetX())		bbMax.SetX(v3a_array[i].GetX());
+                if(v3a_array[i].GetY() > bbMax.GetY())		bbMax.SetY(v3a_array[i].GetY());
+                if(v3a_array[i].GetZ() > bbMax.GetZ())		bbMax.SetZ(v3a_array[i].GetZ());
+            }
+        }
+
+        // Write values out to memory to make sure the compiler doesn't optimize the loop away.
+        v3out_array[0] = bbMin;
+        v3out_array[1] = bbMax;
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+  <!-- ******* last test is "test183" ****** -->
+</TESTCLASS>

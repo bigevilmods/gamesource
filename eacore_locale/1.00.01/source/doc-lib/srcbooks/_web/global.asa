@@ -1,0 +1,32 @@
+<SCRIPT LANGUAGE=VBScript RUNAT=server>
+
+'************************************
+
+SUB Application_OnStart
+END SUB
+
+'************************************
+
+SUB Application_OnEnd
+END SUB
+
+'************************************
+
+SUB Session_OnStart
+    Session.Timeout = 20
+END SUB
+
+
+'************************************
+
+SUB Session_OnEnd
+    IF IsObject(Session("hhcItems")) THEN
+        SET Session("hhcItems") = NOTHING
+    END IF
+    IF IsObject(Session("hhkItems")) THEN
+        SET Session("hhkItems") = NOTHING
+    END IF
+END SUB
+
+'************************************
+</script>

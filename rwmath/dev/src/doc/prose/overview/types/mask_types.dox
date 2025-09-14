@@ -1,0 +1,14 @@
+/*!
+\page p_mask_types Mask Types
+
+That math libary has various 'mask' types.  You can think of a mask types as
+containing one or more (depending on the type) boolean values.  Masks may be
+used for writing efficient code that eliminates the need to perform branches.
+
+Here is a list of the mask types available:
+    - \ref p_maskscalar "MaskScalar"
+    - \ref p_mask2 "Mask2"
+    - \ref p_mask3 "Mask3"
+    - \ref p_mask4 "Mask4"
+
+*/

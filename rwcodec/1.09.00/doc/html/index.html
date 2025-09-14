@@ -1,0 +1,46 @@
+<html>
+<head>
+    <title>RW Codec</title>
+    <link href="../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="toc.js"></script>
+    <script type="text/javascript" src="../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+
+<h1>RW Codec</h1>
+
+RW Codec is a library that provides a cross-platform codec driver for animation and video compression/decompression.
+RWCodec supports the PS3, Xbox 360, PC (32 and 64-bit), Linux (x86 and ARM), Mac OS/iOS, and Wii.
+
+<h2>Requirements</h2>
+
+<h2>Distribution</h2>
+LZX support must be <b>removed</b> in the tool binaries before distribution.
+<br></br>
+LZX can be removed from a build of rwcodec through nant by setting the global property “package.rwcodec.use_lzx=false” like so on the commandline:
+<br></br>
+<code>nant -D:config=pc-vc-dev-opt tool-build -G:package.rwcodec.use_lzx=false</code>
+
+<h2>Quick Links</h2>
+
+<ul>
+    <li><a href="changelog.html">Change Log</a></li>
+</ul>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

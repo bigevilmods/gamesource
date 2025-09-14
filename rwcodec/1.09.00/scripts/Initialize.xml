@@ -1,0 +1,22 @@
+<project>
+
+    <property name="package.rwcodec.includedirs">
+        ${package.rwcodec.dir}/include
+    </property>
+
+    <property name="package.rwcodec.libdir" value="${package.rwcodec.builddir}/${config}/lib"/>
+
+    <fileset name="package.rwcodec.libs">
+        <includes name="${package.rwcodec.libdir}/${lib-prefix}rwcodec${lib-suffix}"/>
+    </fileset>
+
+    <property name="package.rwcodec.chunkpack.exe" value="${package.rwcodec.dir}/bin/chunkpack"/>
+
+    <include file="lzx.xml"/>
+    <do if="${package.rwcodec.use_lzx}">
+        <fileset name="package.rwcodec.libs.external">
+            <includes fromfileset="package.rwcodec.lzx.libs"/>
+        </fileset>
+    </do>
+
+</project>

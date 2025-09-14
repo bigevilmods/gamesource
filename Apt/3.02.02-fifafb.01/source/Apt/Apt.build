@@ -1,0 +1,483 @@
+<project default="Apt">
+    <target name="Apt" description="builds Apt">
+        <property name="runtime.buildmodules" value="Apt" />
+        <call target="build" force="true"/>
+    </target>
+
+    <!-- include package build file to get dependency and configuration information -->
+    <property name="runtime.Apt.buildtype" value="Library"/>
+    <property name="runtime.Apt.usedependencies">
+        EABase
+        EASTL
+    </property>
+
+
+    <!-- ==================================================== -->
+    <!-- Properties that affect internal Apt macros only,     -->
+    <!-- and control how Apt gets built.                      -->
+    <!-- See _AptInternalDefines.h.                           -->
+    <!-- ==================================================== -->
+
+
+    <!--                                                 -->
+    <!-- The following properties are "true" by default  -->
+    <!--                                                 -->
+
+    <!-- Build in AptUtil utility package -->
+    <property name="package.Apt.UseAptUtil"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseAptUtil')}" />
+
+    <!-- Enable ActionScript filter support -->
+    <property name="package.Apt.UseFilters"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseFilters')}" />
+
+    <!-- This keeps deallocated strings to re-allocate to new callers. (can save CPU, but can waste mem) -->
+    <property name="package.Apt.PoolStrings"
+              value="true"
+              unless="@{PropertyExists('package.Apt.PoolStrings')}" />
+
+    <!-- This keeps deallocated ints to re-allocate to new callers. (can save CPU, but can waste mem) -->
+    <property name="package.Apt.PoolIntegers"
+              value="true"
+              unless="@{PropertyExists('package.Apt.PoolIntegers')}" />
+
+    <!-- This keeps deallocated floats to re-allocate to new callers. (can save CPU, but can waste mem) -->
+    <property name="package.Apt.PoolFloats"
+              value="true"
+              unless="@{PropertyExists('package.Apt.PoolFloats')}" />
+
+    <!-- Compiles in support for Math class -->
+    <property name="package.Apt.UseMathObject"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseMathObject')}" />
+
+    <!-- Compiles in support for ScriptColour class -->
+    <property name="package.Apt.UseScriptColorObject"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseScriptColorObject')}" />
+
+    <!-- Compiles in support for LoadVars class -->
+    <property name="package.Apt.UseLoadVarsObject"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseLoadVarsObject')}" />
+
+    <!-- Compiles in Array methods such as splice, join, sort, etc. -->
+    <property name="package.Apt.UseArrayMethods"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseArrayMethods')}" />
+
+    <!-- Compiles in String methods such as charAt, substr, toUpperCase, etc. -->
+    <property name="package.Apt.UseStringMethods"
+              value="true"
+              unless="@{PropertyExists('package.Apt.UseStringMethods')}" />
+
+    <!-- Support using interfaces with ActionScript's instanceof operator and casting.
+         (Has no effect on using regular classes with instanceof or casting.) -->
+    <property name="package.Apt.TrackImplementedInterfaces"
+              value="true"
+              unless="@{PropertyExists('package.Apt.TrackImplementedInterfaces')}" />
+
+    <!--                                                  -->
+    <!-- The following properties are "false" by default  -->
+    <!--                                                  -->
+
+    <!-- Print input events to debug console -->
+    <property name="package.Apt.EnableInputDebugging"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableInputDebugging')}" />
+
+    <!-- Enable non-typical input devices, like Wii motion controller, etc. -->
+    <property name="package.Apt.EnableAlternateInput"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableAlternateInput')}" />
+
+    <!-- Gather Movieclip metrics -->
+    <property name="package.Apt.GatherMovieclipMetrics"
+              value="false"
+              unless="@{PropertyExists('package.Apt.GatherMovieclipMetrics')}" />
+
+    <!-- Build in support for call stack scope info recording -->
+    <property name="package.Apt.CallStackRecordScopeInfo"
+              value="false"
+              unless="@{PropertyExists('package.Apt.CallStackRecordScopeInfo')}" />
+
+    <!-- Enable Central UI equality type check assert -->
+    <property name="package.Apt.EqualityTypeCheck"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EqualityTypeCheck')}" />
+
+    <!-- Compiles the AptDebugger into Apt -->
+    <property name="package.Apt.EnableDebugger"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableDebugger')}" />
+
+    <!-- Route internal Apt RenderList allocations through a RenderList allocation system -->
+    <property name="package.Apt.UseRenderListAllocators"
+              value="false"
+              unless="@{PropertyExists('package.Apt.UseRenderListAllocators')}" />
+
+    <!-- Route internal Apt RenderBuffer allocations through a Temporary allocation system -->
+    <property name="package.Apt.UseTemporaryAllocators"
+              value="false"
+              unless="@{PropertyExists('package.Apt.UseTemporaryAllocators')}" />
+
+    <!-- Enable ActionScript profiling
+         Note: Regardless, this will be enabled for debug builds (see code in _AptInternalDefines.h) -->
+    <property name="package.Apt.EnableScriptProfiling"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableScriptProfiling')}" />
+
+    <!-- Enable storing off debugging names for ActionScript objects -->
+    <property name="package.Apt.EnableDebugNames"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableDebugNames')}" />
+
+    <!-- Enable memory metrics gathering.                         -->
+    <property name="package.Apt.GatherMemoryMetrics"
+              value="false"
+              unless="@{PropertyExists('package.Apt.GatherMemoryMetrics')}" />
+
+    <!-- Print zombie output to debug console -->
+    <property name="package.Apt.EnableZombieOutput"
+              value="false"
+              unless="@{PropertyExists('package.Apt.EnableZombieOutput')}" />
+
+    <!-- Force Apt to crash in several bad situations such as AptBasePtrStack overflows
+         AptValuePtrStack overflows, corrupted memory during a call to AptActionInterpreter::callFunction()
+         and function register buffer overflows during a call to AptScriptFunctionBase::SetRegisterValue().
+    -->
+    <property name="package.Apt.ForceCrashes"
+              value="false"
+              unless="@{PropertyExists('package.Apt.ForceCrashes')}" />
+
+    <!-- Automatically lock AptInt and AptFloat when accessing them. This should only be necessary if you
+         are touching them from more than one thread for some reason. -->
+    <property name="package.Apt.AutoLockValues"
+              value="false"
+              unless="@{PropertyExists('package.Apt.AutoLockValues')}" />
+
+    <!-- See inside AptActionInterpreter around a check for APT_ALLOW_GLOBAL_MEMBER_FUNCTION_LOOKUP.
+         This flag was added specifically for Fifa data. -->
+    <property name="package.Apt.AllowGlobalMemberFunctionLookup"
+              value="false"
+              unless="@{PropertyExists('package.Apt.AllowGlobalMemberFunctionLookup')}" />
+
+    <!-- See inside AptActionInterpreter around a check for APT_ALLOW_GLOBAL_MEMBER_DELETION.
+         This flag was added specifically for Fifa data. -->
+    <property name="package.Apt.AllowGlobalMemberDeletion"
+              value="false"
+              unless="@{PropertyExists('package.Apt.AllowGlobalMemberDeletion')}" />
+
+    <!-- See inside AptValue around a check for APT_ALLOW_CLASS_MEMBER_RESERVED_WORDS_LOOKUP.
+         This flag was added specifically for Fifa data. -->
+    <property name="package.Apt.AllowClassMemberReservedWordsLookup"
+              value="false"
+              unless="@{PropertyExists('package.Apt.AllowClassMemberReservedWordsLookup')}" />
+
+    <property name="package.Apt.PrintLoadedSWFs"
+              value="false"
+              unless="@{PropertyExists('package.Apt.PrintLoadedSWFs')}" />
+
+    <!-- ==================================================== -->
+
+    <!-- Max number of files that can be loaded in one frame  -->
+    <property name="package.Apt.MaxFilesLoaded"
+              value="128"
+              unless="@{PropertyExists('package.Apt.MaxFilesLoaded')}" />
+
+    <!-- ==================================================== -->
+
+    <do if="${config-platform} == 'ps3-gcc'">
+        <optionset name="config-options-library-ps3" fromoptionset="config-options-library">
+            <option name="buildset.cc.options">
+                @{OptionSetGetValue('config-options-common', 'buildset.cc.options')}
+                -fvisibility=hidden
+            </option>
+        </optionset>
+        <task name="GenerateBuildOptionset" configsetname="config-options-library-ps3" />
+    </do>
+
+    <property name="runtime.Apt.usedependencies">
+        ${property.value}
+        EAThread
+    </property>
+
+    <property name="runtime.Apt.usedependencies.pc">
+        DirectX
+    </property>
+    <property name="runtime.Apt.usedependencies.pc64">
+        DirectX
+    </property>
+    <property name="runtime.Apt.usedependencies.xenon">
+        xenonsdk
+    </property>
+
+    <property name="runtime.Apt.defines">
+        ${runtime.defines}
+        APTLIBRARY
+    </property>
+
+
+    <!-- ==================================================== -->
+    <!-- Internal defines controlled by nant properties       -->
+    <!-- ==================================================== -->
+
+    <property name="runtime.Apt.defines" >
+        ${property.value}
+        APT_MAX_FILES_LOADED=${package.Apt.MaxFilesLoaded}
+    </property>
+
+
+    <!--                                             -->
+    <!-- The following are #defined as 1 by default  -->
+    <!-- in _AptInternalDefines.h.                   -->
+    <!--                                             -->
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseAptUtil}">
+        ${property.value}
+        APT_USE_UTILITY=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseFilters}">
+        ${property.value}
+        APT_USE_FILTERS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.PoolStrings}">
+        ${property.value}
+        APT_POOL_STRINGS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.PoolIntegers}">
+        ${property.value}
+        APT_POOL_INTEGERS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.PoolFloats}">
+        ${property.value}
+        APT_POOL_FLOATS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseMathObject}">
+        ${property.value}
+        APT_USE_MATH_OBJECT=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseScriptColorObject}">
+        ${property.value}
+        APT_USE_SCRIPTCOLOUR_OBJECT=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseLoadVarsObject}">
+        ${property.value}
+        APT_USE_LOADVARS_OBJECT=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseArrayMethods}">
+        ${property.value}
+        APT_USE_ARRAY_METHODS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.UseStringMethods}">
+        ${property.value}
+        APT_USE_STRING_METHODS=0
+    </property>
+
+    <property name="runtime.Apt.defines" unless="${package.Apt.TrackImplementedInterfaces}">
+        ${property.value}
+        APT_TRACK_IMPLEMENTED_INTERFACES=0
+    </property>
+
+    <!--                                        -->
+    <!-- The following are undefined by default -->
+    <!-- in _AptInternalDefines.h.              -->
+    <!--                                        -->
+
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableInputDebugging}">
+        ${property.value}
+        APT_PRINT_INPUT
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableAlternateInput}">
+        ${property.value}
+        APT_ALTERNATE_INPUT
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.GatherMovieclipMetrics}">
+        ${property.value}
+        APT_GATHER_MOVIECLIP_METRICS
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.CallStackRecordScopeInfo}">
+        ${property.value}
+        APT_RECORD_SCOPE_INFO
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.EqualityTypeCheck}">
+        ${property.value}
+        APT_EQUALITY_TYPECHECK_ASSERT
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableDebugger}">
+        ${property.value}
+        APT_DEBUGGER_ENABLE
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.UseRenderListAllocators}">
+        ${property.value}
+        APT_USE_RENDERLIST_ALLOCATORS=1
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.UseTemporaryAllocators}">
+        ${property.value}
+        APT_USE_TEMPORARY_ALLOCATORS=1
+    </property>
+
+    <!-- Note: If EA_DEBUG is defined, this gets enabled regardless of package.Apt.EnableScriptProfiling -->
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableScriptProfiling}">
+        ${property.value}
+        APT_DO_AS_PROFILE=1
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableDebugNames}">
+        ${property.value}
+        APT_USE_DEBUG_NAMES=1
+    </property>
+
+    <!-- Note: If EA_DEBUG is defined, this gets enabled regardless of package.Apt.EnableZombieOutput -->
+    <property name="runtime.Apt.defines" if="${package.Apt.EnableZombieOutput}">
+        ${property.value}
+        APT_ENABLE_ZOMBIE_OUTPUT=1
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.GatherMemoryMetrics}">
+        ${property.value}
+        APT_GATHER_MEMORY_METRICS
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.ForceCrashes}">
+        ${property.value}
+        APT_FORCE_CRASHES
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.AutoLockValues}">
+        ${property.value}
+        APT_AUTOLOCK_VALUES=1
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.AllowGlobalMemberFunctionLookup}">
+        ${property.value}
+        APT_ALLOW_GLOBAL_MEMBER_FUNCTION_LOOKUP
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.AllowGlobalMemberDeletion}">
+        ${property.value}
+        APT_ALLOW_GLOBAL_MEMBER_DELETION
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.AllowClassMemberReservedWordsLookup}">
+        ${property.value}
+        APT_ALLOW_CLASS_MEMBER_RESERVED_WORDS_LOOKUP
+    </property>
+
+    <property name="runtime.Apt.defines" if="${package.Apt.PrintLoadedSWFs}">
+        ${property.value}
+        APT_PRINT_LOADED_SWFS=1
+    </property>
+
+    <!-- ==================================================== -->
+
+    <property name="runtime.Apt.includedirs">
+        ${package.Apt.dir}/include
+        ${package.Apt.dir}/include/Apt
+        ${package.Apt.dir}/include/Apt/AptStd
+        ${package.Apt.dir}/include/Apt/AptValue
+        ${package.Apt.dir}/include/Apt/String
+        ${package.Apt.dir}/source/Apt
+        ${package.Apt.dir}/source/Apt/AptCharacter
+        ${package.Apt.dir}/source/Apt/AptObject
+        ${package.Apt.dir}/source/Apt/AptValue
+        ${package.Apt.dir}/source/Apt/CommonSense/SingleList
+        ${package.Apt.dir}/source/Apt/Display
+        ${package.Apt.dir}/source/Apt/ea/string
+        ${package.Apt.dir}/source/Apt/SDK
+        ${package.Apt.dir}/source/Apt/string
+    </property>
+    <!-- also define the headerfile fileset -->
+    <fileset name="runtime.Apt.headerfiles" append="true">
+        <includes name="${package.Apt.dir}/include/**.h"/>
+        <includes name="${package.Apt.dir}/source/**.h"/>
+    </fileset>
+
+    <fileset name="runtime.Apt.sourcefiles">
+        <includes name="${package.Apt.dir}/source/Apt/**.cpp"/>
+        <excludes name="${package.Apt.dir}/source/Apt/AptFastStack.cpp" unless="${config-system}=='ps2'" />
+    </fileset>
+    <fileset name="runtime.Apt.bulkbuild.sourcefiles" fromfileset="runtime.Apt.sourcefiles"/>
+
+    <property name="runtime.Apt.warningsuppression" value="" />
+
+    <property name="runtime.Apt.warningsuppression" if="${config-platform} == 'ps3-sn'">
+        ${property.value}
+        --diag_suppress=68,112,237,382,817
+    </property>
+
+    <property name="runtime.Apt.warningsuppression" if="${config-compiler} == 'mw'">
+        ${property.value}
+        -w nounusedarg  <!-- disable unused (function) arguments warning -->
+        -w noimplicit   <!-- disable implicit arithmetic conversion warning -->
+        -w noempty      <!-- disable no empty declarations warning -->
+    </property>
+
+    <property name="runtime.Apt.warningsuppression" if="${config-compiler} == 'vc'">
+        ${property.value}
+        -wd4512     <!-- assignment operator could not be generated -->
+        -wd4619     <!-- #pragma warning there is no warning number XXXX -->
+        -wd4244     <!-- conversion from int32_t to int16_t possible loss of data -->
+        -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+        -wd4626     <!-- assignment operator could not be generated because a base class assignment operator is inaccessible -->
+        -wd4061     <!-- enumerate 'AptVFT_CIHNone' in switch of enum 'AptVirtualFunctionTable_Indices' is not explicitly handled by a case label -->
+        -wd4062     <!-- enumerate 'AptActionStopSound' in switch of enum 'AptVirtualFunctionTable_Indices' is not explicitly handled by a case label -->
+        -wd4702     <!-- unreachable code -->
+        -wd4245     <!-- 'argument' : conversion from 'int' to 'unsigned int', signed/unsigned mismatch -->
+        -wd4296     <!-- '>=' : expression is always true -->
+        -wd4706     <!-- assignment within conditional expression (release only) -->
+        -wd4127     <!-- conditional expression is constant -->
+        -wd4365     <!-- conversion from XXX to XXX signed/unsigned mismatch -->
+        -wd4625    <!-- copy constructor could not be generated because a base class copy constructor is inaccessible -->
+    </property>
+
+    <property name="runtime.Apt.warningsuppression" if="${package.Apt.EnableDebugger} and ${config-compiler} == 'vc'">
+        ${property.value}
+        -wd4548     <!-- expression before comma has no effect; expected expression with side-effect -->
+    </property>
+
+    <property name="runtime.Apt.warningsuppression" if="${config-compiler} == 'vc'">
+        ${property.value}
+        -wd4946    <!-- warning disable: reinterpret_cast used between related classes: 'rw::BaseResourceDescriptor' and 'rw::BaseResourceDescriptorType<typeId> -->
+        -wd4625    <!-- copy constructor could not be generated because a base class copy constructor is inaccessible -->
+        -wd4511    <!-- copy constructor could not be generated -->
+        -wd4217        <!-- member template functions cannot be used for copy-assignment or copy-construction -->
+        -wd4530        <!-- C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc -->
+    </property>
+    
+    <property name="runtime.Apt.warningsuppression.pc">
+        -wd4706     <!-- assignment with condition expression -->
+    </property>
+    <property name="runtime.Apt.warningsuppression.pc64">
+        -wd4706     <!-- assignment with condition expression -->
+    </property>
+    <property name="runtime.Apt.warningsuppression.xbox">
+        -wd4365     <!-- conversion from 'int' to 'unsigned int', signed/unsigned mismatch -->
+    </property>
+    <!-- FIFA_BEGIN | DIVERGENCE | dmathieu@bioware.com | 2015-07-07 | Suppress new PS4 error -->
+    <property name="runtime.Apt.warningsuppression.kettle">
+        -Wno-dynamic-class-memaccess
+        -Wno-new-returns-null
+        -Wno-writable-strings
+    </property>
+    <!-- FIFA_END -->
+</project>
+

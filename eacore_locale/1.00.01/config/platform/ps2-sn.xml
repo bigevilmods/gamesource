@@ -1,0 +1,9 @@
+<project>
+	<property name="cc.options">
+
+		${property.value}
+
+		-W
+		-Winline
+	</property>
+</project>

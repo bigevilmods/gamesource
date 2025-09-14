@@ -1,0 +1,47 @@
+/*!
+\page p_vpu_library The VPU Library
+
+The VPU library is designed and implemented to run on CPU specific dedicated
+\ref p_vectorization "vectorized" hardware. For 
+the different platforms these are VMX, VMX128, SSE1, VU0, and the SPU.
+
+SSE1 is used by RWMath on the PC.  If you are planning
+to target lower spec computers (such as PII or older AMD Athlon
+processor), the VPU math library should not be used.  Consult processor manuals
+for more details about their support for the SSE instruction set.
+
+The VPU library lives in the rw::math::vpu namespace.
+
+VPU library should be used when
+
+- Writing performance critical code
+- Writing math heavy code (that is not scalar in nature)
+- Porting existing vpu code
+
+The VPU library has special data alignment considerations you should be aware
+of.  Read the documenation for \ref p_alignment "alignment" for more
+information.
+
+\section s_vpu_math_on_wii VPU math on Wii
+
+The Wii port of math has a fully functional VPU implementation.  However, the
+implementation is not well optimized at this point.  Some attempts were made
+to use paired instructions to optimize the VPU library.  However, current
+compiler bugs are producing invalid paired single instruction code for optimized
+builds.  There is also a hardware bug (that the compiler could work around) that
+is making paired single code very unreliable.  In the future compiler fixes and
+workaround should allow more code to be optimized.  Nintendo is currently working
+with Freescale to make these fixes.  However, for the best results users should
+consider using the FPU library on Wii instead of the VPU library.
+
+The FPU math library on the Wii has advantages for scalar code.  Also, it is actually
+possible for FPU operations to take advantage of paired instructions for float
+(i.e. not double) types.  Currently some large FPU functions are optimized using
+paired instructions.  Since the functions are large, they can be \em not inlined
+without introducing too much overhead.  Because the functions are not inlined they can
+be tested to make sure the compiler is not producing bad code.  If they were allowed to
+be inlined, it would not be possible to test all possible ways the compiler
+could optimize the code.  Since the compiler is currently so unreliable at the
+moment, this would almost certainly result in bad code generation.
+    
+*/

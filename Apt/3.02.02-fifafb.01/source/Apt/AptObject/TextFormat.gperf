@@ -1,0 +1,19 @@
+struct TextFormatMembers { char *szName; int nIndex; };
+%%
+align,1
+blockIndent,2
+bold,3
+bullet,4
+color,5
+font,6
+indent,7
+italic,8
+leading,9
+leftMargin,10
+rightMargin,11
+tabStops,12
+target,13
+size,14
+underline,15
+url,16
+tracking,17

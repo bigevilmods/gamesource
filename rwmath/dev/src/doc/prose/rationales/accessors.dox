@@ -1,0 +1,198 @@
+/*!
+\page p_accessors Accessors
+
+Many users are confused when they first see how elements of a vector are
+accessed in the RWMath library.  At first the design of the library may
+appear to be overly elaborate and unnecessary.  Also, the use of accessors
+instead of direct member access means it is more difficult to port legacy
+math code to the new library.
+
+This section is intended on giving you an understanding of why accessors
+were deemed necessary, and illustrate how they work.
+
+If you have not already done so, please read the documentation about
+\ref p_unions "vector unions".  The discussion regarding unions is important in
+understanding the performance implications that the math library's design.
+
+\section initial_design What does a vector look like?
+
+Typically, a C++ vector class is created as an aggregate structure of 4 floats.  i.e. something like this: 
+
+\code
+
+class Vector4
+{
+public:
+    // Various constructors, and class methods.
+
+public:
+    float x;
+    float y;
+    float z;
+    float w;
+};
+
+\endcode
+
+This code seems pretty good.  After all, you can easily write expressions that use individual elements in the vector.
+
+\code
+Vector a(1.0f, 2.0f, 3.0f, 4.0f);
+Vector b(5.0f, 6.0f, 7.0f, 8.0f);
+Vector c = a;
+c.x = a.x * b.y + a.z;
+\endcode
+
+Unfortunately, this type of Vector class doesn't make use of the vector units
+available on modern hardware.  If we do attempt to operate on the data in a vector
+register before or after a scalar element is accessed, we will generate a LHS.  
+The cost of a LHS is so great, that it will almost always be faster to just
+use the FPU instead of trying to accelerate the operation on the VPU.
+
+Note: The discussion regarding LHS's is most relevant to the PS3 PPU and the
+Xenon.  However, those two platforms are the focus of nextgen, and therefore
+heavily influence the math libraries design.  PS3 SPU code does not need to
+worry about LHS's, but it does need to worry about translating scalar
+operations into vector operations (since virtually all SPU operations are
+vector operations).  So, our libraries design is still applicable to the SPU.
+
+\section vpu_design
+
+Lets redefine our class so that it uses VPU types instead of FPU types (i.e. float/doubles)
+That way we will not suffer from LHS's every time we access a scalar element.
+
+\code
+
+class Vector4
+{
+public:
+    // Various constructors, and class methods.
+
+public:
+    // VectorIntrinsic is just a typedef for a platform specific vector type.
+    VectorIntrinsic mV;   // mV effectively stores x, y, z, w
+};
+
+\endcode
+
+Now we do not need to worry about mixing float and vector operations together
+and generating LHS's.  But this raises a couple quesions.
+-# How do we represent scalar (i.e. non-vector) operations on the VPU.
+-# How do we access individual elements in a vector.
+
+The first problem is fairly easy.  We can "splat" a scalar value across an
+entire \c VectorIntrinsic type.  Then we can operate on scalars by operating on
+an entire vectors of scalars.  Splatting the value has some nice benefits.  It means
+that we can, for example, scale a vector by a scalar by just muliplying the two vectors
+together.  That is much faster than FPU code that would need to do 4 seperate
+multiplications.
+
+So, the bottom line is, representing a scalar using a vector is an fairly
+straightforward.  But, we are still left with the problem of how to access individual
+elements in a vector (e.g. a Vector4 easily).
+
+We could use an anonymous union to access the elements as floats, but that causes LHS's.
+
+We could try to use pointers to access the individual elements.  However, that
+will also cause LHS's, and it will lead to nasty memory aliasing bugs.
+
+One option that avoid LHS's, is to have methods on the VectorClass for getting
+and setting elements by value.  Then user code would look like this:
+
+\code
+Vector a(1.0f, 2.0f, 3.0f, 4.0f);
+Vector b(5.0f, 6.0f, 7.0f, 8.0f);
+Vector c = a;
+c.SetX( a.GetX() * b.GetY() + a.GetZ() );
+\endcode
+
+Although this code will certainly work, it means users must rewrite their
+expressions to explicitly get/set elements (operator = no longer works).  It
+also becomes impossible to pass a reference to an individual element because
+doing a "Get" returns a value.  This solution is also not as efficient as it
+could be, because Get's must splat the element referred to across an entire
+vector.  However in some cases, these splats are not necessary.  We determined
+this solution was not practical for us because it imposed a huge cost on teams
+that needed to port legacy code.  We also felt that the notation for writing math
+code was not nearly as simple as previous math libraries.
+
+Renderware math solves these problems using a "reference" class.  The reference class
+looks something like this:
+
+\code
+
+// In reality, RWMath has a single templated VecFloatRef<INDEX> type. 
+// The template parameter determines what component of a vector is referenced
+// (i.e. x, y, z, or w).
+class VecFloatRefX
+{
+public:
+    VecFloatRefX( VectorIntrinsic &vector )
+    :mV(vector)
+    {
+    }
+
+public:
+    VectorIntrinsic &mV;
+};
+
+\endcode
+
+The Vector4 class has methods that represents an access to the components of a vector by returning a reference object:
+
+\code
+
+class Vector4
+{
+public:
+    // Various constructors, and class methods.
+
+    VecFloatRefX X()
+    {
+        return VecFloatRefX(mV);
+    }
+
+    VecFloatRefY Y()
+    {
+        return VecFloatRefY(mV);
+    }
+
+    VecFloatRefZ Z()
+    {
+        return VecFloatRefZ(mV);
+    }
+
+    VecFloatRefW W()
+    {
+        return VecFloatRefW(mV);
+    }
+
+public:
+    // VectorIntrinsic is just a typedef for a platform specific vector type.
+    VectorIntrinsic mV;   // mV effectively stores x, y, z, w
+};
+
+\endcode
+
+All the refence types contain is a reference to a vector intrinsic.  The type of
+the reference (i.e. VecFloatRefX vs VecFloatRefY) is what determines which
+individual element is referred to by the reference object.
+
+When a user wants to access individual elements they now write:
+
+\code
+Vector a(1.0f, 2.0f, 3.0f, 4.0f);
+Vector b(5.0f, 6.0f, 7.0f, 8.0f);
+Vector c = a;
+c.X() = a.X() * b.Y() + a.Z();
+\endcode
+
+Each element access returns a VecFloatRef<INDEX> object that references the
+element that the user has referred to.  The math library defines all the standard
+operators for these types (e.g. adding, multiplying, copying, etc).  The operators
+turn scalar code into a series of vector operations.  The operators allow us to
+work entirely on the VPU for these operations.  The reference type also allows
+individual elements of the vector to be modified using standard assignment operators.
+
+*/
+

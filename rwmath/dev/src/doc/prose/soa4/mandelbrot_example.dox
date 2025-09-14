@@ -1,0 +1,373 @@
+/*!
+\page p_mandelbrot_example Mandelbrot Example Code
+
+Sometimes the best way to understand a concept is to see an application of it.  This example code generates
+the well known <a href="http://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot</a> fractal.
+
+\image html mandelbrot.jpg
+
+\section s_mandelbrot_fpu_code FPU Code
+
+The first code snippet represents the typical way you might implement
+a Mandelbrot fractal.  It performs floating point calculations on the FPU.
+The code loops over each pixel in a frame buffer and does a calculation to
+determine if the pixel is inside or outside the Mandelbrot set.  If the pixel
+is not inside the set, the number of iterations required before it begins to
+"escape to infinity" is used to generate a color.
+
+There are many tricks that can be used to generate the fractal more quickly.
+Usually these tricks exploit some sort of symmetry or use some heuristic to
+determine if pixels are likely to be the same as neighbors.  The next
+example doesn't try to "skip" any computations or take short cuts.  Instead it
+will try to improve on this code's performance using SoA4 math routines.
+
+Note for PPC: Although I haven't tried anything overly fancy to optimize the FPU code, I have
+tried to avoid penalties like LHS's that would occur if the floating point (x,y) locations
+were derived from integer loop counters.  I have also used integer loop counters to avoid
+\c fcmp penalties.
+
+\code
+void RenderMandelbrotFloat(unsigned int *fb, int fbWidth, int fbHeight)
+{
+    using namespace rw::math::fpu;
+
+    const float scale = 0.003f;
+    const float yInit = scale * static_cast<float>(-fbHeight)/2.0f;
+    const float yDelta = scale * 1.0f;
+    const float xInit = scale * static_cast<float>(-fbWidth)/2.0f;
+    const float xDelta = scale * 1.0f;
+    const float bound = 4.0f;
+
+    float y = yInit;
+    for(int vCount=0;vCount<fbHeight;vCount++)
+    {
+        float x = xInit;
+        for(int hCount=0;hCount<fbWidth;hCount++)
+        {
+            float xCur = x;
+            float yCur = y;
+            unsigned int iteration = 0;
+            for(;((xCur*xCur + yCur*yCur) < bound) && (iteration < MAX_ITERATION);iteration++)
+            {
+                const float xNext = xCur*xCur - yCur*yCur + x;
+                const float yNext = 2.0f*xCur*yCur + y;
+                xCur = xNext;
+                yCur = yNext;
+            }
+            const unsigned int col = iteration < MAX_ITERATION ? 16*iteration : 0;
+            fb[hCount+vCount*fbWidth] = col;
+
+            x += xDelta;
+        }
+        y += yDelta;
+    }
+}
+\endcode
+
+\section s_mandelbrot_soa_code SoA4 Code
+
+In the original FPU code the inner loop determines the color of a \e single pixel.
+Wouldn't it be great if instead of calculating a single pixel inside the
+loop we could calculate multiple pixels?
+
+This example is quite similar to the original one except it calculates 4
+pixels at once using the SoA4 math API's.  Instead of using \c float types
+which represent a single floating point value, the code will make use of the
+\c Soa4Float type that will represent 4 floating point values in a single
+variable.
+
+The initial constants now change from this:
+\code
+    const float scale = 0.003f;
+    const float yInit = scale * static_cast<float>(-fbHeight)/2.0f;
+    const float yDelta = scale * 1.0f;
+    const float xInit = scale * static_cast<float>(-fbWidth)/2.0f;
+    const float xDelta = scale * 1.0f;
+    const float bound = 4.0f;
+\endcode
+to this:
+\code
+    const float scale = 0.003f;
+    const Soa4Float yInit = Soa4FloatFromFloat(scale * static_cast<float>(-fbHeight)/2.0f);
+    const Soa4Float yDelta = Soa4FloatFromFloat(scale * 1.0f);
+    const float x0 = scale * static_cast<float>(-fbWidth)/2.0f;
+    const Soa4Float xDelta = Soa4FloatFromFloat(scale * 4.0f);
+    const Soa4Float xInit = Soa4FloatFromFloats(x0, x0+scale, x0+2.0f*scale, x0+3.0f*scale);
+    const Soa4Float bound = Soa4FloatFromFloat(4.0f);
+\endcode
+Notice that \c xInit has been changed from being the first x location on a scanline to being the first \e four
+x locations on a scanline.  That is important, because we want to iterate over 4 pixels at a time.  It would
+have been possible to walk over any group of 4 pixels, but this choice is easy to work with and also efficient.
+
+To avoid creating \c Soa4Float's from literals, which may be expensive, some additional constants
+are defined.
+\code
+    const Soa4Float two = GetSoa4Float_Two();
+    const Soa4Float zero = GetSoa4Float_Zero();
+    const Soa4Float one = GetSoa4Float_One();
+    const Soa4Float sixteen = Soa4FloatFromFloat(16.0f);
+    const Soa4Float maxIter = Soa4FloatFromFloat(static_cast<float>(MAX_ITERATION));
+\endcode
+
+The calculations in the inner loop actually remain almost identical.  The original code looked like this:
+\code
+    const float xNext = xCur*xCur - yCur*yCur + x;
+    const float yNext = 2.0f*xCur*yCur + y;
+\endcode
+The new code becomes:
+\code
+    const Soa4Float xNext = xCur*xCur - yCur*yCur + x;
+    const Soa4Float yNext = two*xCur*yCur + y;
+\endcode
+The only changes necessary in this case are to change \c floats's to \c
+Soa4Float's and to replace the literal \c 2.0f with a constant \c two.
+
+Unfortunately, the inner loop of the fractal calculation introduces a
+slight problem.  Here is the original loop for your reference:
+\code
+    for(;((xCur*xCur + yCur*yCur) < bound) && (iteration < MAX_ITERATION);iteration++)
+    {
+        const float xNext = xCur*xCur - yCur*yCur + x;
+        const float yNext = 2.0f*xCur*yCur + y;
+        xCur = xNext;
+        yCur = yNext;
+    }
+\endcode
+
+As you can see, it isn't possible to know ahead of time how many iterations this
+loop will execute.  Also, the number of iterations will vary from one pixel to
+the next.  One solution is to iterate the loop the maximum number of times
+required of any pixel in the set of four.  Also, the code must be modified so that
+additional iterations for a pixel don't actually change the results for that
+pixel.  Here is the complete loop for the SoA code.
+\code
+    for(;;)
+    {
+        Soa4MaskScalar passesBoundMask(CompGreaterThan(bound, xCur*xCur + yCur*yCur));
+        iterationCount += Select( passesBoundMask, one, zero );
+
+        const Soa4Float xNext = xCur*xCur - yCur*yCur + x;
+        const Soa4Float yNext = two*xCur*yCur + y;
+        xCur = xNext;
+        yCur = yNext;
+
+        if(iteration >= MAX_ITERATION || IsAllFalse(passesBoundMask) )
+        {
+            break;
+        }
+        iteration++;
+    }
+\endcode
+A mask (\c passesBoundMask) is used to determine if a pixel is within a bound
+(i.e. indicating the pixel may not escape to infinity).  This mask is used
+for two purposes.
+<ol>
+<li>The mask is used to conditionally update at iteration count for each pixel.  This count
+   will indicate how long it took for the pixel to escape to infinity (if it does so).</li>
+<li>The mask is used to exit the loop.  If \e all the pixels fail the test then the loop
+   can break.</li>
+</ol>
+
+The complete code looks like this:
+
+\code
+// Note: fb is assumed to be 16byte aligned, and fbWidth is assumed to be a multiple of 4.
+void RenderMandelbrotSoA4(unsigned int *fb, int fbWidth, int fbHeight)
+{
+    using namespace rw::math::vpu;
+
+    const float scale = 0.003f;
+    const Soa4Float yInit = Soa4FloatFromFloat(scale * static_cast<float>(-fbHeight)/2.0f);
+    const Soa4Float yDelta = Soa4FloatFromFloat(scale * 1.0f);
+    const float x0 = scale * static_cast<float>(-fbWidth)/2.0f;
+    const Soa4Float xDelta = Soa4FloatFromFloat(scale * 4.0f);
+    const Soa4Float xInit = Soa4FloatFromFloats(x0, x0+scale, x0+2.0f*scale, x0+3.0f*scale);
+    const Soa4Float bound = Soa4FloatFromFloat(4.0f);
+    const Soa4Float two = GetSoa4Float_Two();
+    const Soa4Float zero = GetSoa4Float_Zero();
+    const Soa4Float one = GetSoa4Float_One();
+    const Soa4Float sixteen = Soa4FloatFromFloat(16.0f);
+    const Soa4Float maxIter = Soa4FloatFromFloat(static_cast<float>(MAX_ITERATION));
+
+    Soa4Float y = yInit;
+    for(int vCount=0;vCount<fbHeight;vCount++)
+    {
+        Soa4Float x = xInit;
+        for(int hCount=0;hCount<fbWidth;hCount+=4)
+        {
+            Soa4Float xCur = x;
+            Soa4Float yCur = y;
+            unsigned int iteration = 0;
+            Soa4Float iterationCount = GetSoa4Float_Zero();
+            for(;;)
+            {
+                Soa4MaskScalar passesBoundMask(CompGreaterThan(bound, xCur*xCur + yCur*yCur));
+                iterationCount += Select( passesBoundMask, one, zero );
+
+                const Soa4Float xNext = xCur*xCur - yCur*yCur + x;
+                const Soa4Float yNext = two*xCur*yCur + y;
+                xCur = xNext;
+                yCur = yNext;
+
+                if(iteration >= MAX_ITERATION || IsAllFalse(passesBoundMask) )
+                {
+                    break;
+                }
+                iteration++;
+            }
+            const Soa4Float intensity = Select(CompLessThan(iterationCount, maxIter), sixteen*iterationCount, zero);
+            const VectorIntrinsic intColors = rw::math::vpl::VecConvertFloatToUnsignedFixedPoint<0>(intensity.mV);
+            rw::math::vpl::VecStore( intColors, &fb[hCount+vCount*fbWidth], 0);
+            x += xDelta;
+        }
+        y += yDelta;
+    }
+}
+\endcode
+
+The SoA4 code is over twice as fast when benchmarked on Xbox 360.  You might
+expect the code to be roughly four times faster (since it computes four pixels
+at once), but this is not the case.  The branching operations (based on vector results)
+are more costly than the integer based branches in the first example.  
+The loop has to iterate for the "worst case" pixel.  So some unnecessary
+computations are done.  Also, the vector instructions themselves are longer
+latency than the float operations.  Still, a 2x improvement is quite good
+for a relatively simple code change.
+
+\section s_mandelbrot_soa_code_unrolled SoA4 Code Unrolled
+
+For the third example, let's make a few modifications to the SoA4 version of the
+code.  Since branching is expensive it would be nice to reduce the cost of the
+branches.  One way to do this is to do fewer branches for the same number
+of calculations.  This example essentially unrolls the loop four times (the
+number is actually arbitrary and doesn't need to be four).  Then the exit condition
+is tested only once at the end of the loop.
+
+A similar change would probably have improved performance on the FPU as well.
+However, the FPU code would need to be changed so that additional loop
+iterations didn't impact the end result.  That would take almost the same amount
+of time as writing the SoA4 version of the code.
+
+\code
+// Note: fb is assumed to be 16byte aligned, and fbWidth is assumed to be a multiple of 4.
+void RenderMandelbrotSoA4Unrolled(unsigned int *fb, int fbWidth, int fbHeight)
+{
+    using namespace rw::math::vpu;
+
+    const float scale = 0.003f;
+    const Soa4Float yInit = Soa4FloatFromFloat(scale * static_cast<float>(-fbHeight)/2.0f);
+    const Soa4Float yDelta = Soa4FloatFromFloat(scale * 1.0f);
+    const float x0 = scale * static_cast<float>(-fbWidth)/2.0f;
+    const Soa4Float xDelta = Soa4FloatFromFloat(scale * 4.0f);
+    const Soa4Float xInit = Soa4FloatFromFloats(x0, x0+scale, x0+2.0f*scale, x0+3.0f*scale);
+    const Soa4Float bound = Soa4FloatFromFloat(4.0f);
+    const Soa4Float two = GetSoa4Float_Two();
+    const Soa4Float zero = GetSoa4Float_Zero();
+    const Soa4Float one = GetSoa4Float_One();
+    const Soa4Float sixteen = Soa4FloatFromFloat(16.0f);
+    const Soa4Float maxIter = Soa4FloatFromFloat(static_cast<float>(MAX_ITERATION));
+
+    Soa4Float y = yInit;
+    for(int vCount=0;vCount<fbHeight;vCount++)
+    {
+        Soa4Float x = xInit;
+        for(int hCount=0;hCount<fbWidth;hCount+=4)
+        {
+            Soa4Float xCur = x;
+            Soa4Float yCur = y;
+            unsigned int iteration = 0;
+            Soa4Float iterationCount = GetSoa4Float_Zero();
+
+            // Define the loop body (without the loop exit test) so it can be included in an unrolled loop
+            #define LOOP_BODY() \
+                const Soa4MaskScalar passesBoundMask(CompGreaterThan(bound, xCur*xCur + yCur*yCur)); \
+                iterationCount += Select( passesBoundMask, one, zero ); \
+                const Soa4Float xNext = xCur*xCur - yCur*yCur + x; \
+                const Soa4Float yNext = two*xCur*yCur + y; \
+                xCur = xNext; \
+                yCur = yNext;
+
+            for(;;)
+            {
+                {   LOOP_BODY(); iteration++;   }
+                {   LOOP_BODY(); iteration++;   }
+                {   LOOP_BODY(); iteration++;   }
+                {
+                    LOOP_BODY();
+                    // Only test the exit condition for the last loop body
+                    if(iteration >= MAX_ITERATION || IsAllFalse(passesBoundMask) )
+                    {
+                        break;
+                    }
+                    iteration++;
+                }
+            }
+
+            #undef LOOP_BODY
+
+            const Soa4Float intensity = Select(CompLessThan(iterationCount, maxIter), sixteen*iterationCount, zero);
+            const VectorIntrinsic intColors = rw::math::vpl::VecConvertFloatToUnsignedFixedPoint<0>(intensity.mV);
+            rw::math::vpl::VecStore( intColors, &fb[hCount+vCount*fbWidth], 0);
+            x += xDelta;
+        }
+        y += yDelta;
+    }
+}
+\endcode
+
+On the Xbox 360, this code executes just slightly more than 4x faster than the
+AoS FPU.  Plus, this loop was trivial to write given the code from the previous
+example.
+
+\section s_mandelbrot_soa_code_results Results
+
+This table shows how long the various implementations take to generate a
+Mandelbrot fractal at 1024x768 and a maximum of 256 iterations per pixel.
+All times are measured in ms.
+
+\table
+
+\tr
+    \td \endtd
+    \th PC \endth
+    \th PS3-PPU \endth
+    \th Xbox 360 \endth
+\endtr
+
+\tr
+    \th SoA4 Unrolled \endth
+    \td 93 \endtd
+    \td 211 \endtd
+    \td 233 \endtd
+    \td 3864 \endtd
+\endtr
+
+\tr
+    \th SoA4 \endth
+    \td 109 \endtd
+    \td 293 \endtd
+    \td 428 \endtd
+    \td 4430 \endtd
+\endtr
+
+\tr
+    \th FPU \endth
+    \td 546 \endtd
+    \td 1087 \endtd
+    \td 1049 \endtd
+    \td 4798 \endtd
+\endtr
+
+\endtable
+
+
+\section s_mandelbrot_soa_code_conclusions Conclusions
+
+No doubt this code could be improved even further by exploiting other tricks
+and by trying to do even more calculations per loop iteration (e.g. to hide
+data dependencies).  The intent of this example wasn't to be the most
+optimal code possible, but rather to show how AoS code can be converted into
+much faster SoA code.  In fact, some trivial optimizations (like using
+fused multiply-add functions) were omitted to keep the code easier to read.
+
+*/

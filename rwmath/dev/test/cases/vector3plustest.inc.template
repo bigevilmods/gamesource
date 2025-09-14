@@ -1,0 +1,55 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVector3Plus<FloatType>::UnitTestVector3Plus()
+#else
+UnitTestVector3Plus::UnitTestVector3Plus()
+#endif
+{
+
+    // Note:
+    // 1) create a small array so cache miss is minimal, but an array,
+    // as close to real environment as possible.
+    // 2) currently doesn't test from heap, only create data on stack.
+
+    //------------------------------------------------------------------------
+    // create test data
+    //========================================================================
+
+    // generate some random numbers, so we can use for timing test
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        x_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        y_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        z_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        w_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+    }
+
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVector3Plus<FloatType>::~UnitTestVector3Plus()
+#else
+UnitTestVector3Plus::~UnitTestVector3Plus()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestVector3Plus<FloatType>::Test()
+#else
+void UnitTestVector3Plus::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

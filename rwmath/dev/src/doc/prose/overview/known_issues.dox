@@ -1,0 +1,26 @@
+/*!
+\page p_known_issues Known Issues
+
+\section ps3_compiler PS3 Compiler(s)
+
+\par Inlining
+
+The PS3 PPU compiler has problems inlining functions effectively.
+As a work around for this compiler issue, the math library has implemented most
+of the library as macros.  The math library also "force inlines" most of the
+VPU code.  This guarantees that the code in inlined.  These changes significantly
+improve performance of the  math code.  However, the true fix for this issue is
+to have GCC properly estimate the cost of inlining a function.
+
+\par Empty Loop Generation
+
+Current versions of GCC on the PPU and SPU have poor code generation for array
+construction of classes with empty default constructors (i.e. default
+constructors which are implemented but perform no operation).  The compiler will
+not generate any code for the constructors, but it will still create a loop
+that loops over each element being constructed.  For example, constructing an
+array of one thousand vectors will produce an empty loop that iterates one thousand
+times.  Based on some preliminary tests, it appears that this issue should be
+resolved in GCC 4.1.1.
+
+*/

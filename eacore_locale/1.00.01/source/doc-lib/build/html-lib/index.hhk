@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML><HEAD></HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="FrameName" value="right">
+</OBJECT>
+<UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="CharacterType"><param name="Name" value="CharacterType"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="CT_ASCII"><param name="Name" value="CT_ASCII"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7s4"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="CT_UNICODE"><param name="Name" value="CT_UNICODE"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7s5"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7"><param name="Name" value="CharacterType"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7s4"><param name="Name" value="CT_ASCII"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s7s5"><param name="Name" value="CT_UNICODE"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a1"><param name="Name" value="GetState"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a3"><param name="Name" value="GetString"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s3"><param name="Name" value="HASINDEX"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s1"><param name="Name" value="LANGUAGECOUNT"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s0"><param name="Name" value="LANGUAGEID"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a0"><param name="Name" value="Locale"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6"><param name="Name" value="LocaleState"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a2"><param name="Name" value="SetLanguage"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s2"><param name="Name" value="STRINGCOUNT"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a4"><param name="Name" value="WGetString"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="GetState"><param name="Name" value="GetState"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a1"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="GetString"><param name="Name" value="GetString"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a3"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="HASINDEX"><param name="Name" value="HASINDEX"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s3"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="LANGUAGECOUNT"><param name="Name" value="LANGUAGECOUNT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s1"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="LANGUAGEID"><param name="Name" value="LANGUAGEID"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s0"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="Locale"><param name="Name" value="Locale"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a0"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="LocaleState"><param name="Name" value="LocaleState"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="SetLanguage"><param name="Name" value="SetLanguage"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a2"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="STRINGCOUNT"><param name="Name" value="STRINGCOUNT"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#s6s2"><param name="Name" value="EA::Core::Locale"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="See Also" value="WGetString"><param name="Name" value="WGetString"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="_class_e_a_1_1_core_1_1_locale.html#a4"><param name="Name" value="EA::Core::Locale"></OBJECT>
+</UL>

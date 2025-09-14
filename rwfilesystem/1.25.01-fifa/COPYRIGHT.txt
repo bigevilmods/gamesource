@@ -1,0 +1,6 @@
+(C) Electronic Arts
+
+Copyright for portions of this software are held by others.
+Copyright (C) 2006 Sony Computer Entertainment Inc.
+
+

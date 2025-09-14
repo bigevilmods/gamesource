@@ -1,0 +1,5 @@
+﻿<project>
+	<dependent name="eaconfig" />
+	<include file="${package.eaconfig.dir}/config/gc-sn-dev-debug.xml" />
+	
+</project>

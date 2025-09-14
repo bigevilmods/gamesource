@@ -1,0 +1,10 @@
+/*!
+\page p_miscellaneous Miscellaneous
+
+This section contains other miscellaneous features in math library. 
+
+- \ref p_member_initializer "Math Type Member Initialization and Validation"
+- \ref p_passinreg_xenon "Pass and Return In Register on Xenon"
+
+
+*/

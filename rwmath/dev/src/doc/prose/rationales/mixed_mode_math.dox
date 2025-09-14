@@ -1,0 +1,21 @@
+/*!
+\page p_mixed_mode_math Mixed Mode Math
+
+
+RenderWare math library provides a set of constructor to convert vpu type to fpu type, or vise versa. However, we will not provide functions to allow operations between fpu type and vpu type. For example Mult(fpu::Vector4, vpu::Vector4).
+
+Why?
+- Providing operations between FPU and VPU types would greatly increase the size and complexity of the math library.  The
+  number of different argument types would cause an exponential explosion of functions in some cases.
+- It is not possible to overload return types.  How would the math library "decide" whether the return type should be
+  an FPU or VPU type?
+- XBox360/PS3 PPU hardware will generate Load-Hit-Store's when data is
+transfered between different register sets, this would lead to a large performance hit when operating on mixed types.
+
+Solution
+- Users may explicitly construct VPU/FPU types.  For example a
+rw::math::vpu::Vector2 may be constructed using a rw::math::fpu::Vector2 type.
+
+
+
+*/

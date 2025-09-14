@@ -1,0 +1,520 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4Scalar" HEADER="soa4_scalartest.h" SOURCE="soa4_scalartest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_scalar.h rw/math/vpu/soa4_float_operation.h rw/math/vpu/soa4_maskscalar_operation.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="floor">
+      <![CDATA[
+
+        SetFunctionName("Floor(Soa4Float)");
+        bool success = true;
+        success &= IsEqual( Floor(Soa4FloatFromFloats(3.9f, 2.5f, 3.5f, 1.01f)),
+                                  Soa4FloatFromFloats( 3.f, 2.0f, 3.0f, 1.0f ) );
+        success &= IsEqual( Floor(Soa4FloatFromFloat(-3.9f)), Soa4FloatFromFloat(-4.f) );
+        success &= IsEqual( Floor(Soa4FloatFromFloat(-2.5f)), Soa4FloatFromFloat(-3.0f) );
+        success &= IsEqual( Floor(Soa4FloatFromFloat(-1.01f)), Soa4FloatFromFloat(-2.0f) );
+
+        // Ensure large numbers Floor properly.
+        success &= IsEqual( Floor(Soa4FloatFromFloat(2.5521178e38f)), Soa4FloatFromFloat(2.5521178e38f) );
+        success &= IsEqual( Floor(Soa4FloatFromFloat(-2.5521178e38f)), Soa4FloatFromFloat(-2.5521178e38f) );
+
+        // Check a range of numbers around 0
+        const int numDivisions = 100;
+        for(int rangeStart = -10; rangeStart < 10; rangeStart++)
+        {
+            for(int division=0; division<numDivisions; division++)
+            {
+                float value = ((float)rangeStart) + ((float)division) / ((float)numDivisions);
+                success &= IsEqual( Floor(Soa4FloatFromFloat(value)), Soa4FloatFromFloat((float)rangeStart) );
+            }
+        }
+        Validate(success);
+      ]]>
+      </TEST>
+
+      <TEST NAME="ceil">
+      <![CDATA[
+
+        SetFunctionName("Ceil(Soa4Float)");
+        bool success = true;
+        success &= IsEqual( Ceil(Soa4FloatFromFloat(3.9f)), Soa4FloatFromFloat(4.0f) );
+        success &= IsEqual( Ceil(Soa4FloatFromFloat(2.5f)), Soa4FloatFromFloat(3.0f) );
+        success &= IsEqual( Ceil(Soa4FloatFromFloat(1.01f)), Soa4FloatFromFloat(2.0f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="round">
+      <![CDATA[
+
+        SetFunctionName("Round(Soa4FloatFromFloat)");
+        bool success = true;
+        success &= IsEqual(Round(Soa4FloatFromFloat(3.9f)), Soa4FloatFromFloat(4.f));
+        success &= IsEqual(Round(Soa4FloatFromFloat(2.5001f)), Soa4FloatFromFloat(3.0f));
+        success &= IsEqual(Round(Soa4FloatFromFloat(2.5f)), Soa4FloatFromFloat(3.0f));
+        success &= IsEqual(Round(Soa4FloatFromFloat(2.4999f)), Soa4FloatFromFloat(2.0f));
+        success &= IsEqual(Round(Soa4FloatFromFloat(1.01f)), Soa4FloatFromFloat(1.0f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="modulo">
+      <![CDATA[
+
+        SetFunctionName("Modulo(Soa4Float a, Soa4Float b)");
+        bool success = true;
+        success &= IsEqualWithEpsilon( Modulo(Soa4FloatFromFloat(2.05f), Soa4FloatFromFloat(1.0f)), Soa4FloatFromFloat(0.05f) );
+        success &= IsEqualWithEpsilon( Modulo(Soa4FloatFromFloat(2.5f), Soa4FloatFromFloat(1.0f)), Soa4FloatFromFloat(0.5f) );
+        success &= IsEqualWithEpsilon( Modulo(Soa4FloatFromFloat(3.5f), Soa4FloatFromFloat(1.0f)), Soa4FloatFromFloat(0.5f) );
+        success &= IsEqualWithEpsilon( Modulo(Soa4FloatFromFloat(-3.2f), Soa4FloatFromFloat(1.0f)), Soa4FloatFromFloat(-0.2f) );
+        success &= IsEqualWithEpsilon( Modulo(Soa4FloatFromFloat(-3.5f), Soa4FloatFromFloat(1.0f)), Soa4FloatFromFloat(-0.5f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="abs">
+      <![CDATA[
+
+        SetFunctionName("Abs(Soa4Float)");
+        bool success = true;
+        success &= IsEqual( Abs(Soa4FloatFromFloat(3.9f)), Soa4FloatFromFloat(3.9f));
+        success &= IsEqual( Abs(Soa4FloatFromFloat(-2.5001f)), Soa4FloatFromFloat(2.5001f));
+        Validate(success);
+        
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="min_binary">
+      <![CDATA[
+
+        SetFunctionName("Min(Soa4Float a, Soa4Float b)");
+        bool success = true;
+        success &= IsEqual( Min(Soa4FloatFromFloat(3.9f), Soa4FloatFromFloat(3.8f)), Soa4FloatFromFloat(3.8f) );
+        success &= IsEqual( Min(Soa4FloatFromFloat(0.0f), Soa4FloatFromFloat(3.8f)), Soa4FloatFromFloat(0.0f) );
+        success &= IsEqual( Min(Soa4FloatFromFloat(-2.5001f), Soa4FloatFromFloat(-2.5f)), Soa4FloatFromFloat(-2.5001f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="min_trinary">
+      <![CDATA[
+
+        SetFunctionName("Min(Soa4Float a, Soa4Float b, Soa4Float c)");
+        bool success = true;
+        success &= IsEqual( Min(Soa4FloatFromFloat(3.9f), Soa4FloatFromFloat(3.8f), Soa4FloatFromFloat(10.0f)), Soa4FloatFromFloat(3.8f) );
+        success &= IsEqual( Min(Soa4FloatFromFloat(-2.5001f), Soa4FloatFromFloat(-2.5f), Soa4FloatFromFloat(-2.6f)), Soa4FloatFromFloat(-2.6f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="max_binary">
+      <![CDATA[
+
+        SetFunctionName("Max(Soa4Float a, Soa4Float b)");
+
+        bool success = true;
+        success &= IsEqual( Max(Soa4FloatFromFloat(3.9f), Soa4FloatFromFloat(3.8f)), Soa4FloatFromFloat(3.9f) );
+        success &= IsEqual( Max(Soa4FloatFromFloat(-2.5001f), Soa4FloatFromFloat(-2.5f)), Soa4FloatFromFloat(-2.5f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        SetFunctionName("Max(Soa4Float a, Soa4Float b, Soa4Float c)");
+        bool success = true;
+        success &= IsEqual( Max(Soa4FloatFromFloat(3.9f), Soa4FloatFromFloat(3.8f), Soa4FloatFromFloat(-4.0f)), Soa4FloatFromFloat(3.9f) );
+        success &= IsEqual( Max(Soa4FloatFromFloat(-2.5001f), Soa4FloatFromFloat(-2.5f), Soa4FloatFromFloat(-2.0f)), Soa4FloatFromFloat(-2.0f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="lerp">
+      <![CDATA[
+
+        SetFunctionName("Lerp(Soa4Float a, Soa4Float b, Soa4Float t)");
+        Validate(IsEqualWithEpsilon(Lerp(Soa4FloatFromFloat(2.0f),Soa4FloatFromFloat(6.0f),Soa4FloatFromFloat(0.2f)), Soa4FloatFromFloat(2.8f)));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="reciprocal">
+      <![CDATA[
+
+        SetFunctionName("Reciprocal(Soa4Float)");
+        Validate(IsEqualWithEpsilon(Reciprocal(Soa4FloatFromFloat(-8.0f)), Soa4FloatFromFloat(-0.125f)));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="reciprocalfast">
+      <![CDATA[
+
+        SetFunctionName("ReciprocalFast(Soa4Float)");
+        Validate(IsEqualWithEpsilon(ReciprocalFast(Soa4FloatFromFloat(-8.0f)), Soa4FloatFromFloat(-0.125f)));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sqrt">
+      <![CDATA[
+
+        SetFunctionName("Sqrt(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(Sqrt(Soa4FloatFromFloat(100.f)), Soa4FloatFromFloat(10.0f));
+        success &= IsEqualWithEpsilon(Sqrt(Soa4FloatFromFloat(34.23f)), Soa4FloatFromFloat(5.8506409905f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        success &= IsEqualWithEpsilon(Sqrt(Soa4FloatFromFloat(smallFloat*smallFloat)), Soa4FloatFromFloat(smallFloat));
+        success &= IsEqualWithEpsilon(Sqrt(Soa4FloatFromFloat(0.0f)), Soa4FloatFromFloat(0.0f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sqrtfast">
+      <![CDATA[
+
+        SetFunctionName("SqrtFast(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(SqrtFast(Soa4FloatFromFloat(100.f)), Soa4FloatFromFloat(10.0f));
+        success &= IsEqualWithEpsilon(SqrtFast(Soa4FloatFromFloat(34.23f)), Soa4FloatFromFloat(5.8506409905f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        success &= IsEqualWithEpsilon(SqrtFast(Soa4FloatFromFloat(smallFloat*smallFloat)), Soa4FloatFromFloat(smallFloat));
+        success &= IsEqualWithEpsilon(SqrtFast(Soa4FloatFromFloat(0.0f)), Soa4FloatFromFloat(0.0f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sqrtestimate">
+      <![CDATA[
+
+        SetFunctionName("SqrtEstimate(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(SqrtEstimate(Soa4FloatFromFloat(100.f)), Soa4FloatFromFloat(10.0f), Soa4FloatFromFloat(0.02f));
+        success &= IsEqualWithEpsilon(SqrtEstimate(Soa4FloatFromFloat(34.23f)), Soa4FloatFromFloat(5.8506409905f), Soa4FloatFromFloat(0.02f));
+        // smallFloat squared will become a denormalized value (if it is stored in a 32bit float)
+        float smallFloat = 9.9600960e-020f;
+        success &= IsEqualWithEpsilon(SqrtEstimate(Soa4FloatFromFloat(smallFloat*smallFloat)), Soa4FloatFromFloat(smallFloat));
+        success &= IsEqualWithEpsilon(SqrtEstimate(Soa4FloatFromFloat(0.0f)), Soa4FloatFromFloat(0.0f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="invsqrt">
+      <![CDATA[
+
+        SetFunctionName("InvSqrt(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(InvSqrt(Soa4FloatFromFloat(100.f)), Soa4FloatFromFloat(0.1f));
+        success &= IsEqualWithEpsilon(InvSqrt(Soa4FloatFromFloat(34.23f)), Soa4FloatFromFloat(0.17092f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="pow">
+      <![CDATA[
+
+        SetFunctionName("Pow(Soa4Float)");
+        bool success = true;
+        // Test values less than 1
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(0.01f), Soa4FloatFromFloat(126.0f)), Soa4FloatFromFloat(0.0f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(0.001f), Soa4FloatFromFloat(126.0f)), Soa4FloatFromFloat(0.0f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(0.7f), Soa4FloatFromFloat(126.0f)), Soa4FloatFromFloat(0.0f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(0.0f), Soa4FloatFromFloat(126.0f)), Soa4FloatFromFloat(0.0f));
+
+        // Test 1
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(1.0f), Soa4FloatFromFloat(126.0f)), Soa4FloatFromFloat(1.0f));
+
+        // Test values greater than 1
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(2.0f), Soa4FloatFromFloat(24.0f)), Soa4FloatFromFloat(16777216.0f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(4.0f), Soa4FloatFromFloat(4.0f)), Soa4FloatFromFloat(256.0f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(7.0f), Soa4FloatFromFloat(3.0f)), Soa4FloatFromFloat(343.0f));
+        success &= IsEqualWithinPercent(Pow(Soa4FloatFromFloat(5.32f), Soa4FloatFromFloat(7.12f)), Soa4FloatFromFloat(147397.739069364f), Soa4FloatFromFloat(0.05f));
+        success &= IsEqualWithEpsilon(Pow(Soa4FloatFromFloat(-1.5f), Soa4FloatFromFloat(3.0f)), Soa4FloatFromFloat(-3.375f));
+
+        Validate(success);
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamp">
+      <![CDATA[
+
+        SetFunctionName("Clamp(Soa4Float val, Soa4Float min, Soa4Float max)");
+        bool success = true;
+        success &= IsEqual( Clamp( Soa4FloatFromFloat(2.5f), Soa4FloatFromFloat(1.0f), Soa4FloatFromFloat(2.0f)), Soa4FloatFromFloat(2.0f) );
+        success &= IsEqual( Clamp(Soa4FloatFromFloat(1.99f), Soa4FloatFromFloat(1.0f), Soa4FloatFromFloat(2.0f)), Soa4FloatFromFloat(1.99f) );
+        success &= IsEqual( Clamp(Soa4FloatFromFloat(1.01f), Soa4FloatFromFloat(1.0f), Soa4FloatFromFloat(2.0f)), Soa4FloatFromFloat(1.01f) );
+        success &= IsEqual( Clamp(Soa4FloatFromFloat(-2.5f), Soa4FloatFromFloat(1.0f), Soa4FloatFromFloat(2.0f)), Soa4FloatFromFloat(1.0f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="log">
+      <![CDATA[
+
+        SetFunctionName("Log(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(Log(Soa4FloatFromFloat(100.0f)), Soa4FloatFromFloat(4.60517f));
+        success &= IsEqualWithEpsilon(Log(Soa4FloatFromFloat(10.0f)), Soa4FloatFromFloat(2.30259f));
+        success &= IsEqualWithEpsilon(Log(Soa4FloatFromFloat(365.0f)), Soa4FloatFromFloat(5.89989f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="exp">
+      <![CDATA[
+
+        SetFunctionName("Exp(Soa4Float)");
+        bool success = true;
+        success &= IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(10.0f)), Soa4FloatFromFloat(22026.466f), Soa4FloatFromFloat(0.05f));
+#if defined EA_PLATFORM_PS3 || defined EA_PLATFORM_PSP2 || (defined(EA_PLATFORM_PLAYBOOK) && defined(__ARM__))
+        success &= IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(12.2f)), Soa4FloatFromFloat(198789.15f), Soa4FloatFromFloat(0.1f));
+#else
+        success &= IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(12.2f)), Soa4FloatFromFloat(198789.15f), Soa4FloatFromFloat(0.05f));
+#endif
+        success &= IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(-3.6f)), Soa4FloatFromFloat(0.0273237f), Soa4FloatFromFloat(0.05f));
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sgn">
+      <![CDATA[
+
+        SetFunctionName("Sgn(Soa4Float)");
+        bool success = true;
+        success &= IsEqual( Sgn(Soa4FloatFromFloat(0.1f)), Soa4FloatFromFloat(1.f) );
+        success &= IsEqual( Sgn(Soa4FloatFromFloat(10.f)), Soa4FloatFromFloat(1.f) );
+        success &= IsEqual( Sgn(Soa4FloatFromFloat(-0.1f)), Soa4FloatFromFloat(-1.f) );
+        success &= IsEqual( Sgn(Soa4FloatFromFloat(-1.f)), Soa4FloatFromFloat(-1.f) );
+        success &= IsEqual( Sgn(Soa4FloatFromFloat(0.f)), Soa4FloatFromFloat(0.f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="sgnnonzero">
+      <![CDATA[
+
+        SetFunctionName("SgnNonZero(Soa4Float)");
+        bool success = true;
+        success &= IsEqual( SgnNonZero(Soa4FloatFromFloat(0.1f)), Soa4FloatFromFloat(1.f) );
+        success &= IsEqual( SgnNonZero(Soa4FloatFromFloat(10.f)), Soa4FloatFromFloat(1.f) );
+        success &= IsEqual( SgnNonZero(Soa4FloatFromFloat(-0.1f)), Soa4FloatFromFloat(-1.f) );
+        success &= IsEqual( SgnNonZero(Soa4FloatFromFloat(-1.f)), Soa4FloatFromFloat(-1.f) );
+        success &= IsEqual( SgnNonZero(Soa4FloatFromFloat(0.f)), Soa4FloatFromFloat(1.f) );
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="log_list">
+      <![CDATA[
+
+        
+        for (int i = 0; i < NUM_LOG_VALUES; ++i)
+        {
+            SetFunctionName("Log test[%d]", i);
+#if defined EA_PLATFORM_PS3_SPU
+            // TODO: log function is not very accurate for SPU          
+            Validate(IsEqualWithinPercent(Log(Soa4FloatFromFloat(log_values[i].input)), Soa4FloatFromFloat(log_values[i].output), Soa4FloatFromFloat(0.001f)));
+#else
+            Validate(IsEqualWithEpsilon(Log(Soa4FloatFromFloat(log_values[i].input)),
+                Soa4FloatFromFloat(log_values[i].output), Soa4FloatFromFloat(FLOG_EPSILON)));
+#endif          
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="exp_list">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_EXP_VALUES; ++i)
+        {
+            SetFunctionName("Exp test[%d]", i);
+
+#if defined(EA_PLATFORM_PS3_SPU) || defined(EA_PLATFORM_XENON)
+            bool passCondition = IsEqualWithinPercent(Exp(Soa4FloatFromFloat(exp_values[i].input)), Soa4FloatFromFloat(exp_values[i].output), Soa4FloatFromFloat(0.00001f)) ||
+                                 IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(exp_values[i].input)), Soa4FloatFromFloat(exp_values[i].output), Soa4FloatFromFloat(FEXP_EPSILON));
+            Validate(passCondition);
+#else
+            Validate(IsEqualWithEpsilon(Exp(Soa4FloatFromFloat(exp_values[i].input)),
+                Soa4FloatFromFloat(exp_values[i].output), Soa4FloatFromFloat(FEXP_EPSILON)));
+#endif
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="sqrt_list">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SQRT_VALUES; ++i)
+        {
+            SetFunctionName("Sqrt test[%d]", i);
+            Validate(IsEqualWithEpsilon(Sqrt(Soa4FloatFromFloat(sqrt_values[i].input)),
+                Soa4FloatFromFloat(sqrt_values[i].output), Soa4FloatFromFloat(FSQRT_EPSILON)));
+        }
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult_add">
+      <![CDATA[
+      
+        SetFunctionName("Soa4Float MultAdd(Soa4Float, Soa4Float, Soa4Float)");
+        Soa4Float result = MultAdd(Soa4FloatFromFloat(3.0f), Soa4FloatFromFloat(4.0f), Soa4FloatFromFloat(7.0f));
+        Soa4Float ref(Soa4FloatFromFloat(19.0f));
+        Validate(IsEqual(result, ref));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompLessThan(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+            !IsAllTrue(CompLessThan(a, b)) &&
+             IsAllTrue(CompLessThan(a, c)) &&
+            !IsAllTrue(CompLessThan(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompGreaterThan(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+            !IsAllTrue(CompGreaterThan(a, b)) &&
+            !IsAllTrue(CompGreaterThan(a, c)) &&
+             IsAllTrue(CompGreaterThan(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompLessEqual(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+             IsAllTrue(CompLessEqual(a, b)) &&
+             IsAllTrue(CompLessEqual(a, c)) &&
+            !IsAllTrue(CompLessEqual(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompGreaterEqual(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+             IsAllTrue(CompGreaterEqual(a, b)) &&
+            !IsAllTrue(CompGreaterEqual(a, c)) &&
+             IsAllTrue(CompGreaterEqual(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompEqual(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+             IsAllTrue(CompEqual(a, b)) &&
+            !IsAllTrue(CompEqual(a, c)) &&
+            !IsAllTrue(CompEqual(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("Soa4MaskScalar CompNotEqual(Soa4Float a, Soa4Float b)");
+        Soa4Float a(Soa4FloatFromFloat(1.0f));
+        Soa4Float b(Soa4FloatFromFloat(1.0f));
+        Soa4Float c(Soa4FloatFromFloat(2.0f));
+        Validate(
+            !IsAllTrue(CompNotEqual(a, b)) &&
+             IsAllTrue(CompNotEqual(a, c)) &&
+             IsAllTrue(CompNotEqual(c, a))
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select">
+      <![CDATA[
+      
+        SetFunctionName("Soa4Float Select(Soa4MaskScalar mask, Soa4Float a, Soa4Float b)");
+        Soa4Float result1 = Select( Soa4MaskScalarFromBool(true), Soa4FloatFromFloat(7.0f), Soa4FloatFromFloat(-26.0f) );
+        Soa4Float result2 = Select( Soa4MaskScalarFromBool(false), Soa4FloatFromFloat(7.0f), Soa4FloatFromFloat(-26.0f) );
+        Validate(
+            IsEqual(result1, Soa4FloatFromFloat(7.0f)) &&
+            IsEqual(result2, Soa4FloatFromFloat(-26.0f))
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

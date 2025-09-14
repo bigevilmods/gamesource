@@ -1,0 +1,36 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestSoa4Mask4::UnitTestSoa4Mask4()
+{
+    using namespace rw::math::vpu;
+
+    mAllTrue = Soa4Mask4( CreateSoa4MaskScalar( true, true, true, true ), 
+        CreateSoa4MaskScalar( true, true, true, true ),
+        CreateSoa4MaskScalar( true, true, true, true ),
+        CreateSoa4MaskScalar( true, true, true, true ) );
+    mAllFalse = Soa4Mask4( CreateSoa4MaskScalar( false, false, false, false ), 
+        CreateSoa4MaskScalar( false, false, false, false ),
+        CreateSoa4MaskScalar( false, false, false, false ),
+        CreateSoa4MaskScalar( false, false, false, false ) );
+    mMixed = Soa4Mask4( CreateSoa4MaskScalar( true, false, true, false), 
+        CreateSoa4MaskScalar( false, true, false, true ),
+        CreateSoa4MaskScalar( false, true, true, false ),
+        CreateSoa4MaskScalar( true, false, false, true ) );
+}
+
+UnitTestSoa4Mask4::~UnitTestSoa4Mask4()
+{
+
+}
+
+void UnitTestSoa4Mask4::Test()
+{
+
+}
+
+using namespace ::rw::math::vpu;
+
+//#BLOCK
+

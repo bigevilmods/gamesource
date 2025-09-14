@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Batched file loading</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Batched file loading</h1>
+
+<p>When possible, batch read or file load requests together.  This 
+allows the files to be loaded in the same order in which they are
+physically located on the media.  On some platforms, this will not
+matter, but others, such as the PlayStation2s, have slow throughput
+and seek times.  Loading files in the same order they are located
+on the DVD will reduce seek time and overall load times.</p>
+
+<p>EA Core has a class which reorders a list of files into the optimal
+order for minimizing the load time of all the files.  Refer to the
+<tt>rw::core::filesys::LoadFileList</tt> class for more information.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

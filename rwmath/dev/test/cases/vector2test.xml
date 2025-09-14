@@ -1,0 +1,4022 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestVector2" HEADER="vector2test.h" SOURCE="vector2test.inc" RWHOSTHEADER="rw/math/vpu/vector2_operation.h" RWGENERICHEADER="rw/math/fpu/vector2_operation.h" RWOPTIMALHEADER="rw/math/optimal/vector2_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+<!-- The Last Test is test142, please change this number when you add more tests, make sure test names do not repeat-->
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("Set(float, float)");
+        v2.Set(1.1f, 2.2f);
+        Validate((float)v2.X() == 1.1f && (float)v2.Y() == 2.2f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("X() = float");
+        v2.X() = 1.0f;
+        Validate((float)v2.X() == 1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("Y() = float");
+        v2.Y() = 2.0f;
+        Validate((float)v2.Y() == 2.0f);
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("SetComponent(0, float)");
+        v2.SetComponent(0, 6.9f);
+        Validate((float)v2.X() == 6.9f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("SetComponent(1, float)");
+        v2.SetComponent(1, 9.6f);
+        Validate((float)v2.Y() == 9.6f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("SetZero(1)");
+        v2.Set(1.0f, 2.0f);
+        v2.SetZero();
+        Validate(v2 == Vector2(0.0f, 0.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test_scalar_construction">
+      <![CDATA[
+
+            SetFunctionName("Vector2(scalar)");
+            Vector2 v( float_test_type(7.0f) );
+            Validate((float)v.X() == 7.0f && (float)v.Y() == 7.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        Vector2 v;
+
+        SetFunctionName("Vector2(float, float)");
+        v = Vector2(1.23f, 4.56f);
+        Validate((float)v.X() == 1.23f && (float)v.Y() == 4.56f);
+
+      ]]>
+      </TEST>
+
+      
+      <TEST NAME="test7">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("GetComponent(0)");
+        v2.Set(0.0f, 0.0f);
+        Validate(v2.X() == v2.GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("GetComponent(0) const");
+        v2.Set(0.0f, 0.0f);
+        Validate(const_cast<const Vector2*>(&v2)->X() == const_cast<const Vector2*>(&v2)->GetComponent(0));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("GetComponent(1)");
+        v2.Set(0.0f, 0.0f);
+        Validate(v2.Y() == v2.GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("GetComponent(1) const");
+        v2.Set(0.0f, 0.0f);
+        Validate(const_cast<const Vector2*>(&v2)->Y() == const_cast<const Vector2*>(&v2)->GetComponent(1));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+    //constructor tests
+    #ifdef HOST_TESTING
+
+        SetFunctionName("Vector2(const fpu::Vector2Template<FloatClassRHS> &_v)");
+        ::rw::math::fpu::Vector2Template<double> doubleUnalignedVector;
+        ::rw::math::fpu::Vector2Template<float> floatUnalignedVector;
+        ::rw::math::fpu::Vector2Template<double> doubleAlignedVector;
+        ::rw::math::fpu::Vector2Template<float> floatAlignedVector;
+
+        doubleUnalignedVector.Set(
+            0, 1
+            );
+        floatUnalignedVector.Set(
+            0, 1
+            );
+        doubleAlignedVector.Set(
+            0, 1
+            );
+        floatAlignedVector.Set(
+            0, 1
+            );
+
+        Vector2 ref;
+        ref.Set(
+            0, 1
+            );
+
+        Vector2 test_doubleUnalignedVector(doubleUnalignedVector);
+        Vector2 test_floatUnalignedVector(floatUnalignedVector);
+        Vector2 test_doubleAlignedVector(doubleAlignedVector);
+        Vector2 test_floatAlignedVector(floatAlignedVector);
+
+        Validate(IsSimilar(test_doubleUnalignedVector, ref) &&
+                    IsSimilar(test_floatUnalignedVector, ref) &&
+                    IsSimilar(test_doubleAlignedVector, ref) &&
+                    IsSimilar(test_floatAlignedVector, ref));
+
+    #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        Vector2 v;
+
+        v.Set(1.23f, 4.56f);
+        Vector2 vA(v);
+        SetFunctionName("Vector2(const Vector2&)");
+        Validate((float)vA.X() == 1.23f && (float)vA.Y() == 4.56f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+      
+        SetFunctionName("Vector2(float *)");
+
+    #ifdef HOST_TESTING
+        float floatData[] = {1.23f, 4.56f, 7.89f, 10.0f};
+        AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+        Vector2 vB(floatBuffer.GetFloatData());    
+        Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f);
+    #else
+        float_basic_type fArray[2]={1.23f, 4.56f};
+        Vector2 vB(fArray);     
+        Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f);
+    #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("operator[0]");
+        v2[0] = 99.0f;
+        Validate((float)v2.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        Vector2 v2(0.0f, 0.0f);
+
+        SetFunctionName("operator[1]");
+        v2[1] = 100.0f;
+        Validate((float)v2.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("X()");
+        v2.Set(99.0f, 100.0f);
+        Validate((float)v2.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("Y()");
+        v2.Set(99.0f, 100.0f);
+        Validate((float)v2.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("X() const");
+        v2.Set(99.0f, 100.0f);
+        Validate((float)const_cast<const Vector2*>(&v2)->X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        Vector2 v2;
+
+        SetFunctionName("Y() const");
+        v2.Set(99.0f, 100.0f);
+        Validate((float)const_cast<const Vector2*>(&v2)->Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompLessThan(Vector2 a, Vector2 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f );
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompLessThan(va1, vb1));
+        Mask2 mask2(CompLessThan(va2, vb2));
+        Validate(
+            !mask1.GetX().GetBool() &&
+             mask1.GetY().GetBool() &&
+            !mask2.GetX().GetBool() &&
+            !mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterthan">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompGreaterThan(Vector2 a, Vector2 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f);
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompGreaterThan(va1, vb1));
+        Mask2 mask2(CompGreaterThan(va2, vb2));
+        Validate(
+            !mask1.GetX().GetBool() &&
+            !mask1.GetY().GetBool() &&
+             mask2.GetX().GetBool() &&
+             mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="complessequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompLessEqual(Vector2 a, Vector2 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f);
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompLessEqual(va1, vb1));
+        Mask2 mask2(CompLessEqual(va2, vb2));
+        Validate(
+             mask1.GetX().GetBool() &&
+             mask1.GetY().GetBool() &&
+            !mask2.GetX().GetBool() &&
+            !mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compgreaterequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompGreaterEqual(Vector2 a, Vector4 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f);
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompGreaterEqual(va1, vb1));
+        Mask2 mask2(CompGreaterEqual(va2, vb2));
+        Validate(
+             mask1.GetX().GetBool() &&
+            !mask1.GetY().GetBool() &&
+             mask2.GetX().GetBool() &&
+             mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompEqual(Vector2 a, Vector2 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f);
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompEqual(va1, vb1));
+        Mask2 mask2(CompEqual(va2, vb2));
+        Validate(
+             mask1.GetX().GetBool() &&
+            !mask1.GetY().GetBool() &&
+            !mask2.GetX().GetBool() &&
+            !mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+      
+        SetFunctionName("Mask2 CompNotEqual(Vector2 a, Vector2 b)");
+        Vector2 va1(1.0f, 1.0f);
+        Vector2 va2(2.0f, 2.0f);
+        Vector2 vb1(1.0f, 2.0f);
+        Vector2 vb2(1.0f, -1.0f );
+
+        Mask2 mask1(CompNotEqual(va1, vb1));
+        Mask2 mask2(CompNotEqual(va2, vb2));
+        Validate(
+            !mask1.GetX().GetBool() &&
+             mask1.GetY().GetBool() &&
+             mask2.GetX().GetBool() &&
+             mask2.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Vector2 Select(MaskScalar mask, Vector2 a, Vector2 b)");
+        Vector2 v1a(1.0f, 2.0f);
+        Vector2 v1b(3.0f, 4.0f);
+        Vector2 v2a(10.0f, 20.0f);
+        Vector2 v2b(30.0f, 40.0f);
+
+        Vector2 result1a = Select( MaskScalar(true), v1a, v2a );
+        Vector2 result1b = Select( MaskScalar(true), v1b, v2b );
+        Vector2 result2a = Select( MaskScalar(false), v1a, v2a );
+        Vector2 result2b = Select( MaskScalar(false), v1b, v2b );
+        Validate(
+            result1a == v1a &&
+            result2a == v2a &&
+            result1b == v1b &&
+            result2b == v2b
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask2_bitwise">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("Vector2 Select(MaskScalar mask, Vector2 a, Vector2 b)");
+        Vector2 v1a(1.0f, 2.0f);
+        Vector2 v1b(3.0f, 4.0f);
+        Vector2 v2a(-10.0f, -20.0f);
+        Vector2 v2b(-30.0f, -40.0f);
+        Vector2 ref1a( -1.0f, 20.0f );
+        Vector2 ref1b( -3.0f, -40.0f);
+
+        uint32_t values[] = { 0x7fffffff, 0x80000000, 0x7fffffff, 0x00000000 };
+        Mask2 maskA(values[0], values[1]);
+        Mask2 maskB(values[2], values[3]);
+
+        Vector2 result1a = Select( maskA, v1a, v2a );
+        Vector2 result1b = Select( maskB, v1b, v2b );
+        Validate(
+            result1a == ref1a &&
+            result1b == ref1b
+        );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask2">
+      <![CDATA[
+      
+        SetFunctionName("Vector2 Select(Mask2 mask, Vector2 a, Vector2 b)");
+        Vector2 v1a(1.0f, 2.0f);
+        Vector2 v1b(3.0f, 4.0f);
+        Vector2 v2a(10.0f, 20.0f);
+        Vector2 v2b(30.0f, 40.0f);
+        Vector2 ref1a(1.0f, 2.0f);
+        Vector2 ref1b(30.0f, 40.0f);
+        Vector2 ref2a(10.0f, 20.0f);
+        Vector2 ref2b(3.0f, 4.0f);
+        Mask2 mask1a(true, true);
+        Mask2 mask1b(false, false);
+        Mask2 mask2a(false, false);
+        Mask2 mask2b(true, true);
+
+        Vector2 result1a = Select( mask1a, v1a, v2a );
+        Vector2 result1b = Select( mask1b, v1b, v2b );
+        Vector2 result2a = Select( mask2a, v1a, v2a );
+        Vector2 result2b = Select( mask2b, v1b, v2b );
+        Validate(
+            result1a == ref1a &&
+            result1b == ref1b &&
+            result2a == ref2a &&
+            result2b == ref2b
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamptonegposrange">
+      <![CDATA[
+      
+        SetFunctionName("Vector2 ClampToNegPosRange(value, range)");
+        Vector2 range(5.0f,  5.0f);
+        Vector2   v1( 7.0f,  3.0f);
+        Vector2   v2(-7.0f, -3.0f);
+        Vector2 ref1( 5.0f,  3.0f);
+        Vector2 ref2(-5.0f, -3.0f);
+        Vector2 result1 = ClampToNegPosRange( v1, range );
+        Vector2 result2 = ClampToNegPosRange( v2, range );
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="permute">
+      <![CDATA[
+      
+        SetFunctionName("Vector2 Permute<pattern>(value)");
+        Vector2 v(1.0f, 2.0f);
+        Vector2 ref1( 2.0f, 1.0f );
+        Vector2 ref2( 1.0f, 1.0f );
+        Vector2 result1 = Permute<0x10>(v);
+        Vector2 result2 = Permute<0x00>(v);
+        Validate(
+            result1 == ref1 &&
+            result2 == ref2
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="unalignedLoad">
+        <![CDATA[
+
+        SetFunctionName("Vector2 unaligned load/store tests");
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = static_cast<float>(i+1);
+        
+        ::rw::math::fpu::Vector2Template<float>* alignedVec = reinterpret_cast< ::rw::math::fpu::Vector2Template<float>*>(&buffer[0]);
+        Vector2 v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 1.0f && v.Y() == 2.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector2Template<float>*>(&buffer[1]);        
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 2.0f && v.Y() == 3.0f);
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector2Template<float>*>(&buffer[2]);        
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 3.0f && v.Y() == 4.0f);        
+        
+        alignedVec = reinterpret_cast< ::rw::math::fpu::Vector2Template<float>*>(&buffer[3]);         
+        v = LoadUnAlignedPacked(*alignedVec);
+        Validate( v.X() == 4.0f && v.Y() == 5.0f);  
+    
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="UnalignedStore">
+        <![CDATA[
+
+        SetFunctionName("Vector2 unaligned store tests");
+
+        float buffer[8];
+        
+        //Test every position with 16 byte alignment, then move 4 bytes forward each time
+        for (int i=0; i<8; i++)
+          buffer[i] = 0.0f;
+          
+        Vector2 v2;
+
+        v2.Set(1.1f, 2.2f);
+        ::rw::math::fpu::Vector2* unaligned = reinterpret_cast< ::rw::math::fpu::Vector2*>(&buffer[0]);        
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[0] == 1.1f && buffer[1] == 2.2f && buffer[2] == 0 && buffer[3] == 0);    
+
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector2*>(&buffer[1]);
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[1] == 1.1f && buffer[2] == 2.2f && buffer[3] == 0 && buffer[4] == 0);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector2*>(&buffer[2]);        
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[2] == 1.1f && buffer[3] == 2.2f && buffer[4] == 0 && buffer[5] == 0);    
+        
+        unaligned = reinterpret_cast< ::rw::math::fpu::Vector2*>(&buffer[3]);        
+        StoreUnAlignedPacked( *unaligned, v2);
+        Validate( buffer[3] == 1.1f && buffer[4] == 2.2f && buffer[5] == 0 && buffer[6] == 0);            
+
+      ]]>
+      </TEST>
+      
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        SetFunctionName("Set(float, float)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i].Set(x_array[i], y_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+        SetFunctionName("X() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i].X() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        SetFunctionName("Y() = float");
+
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i].Y() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+    SetFunctionName("SetZero()");
+
+    StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+    for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+    {
+        for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+        {
+            v2out_array[i].SetZero();
+        }
+    }
+
+    StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("X()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v2out_array[i].X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("Y()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v2out_array[i].Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("float_t& operator [] (int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v2out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("float_t& operator [] (int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v2out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("X() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector2*>(&v2out_array[i])->X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("Y() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector2*>(&v2out_array[i])->Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 4.0f);
+        SetFunctionName("Negate(const Vector2 &)");
+        output = Negate(v2a);
+        Validate(IsEqualWithEpsilon((float_basic_type)v2a.X(), (float_basic_type)-output.X()) && IsEqualWithEpsilon((float_basic_type)v2a.Y(), (float_basic_type)-output.Y()));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 4.0f);
+        float_test_type multiplier = 2.1f;
+
+        SetFunctionName("Mult(const Vector2 &)");
+        output = Mult(v2a, multiplier);
+        Validate(
+                IsEqualWithEpsilon(v2a.X() * multiplier, output.X()) &&
+                IsEqualWithEpsilon(v2a.Y() * multiplier, output.Y())
+                );
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 4.0f);
+        float_test_type multiplier = 2.1f;
+
+        SetFunctionName("Divide(const Vector2 &, scalar)");
+        output = Divide(v2a, multiplier);
+        Validate(
+                IsEqualWithEpsilon(v2a.X() / multiplier, output.X()) &&
+                IsEqualWithEpsilon(v2a.Y() / multiplier, output.Y())
+                );
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 4.0f);
+
+        SetFunctionName("Add(const Vector2 &)");
+        output = Add(v2a, v2b);
+        Validate(
+                IsEqualWithEpsilon(v2a.X() + v2b.X(), output.X()) &&
+                IsEqualWithEpsilon(v2a.Y() + v2b.Y(), output.Y())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 4.0f);
+
+        SetFunctionName("Subtract(const Vector2 &, const Vector2 &)");
+        output = Subtract(v2a, v2b);
+        Validate(
+                IsEqualWithEpsilon(v2a.X() - v2b.X(), output.X()) &&
+                IsEqualWithEpsilon(v2a.Y() - v2b.Y(), output.Y())
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        Vector2 v2a;
+
+        SetFunctionName("Magnitude(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag1 = Magnitude(v2a);
+        v2a.Set(0.0f, 0.0f);
+        float_test_type mag2 = Magnitude(v2a);
+        v2a.Set(MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = Magnitude(v2a);
+        v2a.Set(-0.0f, -0.0f);
+        float_test_type mag4 = Magnitude(v2a);
+        Validate(IsEqualWithEpsilon(mag1, (float_test_type)2.23606798f) &&
+         IsEqualWithEpsilon(mag2, (float_test_type)0.0f) &&
+         IsEqualWithEpsilon(mag3, (float_test_type)MIN_FLOAT) &&
+         IsEqualWithEpsilon(mag4, (float_test_type)0.0f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudefast">
+      <![CDATA[
+
+        Vector2 v2a;
+
+        SetFunctionName("MagnitudeFast(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag1 = MagnitudeFast(v2a);
+        v2a.Set(0.0f, 0.0f);
+        float_test_type mag2 = MagnitudeFast(v2a);
+        v2a.Set(MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = MagnitudeFast(v2a);
+        v2a.Set(-0.0f, -0.0f);
+        float_test_type mag4 = MagnitudeFast(v2a);
+#ifdef HOST_TESTING
+        Validate(IsEqualWithEpsilon(mag1, (float_test_type)2.23606798f) &&
+         IsEqualWithEpsilon(mag2, (float_test_type)0.0f) &&
+         IsEqualWithEpsilon(mag3, (float_test_type)MIN_FLOAT) &&
+         IsEqualWithEpsilon(mag4, (float_test_type)0.0f));
+#else
+        Validate(( IsEqualWithEpsilon(mag1, (float_test_type)2.23449707f) || IsEqualWithEpsilon(mag1, (float_test_type)2.23606798f) )&&
+         IsEqualWithEpsilon(mag2, (float_test_type)0.0f) &&
+         IsEqualWithEpsilon(mag3, (float_test_type)MIN_FLOAT) &&
+         IsEqualWithEpsilon(mag4, (float_test_type)0.0f));
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="magnitudeestimate">
+      <![CDATA[
+
+        Vector2 v2a;
+
+        SetFunctionName("MagnitudeEstimate(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag1 = MagnitudeEstimate(v2a);
+        v2a.Set(0.0f, 0.0f);
+        float_test_type mag2 = MagnitudeEstimate(v2a);
+        v2a.Set(MIN_FLOAT, MIN_FLOAT);
+        float_test_type mag3 = MagnitudeEstimate(v2a);
+        v2a.Set(-0.0f, -0.0f);
+        float_test_type mag4 = MagnitudeEstimate(v2a);
+        Validate(IsEqualWithEpsilon(mag1, (float_test_type)2.23606798f) &&
+         IsEqualWithEpsilon(mag2, (float_test_type)0.0f) &&
+         IsEqualWithEpsilon(mag3, (float_test_type)MIN_FLOAT) &&
+         IsEqualWithEpsilon(mag4, (float_test_type)0.0f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        Vector2 v2a;
+
+        SetFunctionName("MagnitudeSquared(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag = MagnitudeSquared(v2a);
+        Validate(IsEqualWithEpsilon(mag, (float_test_type)5.0f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        Vector2 v2a;
+
+        SetFunctionName("MagnitudeRecip(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag = MagnitudeRecip(v2a);
+        Validate(IsEqualWithEpsilon(mag, (float_test_type)0.44721359f));
+
+     ]]>
+      </TEST>
+
+      <TEST NAME="normalize_estimate">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        SetFunctionName("NormalizeEstimate(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        output = NormalizeEstimate(v2a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f, (float_test_type)0.003f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f, (float_test_type)0.003f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        SetFunctionName("Normalize(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        output = Normalize(v2a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        SetFunctionName("Vector2 Normalize(Vector2::InParam v, float& magnitude_out)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type mag;
+        output = Normalize(v2a, mag);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f) &&
+                IsEqualWithEpsilon((float_test_type)mag, (float_test_type)2.2360680f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        SetFunctionName("NormalizeFast(const Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        output = NormalizeFast(v2a);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        SetFunctionName("NormalizeReturnMagnitude(const Vector2 &, Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        float_test_type fResult = NormalizeReturnMagnitude(v2a, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f) &&
+                IsEqualWithEpsilon(fResult, (float_test_type)2.23606798f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="checked_normalize_return_magnitude">
+      <![CDATA[
+
+        Vector2 v2a, output;
+
+        float_test_type fResult;
+        bool success = true;
+        SetFunctionName("CheckedNormalizeReturnMagnitude(const Vector2 &v, Vector2 &result)");
+
+        v2a.Set(1.0f, 2.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v2a, output);
+        success &= IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f);
+        success &= IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f);
+        success &= IsEqualWithEpsilon(fResult, (float_test_type)2.23606798f);
+
+        v2a.Set(0.0f, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v2a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_test_type)0.0f);
+
+        v2a.Set(SMALL_FLOAT, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v2a, output);
+        success &= IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_test_type)0.0f);
+
+        v2a.Set(MIN_FLOAT, 0.0f);
+        fResult = (float)CheckedNormalizeReturnMagnitude(v2a, output);
+        // Two solutions are acceptable depending on the precision that
+        // calculations are carried out with.  Either the magnitude appears to
+        // be zero (e.g. for 32bit calculations), or the magnitude appears to
+        // be a very small number (i.e. MIN_FLOAT).
+        // The result vector will then be 0 (if magnitude is zero), or the X
+        // axis otherwise.
+        success &= IsEqualWithEpsilon((float)output.X(), 0.0f) || IsEqualWithEpsilon((float)output.X(), 1.0f);
+        success &= IsEqualWithEpsilon((float)output.Y(), 0.0f);
+        success &= IsEqualWithEpsilon(fResult, (float_test_type)0.0f) || IsEqualWithEpsilon(fResult, (float_test_type)MIN_FLOAT);
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test143">
+      <![CDATA[
+
+        Vector2 v2a, output;
+        SetFunctionName("returnVal of NormalizeReturnMagnitude(zero Vector2 &v, Vector2 &result)");
+        v2a.Set(0.0f, 0.0f);
+        float fResult = (float)NormalizeReturnMagnitude(v2a, output);
+        Validate(IsEqualWithEpsilon(fResult, 0.f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+        SetFunctionName("CosAngleBetweenNormalizedVectors(Vector2 v1, Vector2 v2)");
+        v2a.Set( 0.4472136f, 0.8944272f );
+        v2b.Set( -1.0f, 0.0f );
+        float_test_type fResult = (float)CosAngleBetweenNormalizedVectors(v2a, v2b);
+        Validate( IsEqualWithEpsilon(fResult, (float_test_type)-0.4472136f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+        SetFunctionName("Dot(const Vector2 &a,const Vector2 &b)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        float_test_type fResult = Dot(v2a, v2b);
+        Validate(IsEqualWithEpsilon(fResult, (float_test_type)-1.0f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test44a">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Mult(const Vector2 &, const Vector2&)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = Mult(v2a, v2b);
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() * v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() * v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test44b">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Mult(const Vector2 &,const Vector2 &, Vector2 &)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        Mult(v2a, v2b, output);
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() * v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() * v2b.Y())
+                );
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test44c">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Vector2 * Vector2");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = v2a * v2b;
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() * v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() * v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test44d">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Vector2 *= Vector2");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = v2a;
+        output *= v2b;
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() * v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() * v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_divide_elements">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Divide(const Vector2 &a,const Vector2 &b)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = Divide(v2a, v2b);
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() / v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() / v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="vector_reciprocal">
+      <![CDATA[
+
+        Vector2 v2a, output;
+        v2a.Set(1.0f, 2.0f);
+
+        SetFunctionName("Reciprocal(const Vector2 &a)");
+        output = Reciprocal(v2a);
+        Validate(
+                IsEqualWithEpsilon((float)output.X(), 1.0f / (float)v2a.X()) &&
+                IsEqualWithEpsilon((float)output.Y(), 1.0f / (float)v2a.Y())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test44e">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Vector2 / Vector2");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = v2a / v2b;
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() / v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() / v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test44f">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Vector2 /= Vector2");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = v2a;
+        output /= v2b;
+        Validate(
+                IsEqualWithEpsilon(output.X(), v2a.X() / v2b.X()) &&
+                IsEqualWithEpsilon(output.Y(), v2a.Y() / v2b.Y())
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+        SetFunctionName("MultAdd(Vector2 v0, Vector2 v1, Vector2 v2)");
+        v2a.Set(-1.0f, 3.0f);
+        v2b.Set(1.0f, 2.0f);
+        Vector2 add(3.0f, 4.0f);
+        Vector2 result = MultAdd( v2a, v2b, add );
+        Validate( result == Vector2(2.0f, 10.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("Lerp( const Vector2 &, const Vector2 &, float)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = Lerp(v2a, v2b, (float_test_type)0.25f);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.0f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)1.75f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_estimate">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("NLerpEstimate( const Vector2 &, const Vector2 &, float)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = NLerpEstimate(v2a, v2b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.21133278f, (float_test_type)0.003f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.97741419f, (float_test_type)0.003f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="nlerp_fast">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("NLerpFast( const Vector2 &, const Vector2 &, float)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = NLerpFast(v2a, v2b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.21133278f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.97741419f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("NLerp( const Vector2 &, const Vector2 &, float)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        output = NLerp(v2a, v2b, (float_test_type)0.15f);
+        Validate(
+                IsEqualWithEpsilon(output.X(), (float_test_type)0.21133278f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type)0.97741419f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        Vector2 v2a, v2b, output;
+
+        SetFunctionName("SLerp( const Vector2 &, const Vector2 &, float)");
+
+        Vector2 v2a_normalized, v2b_normalized;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(-3.0f, 1.0f);
+        v2a_normalized = Normalize(v2a);
+        v2b_normalized = Normalize(v2b);
+        output = SLerp(v2a_normalized, v2b_normalized, (float_test_type)0.75f);
+        Validate(
+                // Removed 0.02 epsilon seems to be unneccessary, the value is too large to catch any errors!
+                IsEqualWithEpsilon(output.X(), (float_test_type)-0.73185913885907916f, (float_basic_type) 0.001f) &&
+                IsEqualWithEpsilon(output.Y(), (float_test_type) 0.68134627789812985f, (float_basic_type) 0.001f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+        SetFunctionName("IsSimilar(const Vector2 &, const Vector2 &, float)");
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(1.0f, 2.0f);
+        Vector2 v2a_test, v2b_test;
+        v2a_test.Set(1.01f, 2.0f);
+        v2b_test.Set(1.0f, 2.0f);
+        Validate(IsSimilar(v2a, v2b, (float_test_type)0.0f) && !IsSimilar(v2a_test, v2b_test, (float_test_type)0.0f) && IsSimilar(v2a_test, v2b_test, (float_test_type)0.1f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+#if !defined EA_PLATFORM_PS3_SPU
+
+        Vector2 v2a;
+
+        SetFunctionName("IsValid(Vector2 v)");
+        v2a.Set(0.0f, 0.0f);
+    
+        bool result1 = IsValid(v2a);
+        float_basic_type nan = (float_basic_type)testing::GetNaN();
+        v2a.Set(nan, nan);
+        bool result2 = IsValid(v2a);
+        Validate( result1 && !result2 );
+#endif
+
+     ]]>
+      </TEST>
+
+
+      <TEST NAME="isanynan">
+      <![CDATA[
+
+
+#if !defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("IsAnyNaN(Vector2 v)");
+
+        float zero = 0.0f;
+        float_test_type nan = float_test_type(zero / zero);
+        int numPermutations = 1 << Vector2::NumberOfElement;
+        bool result = true;
+        for( int curPermutation=0;curPermutation<numPermutations;curPermutation++)
+        {
+            Vector2 vec = Vector2((float_test_type)0.0f, (float_test_type)0.0f);
+            for( int elem = 0; elem < Vector2::NumberOfElement; elem++ )
+            {
+                if( curPermutation & (1<<elem) )
+                {
+                    vec.SetComponent( elem, nan );
+                }
+            }
+            if( curPermutation == 0 )
+            {
+                // All bits are zero so the vector has no NaN's
+                result &= !IsAnyNaN(vec);
+            }
+            else
+            {
+                // At least one element is NaN.
+                result &= IsAnyNaN(vec);
+            }
+        }
+        Validate(result);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51a">
+      <![CDATA[
+
+        Vector2 v2a;
+
+    SetFunctionName("IsZero(Vector2 v)");
+
+    tolerance = 0.1f;
+
+    v2a.Set(1.0f, 0.0f);
+    Validate( !IsZero(v2a) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test51b">
+      <![CDATA[
+
+        Vector2 v2a;
+
+    SetFunctionName("IsZero(Vector2 v)");
+
+    tolerance = 0.1f;
+
+    v2a.Set(0.0f, 0.0f);
+    Validate( IsZero(v2a) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test51c">
+      <![CDATA[
+
+        Vector2 v2a;
+
+    SetFunctionName("IsZero(Vector2 v)");
+
+    tolerance = 0.1f;
+
+    v2a.Set(-0.1f, -0.1f);
+    Validate( IsZero(v2a, tolerance) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test51d">
+      <![CDATA[
+
+        Vector2 v2a;
+
+    SetFunctionName("IsZero(Vector2 v)");
+
+    tolerance = 0.1f;
+
+    v2a.Set(0.1f, 0.1f);
+    Validate( IsZero(v2a, tolerance) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+    SetFunctionName("VectorMin(Vector2 v1, Vector2 v2)");
+    v2a.Set(-1.0f, 3.0f);
+    v2b.Set(-3.0f, 1.0f);
+    Vector2 result = Min( v2a, v2b );
+    Validate( result == Vector2(-3.0f, 1.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+    SetFunctionName("VectorMax(Vector2 v1, Vector2 v2)");
+    v2a.Set(-1.0f, 3.0f);
+    v2b.Set(-3.0f, 1.0f);
+    Vector2 result = Max( v2a, v2b );
+    Validate( result == Vector2(-1.0f, 3.0f) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+        Vector2 v2a;
+
+    SetFunctionName("VectorAbs(Vector2 v1)");
+    v2a.Set(-1.0f, 3.0f);
+    Vector2 result = Abs( v2a );
+    Validate( result == Vector2(1.0f, 3.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+        Vector2 v2a, v2b;
+
+        SetFunctionName("AngleBetweenVectors(Vector2 v1, Vector2 v2)");
+        v2a.Set( 0.4472136f, 0.8944272f );
+    v2b.Set( -1.0f, 0.0f );
+    v2a = Mult( v2a, (float_test_type)5.0f);
+    v2b = Mult( v2b, (float_test_type)7.0f);
+    float_test_type fResult = (float)AngleBetweenVectors(v2a, v2b);
+        Validate( IsEqualWithEpsilon(fResult, (float_test_type)2.0344439f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, output;
+        v2a.Set( 0.4472136f, 0.8944272f );
+
+    SetFunctionName("Negate(const Vector2 &, Vector2 &)");
+    Negate(v2a, output);
+    Validate(IsEqualWithEpsilon((float_basic_type)v2a.X(), (float_basic_type)-output.X()) && IsEqualWithEpsilon((float_basic_type)v2a.Y(), (float_basic_type)-output.Y()));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, output;
+    float_test_type multiplier = 2.1f;
+        v2a.Set( 0.4472136f, 0.8944272f );
+
+    SetFunctionName("Mult(const Vector2 &, float, Vector2 &)");
+    Mult(v2a, multiplier, output);
+    Validate(
+        IsEqualWithEpsilon(v2a.X() * multiplier, output.X()) &&
+        IsEqualWithEpsilon(v2a.Y() * multiplier, output.Y())
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, output;
+    float_test_type multiplier = 2.1f;
+        v2a.Set( 0.4472136f, 0.8944272f );
+
+    SetFunctionName("Divide(const Vector2 &, float, Vector2 &)");
+    Divide(v2a, multiplier, output);
+    Validate(
+        IsEqualWithEpsilon(v2a.X() / multiplier, output.X()) &&
+        IsEqualWithEpsilon(v2a.Y() / multiplier, output.Y())
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test141">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+        Vector2 v2a, output;
+        
+        VecFloatRefIndex refX(vi, 0);
+        v2a.Set( 0.4472136f, 0.8944272f );
+
+        SetFunctionName("Vector2 Divide(Vector2::InParam v, VecFloatRefIndex::InParam s)");
+        output = Divide(v2a, refX);
+        Validate(
+            IsEqualWithEpsilon(v2a.X() / refX, output.X()) &&
+            IsEqualWithEpsilon(v2a.Y() / refX, output.Y())
+        );
+        
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, v2b, output;
+        v2a.Set( 0.4472136f, 0.8944272f );
+    v2b.Set( -1.0f, 0.0f );
+
+    SetFunctionName("Add(const Vector2 &, float, Vector2 &)");
+    Add(v2a, v2b, output);
+    Validate(
+        IsEqualWithEpsilon(v2a.X() + v2b.X(), output.X()) &&
+        IsEqualWithEpsilon(v2a.Y() + v2b.Y(), output.Y())
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, v2b, output;
+        v2a.Set( 0.4472136f, 0.8944272f );
+    v2b.Set( -1.0f, 0.0f );
+
+    SetFunctionName("Subtract(const Vector2 &, const Vector2 &, Vector2 &)");
+    Subtract(v2a, v2b, output);
+    Validate(
+        IsEqualWithEpsilon(v2a.X() - v2b.X(), output.X()) &&
+        IsEqualWithEpsilon(v2a.Y() - v2b.Y(), output.Y())
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, output;
+    v2a.Set(1.0f, 2.0f);
+
+    SetFunctionName("Normalize(const Vector2 &, Vector2 &)");
+    Normalize(v2a, output);
+    Validate(
+        IsEqualWithEpsilon(output.X(), (float_test_type)0.44721359f) &&
+        IsEqualWithEpsilon(output.Y(), (float_test_type)0.89442711f)
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, v2b, output;
+    v2a.Set(1.0f, 2.0f);
+    v2b.Set(-3.0f, 1.0f);
+
+    SetFunctionName("Lerp( const Vector2 &, const Vector2 &, float , Vector2 &)");
+    Lerp(v2a, v2b, (float_test_type)0.25f, output);
+    Validate(
+        IsEqualWithEpsilon(output.X(), (float_test_type)0.0f) &&
+        IsEqualWithEpsilon(output.Y(), (float_test_type)1.75f)
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+        Vector2 v2a, v2b, output;
+    v2a.Set(1.0f, 2.0f);
+    v2b.Set(-3.0f, 1.0f);
+
+    SetFunctionName("NLerp( const Vector2 &, const Vector2 &, float, Vector2 &)");
+    NLerp(v2a, v2b, (float_test_type)0.15f, output);
+    Validate(
+        IsEqualWithEpsilon(output.X(), (float_test_type)0.21133278f) &&
+        IsEqualWithEpsilon(output.Y(), (float_test_type)0.97741419f)
+        );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+#if RW_MATH_ENABLE_DEPRECATED_API
+
+    SetFunctionName("SLerp( const Vector2 &, const Vector2 &, float, Vector2 &)");
+
+    Vector2 v2a_normalized, v2b_normalized;
+        Vector2 v2a, v2b, output;
+    v2a.Set(1.0f, 2.0f);
+    v2b.Set(-3.0f, 1.0f);
+    Normalize(v2a, v2a_normalized);
+    Normalize(v2b, v2b_normalized);
+    SLerp(v2a_normalized, v2b_normalized, (float_test_type)0.75f, output);
+    Validate(
+        IsEqualWithEpsilon(output.X(), (float_test_type)-0.73185913885907916f, (float_basic_type) 0.02f) &&
+        IsEqualWithEpsilon(output.Y(), (float_test_type) 0.68134627789812985f, (float_basic_type) 0.02f)
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="clamp_vector">
+      <![CDATA[
+
+        Vector2 vIn0(2.5f, 1.99f);
+        Vector2 vIn1(1.01f, -2.5f);
+        Vector2 one = Vector2(1.0f, 1.0f);
+        Vector2 two = float_test_type(2.0f) * one;
+        Vector2 ref0(2.0f, 1.99f);
+        Vector2 ref1(1.01f, 1.0f);
+        Vector2 result0 = Clamp( vIn0, one, two );
+        Vector2 result1 = Clamp( vIn1, one, two );
+
+        SetFunctionName("Clamp(Vector2, Vector2, Vector2");
+        Validate( result0 == ref0 && result1 == ref1 );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_vector2fromfloat">
+        <![CDATA[
+        
+#ifdef HOST_TESTING
+
+        Vector2 v;
+
+        SetFunctionName("Vector2FromFloat(float)");
+        v = Vector2FromFloat(4.56f);
+        Validate((float)v.X() == 4.56f && (float)v.Y() == 4.56f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_max_component">
+        <![CDATA[
+
+        Vector2 v2(2.5f, 1.99f);
+
+        SetFunctionName("MaxComponent(Vector2)");
+        float_test_type vf = MaxComponent(v2);
+        Validate(vf == (float_test_type)2.5f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_min_component">
+        <![CDATA[
+
+        Vector2 v2(2.5f, 1.99f);
+
+        SetFunctionName("MinComponent(Vector2)");
+        float_test_type vf = MinComponent(v2);
+        Validate(vf == (float_test_type)1.99f);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_sqrtfast">
+        <![CDATA[
+
+        Vector2 v2_0(100.0f, 34.23f);
+        float smallFloat = 9.9600960e-020f;
+        float smallFloatSqr = smallFloat * smallFloat;
+        Vector2 v2_1(smallFloatSqr, 0.0f);
+
+        SetFunctionName("SqrtFast(Vector2)");
+        Vector2 v2_ret_0 = SqrtFast(v2_0);
+        Vector2 v2_ret_1 = SqrtFast(v2_1);
+        Validate(IsEqualWithEpsilon(v2_ret_0.X(), (float_test_type)10.0f));
+        Validate(IsEqualWithEpsilon(v2_ret_0.Y(), (float_test_type)5.8506409905f));
+        Validate(IsEqualWithEpsilon(v2_ret_1.X(), (float_test_type)smallFloat));
+        Validate(IsEqualWithEpsilon(v2_ret_1.Y(), (float_test_type)0.0f));
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_InvSqrtfast">
+        <![CDATA[
+
+        Vector2 v2_0(100.0f, 34.23f);
+
+        SetFunctionName("InvSqrtFast(Vector2)");
+        Vector2 v2_ret_0 = InvSqrtFast(v2_0);
+        Validate(IsEqualWithEpsilon(v2_ret_0.X(), (float_test_type)0.1f, (float_test_type)0.01f));
+        Validate(IsEqualWithEpsilon(v2_ret_0.Y(), (float_test_type)0.17092f, (float_test_type)0.01f));
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_reciprocalfast">
+        <![CDATA[
+
+        Vector2 v2_0(-8.0f, 0.125f);
+
+        SetFunctionName("ReciprocalFast(Vector2)");
+        Vector2 v2_ret_0 = ReciprocalFast(v2_0);
+        Validate(IsEqualWithEpsilon(v2_ret_0.X(), (float_test_type)-0.125f));
+        Validate(IsEqualWithEpsilon(v2_ret_0.Y(), (float_test_type)8.0f));
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateleft">
+        <![CDATA[
+        
+        SetFunctionName("Vector2 RotateLeft(Vector2 v2)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f };
+        #ifdef HOST_TESTING
+            // We want to make sure that the z/w element in the vector aren't the same as X and Y.  Otherwise a rotate could appear to work due to how a Vector2 is initialized.
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 0.0f, 0.0f);
+            Vector2 v2(vi);
+        #else
+            Vector2 v2(values[0], values[1]);
+        #endif
+        Vector2 v2r = RotateLeft(v2);
+        Validate( 
+            v2r.X() == (float_test_type)values[1] &&
+            v2r.Y() == (float_test_type)values[0]
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test_rotateright">
+        <![CDATA[
+        
+        SetFunctionName("Vector2 RotateRight(Vector2 v2)");
+        
+        float_basic_type values[] = { 1.0f, 2.0f };
+        #ifdef HOST_TESTING
+            // We want to make sure that the z/w element in the vector aren't the same as X and Y.  Otherwise a rotate could appear to work due to how a Vector2 is initialized.
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 0.0f, 0.0f);
+            Vector2 v2(vi);
+        #else
+            Vector2 v2(values[0], values[1]);
+        #endif
+        Vector2 v2r = RotateRight(v2);
+        Validate( 
+            v2r.X() == (float_test_type)values[1] &&
+            v2r.Y() == (float_test_type)values[0]
+        );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test65">
+        <![CDATA[
+
+        SetFunctionName("Negate(const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Negate(v2a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Mult(v2a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+        SetFunctionName("Divide(const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Divide(v2a_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+        SetFunctionName("Add(const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Add(v2a_array[i], v2b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+        SetFunctionName("Subtract(const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Subtract(v2a_array[i], v2b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+        SetFunctionName("Magnitude(const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Magnitude(v2a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeSquared(const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeSquared(v2a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+        SetFunctionName("MagnitudeRecip(const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = MagnitudeRecip(v2a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+        SetFunctionName("Normalize(const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Normalize(v2a_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+        SetFunctionName("NormalizeReturnMagnitude(const Vector2 &, Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = NormalizeReturnMagnitude(v2a_array[i], v2out_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+        SetFunctionName("Dot(const Vector2 &,const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Dot(v2a_array[i], v2b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector2 &,const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Mult(v2a_array[i], v2b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+        SetFunctionName("Lerp( const Vector2 &, const Vector2 &,  float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = Lerp(v2a_array[i], v2b_array[i], static_cast<float_basic_type>(0.25));
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+        SetFunctionName("SLerp( const Vector2 &, const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = SLerp(v2a_norm_array[i], v2b_norm_array[i], static_cast<float_basic_type>(0.25));
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+        SetFunctionName("NLerp( const Vector2 &, const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = NLerp(v2a_array[i], v2b_array[i], static_cast<float_basic_type>(0.25));
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(const Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = IsSimilar(v2a_array[i], v2b_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test142">
+      <![CDATA[
+
+        Vector2 v2a;
+        Vector2 v2b;
+        SetFunctionName("Vector2&      operator = (Vector2::InParam v)");
+        v2a.Set(1.0f, 2.0f);
+        v2b= v2a;
+        Validate((float)v2b.X() == 1.f && (float)v2b.Y() == 2.f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+        Vector2 v2a_equal;
+        Vector2 v2b_equal;
+
+        SetFunctionName("bool operator == (const Vector2 &, const Vector2 &)");
+
+        v2a_equal.Set(1.0f, 2.0f);
+        v2b_equal.Set(1.0f, 2.0f);
+
+        Validate(v2a_equal == v2b_equal);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+        Vector2 v2a_equal;
+        Vector2 v2b_equal;
+
+        SetFunctionName("bool operator != (const Vector2 &, const Vector2 &)");
+
+        v2a_equal.Set(1.0f, 2.0f);
+        v2b_equal.Set(1.0f, 3.0f);
+
+        Validate(v2a_equal != v2b_equal);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test83">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator *= (Vector2 &, float)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+        v2a *= (float_test_type)1.5f;
+
+        Validate(
+                IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f * (float_test_type)1.5f) &&
+                IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f * (float_test_type)1.5f)
+                );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+
+        SetFunctionName("Vector2& operator /= (Vector2 &, float)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+        v2a /= (float_test_type)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f / (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f / (float_test_type)1.5f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test85">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator * (const Vector2 &, float)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = v2a * (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test86">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator * (float_t s, const Vector2 &v)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = (float_test_type)1.24f *v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator / (const Vector2 &, float)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = v2a / (float_test_type)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() / 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() / 1.24f)
+            );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator += (Vector2 &, const Vector2 &)");
+
+        Vector2 v2a, v2b;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 6.0f);
+        v2a += v2b;
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f + (float_test_type)3.0f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f + (float_test_type)6.0f)
+            );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, const Vector2 &)");
+
+        Vector2 v2a, v2b;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(3.0f, 6.0f);
+        v2a -= v2b;
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f - (float_test_type)3.0f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f - (float_test_type)6.0f)
+            );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator - (Vector2 &)");
+
+        Vector2 v2a, v2b;
+        v2a.Set(1.0f, 2.0f);
+        v2b = -v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), -v2b.X()) &&
+            IsEqualWithEpsilon(v2a.Y(), -v2b.Y())
+            );
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test91">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, const Vector2 &)");
+
+        Vector2 v2a, v2b, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(1.2f, 2.3f);
+        v2out = v2a + v2b;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + (float_basic_type)v2b.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + (float_basic_type)v2b.Y())
+            );
+
+#endif
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test92">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, const Vector2 &)");
+
+        Vector2 v2a, v2b, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2b.Set(1.2f, 2.3f);
+        v2out = v2a - v2b;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() - (float_basic_type)v2b.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() - (float_basic_type)v2b.Y())
+            );
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test93">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector2& operator *= (Vector2 &, float)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+        v2a *= (float)1.5f;
+
+        Validate(
+                IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f * (float_test_type)1.5f) &&
+                IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f * (float_test_type)1.5f)
+                );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test94">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector2& operator /= (Vector2 &, float)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+        v2a /= (float)1.5f;
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f / (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f / (float_test_type)1.5f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test95">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator * (const Vector2 &, float)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = v2a * (float)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test96">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator * (float_t s, const Vector2 &v)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = (float)1.24f *v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test97">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator / (const Vector2 &, float)");
+
+        Vector2 v2a, v2out;
+        v2a.Set(1.0f, 2.0f);
+        v2out = v2a / (float)1.24f;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() / 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() / 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test110">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator += (Vector2 &, float_test_type)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a += float_test_type(1.5f);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f + (float_test_type)1.5f)
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test111">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, float_test_type)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a -= float_test_type(1.5f);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f - (float_test_type)1.5f)
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test112">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, float_test_type)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a + float_test_type(1.24f);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test112_2">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator + (float_test_type, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = float_test_type(1.24f) + v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test112_3">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator + (float, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        // use a float type explicitly
+        v2out = 1.24f + v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test112_4">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator + (VecFloatRef<INDEX>, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        MakeVectorIntrinsic(vi, 1.24f, 2.1f, 1.24f, 4.1f);
+        v2out = VecFloatRefX(vi) + v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test112_5">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator + (VecFloatRefIndex, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        MakeVectorIntrinsic(vi, 1.24f, 2.1f, 1.24f, 4.1f);
+        v2out = VecFloatRefIndex(vi, 0) + v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test114">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, float_test_type)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a - float_test_type(1.24f);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() - 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() - 1.24f)
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test114_2">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator - (float_test_type, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = float_test_type(1.24f) - v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), 1.24f - (float_basic_type)v2a.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), 1.24f - (float_basic_type)v2a.Y())
+            );
+
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test114_3">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator - (float, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = 1.24f - v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), 1.24f - (float_basic_type)v2a.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), 1.24f - (float_basic_type)v2a.Y())
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test114_4">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator - (VecFloatRef<INDEX>, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        MakeVectorIntrinsic(vi, 1.24f, 2.1f, 1.24f, 4.1f);
+        v2out = VecFloatRefX(vi) - v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), 1.24f - (float_basic_type)v2a.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), 1.24f - (float_basic_type)v2a.Y())
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test114_5">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator - (VecFloatRefIndex, const Vector2 &)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        MakeVectorIntrinsic(vi, 1.24f, 2.1f, 1.24f, 4.1f);
+        v2out = VecFloatRefIndex(vi, 0) - v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), 1.24f - (float_basic_type)v2a.X()) &&
+            IsEqualWithEpsilon(v2out.Y(), 1.24f - (float_basic_type)v2a.Y())
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test115">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator *= (Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a *= VecFloatRefX(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f * (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f * (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test116">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator /= (Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a /= VecFloatRefX(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f / (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f / (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test117">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator += (Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a += VecFloatRefX(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f + (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test118">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a -= VecFloatRefX(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f - (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test119">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator * (const Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a * VecFloatRefY(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test120">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator * (VecFloatRef<INDEX> s, const Vector2 &v)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = VecFloatRefY(vi) * v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test121">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator / (const Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a / VecFloatRefY(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() / 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() / 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test122">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a + VecFloatRefY(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test124">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, VecFloatRef<INDEX>)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a - VecFloatRefY(vi);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() - 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() - 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test125">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator *= (Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a *= VecFloatRefIndex(vi, 0);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f * (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f * (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test126">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator /= (Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a /= VecFloatRefIndex(vi, 0);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f / (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f / (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test127">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator += (Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a += VecFloatRefIndex(vi, 0);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f + (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f + (float_test_type)1.5f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test128">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a;
+        v2a.Set(1.0f, 2.0f);
+
+        v2a -= VecFloatRefIndex(vi, 0);
+
+        Validate(
+            IsEqualWithEpsilon(v2a.X(), (float_test_type)1.0f - (float_test_type)1.5f) &&
+            IsEqualWithEpsilon(v2a.Y(), (float_test_type)2.0f - (float_test_type)1.5f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test129">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator * (const Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a * VecFloatRefIndex(vi, 1);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test130">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator * (VecFloatRefIndex s, const Vector2 &v)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = VecFloatRefIndex(vi, 1) * v2a;
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() * 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() * 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test131">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator / (const Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a / VecFloatRefIndex(vi, 1);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() / 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() / 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test132">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a + VecFloatRefIndex(vi, 1);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() + 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() + 1.24f)
+            );
+
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test134">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, VecFloatRefIndex)");
+
+        Vector2 v2a, v2out;
+
+        v2a.Set(1.0f, 2.0f);
+
+        v2out = v2a - VecFloatRefIndex(vi, 1);
+
+        Validate(
+            IsEqualWithEpsilon(v2out.X(), (float_basic_type)v2a.X() - 1.24f) &&
+            IsEqualWithEpsilon(v2out.Y(), (float_basic_type)v2a.Y() - 1.24f)
+            );
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test140">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.5f, 1.24f, 0.0f, 0.0f);
+            SetFunctionName("Vector2 Mult(Vector2::InParam v, VecFloatRefIndex::InParam s)");
+            Vector2 v2a, v2out;
+            v2a.Set(1.0f, 2.0f);
+            v2out = Mult(v2a, VecFloatRefIndex(vi, 1));
+            Validate(
+                IsEqualWithEpsilon((float)v2out.X(), (float)v2a.X() * 1.24f) && 
+                IsEqualWithEpsilon((float)v2out.Y(), (float)v2a.Y() * 1.24f)
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="cross">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("float_test_type Mult(Vector2::InParam a, Vector2::InParam b)");
+            Vector2 v2a, v2b;
+            v2a.Set(1.0f, 2.0f);
+            v2b.Set(9.0f, -5.0f);
+            VecFloat result = Cross(v2a, v2b);
+            Validate( IsEqualWithEpsilon((float)result, -23.0f ) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test98">
+      <![CDATA[
+
+        SetFunctionName("bool operator == (const Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v2a_array[i] == v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test99">
+      <![CDATA[
+
+        SetFunctionName("bool operator != (const Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueBool = v2a_array[i] != v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test100">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator *= (Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] *= static_cast<float_test_type>(1.33f);
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test101">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator /= (Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] /= static_cast<float_test_type>(1.33f);
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+     ]]>
+      </TEST>
+
+
+      <TEST NAME="test102">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator += (Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] += v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test103">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] -= v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test104">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = -v2a_array[i];
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test105">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator * (const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] * static_cast<float_test_type>(1.543f);
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test106">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator * (float, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = static_cast<float_test_type>(1.543f) * v2a_array[i];
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test107">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator / (const Vector2 &, float)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] / static_cast<float_test_type>(1.543f);
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test108">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] + v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+ #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test109">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] - v2b_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test135">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector2& operator += (Vector2 &, VecFloat)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] += static_cast<float_test_type>(1.33f);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test136">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("Vector2& operator -= (Vector2 &, VecFloat)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2a_array[i] -= static_cast<float_test_type>(1.33f);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test137">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator + (const Vector2 &, VecFloat)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] + static_cast<float_test_type>(1.543f);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test138">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator + (VecFloat, const Vector2 &)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = static_cast<float_test_type>(1.543f) + v2a_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test139">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("const Vector2 operator - (const Vector2 &, VecFloat)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v2out_array[i] = v2a_array[i] - static_cast<float_test_type>(1.543f);
+            }
+        }
+
+        StopTimer();
+
+#endif
+#endif
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+  
+<!-- The Last Test is test143, please change this number when you add more tests, make sure test names do not repeat-->
+
+</CLASS>
+
+</TESTCLASS>

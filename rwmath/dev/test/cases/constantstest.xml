@@ -1,0 +1,501 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestConstants" HEADER="constantstest.h" SOURCE="constantstest.inc" RWHOSTHEADER="rw/math/vpu/constants_operation.h" RWGENERICHEADER="rw/math/fpu/constants_operation.h" RWOPTIMALHEADER="rw/math/optimal/constants_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="float_one_as_uint32">
+      <![CDATA[
+
+        SetFunctionName("FLOAT_ONE_AS_UINT32");
+        union
+        {
+            float f;
+            uint32_t i;
+        } fiUnion;
+        fiUnion.i = FLOAT_ONE_AS_UINT32;
+        Validate( fiUnion.f == 1.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmaskscalar_true">
+      <![CDATA[
+
+        SetFunctionName("GetMaskScalar_True()");
+        MaskScalar m = GetMaskScalar_True();
+        Validate( m.GetBool() );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask2_true">
+      <![CDATA[
+
+        SetFunctionName("GetMask2_True()");
+        Mask2 m = GetMask2_True();
+        Validate(
+            m.GetX().GetBool() &&
+            m.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask3_true">
+      <![CDATA[
+
+        SetFunctionName("GetMask3_True()");
+        Mask3 m = GetMask3_True();
+        Validate(
+            m.GetX().GetBool() &&
+            m.GetY().GetBool() &&
+            m.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask4_true">
+      <![CDATA[
+
+        SetFunctionName("GetMask4_True()");
+        Mask4 m = GetMask4_True();
+        Validate(
+            m.GetX().GetBool() &&
+            m.GetY().GetBool() &&
+            m.GetZ().GetBool() &&
+            m.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmaskscalar_false">
+      <![CDATA[
+
+        SetFunctionName("GetMaskScalar_False()");
+        MaskScalar m = GetMaskScalar_False();
+        Validate( !m.GetBool() );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask2_false">
+      <![CDATA[
+
+        SetFunctionName("GetMask2_False()");
+        Mask2 m = GetMask2_False();
+        Validate(
+            !m.GetX().GetBool() &&
+            !m.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask3_false">
+      <![CDATA[
+
+        SetFunctionName("GetMask3_False()");
+        Mask3 m = GetMask3_False();
+        Validate(
+            !m.GetX().GetBool() &&
+            !m.GetY().GetBool() &&
+            !m.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getmask4_false">
+      <![CDATA[
+
+        SetFunctionName("GetMask4_False()");
+        Mask4 m = GetMask4_False();
+        Validate(
+            !m.GetX().GetBool() &&
+            !m.GetY().GetBool() &&
+            !m.GetZ().GetBool() &&
+            !m.GetW().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("GetQuaternion_One()");
+        Quaternion q1 = GetQuaternion_One();
+        Validate( (q1.X() == (float_test_type)1.0f) &&
+                  (q1.Y() == (float_test_type)1.0f) &&
+                  (q1.Z() == (float_test_type)1.0f) &&
+                  (q1.W() == (float_test_type)1.0f) 
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("GetVector2_One()");
+        Vector2 v1 = GetVector2_One();
+        Validate( (v1.X() == (float_test_type)1.0f) &&
+                  (v1.Y() == (float_test_type)1.0f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector2_xaxis">
+      <![CDATA[
+
+        SetFunctionName("GetVector2_XAxis()");
+        Vector2 v1 = GetVector2_XAxis();
+        Validate( (v1.X() == (float_test_type)1.0f) &&
+                  (v1.Y() == (float_test_type)0.0f)
+                );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector2_yaxis">
+      <![CDATA[
+
+        SetFunctionName("GetVector2_YAxis()");
+        Vector2 v1 = GetVector2_YAxis();
+        Validate( (v1.X() == (float_test_type)0.0f) &&
+                  (v1.Y() == (float_test_type)1.0f)
+                );
+
+      ]]>
+      </TEST>
+    
+      <TEST NAME="test2">
+      <![CDATA[
+
+        SetFunctionName("GetVector3_One()");
+        Vector3 v1 = GetVector3_One();
+        Validate( (v1.X() == (float_test_type)1.0f) &&
+                  (v1.Y() == (float_test_type)1.0f) &&
+                  (v1.Z() == (float_test_type)1.0f) 
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test3">
+      <![CDATA[
+
+        SetFunctionName("GetVector3_XAxis()");
+        Vector3 v1 = GetVector3_XAxis();
+        Validate( (v1.X() == (float_test_type)1.0f));
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test4">
+      <![CDATA[
+
+        SetFunctionName("GetVector3_YAxis()");
+        Vector3 v1 = GetVector3_YAxis();
+        Validate( (v1.Y() == (float_test_type)1.0f));
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test5">
+      <![CDATA[
+
+        SetFunctionName("GetVector3_ZAxis()");
+        Vector3 v1 = GetVector3_ZAxis();
+        Validate( (v1.Z() == (float_test_type)1.0f));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_One()");
+        Vector4 v1 = GetVector4_One();
+        Validate( (v1.X() == (float_test_type)1.0f) &&
+                  (v1.Y() == (float_test_type)1.0f) &&
+                  (v1.Z() == (float_test_type)1.0f) &&
+                  (v1.W() == (float_test_type)1.0f) 
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test7">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_Origin()");
+        Vector4 v1 = GetVector4_Origin();
+        Validate( (v1.X() == (float_test_type)0.0f) &&
+                  (v1.Y() == (float_test_type)0.0f) &&
+                  (v1.Z() == (float_test_type)0.0f) &&
+                  (v1.W() == (float_test_type)1.0f) 
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test8">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_XAxis()");
+        Vector4 v1 = GetVector4_XAxis();
+        Validate( (v1.X() == (float_test_type)1.0f) &&
+                  (v1.Y() == (float_test_type)0.0f) &&
+                  (v1.Z() == (float_test_type)0.0f) &&
+                  (v1.W() == (float_test_type)0.0f) 
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_YAxis()");
+        Vector4 v1 = GetVector4_YAxis();
+        Validate( (v1.X() == (float_test_type)0.0f) &&
+                  (v1.Y() == (float_test_type)1.0f) &&
+                  (v1.Z() == (float_test_type)0.0f) &&
+                  (v1.W() == (float_test_type)0.0f) 
+                );
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test10">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_ZAxis()");
+        Vector4 v1 = GetVector4_ZAxis();
+        Validate( (v1.X() == (float_test_type)0.0f) &&
+                  (v1.Y() == (float_test_type)0.0f) &&
+                  (v1.Z() == (float_test_type)1.0f) &&
+                  (v1.W() == (float_test_type)0.0f) 
+                );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test11">
+      <![CDATA[
+
+        SetFunctionName("GetVector4_WAxis()");
+        Vector4 v1 = GetVector4_WAxis();
+        Validate( (v1.X() == (float_test_type)0.0f) &&
+                  (v1.Y() == (float_test_type)0.0f) &&
+                  (v1.Z() == (float_test_type)0.0f) &&
+                  (v1.W() == (float_test_type)1.0f) 
+                );
+      ]]>
+      </TEST>     
+
+      <TEST NAME="matrix44affine_getzero">
+      <![CDATA[
+
+        SetFunctionName("GetMatrix44Affine_Zero()");
+        Matrix44Affine m = GetMatrix44Affine_Zero();
+        bool isSame = true;
+        for(int col=0;col<3;++col)
+        {
+            for(int row=0;row<4;++row)
+            {
+                isSame &= m.GetElem(row, col) == (float_test_type)0.0f;
+            }
+        }
+        Validate( isSame );
+
+      ]]>
+      </TEST>     
+
+      <TEST NAME="matrix44affinepacked_getzero">
+      <![CDATA[
+
+        SetFunctionName("GetMatrix44AffinePacked_Zero()");
+        Matrix44AffinePacked m = GetMatrix44AffinePacked_Zero();
+        bool isSame = true;
+        for(int col=0;col<3;++col)
+        {
+            for(int row=0;row<4;++row)
+            {
+                isSame &= m.GetElem(row, col) == (float_test_type)0.0f;
+            }
+        }
+        Validate( isSame );
+
+      ]]>
+      </TEST>     
+
+      <TEST NAME="matrix44affinepacked_getidentity">
+      <![CDATA[
+
+        SetFunctionName("GetMatrix44AffinePacked_Identity()");
+        Matrix44AffinePacked m = GetMatrix44AffinePacked_Identity();
+        bool isSame = true;
+        for(int col=0;col<3;++col)
+        {
+            for(int row=0;row<4;++row)
+            {
+                float_test_type expectedValue = (row == col) ? ((float_test_type)1.0f) : ((float_test_type)0.0f);
+                isSame &= m.GetElem(row, col) == expectedValue;
+            }
+        }
+        Validate( isSame );
+
+      ]]>
+      </TEST>     
+
+      <TEST NAME="vecfloat_getnegtwo">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_NegativeTwo()");
+        float_test_type v1 = GetVecFloat_NegativeTwo();
+        Validate( v1 == (float_test_type)-2.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getnegone">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_NegativeOne()");
+        float_test_type v1 = GetVecFloat_NegativeOne();
+        Validate( v1 == (float_test_type)-1.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getneghalf">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_NegativeHalf()");
+        float_test_type v1 = GetVecFloat_NegativeHalf();
+        Validate( v1 == (float_test_type)-0.5f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getnegzero">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_NegativeZero()");
+        float_test_type v1 = GetVecFloat_NegativeZero();
+        Validate( v1 == (float_test_type)-0.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getzero">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_Zero()");
+        float_test_type v1 = GetVecFloat_Zero();
+        Validate( v1 == (float_test_type)0.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_gethalf">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_Half()");
+        float_test_type v1 = GetVecFloat_Half();
+        Validate( v1 == (float_test_type)0.5f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_getone">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_One()");
+        float_test_type v1 = GetVecFloat_One();
+        Validate( v1 == (float_test_type)1.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_gettwo">
+      <![CDATA[
+
+        SetFunctionName("GetVecFloat_Two()");
+        float_test_type v1 = GetVecFloat_Two();
+        Validate( v1 == (float_test_type)2.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="pi_consistency">
+      <![CDATA[
+
+      // This test compares the bit representation of PI on both the PPU and SPU to ensure they
+      // are identical.
+      #if defined EA_PLATFORM_PS3 || defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("PI");
+
+        union FloatIntUnion
+        {
+            float fValue;
+            unsigned int iValue;
+        } floatIntUnion;
+
+        floatIntUnion.fValue = PI;
+        Validate(floatIntUnion.iValue == 0x40490FDB);
+
+      #endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="max_float_value">
+      <![CDATA[
+
+      // This test compares the bit representation of MAX_FLOAT to an expected hex value.
+      // MAX_FLOAT should be equal to this value assuming the platform uses IEEE single precision floating
+      // point representation.
+
+      SetFunctionName("MAX_FLOAT");
+
+      union FloatIntUnion
+      {
+          float fValue;
+          unsigned int iValue;
+      } floatIntUnion;
+
+      floatIntUnion.fValue = MAX_FLOAT;
+      Validate(floatIntUnion.iValue == 0x7f7fffffu);
+
+      ]]>
+      </TEST>
+    </TYPE>
+
+    <!-- Performance tests
+         It could be difficult to create meaningful performance tests.  After
+         all, the "best" code may generate constants using intrinsics because
+         that will not result in any D-cache misses.  However, a benchmark
+         would probably show that a function that returns a constant from the
+         data segment would be faster.  However that is not much of a realworld
+         test because the data would always be in cache after it is loaded
+         once.
+      -->
+    <TYPE NAME="performance">
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

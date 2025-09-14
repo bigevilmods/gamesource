@@ -1,0 +1,664 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestTrigonometry" HEADER="trigonometrytest.h" SOURCE="trigonometrytest.inc" RWHOSTHEADER="rw/math/vpu/trig.h" RWGENERICHEADER="rw/math/fpu/trig.h" RWOPTIMALHEADER="rw/math/optimal/trig.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("DegToRad");
+        Validate( IsEqualWithEpsilon(DegToRad(180.0f), PI) );
+        Validate( IsEqualWithEpsilon(DegToRad(360.0f), TWO_PI) );
+        Validate( IsEqualWithEpsilon(DegToRad(0.0f), 0.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("RadToDeg");
+        Validate(IsEqualWithEpsilon(RadToDeg(0.0f), 0.f, SMALL_FLOAT));
+        
+#if defined EA_PLATFORM_PS3_SPU        
+        
+        Validate(IsEqualWithinPercent(RadToDeg(PI), 180.f, 0.0001));
+        Validate(IsEqualWithinPercent(RadToDeg(TWO_PI), 360.f, 0.0001));
+#else
+        Validate(IsEqualWithEpsilon(RadToDeg(PI), 180.f, SMALL_FLOAT));
+        Validate(IsEqualWithEpsilon(RadToDeg(TWO_PI), 360.f, SMALL_FLOAT));
+#endif        
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            SetFunctionName("Sin test[%d]", i);
+            Validate(IsEqualWithEpsilon(Sin(sincos_values[i].input),
+                sincos_values[i].output1, FSIN_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            SetFunctionName("Cos test[%d]", i);
+            Validate(IsEqualWithEpsilon(Cos(sincos_values[i].input),
+                sincos_values[i].output2, FCOS_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_TAN_VALUES; ++i)
+        {
+            SetFunctionName("Tan test[%d]", i);
+            Validate(IsEqualWithEpsilon(Tan(tan_values[i].input),
+                tan_values[i].output, FTAN_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_ASINCOS_VALUES; ++i)
+        {
+            SetFunctionName("ASin test[%d]", i);
+            Validate(IsEqualWithEpsilon(ASin(asincos_values[i].input),
+                asincos_values[i].output1, FASIN_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_ASINCOS_VALUES; ++i)
+        {
+            SetFunctionName("ACos test[%d]", i);
+            Validate(IsEqualWithEpsilon(ACos(asincos_values[i].input),
+                asincos_values[i].output2, FACOS_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_ATAN_VALUES; ++i)
+        {
+            SetFunctionName("ATan test[%d] ", i);
+            Validate(IsEqualWithEpsilon(ATan(atan_values[i].input),
+                atan_values[i].output, FATAN_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_ATAN2_VALUES; ++i)
+        {
+            float_test_type atan2Result = ATan2(atan2_values[i].x, atan2_values[i].y);
+            bool result = IsEqualWithEpsilon(atan2Result, (float_test_type)atan2_values[i].output, (float_test_type)FATAN_EPSILON);
+            // Special case:  PI and -PI should be considered equally valid.
+            if( atan2_values[i].output == -3.141593f && !result )
+            {
+                result = IsEqualWithEpsilon(atan2Result, (float_test_type)3.141593f, (float_test_type)FATAN_EPSILON);
+            }
+            #if 1
+            SetFunctionName("ATan2 test[%d] ", i);
+            #else
+            SetFunctionName("ATan2 test[%d] result: %f expected %f", i, (float)atan2Result, atan2_values[i].output);
+            #endif
+            Validate(result);
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("NormalizeAngle");
+        Validate(IsEqualWithEpsilon(NormalizeAngle(TWO_PI + 1.1f), 1.1f));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle( QUARTER_PI),  QUARTER_PI));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(-QUARTER_PI), -QUARTER_PI));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(PI + 0.1f), -PI + 0.1f));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(-PI + 0.1f), -PI + 0.1f));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(0.f), 0.f));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(TWO_PI), 0.f));
+	    Validate(IsEqualWithEpsilon(NormalizeAngle(-PI - 0.1f), PI - 0.1f));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        float_test_type fSin, fCos;
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            SetFunctionName("SinCos(a, sin_out, cos_out) test[%d]", i);
+            SinCos((float_test_type)(sincos_values[i].input), fSin, fCos);
+
+            Validate(IsEqualWithEpsilon((float_basic_type) fSin, (float_basic_type) sincos_values[i].output1, (float_basic_type) FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float_basic_type) fCos, (float_basic_type) sincos_values[i].output2, (float_basic_type) FSINCOS_EPSILON));
+        }
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            SetFunctionName("SinCos(a) test[%d]", i);
+#ifdef HOST_TESTING
+            Vector4 result = SinCos(sincos_values[i].input);
+#else
+            Vector4 result = SinCos<FloatType>(sincos_values[i].input);
+#endif
+
+            Validate(IsEqualWithEpsilon((float)result.X(), sincos_values[i].output1, FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float)result.Y(), sincos_values[i].output2, FSINCOS_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            SetFunctionName("SinCosFast(a) test[%d]", i);
+#ifdef HOST_TESTING
+            Vector4 result = SinCosFast(sincos_values[i].input);
+#else
+            Vector4 result = SinCosFast<FloatType>((float_test_type) sincos_values[i].input);
+#endif
+
+            Validate(IsEqualWithEpsilon((float)result.X(), sincos_values[i].output1, FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float)result.Y(), sincos_values[i].output2, FSINCOS_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        for (int i = 0; i < NUM_SINCOS_VALUES; ++i)
+        {
+            int i2 = NUM_SINCOS_VALUES - (i+1);
+            SetFunctionName("SinCosFast2(a,b) test[%d]", i);
+#ifdef HOST_TESTING
+            Vector4 result = SinCosFast2(sincos_values[i].input,sincos_values[i2].input);
+#else
+            Vector4 result = SinCosFast2<FloatType>( (float_test_type)sincos_values[i].input, (float_test_type)sincos_values[i2].input);
+#endif
+
+            Validate(IsEqualWithEpsilon((float)result.X(), sincos_values[i].output1, FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float)result.Y(), sincos_values[i].output2, FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float)result.Z(), sincos_values[i2].output1, FSINCOS_EPSILON));
+            Validate(IsEqualWithEpsilon((float)result.W(), sincos_values[i2].output2, FSINCOS_EPSILON));
+        }
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        SetFunctionName("DegToRad");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= DegToRad(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("RadToDeg");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= RadToDeg(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        SetFunctionName("Sin");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Sin(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        SetFunctionName("Cos");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Cos(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        SetFunctionName("SinCos");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                SinCos(xArray[i], fOutArray[i], fCosOutArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        SetFunctionName("Tan");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= Tan(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        SetFunctionName("ASin");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= ASin(xArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+        SetFunctionName("ACos");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= ACos(xArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        SetFunctionName("ATan");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= ATan(xArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+        SetFunctionName("ATan2");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i]= ATan2(xArray[i], yArray[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="NormalizeAngle_performance_test">
+      <![CDATA[
+
+        SetFunctionName("NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                fOutArray[i] = NormalizeAngle(xArray[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="NormalizeAngle_performance_test_unrolled_twice">
+      <![CDATA[
+
+        SetFunctionName("Unrolled (x2) NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=2)
+            {
+                float_test_type temp0 = NormalizeAngle(xArray[i  ]);
+                float_test_type temp1 = NormalizeAngle(xArray[i+1]);
+                fOutArray[i  ] = temp0;
+                fOutArray[i+1] = temp1;
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="NormalizeAngle_performance_test_unrolled_four">
+      <![CDATA[
+
+        SetFunctionName("Unrolled (x4) NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=4)
+            {
+                float_test_type temp0 = NormalizeAngle(xArray[i  ]);
+                float_test_type temp1 = NormalizeAngle(xArray[i+1]);
+                float_test_type temp2 = NormalizeAngle(xArray[i+2]);
+                float_test_type temp3 = NormalizeAngle(xArray[i+3]);
+                fOutArray[i  ] = temp0;
+                fOutArray[i+1] = temp1;
+                fOutArray[i+2] = temp2;
+                fOutArray[i+3] = temp3;
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="NormalizeAngle_performance_test_unrolled_eight">
+      <![CDATA[
+
+        SetFunctionName("Unrolled (x8) NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=8)
+            {
+                float_test_type temp0 = NormalizeAngle(xArray[i  ]);
+                float_test_type temp1 = NormalizeAngle(xArray[i+1]);
+                float_test_type temp2 = NormalizeAngle(xArray[i+2]);
+                float_test_type temp3 = NormalizeAngle(xArray[i+3]);
+                float_test_type temp4 = NormalizeAngle(xArray[i+4]);
+                float_test_type temp5 = NormalizeAngle(xArray[i+5]);
+                float_test_type temp6 = NormalizeAngle(xArray[i+6]);
+                float_test_type temp7 = NormalizeAngle(xArray[i+7]);
+                fOutArray[i  ] = temp0;
+                fOutArray[i+1] = temp1;
+                fOutArray[i+2] = temp2;
+                fOutArray[i+3] = temp3;
+                fOutArray[i+4] = temp4;
+                fOutArray[i+5] = temp5;
+                fOutArray[i+6] = temp6;
+                fOutArray[i+7] = temp7;
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="NormalizeAngle_performance_test_unrolled_twelve">
+      <![CDATA[
+
+        SetFunctionName("Unrolled (x12) NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=12)
+            {
+                float_test_type  temp0 = NormalizeAngle(xArray[i   ]);
+                float_test_type  temp1 = NormalizeAngle(xArray[i+ 1]);
+                float_test_type  temp2 = NormalizeAngle(xArray[i+ 2]);
+                float_test_type  temp3 = NormalizeAngle(xArray[i+ 3]);
+                float_test_type  temp4 = NormalizeAngle(xArray[i+ 4]);
+                float_test_type  temp5 = NormalizeAngle(xArray[i+ 5]);
+                float_test_type  temp6 = NormalizeAngle(xArray[i+ 6]);
+                float_test_type  temp7 = NormalizeAngle(xArray[i+ 7]);
+                float_test_type  temp8 = NormalizeAngle(xArray[i+ 8]);
+                float_test_type  temp9 = NormalizeAngle(xArray[i+ 9]);
+                float_test_type temp10 = NormalizeAngle(xArray[i+10]);
+                float_test_type temp11 = NormalizeAngle(xArray[i+11]);
+                fOutArray[i   ] =  temp0;
+                fOutArray[i+ 1] =  temp1;
+                fOutArray[i+ 2] =  temp2;
+                fOutArray[i+ 3] =  temp3;
+                fOutArray[i+ 4] =  temp4;
+                fOutArray[i+ 5] =  temp5;
+                fOutArray[i+ 6] =  temp6;
+                fOutArray[i+ 7] =  temp7;
+                fOutArray[i+ 8] =  temp8;
+                fOutArray[i+ 9] =  temp9;
+                fOutArray[i+10] = temp10;
+                fOutArray[i+11] = temp11;
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="NormalizeAngle_performance_test_unrolled_sixteen">
+      <![CDATA[
+
+        SetFunctionName("Unrolled (x16) NormalizeAngle");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i+=16)
+            {
+                float_test_type  temp0 = NormalizeAngle(xArray[i  ]);
+                float_test_type  temp1 = NormalizeAngle(xArray[i+ 1]);
+                float_test_type  temp2 = NormalizeAngle(xArray[i+ 2]);
+                float_test_type  temp3 = NormalizeAngle(xArray[i+ 3]);
+                float_test_type  temp4 = NormalizeAngle(xArray[i+ 4]);
+                float_test_type  temp5 = NormalizeAngle(xArray[i+ 5]);
+                float_test_type  temp6 = NormalizeAngle(xArray[i+ 6]);
+                float_test_type  temp7 = NormalizeAngle(xArray[i+ 7]);
+                float_test_type  temp8 = NormalizeAngle(xArray[i+ 8]);
+                float_test_type  temp9 = NormalizeAngle(xArray[i+ 9]);
+                float_test_type temp10 = NormalizeAngle(xArray[i+10]);
+                float_test_type temp11 = NormalizeAngle(xArray[i+11]);
+                float_test_type temp12 = NormalizeAngle(xArray[i+12]);
+                float_test_type temp13 = NormalizeAngle(xArray[i+13]);
+                float_test_type temp14 = NormalizeAngle(xArray[i+14]);
+                float_test_type temp15 = NormalizeAngle(xArray[i+15]);
+                fOutArray[i   ] =  temp0;
+                fOutArray[i+ 1] =  temp1;
+                fOutArray[i+ 2] =  temp2;
+                fOutArray[i+ 3] =  temp3;
+                fOutArray[i+ 4] =  temp4;
+                fOutArray[i+ 5] =  temp5;
+                fOutArray[i+ 6] =  temp6;
+                fOutArray[i+ 7] =  temp7;
+                fOutArray[i+ 8] =  temp8;
+                fOutArray[i+ 9] =  temp9;
+                fOutArray[i+10] = temp10;
+                fOutArray[i+11] = temp11;
+                fOutArray[i+12] = temp12;
+                fOutArray[i+13] = temp13;
+                fOutArray[i+14] = temp14;
+                fOutArray[i+15] = temp15;
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

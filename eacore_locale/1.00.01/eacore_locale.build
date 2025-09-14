@@ -1,0 +1,46 @@
+﻿<project default="build">
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<property name="runtime.buildtype" value="Library" />
+
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<property name="runtime.usedependencies">
+		Endian
+		EABase
+	</property>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<package name="eacore_locale" targetversion="1.01.00" />
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	Source and header fileset overrides
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<fileset name="runtime.sourcefiles">
+		<includes name="source/**/*.cpp" />
+		<excludes name="source/locomoto/**/*.cpp" />
+		<excludes name="source/**/pc/*.cpp" />
+		<excludes name="source/**/xenon/*.cpp" />
+		<excludes name="source/**/ps3/*.cpp" />
+	</fileset>
+	
+	<fileset name="runtime.headerfiles">
+		<includes name="source/**/*.h" />
+		<includes name="source/**/*.template" />
+	</fileset>
+	
+	<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	platform specific sources and headers 
+	- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	<fileset name="runtime.sourcefiles.pc">
+		<includes name="source/**/pc/*.cpp" />
+	</fileset>
+	
+	<fileset name="runtime.sourcefiles.xenon">
+		<includes name="source/**/xenon/*.cpp" />
+	</fileset>
+
+	<fileset name="runtime.sourcefiles.ps3">
+		<includes name="source/**/ps3/*.cpp" />
+	</fileset>
+	
+</project>

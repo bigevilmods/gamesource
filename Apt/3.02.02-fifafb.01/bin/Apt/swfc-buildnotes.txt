@@ -1,0 +1,3 @@
+Please see documentation here:
+
+http://confluence.ea.com/display/APT/Technical+Reference-Apt-Build+Configuration

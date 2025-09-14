@@ -1,0 +1,20 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestConversion :
+    public UnitTest
+{
+public:
+
+    UnitTestConversion();
+    virtual ~UnitTestConversion();
+    void Test();
+
+//#BLOCK
+
+};
+
+
+

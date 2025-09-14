@@ -1,0 +1,796 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSqt" HEADER="sqttest.h" SOURCE="sqttest.inc" RWHOSTHEADER="rw/math/vpu/sqt_operation.h" RWGENERICHEADER="rw/math/fpu/sqt_operation.h" RWOPTIMALHEADER="rw/math/optimal/sqt_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+        <TYPE NAME="class">
+
+            <TYPE NAME="correctness">
+                
+                <TEST NAME="TestCtor1">
+                    <![CDATA[
+        
+        SetFunctionName("Sqt()");
+        Sqt sqt;
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor2">
+                    <![CDATA[
+
+        SetFunctionName("Sqt(const Sqt&)");
+        Sqt sqtRef(5.0f, 6.0f, 7.0f, 1.0f, 2.1f, 3.2f, 4.3f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt(sqtRef);
+        Validate((float)sqt.GetScale().X() == 5.0f && (float)sqt.GetScale().Y() == 6.f && (float)sqt.GetScale().Z() == 7.f 
+        && (float)sqt.GetQuaternion().X() == 1.0f && (float)sqt.GetQuaternion().Y() == 2.1f && (float)sqt.GetQuaternion().Z() == 3.2f && (float)sqt.GetQuaternion().W() == 4.3f
+        && (float)sqt.GetTranslation().X() == 5.0f && (float)sqt.GetTranslation().Y() == 6.f && (float)sqt.GetTranslation().Z() == 7.f);
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor3">
+                    <![CDATA[
+
+        SetFunctionName("Sqt(Vector3 scale, Quaternion quat, Vector3 trans)");
+        Vector3 s(5.0f, 6.0f, 7.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+        Sqt sqt(s, q, p);
+
+        Validate( sqt.GetScale() == s &&
+                  sqt.GetQuaternion() == q &&
+                  sqt.GetTranslation() == p );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor4">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("Sqt(VectorIntrinsic, VectorIntrinsic, VectorIntrinsic)");
+        MakeVectorIntrinsic(viScale, 5.0f, 6.0f, 7.0f, 0.0f);
+        MakeVectorIntrinsic(viQuat, 1.0f, 2.1f, 3.2f, 4.3f);
+        MakeVectorIntrinsic(viTrans, 5.0f, 6.0f, 7.0f, 0.0f);
+        Sqt sqt(viScale, viQuat, viTrans);
+        Validate((float)sqt.GetScale().X() == 5.0f && (float)sqt.GetScale().Y() == 6.f && (float)sqt.GetScale().Z() == 7.f
+        && (float)sqt.GetQuaternion().X() == 1.0f && (float)sqt.GetQuaternion().Y() == 2.1f && (float)sqt.GetQuaternion().Z() == 3.2f && (float)sqt.GetQuaternion().W() == 4.3f
+        && (float)sqt.GetTranslation().X() == 5.0f && (float)sqt.GetTranslation().Y() == 6.f && (float)sqt.GetTranslation().Z() == 7.f);
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor5">
+                    <![CDATA[
+
+        SetFunctionName("Sqt( _QuatX,  _QuatY,  _QuatZ,  _QuatW,  _TransX,  _TransY,  _TransZ)");
+        Sqt sqt(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor6">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Sqt(float xyz_xyzw_xyz[10] )");
+
+        float floatData[] = { 5.0f, 6.0f, 7.0f, 0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 0.0f };
+        AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+        Sqt sqt(floatBuffer.GetFloatData());
+
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+                </TEST>
+                
+                <TEST NAME="TestCtor7">
+                    <![CDATA[
+
+        SetFunctionName("Sqt(float_test_type::InParam _ScaleX, float_test_type::InParam _ScaleY, float_test_type::InParam _ScaleZ, float_test_type::InParam _QuatX, float_test_type::InParam _QuatY, float_test_type::InParam _QuatZ, float_test_type::InParam _QuatW, float_test_type::InParam _TransX, float_test_type::InParam _TransY, float_test_type::InParam _TransZ)");
+        Sqt sqt(float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f), 
+            float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f),
+            float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+            sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+            sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor8">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Sqt(float_test_typeRefIndex::InParam _ScaleX, float_test_typeRefIndex::InParam _ScaleY, float_test_typeRefIndex::InParam _ScaleZ, float_test_typeRefIndex::InParam _QuatX, float_test_typeRefIndex::InParam _QuatY, float_test_typeRefIndex::InParam _QuatZ, float_test_typeRefIndex::InParam _QuatW, float_test_typeRefIndex::InParam _TransX, float_test_typeRefIndex::InParam _TransY, float_test_typeRefIndex::InParam _TransZ)");
+        Vector3 s(5.0f, 6.0f, 7.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        Sqt sqt(s.GetComponent(0), s.GetComponent(1), s.GetComponent(2),
+                q.GetComponent(0), q.GetComponent(1), q.GetComponent(2), q.GetComponent(3),
+                p.GetComponent(0), p.GetComponent(1), p.GetComponent(2) );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor9">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Sqt(float_test_typeRef<S_X_INDEX> scaleX, float_test_typeRef<S_Y_INDEX> scaleY, float_test_typeRef<S_Z_INDEX> scaleZ, float_test_typeRef<R_X_INDEX> quatX, float_test_typeRef<R_Y_INDEX> quatY, float_test_typeRef<R_Z_INDEX> quatZ, float_test_typeRef<R_W_INDEX> quatW, float_test_typeRef<T_X_INDEX> transX, float_test_typeRef<T_Y_INDEX> transY, float_test_typeRef<T_Z_INDEX> transZ)");
+        Vector3 s(5.0f, 6.0f, 7.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        Sqt sqt( s.X(), s.Y(), s.Z(), q.X(), q.Y(), q.Z(), q.W(),
+                    p.X(), p.Y(), p.Z() );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) && 
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestCtor10">
+                    <![CDATA[
+
+#ifndef HOST_TESTING
+
+        SetFunctionName("Sqt(FloatType* )");
+        float_basic_type f[10] =
+        {
+            5.0f, 6.0f, 7.0f,
+            1.0f, 2.0f, 3.0f, 4.0f,
+            5.0f, 6.0f, 7.0f
+        };
+        Sqt sqt(f);
+
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) && 
+        sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+        sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSet1">
+                    <![CDATA[
+
+        SetFunctionName("Set(float _ScaleX, float _ScaleY, float _ScaleZ, float _QuatX, float _QuatY, float _QuatZ, float _QuatW, float _TransX, float _TransY, float _TransZ)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        sqt.Set( 5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSet2">
+                    <![CDATA[
+
+        SetFunctionName("Set(float_test_type::InParam _ScaleX, float_test_type::InParam _ScaleY, float_test_type::InParam _ScaleZ, float_test_type::InParam _QuatX, float_test_type::InParam _QuatY, float_test_type::InParam _QuatZ, float_test_type::InParam _QuatW, float_test_type::InParam _TransX, float_test_type::InParam _TransY, float_test_type::InParam _TransZ)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        sqt.Set( float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f), float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSet3">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("Set(float_test_typeRefIndex::InParam _ScaleX, float_test_typeRefIndex::InParam _ScaleY, float_test_typeRefIndex::InParam _ScaleZ, float_test_typeRefIndex::InParam _QuatX, float_test_typeRefIndex::InParam _QuatY, float_test_typeRefIndex::InParam _QuatZ, float_test_typeRefIndex::InParam _QuatW, float_test_typeRefIndex::InParam _TransX, float_test_typeRefIndex::InParam _TransY, float_test_typeRefIndex::InParam _TransZ)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Vector3 s(5.0f, 6.0f, 7.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        sqt.Set( s.GetComponent(0), s.GetComponent(1), s.GetComponent(2),
+                q.GetComponent(0), q.GetComponent(1), q.GetComponent(2), q.GetComponent(3),
+                p.GetComponent(0), p.GetComponent(1), p.GetComponent(2) );
+
+        sqt.Set( float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f), float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSet4">
+                    <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("Set(float_test_typeRef<QUAT_XSRC_INDEX> _ScaleX, float_test_typeRef<QUAT_XSRC_INDEX> _ScaleY, float_test_typeRef<QUAT_XSRC_INDEX> _ScaleZ, float_test_typeRef<QUAT_XSRC_INDEX> _QuatX, float_test_typeRef<QUAT_YSRC_INDEX> _QuatY, float_test_typeRef<QUAT_ZSRC_INDEX> _QuatZ, float_test_typeRef<QUAT_WSRC_INDEX> _QuatW, float_test_typeRef<POS_XSRC_INDEX> _TransX, float_test_typeRef<POS_YSRC_INDEX> _TransY, float_test_typeRef<POS_ZSRC_INDEX> _TransZ)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        Vector3 s(5.0f, 6.0f, 7.0f);
+        Quaternion q(1.0f, 2.0f, 3.0f, 4.0f);
+        Vector3 p(5.0f, 6.0f, 7.0f);
+
+        sqt.Set( s.X(), s.Y(), s.Z(), q.X(), q.Y(), q.Z(), q.W(),
+                p.X(), p.Y(), p.Z() );
+
+        sqt.Set( float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f), float_test_type(1.0f), float_test_type(2.0f), float_test_type(3.0f), float_test_type(4.0f), float_test_type(5.0f), float_test_type(6.0f), float_test_type(7.0f) );
+        Validate( sqt.GetScale() == Vector3(5.0f, 6.0f, 7.0f) &&
+                  sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) &&
+                  sqt.GetTranslation() == Vector3(5.0f, 6.0f, 7.0f) );
+#endif
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSetScale">
+                    <![CDATA[
+
+        SetFunctionName("SetScale(Vector3 v)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        sqt.SetScale( Vector3(1.0f, 2.0f, 3.0f) );
+        Validate( sqt.GetScale() == Vector3(1.0f, 2.0f, 3.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSetQuaternion">
+                    <![CDATA[
+
+        SetFunctionName("SetQuaternion(Quaternion q)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        sqt.SetQuaternion( Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+        Validate( sqt.GetQuaternion() == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSetTranslation">
+                    <![CDATA[
+
+        SetFunctionName("SetTranslation(Vector3 v)");
+        Sqt sqt(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        sqt.SetTranslation( Vector3(1.0f, 2.0f, 3.0f) );
+        Validate( sqt.GetTranslation() == Vector3(1.0f, 2.0f, 3.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSetZero">
+                    <![CDATA[
+
+        SetFunctionName("SetZero()");
+        Sqt sqt( 1.0f, 2.0f, 3.0f, 1.0f, 2.0f, 3.0f, 4.f, 1.0f, 2.0f, 3.0f );
+        sqt.SetZero();
+        Validate(sqt.GetScale() == Vector3(0.0f, 0.0f, 0.0f) &&
+                  sqt.GetQuaternion() == Quaternion(0.0f, 0.0f, 0.0f, 0.0f) &&
+                  sqt.GetTranslation() == Vector3(0.0f, 0.0f, 0.0f));
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSetIdentity">
+                    <![CDATA[
+
+        SetFunctionName("SetIdentity()");
+        Sqt sqt( 1.0f, 2.0f, 3.0f, 1.0f, 2.0f, 3.0f, 4.f, 1.0f, 2.0f, 3.0f );
+        sqt.SetIdentity();
+        Validate(sqt.GetScale() == Vector3(1.0f, 1.0f, 1.0f) &&
+                  sqt.GetQuaternion() == Quaternion(0.0f, 0.0f, 0.0f, 1.0f) &&
+                  sqt.GetTranslation() == Vector3(0.0f, 0.0f, 0.0f));
+
+      ]]>
+                </TEST>
+                
+                <TEST NAME="TestGetScale">
+                    <![CDATA[
+
+        SetFunctionName("GetScale()");
+        Sqt sqt(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Vector3 result = sqt.GetScale();
+        Validate( result == Vector3(5.1f, 6.1f, 7.1f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestGetScaleConst">
+                    <![CDATA[
+
+        SetFunctionName("GetScale() const");
+        const Sqt sqt(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Vector3 &result = sqt.GetScale();
+        Validate( result == Vector3(5.1f, 6.1f, 7.1f) );
+
+      ]]>
+                </TEST>
+                
+                <TEST NAME="TestGetQuaternion">
+                    <![CDATA[
+
+        SetFunctionName("GetQuaternion()");
+        Sqt sqt(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Quaternion &result = sqt.GetQuaternion();
+        Validate( result == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestGetQuaternionConst">
+                    <![CDATA[
+
+        SetFunctionName("GetQuaternion() const");
+        const Sqt sqt(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Quaternion &result = sqt.GetQuaternion();
+        Validate( result == Quaternion(1.0f, 2.0f, 3.0f, 4.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestGetTranslation">
+                    <![CDATA[
+
+        SetFunctionName("GetTranslation()");
+        Sqt sqt(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        Vector3 result = sqt.GetTranslation();
+        Validate( result == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestGetTranslationConst">
+                    <![CDATA[
+
+        SetFunctionName("GetTranslation() const");
+        const Sqt sqt(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Vector3 &result = sqt.GetTranslation();
+        Validate( result == Vector3(5.0f, 6.0f, 7.0f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSelect">
+                    <![CDATA[
+      
+        SetFunctionName("Sqt Select(MaskScalar mask, Sqt a, Sqt b)");
+        const Sqt sqt1(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
+        const Sqt sqt2(15.1f, 16.1f, 17.1f, 12.0f, 12.0f, 13.0f, 14.0f, 15.0f, 16.0f, 17.0f);
+
+        Sqt result1 = Select( MaskScalar(true), sqt1, sqt2 );
+        Sqt result2 = Select( MaskScalar(false), sqt1, sqt2 );
+        Validate(
+            result1 == sqt1 &&
+            result2 == sqt2
+        );
+
+      ]]>
+                </TEST>
+
+            </TYPE>
+
+        </TYPE>
+
+        <TYPE NAME="function">
+
+            <TYPE NAME="correctness">
+
+                <TEST NAME="TestIsSimilar">
+                    <![CDATA[
+
+        SetFunctionName("IsSimilar(Sqt a,  Sqt b, epsilon)");
+        Sqt sqt1(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt2(5.0f, 6.0f, 7.1f, 1.0f, 2.0f, 3.0f, 4.1f, 5.0f, 6.0f, 7.1f );
+
+        Validate( !IsSimilar(sqt1, sqt2) &&
+                  !IsSimilar(sqt1, sqt2, (float_test_type)0.09f) &&
+                   IsSimilar(sqt1, sqt2, (float_test_type)0.11f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestIsValid">
+                    <![CDATA[
+
+// on SPU, NaN operations evaluates to 0
+#if !defined EA_PLATFORM_PS3_SPU
+        {
+            SetFunctionName("IsValid(Sqt a,  Sqt b, epsilon)");
+            float nan = (float)testing::GetNaN();
+            Sqt sqt1(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+    
+            Sqt sqt2(5.0f, 6.0f, 7.01f, nan, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.01f );
+            Sqt sqt3(5.0f, 6.0f, 7.01f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, nan );
+            Sqt sqt4(nan, 6.0f, 7.01f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+
+            Validate(  IsValid(sqt1) &&
+                      !IsValid(sqt2) &&
+                      !IsValid(sqt3) &&
+                      !IsValid(sqt4) );
+        }
+#endif
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMult">
+                    <![CDATA[
+
+        SetFunctionName("Mult(Sqt a, Sqt b)");
+        Sqt sqt1( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        Sqt sqt2( 1.0f, 1.5f, 1.0f, -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.8f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        Sqt result = Mult(sqt2, sqt1);
+
+        Validate( IsSimilar( result, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+                
+                <TEST NAME="TestMultQuatPos">
+                    <![CDATA[
+
+        SetFunctionName("Mult(Sqt a, QuatPos b)");
+        
+        Sqt sqt( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        QuatPos qp( -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.2f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        Sqt result = Mult(sqt, qp);
+
+        Validate( IsSimilar( result, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestInverse">
+                    <![CDATA[
+
+
+        SetFunctionName("Inverse(Sqt a)");
+        
+        Sqt sqt( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        Sqt sqtInv = Inverse(sqt);
+        Sqt multiply_sqt_sqtInv = Mult(sqt, sqtInv);
+        
+        Sqt sqt_compare;
+        sqt_compare.quat = Conj(sqt.quat);
+        sqt_compare.scale = Reciprocal(sqt.scale);
+        sqt_compare.trans = -TransformVector(Mult(sqt.trans, sqt_compare.scale), sqt_compare.quat);
+        
+        Sqt sqt_identity;
+        sqt_identity.SetIdentity();
+        
+        Validate(
+                IsEqualWithEpsilon((float_basic_type)sqtInv.scale.X(), (float_basic_type)sqt_compare.scale.X()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.scale.Y(), (float_basic_type)sqt_compare.scale.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.scale.Z(), (float_basic_type)sqt_compare.scale.Z()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.quat.X(), (float_basic_type)sqt_compare.quat.X()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.quat.Y(), (float_basic_type)sqt_compare.quat.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.quat.Z(), (float_basic_type)sqt_compare.quat.Z()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.quat.W(), (float_basic_type)sqt_compare.quat.W()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.trans.X(), (float_basic_type)sqt_compare.trans.X()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.trans.Y(), (float_basic_type)sqt_compare.trans.Y()) &&
+                IsEqualWithEpsilon((float_basic_type)sqtInv.trans.Z(), (float_basic_type)sqt_compare.trans.Z()) &&
+                IsSimilar( multiply_sqt_sqtInv, sqt_identity, (float_test_type)0.001f )
+        );
+        
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSqtFromMatrix44">
+                    <![CDATA[
+
+        SetFunctionName("SqtFromMatrix44(Matrix44::InParam)");
+        
+        Matrix44 inputM(
+            -1.8901101f,       2.3296704f,     0.010989010f,      0.00000000f,
+            -1.5238097f,      -1.2380955f,      0.38095242f,      0.00000000f,
+            0.15018317f,      0.11721613f,      0.98168498f,      0.00000000f,
+             1.0000000f,       2.0000000f,       3.0000000f,       1.0000000f
+        );
+        
+        Sqt sqt = SqtFromMatrix44(inputM);
+        Vector3 s(3.0f, 2.0f, 1.0f);
+        Quaternion q = Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f));
+        Vector3 t(1.0f, 2.0f, 3.0f);
+
+        Validate( IsSimilar( sqt.GetScale(), s, (float_test_type)0.001f) &&
+                  IsSimilar( sqt.GetQuaternion(), q, (float_test_type)0.001f ) &&
+                  IsSimilar( sqt.GetTranslation(), t, (float_test_type)0.001f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSqtFromOrthonormalMatrix44">
+                    <![CDATA[
+
+        SetFunctionName("SqtFromOrthonormalMatrix44(Matrix44::InParam)");
+        
+        Matrix44 inputOM = Matrix44FromScaleQuaternionTranslation(Vector3(1.0f, 1.0f, 1.0f), Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+        
+        Sqt sqt = SqtFromOrthonormalMatrix44(inputOM);
+        Vector3 s(1.0f, 1.0f, 1.0f);
+        Quaternion q = Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f));
+        Vector3 t(1.0f, 2.0f, 3.0f);
+
+        Validate( IsSimilar( sqt.GetScale(), s, (float_test_type)0.001f) &&
+                  IsSimilar( sqt.GetQuaternion(), q, (float_test_type)0.001f ) &&
+                  IsSimilar( sqt.GetTranslation(), t, (float_test_type)0.001f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMatrix44FromSqt">
+                    <![CDATA[
+
+        SetFunctionName("Matrix44FromSqt(Sqt::InParam)");
+        
+        // Note: These numbers were generated by running Matrix44FromScaleQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44 ref(
+                    -1.8901101f,       2.3296704f,     0.010989010f,      0.00000000f,
+                    -1.5238097f,      -1.2380955f,      0.38095242f,      0.00000000f,
+                    0.15018317f,      0.11721613f,      0.98168498f,      0.00000000f,
+                     1.0000000f,       2.0000000f,       3.0000000f,       1.0000000f
+                );
+
+        Matrix44 r;
+        Sqt sqt(Vector3(3.0f, 2.0f, 1.0f), Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+        r = Matrix44FromSqt(sqt);
+
+        Validate(IsSimilar(r, ref));
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSqtFromMatrix44Affine">
+                    <![CDATA[
+
+        SetFunctionName("SqtFromMatrix44Affine(Matrix44Affine::InParam)");
+        
+        Matrix44Affine inputMA(
+            -1.8901101f,       2.3296704f,     0.010989010f,
+            -1.5238097f,      -1.2380955f,      0.38095242f,
+            0.15018317f,      0.11721613f,      0.98168498f,
+             1.0000000f,       2.0000000f,       3.0000000f
+        );
+        
+        Sqt sqt = SqtFromMatrix44Affine(inputMA);
+        Vector3 s(3.0f, 2.0f, 1.0f);
+        Quaternion q = Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f));
+        Vector3 t(1.0f, 2.0f, 3.0f);
+        
+        Validate( IsSimilar( sqt.GetScale(), s, (float_test_type)0.001f) &&
+              IsSimilar( sqt.GetQuaternion(), q, (float_test_type)0.001f ) &&
+              IsSimilar( sqt.GetTranslation(), t, (float_test_type)0.001f) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMatrix44AffineFromSqt">
+                    <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromSqt(Sqt::InParam)");
+        // Note: These numbers were generated by running Matrix44AffineFromScaleQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                    -1.8901101f,       2.3296704f,     0.010989010f,
+                    -1.5238097f,      -1.2380955f,      0.38095242f,
+                    0.15018317f,      0.11721613f,      0.98168498f,
+                     1.0000000f,       2.0000000f,       3.0000000f
+                );
+
+        Matrix44Affine r;
+        Sqt sqt(Vector3(3.0f, 2.0f, 1.0f), Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+        r = Matrix44AffineFromSqt(sqt);
+
+        Validate(IsSimilar(r, ref));
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestLerp">
+                    <![CDATA[
+
+        SetFunctionName("Lerp(Sqt::InParam, Sqt::InParam, VecFloat::InParam)");
+        
+        Sqt sqtFrom = Sqt(Vector3(1.0f, 2.0f, -3.9f), Quaternion(1.0f, 2.0f, 3.45f, 2.1f), Vector3(1.0f, 2.0f, -3.9f));
+        Sqt sqtTo = Sqt(Vector3(-3.0f, 1.0f, 2.3f), Quaternion(-3.0f, 1.0f, 5.3f, 2.1f), Vector3(-3.0f, 1.0f, 2.3f));
+        Sqt sqt = Lerp(sqtFrom, sqtTo, (float_test_type)0.25f);
+        
+        Validate(
+            IsEqualWithEpsilon(sqt.scale.X(), (float_basic_type) 0.0f) &&
+            IsEqualWithEpsilon(sqt.scale.Y(), (float_basic_type) 1.75f) &&
+            IsEqualWithEpsilon(sqt.scale.Z(), (float_basic_type) -2.3500001f) &&
+            IsEqualWithEpsilon(sqt.quat.X(), (float_basic_type) 0.0f) &&
+            IsEqualWithEpsilon(sqt.quat.Y(), (float_basic_type) 1.75f) &&
+            IsEqualWithEpsilon(sqt.quat.Z(), (float_basic_type) 3.9125001f) &&
+            IsEqualWithEpsilon(sqt.quat.W(), (float_basic_type) 2.0999999f) &&
+            IsEqualWithEpsilon(sqt.trans.X(), (float_basic_type) 0.0f) &&
+            IsEqualWithEpsilon(sqt.trans.Y(), (float_basic_type) 1.75f) &&
+            IsEqualWithEpsilon(sqt.trans.Z(), (float_basic_type) -2.3500001f)
+            );
+        
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestSLerp">
+                    <![CDATA[
+
+        SetFunctionName("SLerp(Sqt::InParam, Sqt::InParam, VecFloat::InParam)");
+        
+        Vector3 axis = Normalize(Vector3(1.0f, -1.0f, 0.05f));
+        Matrix44 from = Matrix44FromAxisRotationAngle( axis, (float_test_type)0.25f );
+        Matrix44 to = Matrix44FromAxisRotationAngle( axis, (float_test_type)0.75f );
+        Matrix44 ref = Matrix44FromAxisRotationAngle( axis, (float_test_type)0.5f );
+        
+        Sqt sqtFrom = SqtFromMatrix44(from);
+        Sqt sqtTo = SqtFromMatrix44(to);
+        Sqt sqt = SLerp(sqtFrom, sqtTo, (float_test_type)0.5f);
+        
+        Matrix44 m = Matrix44FromSqt(sqt);
+        
+        Validate( IsSimilar(m, ref, (float_test_type)0.001f) );
+
+      ]]>
+                </TEST>
+
+            </TYPE>
+
+        </TYPE>
+
+        <TYPE NAME="operator">
+
+            <TYPE NAME="correctness">
+
+                <TEST NAME="TestAssignmentOp">
+                    <![CDATA[
+
+        SetFunctionName("Sqt&      operator = (Sqt::InParam v)");
+        Sqt sqtRef( 5.1f, 6.1f, 7.1f, 1.0f, 2.1f, 3.2f, 4.3f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt;
+        sqt = sqtRef;
+        Validate((float)sqt.GetScale().X() == 5.1f && (float)sqt.GetScale().Y() == 6.1f && (float)sqt.GetScale().Z() == 7.1f &&
+        (float)sqt.GetQuaternion().X() == 1.0f && (float)sqt.GetQuaternion().Y() == 2.1f && (float)sqt.GetQuaternion().Z() == 3.2f && (float)sqt.GetQuaternion().W() == 4.3f
+        && (float)sqt.GetTranslation().X() == 5.0f && (float)sqt.GetTranslation().Y() == 6.f && (float)sqt.GetTranslation().Z() == 7.f);
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestEqualityOp">
+                    <![CDATA[
+
+        SetFunctionName("operator ==(Sqt::InParam a,           Sqt::InParam b)");
+        Sqt sqt1(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt2(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt3(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+
+        Validate(   sqt1 == sqt2  &&
+                  !(sqt2 == sqt3) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestNonEqualityOp">
+                    <![CDATA[
+
+        SetFunctionName("operator !=(Sqt::InParam a,           Sqt::InParam b)");
+        Sqt sqt1(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt2(5.1f, 6.1f, 7.1f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+        Sqt sqt3(5.0f, 6.0f, 7.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f );
+
+        Validate( !(sqt1 != sqt2) &&
+                    sqt2 != sqt3  );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMultOp">
+                    <![CDATA[
+
+        SetFunctionName("Sqt operator * (Sqt::InParam a, Sqt::InParam b)");
+        
+        Sqt sqt1( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        Sqt sqt2( 1.0f, 1.5f, 1.0f, -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.8f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        Sqt result = sqt2 * sqt1;
+
+        Validate( IsSimilar( result, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMultAssignmentOp">
+                    <![CDATA[
+
+        SetFunctionName("Sqt& operator *=(Sqt& s, Sqt::InParam b)");
+        
+        Sqt sqt1( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        Sqt sqt2( 1.0f, 1.5f, 1.0f, -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.8f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        sqt2 *= sqt1;
+
+        Validate( IsSimilar( sqt2, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMultQuatPosOp">
+                    <![CDATA[
+
+        SetFunctionName("Sqt operator * (Sqt::InParam a, QuatPos::InParam b)");
+        
+        Sqt sqt( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        QuatPos qp( -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.2f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        Sqt sqtr = sqt * qp;
+
+        Validate( IsSimilar( sqtr, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+
+                <TEST NAME="TestMultAssignmentQuatPosOp">
+                    <![CDATA[
+
+        SetFunctionName("Sqt& operator *=(Sqt& s, QuatPos::InParam b)");
+        
+        Sqt sqt( 1.1f, 1.2f, 1.3f, 0.0f, -0.7071068f, 0.0f, 0.7071068f, 1.0f, 2.0f, 3.0f);
+        QuatPos qp( -0.5f, 0.5f, -0.5f, 0.5f, 5.0f, 0.0f, 0.0f );
+        // Note: These numbers were generated by running Mult on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Sqt ref( 1.1f, 1.2f, 1.3f, 0.0f, 0.0f, -0.7071068f, 0.7071068f, 1.0f, 2.0f, 8.5f );
+
+        sqt *= qp;
+
+        Validate( IsSimilar( sqt, ref, (float_test_type)0.001f ) );
+
+      ]]>
+                </TEST>
+
+            </TYPE>
+
+        </TYPE>
+
+    </CLASS>
+
+</TESTCLASS>
+

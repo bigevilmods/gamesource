@@ -1,0 +1,49 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+class UnitTestSoa4Constants :
+    public UnitTest
+{
+public:
+
+    UnitTestSoa4Constants();
+    virtual ~UnitTestSoa4Constants();
+    void Test();
+
+    bool IsEqual(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        return !memcmp( &a.mV, &b.mV, sizeof(::rw::math::vpu::VectorIntrinsic) );
+    }
+
+    bool IsEqual(::rw::math::vpu::Soa4MaskScalar::InParam a, ::rw::math::vpu::Soa4MaskScalar::InParam b)
+    {
+        return !memcmp( &a.mV, &b.mV, sizeof(::rw::math::vpu::VectorIntrinsic) );
+    }
+
+    ::rw::math::vpu::Soa4Float CreateSoa4Float(float x, float y, float z, float w)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarFloat[0] = x;
+        vu.scalarFloat[1] = y;
+        vu.scalarFloat[2] = z;
+        vu.scalarFloat[3] = w;
+        return ::rw::math::vpu::Soa4Float(vu.vector);
+    }
+
+    ::rw::math::vpu::Soa4MaskScalar CreateSoa4MaskScalar(bool x, bool y, bool z, bool w)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarUInt[0] = x ? 0xffffffffU : 0;
+        vu.scalarUInt[1] = y ? 0xffffffffU : 0;
+        vu.scalarUInt[2] = z ? 0xffffffffU : 0;
+        vu.scalarUInt[3] = w ? 0xffffffffU : 0;
+        return ::rw::math::vpu::Soa4MaskScalar(vu.vector);
+    }
+
+//#BLOCK
+
+};
+
+
+

@@ -1,0 +1,39 @@
+
+<html>
+<head>
+    <title>File Configuring</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Configuring and initializing the File library</h1>
+
+<p>The file system must be explicitly initialized before it can be used.  Use
+<tt>rw::core::filesys::Manager::CreateInstance</tt> to create the singleton manager
+instance.  This function takes an <tt>rw::core::filesys::Options</tt> structure
+as its sole argument, which gives the application the ability to control
+various aspects of the file system modules' behaviour.  Refer to the
+documentation for that structure for more information.</p>
+
+<p>To shut down the file library and release its resources, use
+<tt>rw::core::filesys::Manager::DestroyInstance</tt>.  There should be no pending
+operations on any devices when the module is shut down.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

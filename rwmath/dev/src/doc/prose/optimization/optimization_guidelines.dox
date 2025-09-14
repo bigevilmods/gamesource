@@ -1,0 +1,166 @@
+/*!
+\page p_optimization_guidelines Optimization Guidelines
+
+\par Introduction
+
+It is easy to dive straight into the details of optimization, and forget the big picture.  Also, diving
+into the details makes it hard for someone without much next-gen optimization experience to get a feel
+for where they should begin optimizing.  This page is meant to give an introduction to next-gen
+architectures and give some high level guidelines for optimizing (with respect to math).
+
+\par Next-gen hardware
+
+Optimization, on a low level, is all about avoiding what is "bad" and exploiting what is "good".
+
+Bad:
+- Load-hit-stores
+- Branches
+- Instruction Latency
+- Memory Latency
+
+Good:
+- Large batches of operations
+- Computation
+- Vector Operations
+- "Select" Operations
+
+Think of the bad things as what you want to avoid, and the good things as the tricks you can use to avoid them.
+
+\par Load-hit-stores
+
+Read the \ref p_load_hit_store "load-hit-store" documentation for details about what load-hit-stores are, and when
+they are generated.  Load hit stores are often caused by moving data from one register set to another.  For example moving
+floating point data into a VMX register, or moving an integer into a float register.
+
+The math library has been designed to take advantage of the vector units, while at the same time providing ways to avoid
+using float's (that would cause LHS's when used in combination with vector operations).
+
+When you are using the math library, you can use either fpu or vpu operations.  Just try to avoid situations where
+you mix and match float/vector math.  i.e. don't assign floating point values to vector types, or try to scale a fpu
+\c Vector4 by a \c VecFloat.
+
+\par Branches
+
+Branches on next-gen architectures are expensive (especially mis-predicted branches).  Generally speaking, you shouldn't 
+use branches to avoid doing calculations.  The test to avoid a calculation is usually more expensive than the calculation
+itself.
+
+Branches also prevent the compiler from optimizing effectively.  Normally the compiler will try to reorder instructions
+to hide instruction latency.  But, branches impose a scheduling barrier.  So, branches have a hidden cost beyond the
+cost of the branch themselves.
+
+When you are writing code, you should try to avoid making a lot of branches.  The math library is implemented in such
+a way that branches are minimized.  The math library is also designed so it can be inlined (avoiding branches for
+function calls).  So, just using the math library will reduce branching.  User could should also try to avoid branches.
+Generally speaking, do not try to avoid extra calculations by doing a branch.  Just do all the computations.  Obviously
+there is a point at which branching is cheaper than a calculation, so use your judgement.
+
+\par Instruction Latency
+
+Most instructions on next-gen architectures have a higher latency than previous architectures we have dealt with.
+Instruction latency is the time it takes from when an instruction begins execution, to when it completes.
+Instruction latency begins to hurt performance when a large sequence of operations has dependencies on one another.
+
+Consider this code:
+
+\code
+
+float b = a + 1.0f;
+float c = b * 2.0f;
+float d = c * c;
+float e = d - 2.0f;
+
+\endcode
+
+The floating point unit can execute one add/subtract/multiply instruction every cycle.  So you may guess that the code
+could run in approximately 4 cycles.  However, that ignores the \e latency of the instructions.  If you look at the
+code you will see that each variable depends on the result of the previously defined variable.  For example, we need
+to calculate \c b before we can begin calculating the value of \c c.  Because \c b takes ~10 cycles to calculate, we will
+stall for 9 cycles before \c c can be calculated.  Similarly we must stall 9 cycles waiting for \c c to be calculated
+before we can start calculating \c d.  So the above code takes ~40 cycles instead of 4.
+
+Instruction latency can't be avoided, but it can be "hidden".  Instead of wasting time waiting for a result to be
+computed, other calculations (that do not depend on the result) can be calculated "in parallel".
+
+Users should be aware of data dependencies, and write code so that the compiler can reschedule instructions to
+hide latency.  To help the compiler, you should:
+- Give the compiler many operations to work with (that way the compiler has instructions it can reschedule)
+- Avoid branches (branches introduce instruction scheduling barriers)
+
+Unrolling loops is a good example of giving the compiler more instructions it can work with.
+
+The \ref p_data_dependencies "data dependency" page has more detail on instruction level data dependency and how
+it affects performance.
+
+\par Memory Latency
+
+On typical PPC cores, memory latency is very high (if cache is missed).  Even missing L1 cache is very expensive.
+
+The math library tries to avoid accessing memory when there are alternatives.  For example, instead of loading a
+value of 0 from memory, the math library will "generate" a value of 0 using a VMX instruction.  That avoids
+the possibility of a D-cache miss.
+
+When possible, users should try to use the RWMath constant generation functions.  In many cases, the functions will
+generate constants instead of loading them from memory.  In cases where the constants are loaded from memory, it
+is still better to load a constant from one memory address, than have different parts of the game load different
+constants with the same value (polluting D-cache and missing D-cache more often).  Please take a look at what constants
+are provided by the math library, and try to use the constant functions when possible.
+
+
+\par Large batches of operations
+
+Trying to execute large batches of operations is generally much faster than
+executing small operations separately.  For example, instead of normalizing
+a single vector in a loop, try normalizing 4 vectors in a loop.
+
+Large batches of operations allow the compiler to efficiently reschedule instructions to
+hide data dependencies.  Executing batches of operations may also help avoid function call
+overhead and I-cache misses.
+
+\par Computation
+
+Remember, if there is one thing next-gen architectures are good at, it is computation.  Instead
+trying to reduce computation work (i.e. branching to avoid computations) try calculating
+the values for each branch and then selecting the result.
+
+\par Vector Operations
+
+Vector operations essentially give you four times the performance of scalar operations for free.
+The trick is writing your code such that they can be used.
+
+Code like this runs very slowly on the vector unit.
+\code
+rw::math::vpu::Vector4 vec;
+vec.X() = a.X() + b.X();
+vec.Y() = a.Y() + b.Y();
+vec.Z() = a.Z() + b.Z();
+vec.W() = a.W() + b.W();
+\endcode
+
+Instead, write your code like this:
+
+\code
+rw::math::vpu::Vector4 vec;
+vec = a + b;
+\endcode
+
+The above code gets mapped to a single vector add instruction, and it is easier to read as well.
+
+Whenever you are doing "scalar" operations on multiple elements in a vector, ask youself if the
+code could be rewritten as a vector operation instead.
+
+\par Select Operations
+
+Vector units (such as VMX, the SPU, and SSE) have "select" instructions (or a way to simulate them).  Select
+instructions allow a result to be selected from either of two values based on a mask.  A select is \e similar to
+the ? operator in C.  The benefit of using select, is that it does not result in a branch.  Select lets you
+have conditionals in your code, without branching.
+
+Internally the math library uses "selects" to implemement many functions.  So, by using math you automatically take
+advantage of "select" operations. 
+
+In addition to using branchless code implicitly (by using optimized math routines) you can also
+write code that performs masks/selects using the math library API's.
+
+
+*/

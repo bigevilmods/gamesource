@@ -1,0 +1,24 @@
+<package>
+	<contactName>EATech</contactName>
+    <contactEmail>fbarchard@ea.com</contactEmail>
+
+    <homePageUrl></homePageUrl>
+    <documentationUrl></documentationUrl>
+
+    <summary>Gimex SDK</summary>
+
+    <description>Graphics IMport EXport SDK - libraries for image processing</description>
+
+    <changes>gif, xpr, gtf</changes>
+
+	<status>Supported</status>
+    <statusComment></statusComment>
+
+    <license>EA Proprietary (Internal Use Only)</license>
+    <licenseComment></licenseComment>
+
+    <requiredReleases></requiredReleases>
+
+	<frameworkVersion>2</frameworkVersion>
+	<buildable>true</buildable>
+</package>

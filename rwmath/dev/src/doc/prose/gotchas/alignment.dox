@@ -1,0 +1,37 @@
+/*!
+\page p_alignment Alignment Requirements
+
+For hardware and efficiency reasons, all vector types (and therefore all types
+in the VPU that contain a vector) must be properly aligned on a 16 byte
+boundary.  Failing to properly align data can cause several problems depending
+on the platform.  For example, the CPU may generated an exception when
+attempting to load/store unaligned vector data on some platforms.  On other
+platforms, loading/storing unaligned vector data may result in incorrect data
+being loaded/stored.  The invalid data can cause calculation errors that are
+very difficult to track down properly.
+
+Important Note: VPU constructors that take float arrays expect the float array to
+be aligned on a vector boundary (i.e. 16byte boundary).  That is so the constructor
+can load entire vectors of data at once (instead of performing a series
+of unaligned loads).  Converting unaligned data to vectors would be less efficient.
+
+The required alignment for a type can be determined by:
+-	rw::math::&lt;vpu/fpu&gt;::&lt;type&gt;::Alignment enumeration
+-	RW_MATH_&lt;TYPE&gt;_ALIGNMENT macro define (all caps)
+
+In general all of the vpu math types (except for the VecFloatRef types) will
+require 16 byte alignment.
+
+VPU types will automatically be aligned properly under the following circumstances:
+-	data is allocated on stack
+-	data is global or static
+
+Classes or structures that contain these VPU math types will also be properly
+aligned under the same circumstances.
+
+If user allocate that data through malloc, new(), or custom allocator,
+then the compiler may not be able to align the data for you automatically.  Users must
+take steps to ensure the data is properly aligned when it is allocated on the heap.
+Failing to do so will lead to errors/exceptions.
+
+*/

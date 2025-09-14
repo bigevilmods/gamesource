@@ -1,0 +1,94 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestVecFloatRefIndex :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestVecFloatRefIndex();
+    virtual ~UnitTestVecFloatRefIndex();
+    void Test();
+
+//#BLOCK
+
+private:
+    rw::math::vpu::VectorIntrinsic CreateVectorIntrinsic(float x, float y, float z, float w);
+
+
+
+};
+
+class VecFloatRefIndexCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef == bRef;
+    }
+};
+
+class VecFloatRefIndexCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef != bRef;
+    }
+};
+
+class VecFloatRefIndexCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef > bRef;
+    }
+};
+
+class VecFloatRefIndexCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef < bRef;
+    }
+};
+
+class VecFloatRefIndexCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef >= bRef;
+    }
+};
+
+class VecFloatRefIndexCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef <= bRef;
+    }
+};
+
+

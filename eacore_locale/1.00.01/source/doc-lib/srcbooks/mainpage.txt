@@ -1,0 +1,39 @@
+/*!
+**********************************************************************
+\mainpage 
+\n
+\n
+\n
+
+
+
+\htmlonly <table align="center"><tr><td> \endhtmlonly
+
+    <h2>$projectname</h2>
+
+    \line
+
+    \bold Core Team, Ignition \endbold
+
+    Version $projectnumber \n
+    $datetime
+
+    Quick links:
+    - \ref p_whatis                  "What is eacore_locale"
+    - \ref p_gettingstarted_overview "Getting Started"
+    - \ref p_lib_ref_overview	     "Library Reference"
+    - \ref p_devlog		     "Change Log"
+
+\htmlonly </td></tr></table> \endhtmlonly
+
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+\n
+
+*/
+

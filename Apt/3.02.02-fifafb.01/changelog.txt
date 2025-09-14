@@ -1,0 +1,972 @@
+==========================================================================
+== Apt
+== Version log
+==========================================================================
+
+    Core Technology UI harvests changes customers make to this package.
+
+    For more information on the harvesting process, please see:
+      http://confluence.ea.com/x/SwHVCg
+
+    For customer-specific harvesting notes, please see:
+      http://confluence.ea.com/x/5iLICg
+
+    If you would like your team's version of this package to be harvested,
+    please contact CoreTechnologyUISupport?EASports@ea.com.
+    
+==========================================================================
+
+Version: 3.02.02 (Baltimore)
+Owner:   Core Technology UI (CoreTechnologyUISupport?EASports@ea.com)
+Date:    5/23/2014
+CL:      628004
+  
+	New Features
+
+      * (From Madden) Apt sprites now implement the getInstanceAtDepth method,
+        which corresponds to Flash's MovieClip.getInstanceAtDepth.
+
+    Minor Changes
+    
+      * (From NBA) Set APT_CURR_DEBUG_MSG_LVL to NONE if EA_FINAL happens to be defined.
+        This ensures that EA_FINAL builds do not have Assert and Print code built in.
+        
+      * (From NBA) Added some sanity checks to AptRenderList that will trigger asserts if
+        something has gone wrong with the render list, including outputting a more useful
+        error message in that case.
+		
+	  * (From Madden) The ActionScript function profiler now sets the log file
+        path to sensible places on various consoles. It can also be set manually
+        by calling the new Apt function AptSetActionScriptProfilerLogPath(path).
+
+      * (From Madden) The AptValue allocator now uses Dogma's ToNextValidSize
+        to ensure allocated items are properly sized and aligned.
+		
+	  * (From FIFA) 
+		 - Added callbacks in Apt.h/cpp to allow capturing actionscript profiling data outside of Apt's built-in system.
+		 - AptActionScriptFunctionProfiler->LogFunctionStart now accepts an additional argument that identifies if it was a Native function call
+  
+    Bugfixes
+
+      * (From Fifa) Changed when the resolving of pointers for flash buttons in AptAnimation.cpp 
+        was occurring. Buttons should be fully resolved after Fixup. This fixes an assert from
+        UnmapCharacter when trying to unresolve a button. There were flows that would unresolve
+        buttons before they were linked (which is where some of the button was resolved).
+        
+      * (From NBA) Added an AptUpdate mutex lock in the AptFile destructor.
+	  
+	  * (From Madden) Fixed some cases where setting certain text field
+        properties that might affect the width of the text would not
+        invalidate the text width.
+		
+	  * (From Fifa) limiting to 2047 characters in AptString->printf to avoid buffer overruns.
+      
+==========================================================================
+
+Version: 3.02.01 (Yeti)
+Owner:   Core Technology UI (CoreTechnologyUISupport?EASports@ea.com)
+Date:    6/14/2013
+CL:      435145
+
+    New Features
+    
+      * (From NBA) AptDebugReport can be used to get a snapshot of the memory usage of Apt resources.
+        To enable the debug memory report, in AptDefine.h uncomment the following:
+        
+            #if !defined(APT_ENABLE_DEBUG_REPORT)
+                //#define   APT_ENABLE_DEBUG_REPORT                    1
+            #endif
+
+        Once enabled you can interact with the report with the following functions:
+            
+            void PrintAptDebugReport(int flags);
+            void ClearAptDebugReport();
+            void EnableAptDebugTracking(bool enable);
+            int DebugGetNumAptValueTracked(int type);
+            
+      * (From NBA) Apt now also depends on EASTL for the AptDebugReport.  Requires
+        &&RELEASE_IDENTIFIER%% version of AptXmlImpl whihc has been updated to 
+        reflect this dependency.
+
+    Bugfixes
+    
+      * DOGMA allocations are now word-aligned instead of ptr-aligned. This equates to 8 
+        bytes on most platforms, and is necessary because some objects allocated through
+        the DOGMA allocator have alignment requirements of up to 8 bytes, such as Futexes
+
+      * DOGMA allocations (that are not using external pools) are now filled with 0xCD when
+        allocated, and 0xFE when freed (instead of only being filled with 0xCD on free).
+        
+      * g_arrFiltersAptFile and g_arrFiltersConstFile are now 16-byte aligned instead of
+        using default alignment (which is 8 bytes). This fixes a crash that would occur 
+        when compiling with Clang for iOS
+
+
+==========================================================================
+
+Version: 3.02.00 (Wyvern)
+Owner:   Core Technology UI (CoreTechnologyUISupport?EASports@ea.com)
+Date:    3/28/2013
+CL:      395244
+
+
+    API CHANGES
+
+    ---------------
+
+      AFFECTS     Everybody
+      FROM        Tiger
+
+      DESCRIPTION
+		  An API change in ea_aptaux_core has prompted an update to the the
+		  callback definition of pfnCreateCustomControlZid;
+		  
+	  ACTION REQUIRED
+		  Search for any pfnCreateCustomControlZid callback functions.  The API 
+		  has changed from:
+		  
+		    AptAssetCustomControlZId (*pfnCreateCustomControlZid)(  AptAssetRenderingUnit renderingUnit,
+                                                            const char *szTarget,
+                                                            AptValue * customControlMovie,
+                                                            AptAssetCustomControlZId pPreviousZid,
+                                                            bool bForce) ;
+		
+		  The new API is now:
+		
+			AptAssetCustomControlZId (*pfnCreateCustomControlZid)(  AptAssetRenderingUnit renderingUnit,
+                                                            const char *szTarget,
+                                                            AptValue * customControlMovie,
+                                                            AptAssetCustomControlZId *ppPreviousZid,
+                                                            bool bForce) ;
+		  
+		  The 'AptAssetCustomControlZId pPreviousZid' has been changed to 'AptAssetCustomControlZId *ppPreviousZid'.
+		  
+		  This change has been accounted for in the Wyvern release of ea_aptaux_core package.
+
+==========================================================================
+
+
+  * (From NBA) Wii support has been removed.
+  
+==========================================================================
+
+Version: 3.01.02 (Velociraptor)
+Owner:   Core Technology UI (CoreTechnologyUISupport?EASports@ea.com)
+Date:    2/15/2013
+CL:      377002
+
+  New Features
+
+    * (From Football) New property - package.Apt.appdir: Setting this
+      will tell Apt to look in this location for certain executables it
+      needs (like triangle.exe) instead of looking in the Apt package
+      directory. Useful if you need to place these dependencies elsewhere
+      as Football does for outsourcing purposes.
+
+    * (From Football) SWFC - A new command line parameter has been added
+      allowing additional executable environment paths to be added. This
+      allows for dependent executables to be located elsewhere in
+      situations where this is useful.
+
+        --additionalPaths=S    S: Additional environment paths, often used for outsourcing
+                               non-distributable executable files such as triangle.exe
+
+  Minor Changes
+
+    * (From NBA) Added several explicit casts to remove warnings about
+      integer truncation on certain compilers.
+
+  Bugfixes
+
+    * Fixed an issue where calling super.onLoad() inside an onLoad()
+      function would end up calling the topmost onLoad() function twice.
+
+    * Fixed an issue where calling a Foo() function inside a MovieClip's
+      associated class's constructor, then calling super.Foo() inside Foo(),
+      would call the topmost Foo() function twice.
+
+    * A recent refactor broke removed edge-case code for function calls
+      inside classes that extended MovieClip.  Restored the edge case code to
+      working order. I'm not actually sure if this fixes any bugs, but at some
+      point in the past someone thought it was important, so... it works again!
+
+    * SWFC - Fixed an issue when exporting SWFs with "Morph" characters for
+      64-bit platforms.  These were guaranteed crashes at runtime.
+
+==========================================================================
+
+Version: 3.01.01 (Rhinoceros)
+Owner:   Core Technology UI (CoreTechnologyUISupport?EASports@ea.com)
+Date:    8/24/2012
+CL:      148816
+
+    New Features
+
+      * (From Football & FIFA) Apt now supports several new platforms,
+        including PC64.
+
+      * Apt can now load image files directly instead of only being able
+        to load .swf files.  To use this, your ActionScript must use
+        loadMovie() and pass an image file (.png, .jpg, etc.) instead of a
+        .swf file.
+
+        To hook this functionality up, you must implement the global Apt
+        function callbacks:
+            pfnLoadImage
+        and pfnFreeImage
+        and pfnDrawImage
+
+        When a load is complete, you must call:
+            AptCompleteImageAsyncLoad
+         or AptTargetCompleteImageAsyncLoad
+
+      * (From Football) New AptUtil function - colorMatrixMultiply. This
+        function multiplies two 4x5 matrices and returns the result.
+
+      * AptValueHelper - Now has support for retrieving Strings, Booleans,
+        and items inside Objects.
+
+      * AptCallFunctionObjectA added - supports calling a Function object
+        with an array of arguments
+
+      * New public class, AptExternalFunction, added.  This class is intended
+        to be extended with a new class to add external function calling to Apt.
+        Please tread lightly.
+
+      * (From Fifa) Added enumerations for PS3 Move controller Move button and T Trigger.
+
+      * (From Football) Added a new set of allocation functions to allow separation of
+        sim-side allocations from RenderList allocations.  There are new callback functions
+        you may implement: pfnRenderListAlloc, pfnRenderListFree, and pfnRenderListFreeSize.
+        
+        If you wish to use these allocation callbacks, you must set the build property:
+            ${package.Apt.UseRenderListAllocators}
+
+    Minor Changes
+
+      * (From Fifa) Added a few build flags to emulate old Apt bugs, which are
+        required to run Fifa's data.
+
+        - package.Apt.AllowGlobalMemberDeletion
+                
+              If true, allows deleting classes using the syntax:
+                delete _global["name.of.Class"];
+              instead of either of these non-buggy versions:
+                delete eval("name.of.Class");
+                delete _global["name"]["of"]["Class"];
+
+        - package.Apt.AllowClassMemberReservedWordsLookup
+
+              If true, allows looking up global reserved members such as "this"
+              or "Key" inside Objects.
+                var myObject = new MyObject();
+                var buggy = myObject["this"];
+                trace(buggy); // Should output undefined, with flag set outputs [Object Object]
+                trace(buggy == myObject); // Should output false, with flag set outputs true
+
+      * (From NBA) If you set APT_ALLOCATION_TRACKING to true in AptDefine.h, you will now
+        get more specific line/file output from Dogma allocations.
+
+    Bugfixes
+
+      * (From Fifa) SWFC - Fixed a data alignment issue when pipelining 64-bit
+        SWF files that had more than 1 Flash Button in them.
+
+      * SWFC - Is now compiled with PerlApp's "--clean" flag, which causes temporary
+        files to be placed in their own directory.  This should hopefully further prevent
+        SWFC from having issues when several instances of SWFC are run in tandem.
+
+      * (From NBA) Fixed old rwHOST_WIN defines, moved to EA_PLATFORM_WINDOWS.
+
+      * (From Football) Fixed an issue with APT_FREE_TEMP which was using the wrong free callback
+        when APT_ALLOCATION_TRACKING and APT_VERIFY_NON_GC_ALLOC_SIZES were not defined.
+
+      * (From Football) Fixed an issue with dereferencing a deleted animation in certain cases.
+        When creating dynamic clips and text fields, there was code to find the very first movie loaded
+        and use that as the parent for the global dynamic characters. The problem with that is the very
+        first movie loaded could later be unloaded.  Fixed this issue by simply not giving those global
+        dynamic characters parents - hopefully this does not cause any additional problems.
+
+      * Fixed an issue where a CustomControl using ZIds could attempt to render with a ZId that had already
+        been destroyed, as 2 separate objects would both end up with references to the same ZId and then 1
+        of them would be deleted.  This was showing up most notably with Movies, especially when a Movie
+        finished playing and had been told to go away by ActionScript.
+
+==========================================================================
+
+Version: 3.01.00 (Quahog)
+Owner:   Core Technology UI (CoreTechnologyUI_EASports@ea.com)
+Date:    1/20/2012
+CL:      125115
+
+    API CHANGES
+
+    ---------------
+
+      AFFECTS     Hopefully nobody
+      FROM        Tiger
+
+      DESCRIPTION
+          Tiger added Kinect input support to Piranha based on pointer angles.
+          They have now changed it to be based on gestures. These public
+          structs and functions have changed:
+
+          AptPointerAngleInfo became AptGestureInfo
+          AptAddToInputPointerQueue became AptAddToInputGestureQueue
+          AptTargetAddToInputPointerQueue became AptTargetAddToInputGestureQueue
+
+          The AptInputType enum entry AptInputType_PointerAngle has been
+          replaced with a list of gesture entries:
+
+            AptInputType_VerticalAngleL
+            AptInputType_VerticalAngleR
+            AptInputType_HorizontalAngleL
+            AptInputType_HorizontalAngleR
+            AptInputType_VerticalSwipeL
+            AptInputType_VerticalSwipeR
+            AptInputType_HorizontalSwipeL
+            AptInputType_HorizontalSwipeR
+            AptInputType_GrabL
+            AptInputType_GrabR
+            AptInputType_WaveL
+            AptInputType_WaveR
+
+          This isn't exactly how we want to add Gesture support long term.
+          We would rather have a separate package that understands and
+          handles Gestures and sending them to the UI, perhaps without
+          even going through Apt's input system at all.
+
+      ACTION REQUIRED
+          If you are using any of these things, you will need to switch
+          to the new system. The Quahog version of the
+          ea_aptaux_core package has been updated to account for this.
+
+    ---------------
+
+      AFFECTS     Hopefully nobody
+      FROM        Core Technology UI
+
+      DESCRIPTION
+          The Apt callback pfnFreeTextures was previously being called only
+          on the Render thread.  This required Apt have an internal queue of
+          textures to be freed.  Holding on to this queue was pretty bad for
+          Apt because it made it easy to write code with circular dependencies
+          when shutting down, as in this example:
+          1) Shutting down Apt would free some textures from a queue
+          2) The queue would be removed
+          2) Shutting down another module would attempt to push textures into
+             the since-removed queue.
+
+          This sort of behavior was confusing, and really just kept too much code
+          aware of other code.
+
+          The texture freeing queue has been removed.  Now, pfnFreeTexture will be
+          called immediately, whenever a system needs to free a texture.  This means
+          that owners of a pfnFreeTexture callback will need to account for calls
+          coming in on threads other than the Render thread.
+
+      ACTION REQUIRED
+          Ensure your implementation of pfnFreeTexture can account for calls coming
+          in from threads other than the Render thread.
+
+          The Quahog versions of ea_aptaux_core, ea_aptaux_rna, and
+          ea_aptaux_rtam have been updated to account for this change.
+
+    ---------------
+
+    Minor Changes
+
+      * swfc now adds a debug timestamp to the Apt const file any time it
+        processes a debug swf, instead of only when it is told to process
+        debug data. This ensures we can accurately detect debug assets in
+        the final AST.
+        
+      * (From Football) Added a build flag to turn on/off Temporary Allocations,
+        as opposed to requiring you to tweak AptDefine.h.  The build flag for 
+        this is ${package.Apt.UseTemporaryAllocators}.
+        
+      * (From Football) Memory - Added more debugging output when you turn on
+        the APT_ALLOCATION_TRACKING define.
+
+      * The format of APT_VERSION has changed to actually use correct numbers
+        for each byte. This means a version like 3.11.14 will now be represented
+        as 0x030B0E00 instead of 0x03111400. This should not affect any current
+        version checks. For future version checks, use the new macro:
+        APT_VERSION_AT_LEAST(major, majorRev, minor, minorRev), unless you need
+        to support versions of Apt prior to this release.
+
+    Optimizations
+
+      * Optimized swfc debug data processing. It now takes approximately
+        half the time it previously did to pipeline an APD file.
+  
+      * (From Football) CustomRender resources would not get released when you changed
+        a MovieClip's "_CustomControlType" property unless the MovieClip (and all things
+        containing it) were visible.  Now, when you change the _CustomControlType of a
+        MovieClip, Apt instead removes the reference to the AptRenderableCustomControl
+        immediately.
+        
+        Note that Apt's rendering code tends to hang on to a reference to it for a couple
+        frames after that, so you still don't get complete control from ActionScript of when
+        it gets cleaned up, but it's better than before.
+        
+    Bugfixes
+    
+      * (From Football) Turned back on APT_USE_BUTTONS by default to fix a PC
+        compilation error.  We're pretty sure nobody is using buttons, but we'll
+        have to do more research to see why turning them off caused PC versions to
+        not compile.
+        
+      * For Fifa - Added a build flag: package.Apt.AllowGlobalMemberFunctionLookup
+        If set to true, Apt will mimic function lookup behavior from Apt versions 2.09.02
+        and prior.  Specifically, if it cannot find a member function, it will attempt
+        to look for that function in the _global namespace.
+        
+        For example:
+            _global.SomeFunction = function() { trace("Hello!"); }
+            someObject.SomeFunction();
+        
+        Without the build flag, this code would trace nothing.  With the build flag, this
+        code would (incorrectly) trace "Hello". Fifa's data is currently dependent on Apt
+        behaving in this way.
+        
+        If the property is set, Apt will also assert if it detects that something is dependent
+        on this behavior.  Hopefully this will help us find buggy data and fix it.
+
+      * SWFC - When pipelining a file with debug information, will no longer fail if
+        some of the debug information is missing from the runtime information.  In that
+        case, we'll just skip hooking up the debug info.
+
+      * Super calls - When using the rare ScriptFunction1, super.FunctionName() was not
+        working properly in an inheritance hierarchy if some of the classes in the
+        chain did not actually contain a function called FunctionName().  The same
+        function would be called multiple times rather than skipping to superclasses.
+        This issue has been fixed.
+
+        ScriptFunction1 appears to only ever show up when publishing FLA files in
+        debug mode (which is used extensively for the various new debugging features Apt
+        has in the Quahog release).
+
+==========================================================================
+
+Version: 3.00.00 (Piranha)
+Owner:   Core Technology UI (CoreTechnologyUI_EASports@ea.com)
+Date:    10/6/2011
+CL:      115425
+
+    API CHANGES
+
+    ---------------
+
+      AFFECTS     Hopefully nobody
+      FROM        Basekit
+
+      DESCRIPTION
+          The APT_USE_FLASH_COLOR_RANGE define in AptDefine.h has been turned
+          on by default (instead of off).  This causes Apt to consider color RGB
+          to be in the range 0-100, rather than in the range 0-255.  This makes
+          Apt's treatment of color values equivalent to Flash's.
+          
+          Unfortunately, this could be a fairly major change if your UI content
+          is heavily dependent on that color range.  Fortunately,
+            1) EAC titles using Apt have already been authoring content in this way
+            2) Tiburon titles using Apt route most color functionality through
+               tibion_asframework's ColorUtil, which is now aware of this change.
+
+      ACTION REQUIRED
+          If your content uses getTransform() / setTransform() functions in the Color
+          class, please make sure it is considering color values to be in the range
+          0-100 rather than 0-255.  Otherwise, you may want to tweak the AptDefine.h
+          value for APT_USE_FLASH_COLOR_RANGE by hand, commenting out the #define
+          and send an email to CoreTechnologyUI_EASports@ea.com.
+
+    ---------------
+
+      AFFECTS     Hopefully nobody
+      FROM        Basekit
+
+      DESCRIPTION
+          The following #defines have been turned off in AptDefine.h:
+          
+          - APT_USE_DATE_OBJECT
+          - APT_USE_STAGE_OBJECT
+          - AOT_USE_BUTTONS
+          - APT_RENDER_FLAGS
+          
+          It seems nobody was really using these features, so they have been turned off
+          by default.
+
+      ACTION REQUIRED
+
+          If you need these features, please tweak the defines in AptDefine.h and send
+          an email to CoreTechnologyUI_EASports@ea.com. We will need to figure out how to make 
+          them build-definable instead.
+
+    ---------------
+    
+  New Features
+
+  * Apt Debugger - Apt now has an API for breakpoint debugging. This allows for an
+    external tool to connect to Apt at runtime and perform operations related to
+    setting breakpoints and stepping through code. This API is exposed through the
+    apt_reflection_base and apt_reflection_gamereflector packages, and will be
+    accessible from Spark (http://sports-confluence.eac.ad.ea.com/display/tiburonctg/Spark).
+
+  * (From NBA) Added the ability to profile specific blocks of ActionScript
+    by calling AptActionScriptProfilerStandaloneBlockStart/End. For these
+    functions to work, Apt must be built with the the profiler enabled by
+    defining the property package.Apt.EnableScriptProfiling.
+
+  * (From Basekit) Support for Wii generally added.  However, since we have no Wii
+    SKUs to test with, this has not been fully tested; we have simply integrated the
+    code updates from Basekit.
+    
+  * (From Basekit) New callback function available:
+    - pfnRenderDispatch - called before rendering any custom control.
+    - pfnUpperCaseString / pfnLowerCaseString - called when any strings need to be
+      upper or lowercased.
+    - pfnResetTargetInstance - Called any time AptReset() is called, after everything
+      has been released but before anything has been re-initialized.
+  
+  * (From Basekit) AptValueWithHash has some new functions:
+      - GetNumAptValues()
+      - GetKeyValuePair
+    These will let you better introspect AptValues inside of AptObjects.
+
+  * (From Tiger) Apt now supports input from motion controllers (Kinect and Move).
+
+  Minor Changes
+
+  * (From Basekit) Added an APT_FAIL("reason") macro which is essentially the
+    same as calling APT_ASSERTM(false, "reason"), but without the compiler warnings.
+
+  * (From Basekit) Made a few constructors private to avoid improper copying
+    or instantiating of certain classes.
+
+  * (From Basekit) Minor optimizations to certain constructors, moving member
+    initialization out of constructor bodies.
+  
+  * (From Basekit) Certain destructors now NULL out members to assist with debugging.
+
+  * (From Basekit) Matrix multiplications slightly optimized.
+    
+  * (From Basekit) An include path has been added for simply the /include/ directory.
+    This means you can start including Apt files like so:
+      #include "Apt/Apt.h"
+    instead of needing to do this:
+      #include "Apt.h"
+    Both methods are supported, but the new method is preferred as it's more explicit.
+
+  * (From Basekit) Lint - Fixed up a variety of issues spotted by Lint.
+  
+  * (From Basekit) Optimization - Added an internal APT_PREFECTH define to wrap __dcbt
+    (or other such intrinsics) to speed up lookups during certain list iteration operations.
+
+  * Removed all code associated with the old Apt debugger. Updated the
+    build flag for the new debugger to replace the old one.
+
+  Bugfixes
+
+  * (From NBA) Pulled in new version of aTackCompiler executable (from the
+    aTack package) in an attempt to fix a crash that occurs when pipelining
+    many files simulteously.
+
+  * AptActionInterpreter - When publishing a swf with debugging enabled,
+    the byte code for calling super() from within a constructor is not
+    the same as it is in a non-debug enabled swf. This resulted in the
+    call never actually happening. This has been fixed.
+
+  * (From Tiger) AS Profiler was not logging the start of functions unless DEBUG_NAMES
+    was also used. The resulted in a useless log (lots of function ends, but no starts).
+
+==========================================================================
+
+Version: 2.12.00 (Octopus)
+Owner:   Core Technology UI (CoreTechnologyUI_EASports@ea.com)
+Date:    5/25/2011
+CL:      100111
+
+    API CHANGES
+
+    ---------------
+
+      AFFECTS     Everyone
+      FROM        CTUI
+
+      DESCRIPTION
+          As of Lemming, either being in a Debug build or turning on Profiling
+          via the package.Apt.EnableScriptProfiling property would also turn
+          on a feature to attach function names to functions when looking at
+          profiling information and callstacks.  This was for debugging purposes.
+
+          Unfortunately, this change also causes every Function to take up a bit more
+          memory than it was previously.  Madden was not able to turn on this feature.
+
+          So the concepts of Profiling and Debug Names have been separated.  A new
+          build flag has been added, and you must turn the flag on or off if you
+          want to change the default behavior.
+
+      ACTION REQUIRED
+          If you would like to turn on debug names, you must set the nant property
+                package.Apt.EnableDebugNames
+          to "true" when building Apt.
+
+          For most teams, this property should be on in non-Ship builds when profiling
+          is enabled.  Madden wants to turn this property off due to memory restrictions.
+
+    ---------------
+
+      AFFECTS     Tiger
+      FROM        Madden
+
+      DESCRIPTION
+          Tiger previously introduced a change to Apt that caused it to lock AptInteger
+          and AptFloat whenever they were accessed. This caused a minor slow down and
+          is not necessary for other games. This will now be controlled by a build flag
+          and disabled by default.
+
+      ACTION REQUIRED
+          If Tiger still needs to auto-lock AptInteger and AptFloat, then you should
+          set the property package.Apt.AutoLockValues to true when you build Apt.
+
+    ---------------
+
+    New Features
+
+      * The same Debug Names that appear on Functions when Profiling and looking at
+        the gAptOptCallStack (and when package.Apt.EnableDebugNames is true, see above)
+        will now also appear in Zombie dump output.
+
+      * (From NCAA (originally EAC)) Apt now supports a new property on
+        movie clips called _skipeval. Setting this to true will cause Apt
+        to skip this clip in its updating a rendering loops. This is useful
+        if you have a lot of complex clips that only need to be processed
+        once and will not need to change afterwards. Be sure to track this
+        somewhere external to the clip itself, or there will be no way to
+        change it back to false since no functions will be called on the
+        clip.
+
+      * (From MMA) Added AptStackHelper class to allow external access to
+        the AptActionInterpreter stack.
+
+      * (From MMA) Added GetUndefined and SetMember(AptValue*) to
+        AptValueHelper.
+
+      * (From Madden) AptValueHelper now has GetIntrinsicMember functions
+        that can be used to get the value of intrinsic members such as _x,
+        _y, _alpha, etc.
+
+    Minor Changes
+
+      * (From NCAA) Changed a few preprocessor checks from checking DEBUG
+        and _DEBUG to instead checking EA_DEBUG.
+
+      * (From NCAA) EAString uses strlwr and strupr to convert strings to
+        lower or upper case. These functions cause deprecation warnings in
+        Visual Studio. Now, when using Visual Studio to compile the code,
+        it will instead use _strlwr and _strupr to convert strings.
+
+      * (From MMA) Moved APT_VALUE_NEW_DELETE_OPERATORS and
+        APT_VALUE_GC_NEW_DELETE_OPERATORS macros to AptDefine.h (from
+        _AptInternalDefines.h) so that external packages can extend
+        AptObject and have the correct new/delete operators
+
+      * Changed AptNativeFunction so that a Call() method is used to make
+        the actual function call.  This allows interested parties to extend
+        AptNativeFunction and override Call to change function call behavior.
+
+      * (From Madden) While rendering a CIH tree, there were some redundant
+        visibility checks happening. Nodes would prune invisible children,
+        but still check their parent's visibility chain all the way up to
+        the root. This was unecessary since the node would have been pruned
+        before it was processed if any of it's parents were invisible. So,
+        the parent check has been removed as an optimization.
+
+      * (From MPC) Apt will now assert if AptCallMemberFunction is called
+        from a thread other than the simulation thread without the proper
+        mutex lock.
+
+    Bugfixes
+
+      * AptPrintMovieclipTree would produce invalid output in some cases
+        with complex movieclip levels. This was due to a fixed size
+        character buffer being too small. The size has been increased, and
+        the associated buffer overruns have been corrected.
+
+      * (From Techworks) Fixed a bug where a CIH in the the zombie vector
+        could be deleted but not removed from the vector.
+		
+==========================================================================
+
+Version: 2.11.02 (Narwhal)
+Owner:   Tiburon UI Core Tech (TIBIONCORETECH-TIBURON@ea.int)
+Date:    1/12/2011
+CL:      87519
+
+    API Changes
+
+      * (From NCAA) The APT_DEBUGPRINT macro is no longer publicly defined
+        in AptDefine.h.
+
+    Minor Changes
+
+      * (From Madden) AptFilter implementation structs are now publicly
+        exposed so that external packages are able to see them.
+
+      * (From NCAA) Zombie output can now be enabled in non-debug builds
+        by setting the nant property "package.Apt.EnableZombieOutput"
+
+      * (From NCAA) NonGC pool values are now allocated to the temporary allocator
+        if APT_USE_TEMPORARY_ALLOCATORS (from AptDefine.h) is set.  This could
+        have something to do with the next change...
+
+      * (From NCAA) NonGC Dogma pool's maximum allocation size has been reduced back
+        bumped to 256 from 512.  NCAA had bumped it to 512 in Lemming and is apparently
+        okay with it at the lower value now, so yay.
+
+      * (From MMA) Implemented AptAssertIsSimulationThread by adding AptSetSimThreadId
+        that games can call to identify the sim thread.  Also added a force crash in Dogma's
+        Allocate/Deallocate if we're not on the sim thread (guarded by APT_FORCE_CRASHES
+        define)
+
+    Optimizations
+
+      * (From Gil Colgate) Removed bool->float->bool conversions that were
+        happenning when getting or setting the visibility of a sprite.
+
+    Bugfixes
+
+      * The build property "package.Apt.TrackImplementedInterfaces" is on
+        by default.  Setting it false will allow you to remove interfaces
+        from ActionScript, thus saving on memory without Apt asserting
+        about missing interfaces or storing interface mappings.  Unfortunately,
+        setting it to false was not actually compiling.  Fixed!
+
+      * (From NCAA) AptUtil.SafeForIn was looping through parent classes
+        even after returning false to stop the loop. This has been fixed.
+
+      * (From Gil Colgate) The check to see if a custom control is already
+        initialized before initializing it was always returning false causing
+        it to be reinitialized multiple times. This is fixed.
+
+      * Removed public compiler warning C4127 on 360 debug builds.  It was
+        upset compiling APT_ASSERT(false) becase false is a constant and is
+        used in a conditional.
+
+==========================================================================
+
+Version: 2.11.01 (Mastodon)
+Owner:   Tiburon UI Core Tech (TIBIONCORETECH-TIBURON@ea.int)
+Date:    9/10/2010
+CL:      82643
+
+    API Changes
+    
+      * AptUtil - safeForIn() - If the provided function returns false for
+                  any items  in the object, iteration will stop there.
+                  
+    New Features
+    
+      * AptUtil - New function added
+            convertHsvToColorTransform(hue, saturation, brightness)
+        Will convert a HSV (aka HSB) color into a transform that can be
+        used by Color.setTranform.  This can speed up MovieClip color changes
+        as performed by the following ActionScript:
+        
+           var newTransform:Object = _global.AptUtil.convertHsvToColorTransform(h,s,v);
+           var tempColor:Color = new Color(someMovieClip);
+           tempColor.setTranform(newTransform);
+
+    Optimizations
+
+      * AptFilter - Removed unecessary asserts (they could not fail) from AptFilter.cpp.
+           
+    Bugfixes
+    
+      * AptUtil - Fixed an issue where calling SafeForIn would fail to APT_DEC
+        the return value.  This would not matter in most cases, but would if you
+        accidentally returned something that resolves to "false".
+        
+      * (From Monopoly) Key listeners - Worked around a very old, very rare
+        crash where Apt would unsafely call AptCIH functions on Objects that
+        were not necessarily AptCIHs.  Now has if checks in place to prevent
+        this, though the code is still not perfect.
+
+      * (From Tiger) AptUtil - Fixed an issue where some functions in AptUtil would
+        simply *not work* when called from ActionScript - in particular, the new
+        AptUtil.SafeForIn function. This was broken because of a mismatch in an enum
+        file when APT_DO_AS_PROFILE was not defined. The mismatch has been fixed.
+
+==========================================================================
+
+Version: 2.11.00 (Lemming)
+Owner:   Tib Ion Core Tech (TIBIONCORETECH-TIBURON@ea.int)
+Date:    6/22/2010
+CL:      78264
+
+    New Features
+
+      * AptValueHelper - Has some new, clean, public functions for getting
+        things like _global, _level0, and member variables.  These functions
+        are to be used by the upcoming Spark tool, currently in progress.
+
+      * (From NCAA) Apt now has a Temporary allocation method in the AptUserFunctions
+        (pfnTempAlloc, pfnTempFree, pfnTempFreeSize) which will be used to allocate
+        memory as the AptRenderBuffer expands.  Because we don't expect all teams to
+        want this, this feature is enableable via APT_USE_TEMPORARY_ALLOCATORS in AptDefine.h.
+
+      * (From Tiger) Added movie loading/linking identification to profiling data. Now you can
+        see a "Loading movie: <movie name>"/"Linking movie: <movie name>" in the profile output.
+
+      * (From Tiger) AptScriptFunctionBase::GetArgumentName(): now the names of function parameters
+        can be known at runtime.
+
+      * Profiling
+          - When you use function.call, previously the ActionScript Profiler output would
+            simply say "call" for that function.  Now, we try to figure out the real function name,
+            and output that instead of "call."
+
+          - When functions are profiled, many of them will now also prepend the Class name
+            in front.  So for example "Init" becomes "List::Init".
+
+          - When in a profiling build, this above extra data will also affect the gAptOptCallStack.
+
+      * AptCallFunctionObject - "AptCallFunctionObject" added (#include "Apt.h").  You can use this
+        to call a function object if you have a direct reference to it.  Useful if you want to make
+        an adapter function take an actionscript function as a parameter.
+
+      * AptUtil - Added AptUtil.safeForIn to allow iterating over large objects without pushing
+                  every field name onto the stack at once like a typical "for (var key in obj)"
+                  does.
+                  You can use it in actionscript like
+                    AptUtil.safeForIn(someObject, someFunction);
+                  to call someFunction once for each (enumerable) key in someObject.
+                  someFunction should look like
+                      function someFunction( someObject:Object, key:string, value):Void
+
+      * AptUtil - Now has profileBlockStart and profileBlockEnd, whcih you can use to mark sections 
+                  that will then show up in your profiling data!
+                  Actionscript usage:
+                    AptUtil.profileBlockStart(someLabel);
+                    doWork();
+                    AptUtil.profileBlockEnd(someLabel);
+
+    Minor Changes
+
+      * (From NCAA) Some allocations have been slightly changed to make them more consistent.
+
+        - APT_VERIFY_NON_GC_ALLOC_SIZES from AptDefine.h has been disabled.
+          Previously this would add 4 bytes to non-garbage-collected allocations
+          in debug mode.  Disabling this makes allocation sizes consistent between
+          debug and non-debug modes.
+
+        - The RenderList will no longer double in size when it needs to increase
+          its size.  Instead, it will grow by a set amount.
+
+        - If APT_USE_TEMPORARY_ALLOCATORS is set, the RenderList will no longer automatically
+          shrink in size, as that would fragment memory.  Instead it will remain at its high
+          watermark and not release memory.
+
+        - If APT_USE_TEMPORARY_ALLOCATORS is set, the RenderList will alternate between making
+          allocations in the Non-GCPoolManager and the new pfnTempAlloc allocation buffer.
+
+      * (From NCAA) NonGC Dogma pool's maximum allocation size has been bumped from 256 to 512.
+        If anyone has an issue with this, we can make it a runrime determination instead.
+
+      * (From Tiger) AptDisplayListState::swapDepths(): Added an assertion for when swapping depths of two MovieClips with a different parent.
+        Even though Apt supports it, there are cases in which this may go wrong. The assert was added to
+        help debugging in these cases.
+
+      * (From Tiger) AptGC::PrintZombieExternalReferenceMapXML(): added function parameter names to xml zombie dump.
+
+      * SWFC now only does as many passes as it needs to through a file, rather than always doing ~22 passes.  This
+        cuts back on the number of passes in many case, and seems to improve the overall speed of SWFC by 5-10%.
+        
+      * (From MMA) Changed a variety of Mutexes to Futexes.  This will reduce
+        system call overhead for most cases when there isn't thread contention.
+
+    Bug Fixes
+
+      * String.lastIndexOf now correctly counts multi-byte character as only one character.
+
+      * String.charCodeAt now returns a number rather than a string.
+
+      * (From Tiger) Calling AptCallMemberFunction on an undefined value will
+        no longer crash.
+
+      * (From Madden) Moved a thread Lock in AptRenderList to a location that may hepl prevent geometry files from
+        unintentionally being deleted twice due to very rare threading issues.
+
+      * Strict equality (===) Was ignoring case when comparing strings.  It is now case-sensitive.
+
+      * Built-in class Function now exists, meaning that x instanceof Function now works properly.
+        There are still issues with instanceof, specifically:
+            Arrays and Colors should be considered objects but aren't.
+            undefined instanceof Number returns true
+            undefined instanceof undefined returns true
+            
+      * Fixed buffer overruns when saving out actionscript profiling information.
+
+
+==========================================================================
+
+Version: 2.10.01 (Kiwi)
+Owner:   Tib Ion Core Tech (TIBIONCORETECH-TIBURON@ea.int)
+Date:    02/01/2010
+
+    New Features
+
+      * You can now decompile swf files using aTack via a simple NAnt task. For more details
+        please see http://confluence.ea.com/display/APT/User+Guide-Pipeline ("The aTack Compiler" section).
+
+      * You may now set the global property package.Apt.GatherMemoryMetrics to enable/disable Apt memory
+        metrics gathering.
+
+      * Added unit tests for inherited methods, instanceof keyword, super keyword and arrays.
+
+      * Added forced crashes for the following situations:
+        - AptBasePtrStack overflows.
+        - AptValuePtrStack overflows.
+        - Memory gets corrupted during a call to AptActionInterpreter::callFunction().
+        - During a call to AptScriptFunctionBase::SetRegisterValue() the function register buffer overflows.
+        To enable Apt forced crashes please set the global property 'package.Apt.ForceCrashes'.
+
+      * (From Tiger) The getTimer() function now returns the time gathered from pfnGetCurrentTime, if defined,
+        instead of the current "Tick".  This is helpful for quick profiling, as you can accurately determine the
+        amount of time that has passed between calls in ActionScript.
+
+      * _zscale - In addition to the other Apt-specific 3D MovieClip properties _z, _xrotation, and _yrotation,
+        Apt now supports _zscale.
+
+    Minor Changes
+
+      * (From NCAA) Speed improvements for matrix multiplication in AptCIH. It no longer needs to use matrix helper object.
+
+      * (From Tiger) Added a debug-friendly mnHighwaterNumElements member to AptValueSet.
+
+    Bug Fixes
+
+      * (From Tiger) Fixed a scoping problem in AptCallMemberFunction. When calling into SomeFunction() on an
+        instance of a derived class, super.SomeFunction() would not be called with proper "this" scope.
+
+      * If you had ActionScript code like this: _global["Math"] it would return undefined when it shouldn't.
+        It's fixed now. It happened for the following global objects: AptAlternateInput, AptUtil, Key,
+        Math, Mouse and Stage.
+
+      * Fixed a problem that happened when not defining APT_3D. AptDisplayList.cpp woudn't compile befause of a stranded comma.
+
+      * When APT_USE_XML_OBJECT is not defined, it will no longer accidentally compile in the global "AptXml" object.
+
+      * When getting the blend mode of a dynamic text for Flash button
+        instance, the code was incorrectly casting to a SpriteInstBase first.
+        It now does the correct cast for the type.
+
+      * The globalToLocal function was returning completely incorrect values due to incorrect Matrix
+        math.  Corrected the math in globalToLocal in the same way we long ago corrected getBounds.
+        Also made localToGlocal use the same math because it's fun to be consistent.
+
+==========================================================================
+
+For previous versions changes please refer to http://confluence.ea.com/display/APT/User+Guide-Release+Notes
+
+==========================================================================

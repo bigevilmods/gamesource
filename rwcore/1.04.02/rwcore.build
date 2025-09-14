@@ -1,0 +1,88 @@
+<project default="build">
+
+  <optionset name="config.targetoverrides">
+    <option name="test-run" value="include" />
+    <option name="test-runall" value="include" />
+  </optionset>
+
+  <property name="rwconfig.enablecustomtasks" value="true"/>
+  <property name="rwconfig.enablecustomtargets" value="true"/>
+  <property name="rwconfig.enableslngeneration" value="true"/>
+  <property name="rwconfig.enablenantbuilds" value="true"/>
+
+  <package name="rwcore" targetversion="1.04.02"/>
+
+  <property name="module-prefix" value=""/>
+  <do if="@{PropertyExists('rwconfig.cross')}">
+    <property name="module-prefix" value="cross-" if="${rwconfig.cross}" />
+  </do>
+
+  <include file="scripts/initialize.xml"/>
+  <property name="runtime.buildmodules" value="${module-prefix}rwcore"/>
+
+  <!-- rwcore module -->
+  <property name="runtime.${module-prefix}rwcore.buildtype" value="Library"/>
+
+  <property name="runtime.${module-prefix}rwcore.outputname" value="rwcore"/>
+
+  <property name="runtime.${module-prefix}rwcore.includedirs">
+    ${package.rwcore.includedirs}
+    ${package.configbuilddir}\rwcore
+
+    ${package.dir}\source\core          <!-- needed for rwsharedheaders.hpp -->
+    ${package.dir}\source\core\hash     <!-- needed by source\core\atom\staticatomtable.cpp for rwhash.h -->
+    ${package.dir}\source\core\memory   <!-- needed by source\core\memory\host\win\rwhostmemoryinitializers.cpp for rwhostmemoryinitializers.hpp -->
+  </property>
+
+  <!-- FIFA_BEGIN | DIVERGENCE | dmathieu@bioware.com | 2015-07-07 | Suppress new PS4 error -->
+  <property name="runtime.${module-prefix}rwcore.warningsuppression" if="${config-compiler} == 'clang'">
+    -Wno-writable-strings
+  </property>
+  <!-- FIFA_END -->
+  
+   <property name="runtime.${module-prefix}rwcore.usedependencies">
+      EABase
+      EAThread
+      coreallocator
+      EASTL
+      EAStdC
+  </property>
+  
+    <property name="platform-folder" value="${config-renderware-hostos}" />
+    <do if="${config-system} == 'capilano' ">
+      <property name="platform-folder" value="win" />
+    </do>
+
+  <fileset name="runtime.${module-prefix}rwcore.sourcefiles">
+    <includes name="source\core\memory\host\generic\rwhostmemoryinitializers.cpp" unless="${config-system} == pc || ${config-system} == pc64 || ${config-system} == capilano"/>
+    <includes name="source\core\memory\host\win\rwhostmemoryinitializers.cpp" if="${config-system} == pc || ${config-system} == pc64 || ${config-system} == capilano"/>
+
+    <includes name="source\core\*.cpp"/>    <!-- files directly in core-->
+    <includes name="source\core\*\*.cpp"/>  <!-- files inside single directory in core-->
+
+    
+    
+    <!-- TODO: This should be ${config-system} except the names are wrong -->
+    <includes name="source\core\**\host\${platform-folder}\**\*.cpp"/>     <!-- host specific files -->
+
+    <!-- TODO: This ugliness could be removed if there were a "#if defined(RWCROSS)" switch in the code -->
+    <includes name="source\core\**\target\${platform-folder}\**\*.cpp" 
+            unless="${config-renderware-targetos} == xbox2"/>
+    <includes name="source\core\**\target\${platform-folder}\native\**\*.cpp" 
+                if="${config-renderware-targetos} == xbox2 and ${config-renderware-hostos} == xbox2"/>
+    <includes name="source\core\**\target\${platform-folder}\cross\**\*.cpp" 
+                if="${config-renderware-targetos} == xbox2 and ${config-renderware-hostos} != xbox2"/>
+  </fileset>
+
+  <fileset name="runtime.${module-prefix}rwcore.bulkbuild.sourcefiles"
+           fromfileset="runtime.${module-prefix}rwcore.sourcefiles"/>
+
+  <fileset name="runtime.${module-prefix}rwcore.headerfiles">
+    <includes name="include\cmn\**.h"/>
+    <includes name="include\${config-renderware-hostos}\**.h"/>  <!-- host specific header files -->
+  </fileset>
+
+  
+  <include file="source/doc-lib/doc-basic.build"/>
+
+</project>

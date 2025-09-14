@@ -1,0 +1,36 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+    template<class FloatType>
+    UnitTestConstants<FloatType>::UnitTestConstants()
+#else
+    UnitTestConstants::UnitTestConstants()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+    template<class FloatType>
+    UnitTestConstants<FloatType>::~UnitTestConstants()
+#else
+    UnitTestConstants::~UnitTestConstants()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+    template<class FloatType>
+    void UnitTestConstants<FloatType>::Test()
+#else
+    void UnitTestConstants::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

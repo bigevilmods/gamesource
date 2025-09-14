@@ -1,0 +1,15 @@
+struct StringMembers { char *szName; int nIndex; };
+%%
+length,1
+charAt,2
+charCodeAt,3
+concat,4
+fromCharCode,5
+indexOf,6
+lastIndexOf,7
+slice,8
+split,9
+substr,10
+substring,11
+toLowerCase,12
+toUpperCase,13

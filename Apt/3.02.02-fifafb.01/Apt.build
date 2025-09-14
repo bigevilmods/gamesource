@@ -1,0 +1,176 @@
+<project default="build">		
+	
+	  <!-- Declare Apt package -->
+    <property name="currDir"  value="@{PathGetFullPath('.')}"/>
+    <property name="currVer"  value="@{PathGetFileName('${currDir}')}"/>
+    <package name="Apt" targetversion="${currVer}" />   
+
+    <include file="usersettings.xml"/>
+    
+    <!-- This sets which modules will get built, Apt is the defualt-->
+    <property name="runtime.buildmodules">
+        Apt
+    </property>    
+    
+    <include file="source/Apt/Apt.build"/>
+    
+    
+    <!-- Builds AptFF libs -->
+    <target name="AptFF" description="builds AptFF">
+        <property name="runtime.buildmodules" value="AptFF" />
+        <include file="source/AptFF/AptFF.build"/>
+        <call target="build" force="true"/>        
+    </target>
+    
+    <!-- Builds AptAuxEAGLREAL libs -->
+    <target name="AptAuxEAGLREAL" description="builds AptAuxEAGLREAL">
+        <property name="runtime.buildmodules" value="AptAuxEAGLREAL" />    
+        <include file="source/AptAuxEAGLREAL/AptAuxEAGLREAL.build"/>
+        <call target="build" force="true"/>                
+    </target>
+    
+    <!-- Builds AptAuxPCOpenGL libs -->
+    <target name="AptAuxPCOpenGL" description="builds AptAuxPCOpenGL">
+        <property name="runtime.buildmodules" value="AptAuxPCOpenGL" />    
+        <include file="source/AptAuxPCOpenGL/AptAuxPCOpenGL.build"/>
+        <call target="build" force="true"/>                
+    </target>    
+        
+    <!-- Builds AptViewerEAGLREAL libs -->
+    <target name="AptViewerEAGLREAL" description="builds AptViewerEAGLREAL">
+        <property name="runtime.buildmodules">
+            Apt
+            AptFF
+            AptAuxEAGLREAL
+            AptViewerEAGLREAL
+        </property>       
+        
+        <include file="source/AptFF/AptFF.build"/>
+        <include file="source/AptAuxEAGLREAL/AptAuxEAGLREAL.build"/>
+        <include file="source/AptViewer/AptViewerEAGLREAL.build"/>
+        
+        <!-- Set up our dependencies -->
+        <dependent name="snd" />
+        <dependent name="FontFusion" />   
+        <call target="build" force="true"/>      
+        
+	    <!-- Copy the viewer out to the xbox -->
+        <property name="package.Apt.DeployToConsole" value="false" unless="@{PropertyExists('package.Apt.DeployToConsole')}" />
+        
+        <do if='${config-system} == xbox'>
+          <do if='${package.Apt.DeployToConsole}'>
+	          <echo message="- Creating Xbox Image using ${package.configbuilddir}/AptViewerEAGLREAL.xbe"/>
+        	  <property name="fw1config-type" value="p" if="${config-type} == p" />
+          	
+	          <echo message="- Copying .xbe to Xbox at AptViewerEAGLREAL"/>
+	          <exec program="${package.Xdk.appdir}/xbox/bin/xbcp.exe">
+		          <arg value="/y /t /f /q ${package.configbuilddir}/AptViewerEAGLREAL/AptViewerEAGLREAL.xbe  xe:\AptViewerEAGLREAL\AptViewerEAGLREAL${fw1config-type}.xbe"/>
+		          <inputs>
+			          <includes name="${package.configbuilddir}/AptViewerEAGLREAL/AptViewerEAGLREAL.xbe"/>
+		          </inputs>
+	          </exec>
+          </do>
+        </do>                   
+    </target>    
+    
+    <!-- Builds AptViewerPCOpenGL libs -->
+    <target name="AptViewerPCOpenGL" description="builds AptViewerPCOpenGL">
+        <property name="runtime.buildmodules">
+            Apt
+            AptFF
+            AptAuxPCOpenGL
+            AptViewerPCOpenGL
+        </property> 
+        
+        <include file="source/AptFF/AptFF.build"/>
+        <include file="source/AptAuxPCOpenGL/AptAuxPCOpenGL.build"/>
+        <include file="source/AptViewer/AptViewerPCOpenGL.build"/>                     
+        
+        <call target="build" force="true"/>
+    </target>            
+    
+    <property name="newTargetVersion" value="${package.targetversion}"/>
+	<do if="@{PropertyExists('commandlinetargetversion')}">
+	    <property name="newTargetVersion" value="${commandlinetargetversion}"/>
+    </do>      	    
+
+	<target name="documentation" description="Extracts and generates documentation">
+		<exec program="perl" commandline="..\..\bin\ripdoc.pl Apt.h" workingdir="include/Apt" />
+		<exec program="pdflatex" commandline="AptReference" workingdir="doc" />
+		<exec program="pdflatex" commandline="AptReference" workingdir="doc" />
+		<!-- <exec program="hevea.bat" commandline="AptReference" workingdir="doc" /> -->
+		<!-- exec program="hevea.bat" commandline="AptReference" workingdir="doc" /> -->
+	</target>
+
+	<target	name="everything" description="Cleans, builds, packages." depends="buildall, package, package-external">
+		<property name="p4.port" value="tuna.eac.ad.ea.com:5555"/>
+		
+		<!-- label the dev tree	-->
+		<p4label label="${package.name}_${package.targetversion}"	description="${package.name} ${package.targetversion} release. Created by Apt build script." verbose="true"/>
+		<p4labelsync label="${package.name}_${package.targetversion}"	files="//depot/p4/Apt/tiburon/${package.targetversion}/..."	verbose="true"/>
+		
+	</target>	
+	
+	<!--
+	***********************************************************************************************
+	target:	configure
+
+	Builds a Visual	Studio project file	that contains all of the appropriate source	files.	The
+	source files for all dependent packages	will also be included so that intellisense will	work
+	for	every single library.  Since this causes the project file to take a	long time to load in
+	Visual Studio, the option to exclude the package source	files is available by setting the
+	IncludePackagesInProject property to false in the usersettings.xml file.
+	***********************************************************************************************
+	-->
+	<target	name='configure' description='Generate a visual	studio project'>
+
+		<choose>
+			<do>
+				<fileset name='PackageDirectories' append='true' sort='true'/>
+			</do>
+		</choose>
+
+		<fileset name='PackageDirectories' append='true' sort='true'/>
+
+		<!-- generate a	visual studio project that supports	Win32 and Xenon	executables	-->
+		<property name="nant.configure.generateplatforms" value="Win32,Xenon" />
+		<generateproject version='7.1'>
+			<fileset sort='true' fromfileset='PackageDirectories'>
+				<!-- includes -->
+				<includes name='bin\**\*.pl'/>
+				<includes name='bin\**\*.pm'/>
+				<includes name='config\**'/>
+				<includes name='source\**'/>
+				<includes name='include\**'/>
+				<includes name='test\**\*.pl'/>
+				<includes name='doc\*'/>
+				<includes name='scripts\**'/>
+				<includes name='Apt.build'/>
+				<includes name='Manifest.xml'/>
+				<includes name='masterconfig.xml'/>
+				<includes name='usersettings.xml'/>
+
+				<!-- excludes -->
+				<excludes name='**/*.old'/>
+				<excludes name='**/*.vcproj'/>
+				<excludes name='**/*.sln'/>
+				<excludes name='**/*.suo'/>
+				<excludes name='**/*.ncb'/>
+				<excludes name='**/*.bak'/>
+				<excludes name='**/*.scc'/>
+			</fileset>
+
+		</generateproject>
+	</target>
+
+  <!-- This target runs the legacy Apt (OpenGL) regression testsuite -->
+  <target name='test'>
+    <property name="package.Apt.test.testnames" value="" unless="@{PropertyExists('package.Apt.test.testnames')}" />
+    <property name="package.Apt.test.aptroot" value="@{PathGetFullPath('.')}" unless="@{PropertyExists('package.Apt.test.aptroot')}" />
+    <property name="package.Apt.test.timeout" value="5" unless="@{PropertyExists('package.Apt.test.timeout')}" /> <!-- minutes -->
+    <exec program="perl.exe"
+          workingdir="./test/testsuite" 
+          commandline="checktests.pl --aptroot=@{PathGetFullPath('${package.Apt.test.aptroot}')} ${package.Apt.test.testnames}" 
+          timeout="@{MathMul('${package.Apt.test.timeout}000', '60')}" />
+  </target>
+</project>

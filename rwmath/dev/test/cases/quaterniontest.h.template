@@ -1,0 +1,56 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestQuaternion :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestQuaternion();
+    virtual ~UnitTestQuaternion();
+    void Test();
+
+//#BLOCK
+
+private:
+
+    EXPLICIT_NAMESPACE(Quaternion) quat;
+
+    float x_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float y_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float z_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float w_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    float_test_type retValueFloat;
+    bool retValueBool;
+
+    // array of quat for testing
+    EXPLICIT_NAMESPACE(Quaternion) quat_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+
+    float_test_type fOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type xArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    uint32_t qCompressedArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    EXPLICIT_NAMESPACE(Quaternion) qAArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) qBArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) qOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) qANormArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) qBNormArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    EXPLICIT_NAMESPACE(Vector3) v3a_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3NormArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3OutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    EXPLICIT_NAMESPACE(Matrix33) m33Array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Matrix44) m44Array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+};
+

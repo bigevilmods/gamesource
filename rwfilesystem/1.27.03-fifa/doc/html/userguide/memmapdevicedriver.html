@@ -1,0 +1,121 @@
+<html>
+<head>
+    <title>Memory Mapped Device Driver</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Memory Mapped Device Driver (MemMapDeviceDriver) User Guide</h1>
+
+<p>The memory mapped device driver is a RAM disk interface for rwfilesystem. It was created
+initially to allow teams to leverage unused video memory on the PlayStation 3 and the high 
+speed data transfer between it and main memory however it is generic enough to be used with 
+any pool of memory that can be mapped into the applications address space.</p>
+
+<h2>Setting up the MemMapDeviceDriver</h2>
+
+<p>In order to use the MemMapDeviceDriver you must create an object that implements the 
+MemMapDeviceDriver::IStorageTransfer interface. The function signature for Transfer looks
+pretty much identical to memcpy and, if you are only operating in main memory, you may 
+delegate to it. However, if you are moving data to and from different types of memory, such
+as between main and memory, it may require additional mechanisms in order to be sufficiently
+fast. In the case of the PlayStation 3 this would mean having to use RSX initiated blits.</p>
+
+<p>There are four things to keep in mind when implementing the IStorageTransfer interface. First,
+no transfer will involving overlapping regions of memory. Second, transfers will occur between
+regions of memory in the pool used by the MemMapDeviceDriver as the MemMapDeviceDriver will
+move blocks around in order to free memory. Third, all transfers will be the size of the pages
+specified in the options structure passed to the MemMapDeviceDriver constructor. Four, if data 
+transfers are asynchronous, Transfer() must block until the data transfer is complete.</p>
+
+<pre><code class="cpp">
+using namespace rw::core::filesys;
+
+struct LocalStorageTransfer : public MemMapDeviceDriver::IStorageTransfer
+{
+    virtual void Transfer( void* dest, const void* src, size_t size )
+    {
+        memcpy( dest, src, size );
+    }
+
+    virtual ~LocalStorageTransfer()
+    {
+    }
+};
+</code></pre>
+
+<p>The second big component that needs to be referenced is an allocator for the 
+memory pool that the MemMapDeviceDriver operates in which must implement the 
+EA::Allocator::ICoreAllocator interface. If you wish to use video memory then
+you need to create an allocator that manages this memory, perhaps based on
+PPMalloc's NonLocalAllocator.</p>
+
+<p>When setting up the options for the MemMapDeviceDriver we also need to consider
+the size of the pages that we allocate. These pages must be a power of two
+and should be no smaller than 4096 bytes. These are the atoms of both memory
+alignment, memory allocation, and data transfer within the MemMapDeviceDriver
+class.</p>
+
+<p>The page size is a tunable parameter. If the files being operated on are relatively
+large and are accessed one at a time it may improve performance to have a large
+page size. If you skip around often between multiple files, or have lots of little
+files, then the smaller page sizes may be better.</p>
+
+<p>At this point, setting up the MemMapDevice driver is easy:
+<pre><code class="cpp">
+    extern EA::Allocator::ICoreAllocator* g_PoolAllocator;
+    extern LocalStorageTranfer* g_StorageTransfer;
+    const int pageSize = 4096;
+
+    rw::core::filesys::MemMapDeviceDriver::Options ops( *g_PoolAllocator, *g_StorageTransfer, pageSize );
+    rw::core::filesys::MemMapDeviceDriver* deviceDriver = new MemMapDeviceDriver( ops );
+    rw::core::filesys::Device* device = rw::core::filesys::Manager::GetInstance()->RegisterDevice( deviceDriver );
+</code></pre></p>
+
+<h2>Using the MemMapDeviceDriver</h2>
+
+<p>To use the MemMapDeviceDriver, simply use the "memmap:" device driver name when
+accessing files. For example:
+
+<pre><code class="cpp">
+    rw::core::filesys::AsyncOp op;
+
+    op.Open( "memmap:/test_simple.txt", AsyncOp::FOPEN_READONLY );
+</code></pre></p>
+
+<p>If you find that you are running low on memory you can request that the MemMapDeviceDriver
+compacts its allocations by calling the MemMapDeviceDriver::ReleaseMemory() method. If it
+is able to free up memory then it will do so, returning the number of bytes freed.
+
+<pre><code class="cpp">
+    unsigned int bytesFreed = deviceDriver->ReleaseMemory();
+</code></pre></p>
+
+<h2>Shutting down the MemMapDeviceDriver</h2>
+
+<p>Shutting down the MemMapDeviceDriver has the effect of formatting the device, it will
+remove all files from memory and release all memory back to the allocator.
+
+<pre><code class="cpp">
+    rw::core::filesys::Manager::GetInstance()->UnregisterDevice( device );
+    delete deviceDriver;
+</code></pre></p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

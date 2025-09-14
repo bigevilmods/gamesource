@@ -1,0 +1,417 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#include <rw/math/vpu/vec_float_operation.h>
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestVecFloatMisc :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestVecFloatMisc();
+    virtual ~UnitTestVecFloatMisc();
+    void Test();
+
+//#BLOCK
+
+private:
+
+
+
+};
+
+class VecFloatVsVecFloatRefCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) == bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) != bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) > bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) < bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) >= bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( bRef, W, b );
+        return ::rw::math::vpu::VecFloat(a) <= bRef;
+    }
+};
+
+//
+// Declare classes for VecFloatRef vs VecFloat comparisons
+//
+class VecFloatRefVsVecFloatCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef == ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefVsVecFloatCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef != ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefVsVecFloatCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef > ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefVsVecFloatCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef < ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefVsVecFloatCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef >= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefVsVecFloatCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, W, a );
+        return aRef <= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+//
+// Declare classes for VecFloatRefIndex vs VecFloatRef comparisons
+//
+class VecFloatRefIndexVsVecFloatRefCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef == bRef;
+    }
+};
+
+class VecFloatRefIndexVsVecFloatRefCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef != bRef;
+    }
+};
+
+class VecFloatRefIndexVsVecFloatRefCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef > bRef;
+    }
+};
+
+class VecFloatRefIndexVsVecFloatRefCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef < bRef;
+    }
+};
+
+class VecFloatRefIndexVsVecFloatRefCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef >= bRef;
+    }
+};
+
+class VecFloatRefIndexVsVecFloatRefCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 0, a );
+        MakeVecRef( bRef, W, b );
+        return aRef <= bRef;
+    }
+};
+
+//
+// Declare classes for VecFloatRef vs VecFloatRefIndex comparisons
+//
+class VecFloatRefVsVecFloatRefIndexCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef == bRef;
+    }
+};
+
+class VecFloatRefVsVecFloatRefIndexCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef != bRef;
+    }
+};
+
+class VecFloatRefVsVecFloatRefIndexCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef > bRef;
+    }
+};
+
+class VecFloatRefVsVecFloatRefIndexCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef < bRef;
+    }
+};
+
+class VecFloatRefVsVecFloatRefIndexCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef >= bRef;
+    }
+};
+
+class VecFloatRefVsVecFloatRefIndexCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRef( aRef, X, a );
+        MakeVecRefIndex( bRef, 3, b );
+        return aRef <= bRef;
+    }
+};
+
+//
+// Declare classes for VecFloat vs VecFloatRefIndex comparisons
+//
+class VecFloatVsVecFloatRefIndexCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) == bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefIndexCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) != bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefIndexCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) > bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefIndexCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) < bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefIndexCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) >= bRef;
+    }
+};
+
+class VecFloatVsVecFloatRefIndexCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( bRef, 3, b );
+        return ::rw::math::vpu::VecFloat(a) <= bRef;
+    }
+};
+
+//
+// Declare classes for VecFloatRefIndex vs VecFloat comparisons
+//
+class VecFloatRefIndexVsVecFloatCompareE : public GenericCompareE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef == ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefIndexVsVecFloatCompareNE : public GenericCompareNE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef != ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefIndexVsVecFloatCompareGT : public GenericCompareGT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef > ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefIndexVsVecFloatCompareLT : public GenericCompareLT
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef < ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefIndexVsVecFloatCompareGTE : public GenericCompareGTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef >= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+class VecFloatRefIndexVsVecFloatCompareLTE : public GenericCompareLTE
+{
+public:
+    bool Compare(float a, float b)
+    {
+        MakeVecRefIndex( aRef, 3, a );
+        return aRef <= ::rw::math::vpu::VecFloat(b);
+    }
+};
+
+

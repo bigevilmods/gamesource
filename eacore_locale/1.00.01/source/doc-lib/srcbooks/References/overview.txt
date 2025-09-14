@@ -1,0 +1,16 @@
+/*!
+**********************************************************************
+
+\page p_lib_ref_overview Library Reference Overview
+
+This Reference documentation contains details about each function in the
+library: its parameters, return value(s), side effects, prerequisites,
+platform-specific issues, links to related functions, and anything else
+we think someone using a particular function should know.
+
+If you want to browse the reference documentation, here is a link to the
+library overview page:
+
+- \ref g_lib_locale
+
+*/

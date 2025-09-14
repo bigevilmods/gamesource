@@ -1,0 +1,63 @@
+<!--
+================================================================================
+    tools.xml
+
+(c) 2009 Electronic Arts Inc.
+================================================================================
+-->
+
+<project>
+
+    <!-- We cannot build this tool in dll mode, as chunk codec does not support being a dll -->
+    <do unless="${Dll}">
+        <property name="tool.buildmodules" value="chunkpack_tool"/>
+    </do>
+    
+    <optionset name="exceptions-enabled-program" fromoptionset="config-options-program">
+        <option name="buildset.name" value="ExceptionsEnabledProgram"/>
+        <option name="exceptions" value="on"/>
+        <option name="rtti" value="on"/>
+    </optionset>
+    <task name="GenerateBuildOptionset" configsetname="exceptions-enabled-program" />
+
+    <property name="tool.chunkpack_tool.buildtype" value="ExceptionsEnabledProgram"/>
+    <property name="tool.chunkpack_tool.outputname" value="chunkpack"/>
+
+    <property name="tool.chunkpack_tool.usedependencies">
+        EABase
+        coreallocator
+    </property>
+
+    <property name="tool.chunkpack_tool.builddependencies">
+        EAAssert
+        job_manager
+        EAThread
+        zlib
+        EAStdC
+        lzma
+        lz4
+    </property>
+
+    <property name="tool.chunkpack_tool.runtime.moduledependencies" value="rwcodec"/>
+
+    <property name="tool.chunkpack_tool.includedirs">
+        ${package.dir}/source
+        ${package.dir}/include
+    </property>
+
+    <fileset name="tool.chunkpack_tool.sourcefiles">
+        <includes name="chunkpack_tool/*.cpp"/>
+    </fileset>
+
+    <fileset name="tool.chunkpack_tool.libs" append="true" if="${package.rwcodec.use_lzx}">
+        <includes fromfileset="package.rwcodec.lzx.libs" />
+    </fileset>
+        
+    <target name="tool-publish" depends="tool-build" description="Build and copy the tools the package bin directory">
+        <copy todir="${package.dir}/bin">
+            <fileset basedir="${package.configbindir}/tool">
+                <includes name="*.exe"/>
+            </fileset>
+        </copy>
+    </target>
+</project>

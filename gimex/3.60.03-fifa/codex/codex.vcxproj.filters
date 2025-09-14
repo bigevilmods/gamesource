@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="huff">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ref">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dxt">
+      <UniqueIdentifier>{09848862-43a8-49d6-84bd-267c7c2765cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="zip">
+      <UniqueIdentifier>{2d7e1a1f-2e1a-4f4f-967e-0b484ef17d14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="s3t">
+      <UniqueIdentifier>{efcd93ce-da3a-48bf-8e1b-4e86a9da7756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rif">
+      <UniqueIdentifier>{3052f6bb-c387-48b7-88e1-eb0ddaaa2064}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="btree">
+      <UniqueIdentifier>{0259edd5-599e-4a23-a9e4-6428561183c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="nil">
+      <UniqueIdentifier>{f07b5b2b-0bd2-4d9a-9045-eaeed335543c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="jlz">
+      <UniqueIdentifier>{4759b189-23b0-4c48-9727-8f7ed98efbab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qopen">
+      <UniqueIdentifier>{d2c8e696-8a76-4ccc-a513-216e06390339}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\huffabout.cpp">
+      <Filter>huff</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\huffdecode.cpp">
+      <Filter>huff</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\huffencode.cpp">
+      <Filter>huff</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\refabout.cpp">
+      <Filter>ref</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\refdecode.cpp">
+      <Filter>ref</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\refencode.cpp">
+      <Filter>ref</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\dxtabout.cpp">
+      <Filter>dxt</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\dxtdecode.cpp">
+      <Filter>dxt</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\dxtencode.cpp">
+      <Filter>dxt</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\adler32.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\crc32.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\deflate.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\infblock.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\infcodes.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\inffast.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\inflate.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\inftrees.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\infutil.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\trees.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\zipabout.cpp">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\zipdecode.cpp">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\zipencode.cpp">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="zip\zutil.c">
+      <Filter>zip</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\s3tcabout.cpp">
+      <Filter>s3t</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\s3tcencode.cpp">
+      <Filter>s3t</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rifabout.cpp">
+      <Filter>rif</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rifdecode.cpp">
+      <Filter>rif</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\rifencode.cpp">
+      <Filter>rif</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\btreeabout.cpp">
+      <Filter>btree</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\btreedecode.cpp">
+      <Filter>btree</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\btreeencode.cpp">
+      <Filter>btree</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nilabout.cpp">
+      <Filter>nil</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nildecode.cpp">
+      <Filter>nil</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nilencode.cpp">
+      <Filter>nil</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\jlzabout.cpp">
+      <Filter>jlz</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\jlzdecode.cpp">
+      <Filter>jlz</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\jlzencode.cpp">
+      <Filter>jlz</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\qopenlib.cpp">
+      <Filter>qopen</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\qopentbl.cpp">
+      <Filter>qopen</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmn\huffcodex.h">
+      <Filter>huff</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\refcodex.h">
+      <Filter>ref</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\dxtcodex.h">
+      <Filter>dxt</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\zipcodex.h">
+      <Filter>zip</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\s3tccodex.h">
+      <Filter>s3t</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\rifcodex.h">
+      <Filter>rif</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\btreecodex.h">
+      <Filter>btree</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\nilcodex.h">
+      <Filter>nil</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\jlzcodex.h">
+      <Filter>jlz</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\qopen.h">
+      <Filter>qopen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\codex.h" />
+  </ItemGroup>
+</Project>

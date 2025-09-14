@@ -1,0 +1,47 @@
+<html>
+<head>
+    <title>User Guide Overview</title>
+    <link href="../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="toc.js"></script>
+    <script type="text/javascript" src="../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>File System User Guide</h1>
+
+The File System Module provides a portable API for dealing with File
+I/O.  It manages access to a slow device in a coordinated and flexible
+way to help keep load times reasonable.
+
+<h2>Library organization</h2>
+
+The library is built in three layers:
+
+<ol>
+<li>Device driver.  Each device that the library knows about must have a driver</li>
+which translates library calls into O/S calls.  Drivers are always
+called from secondary threads so they may block while the thread which
+initiated the request (usually the main thread) continues to run.
+<li>Primitive layer.  Immediately above the driver layer is the primitive layer.</li>
+This layer sends messages to a device to execute a operation (such as Open
+or Read).  The primitive level functions simply schedule the operation to execute
+and return, they do not wait for it to complete.  Later, the device thread picks
+up the command and executes it using the device driver layer.
+<li>higher level modules are the load/save and streaming modules.</li>
+</ol>
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

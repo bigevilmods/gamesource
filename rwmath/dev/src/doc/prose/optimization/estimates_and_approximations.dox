@@ -1,0 +1,98 @@
+/*!
+\page p_estimates_and_approximations Estimates and Approximations
+
+\par Introduction
+
+By default RW Math generates very precise values.  This is a good default
+behavior, because code should worry about correctness first, and performance
+second.  Of course, in many cases high precision is not needed.  For example,
+if you are calculating unit normals for lighting you probably don't need the
+magnitude to be exactly 1.  A normal that is close to unit length (e.g. a
+magnitude of 0.99998) is probably close enough.
+
+\par Performance vs Precision
+
+Modern vector and FPU hardware often has instructions for estimating the result
+of a calculation.  The estimates are close to the correct value, but do not
+represent the most precise value that could be represented in the floating
+point format being used.
+
+For example, most vector units have an instruction for estimating the
+reciprocal of a number, or performing a reciprocal square root.  In fact most
+vector units \e only have estimate instructions.  Full precision values must be
+calculated manually by repeatedly refining an estimated result.
+
+Since, calculating a high precision reciprocal or reciprocal estimate requires
+additional refinement operations, there is a trade off between
+performance and precision.  A imprecise result may be calculated quickly, but a
+more precise result takes further calculations (i.e. more time).
+
+Full precision results usually have very high latency because each stage in the
+refinement process requires results from the previous refinement stages.  Even
+though the number of instructions required for a precise result may be relatively 
+low, the latency for the complete calculation is probably very high.
+
+\par How can you take advantage of estimates using RWMath?
+
+RWMath has implemented some functions using both precise and estimated
+routines.  By calling a specific function, you can trade precision for
+performance.  A good example is the normalize functions.
+
+The function comes in three versions:
+    - \c NormalizeEstimate()
+    - \c NormalizeFast()
+    - \c Normalize()
+
+\c NormalizeEstimate uses an estimate instruction to estimate the reciprocal
+square root of the vectors magnitude.  It is the fastest and least precise
+normalize function.
+
+\c NormalizeFast is similar to NormalizeEstimate, but it has an additional
+refinement step that improves the accuracy of the reciprocal square root.  It
+is relatively fast, and offers fairly good precision.  It is a reasonable trade
+off between speed and precision.
+
+\c Normalize has two refinement steps.  This gives a very accurate result, but
+also takes longer to compute.  This function is the most precise, and slowest
+function available.
+
+There are several other functions that follow the same naming scheme.  The
+"estimate" version is always the fastest choice, "fast" is fast and reasonably
+precise, and the standard function is slowest but offers the best precision.
+If you are preforming an operation that does not require full precision you may
+want to consider using an estimate function.
+
+\par What functions can be estimated?
+
+Most functions are always full precision, because there is no advantage to
+computing an estimate.  For example there is no instructions to estimate the
+sum of two vectors.  The full precision addition instruction is the fastest way
+to add them.
+
+Most vector units have instructions for estimating reciprocals and reciprocal
+square roots.  So any math operation that contains these functions could
+probably be estimated.  Functions that are calculated as a series expansion
+(e.g. sin, cos) could also be estimated by calculating fewer terms in the
+expansion.
+
+The math library does not have estimate versions of all possible functions.
+However, if you think a function could be estimated and it would greatly
+improve your performance, get in touch with the math team.  We may consider
+adding an estimate version of the function to our library.
+
+\par A word of warning
+
+Some functions names indicate they are an "estimate" version of the function.
+However, in reality they may not be optimized yet to take advantage of
+estimates.  For example, most estimated FPU have been implemented for
+compatibility with the VPU functions and are actually full precision.  However,
+in the future these functions may be modified to use estimates.  So, if your
+code relies on the precision of the results, you should probably avoid using
+estimate functions (even if they seem adequate for a given release).
+
+Also, the precision of the results are highly platform dependent.  For example,
+one platform may perform a full precision calculation because there are no
+estimate instructions available.  However, another platform that has an estimate
+instruction could produce a much less precise calculation.
+
+*/

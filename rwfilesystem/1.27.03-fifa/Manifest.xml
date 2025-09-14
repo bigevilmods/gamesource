@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <manifestVersion>2</manifestVersion>
+  <changes>
+      Changes are detailed in the package the &lt;a href="http://packages.ea.com/_layouts/eapackageserver/entry.aspx/rwfilesystem-1.27.03/rwfilesystem/1.27.03/doc/html/changelog.html"&gt;changelog&lt;/a&gt; file.
+  </changes>
+  <status>Official</status>
+  <statusComment></statusComment>
+  <frameworkVersion>2</frameworkVersion>
+  <buildable>true</buildable>
+  <isSupported>true</isSupported>
+  <contactEmail>EATechCoreTeam@ea.com</contactEmail>
+  <contactName>EATech</contactName>
+  <owningTeam>Core</owningTeam>
+  <tags>eatech</tags>
+  <licenseDetails />
+  <sourceLocation>//EAOS/UTF/RL/UTFKernel/rwfilesystem/1.27.03</sourceLocation>
+  <driftVersion>1.27.03</driftVersion>
+  <relationship>
+    <builds>
+      <build name="solution" supported="true" />
+      <build name="nant" supported="true" targets="build test-build example-build" />
+      <build name="test" supported="false" targets="" />
+      <build name="xcode" supported="true" targets="projectize xcodebuild" />
+    </builds>
+    <platforms>
+      <platform name="pc" build="Supported" test="NotSupported" />
+      <platform name="pc64" build="Supported" test="NotSupported" />
+      <platform name="xenon" build="Supported" test="NotSupported" />
+      <platform name="ps3" build="Supported" test="NotSupported" />
+      <platform name="unix" build="Supported" test="NotSupported" />
+      <platform name="unix64" build="Supported" test="NotSupported" />
+      <platform name="osx" build="Supported" test="NotSupported" />
+      <platform name="iphone" build="Supported" test="NotSupported" />
+      <platform name="iphonesim" build="Supported" test="NotSupported" />
+      <platform name="android" build="Supported" test="NotSupported" />
+      <platform name="capilano" build="Supported" test="Supported" />
+      <platform name="kettle" build="Supported" test="Supported" />
+    </platforms>
+  </relationship>
+  <versionName>1.27.03-fifa</versionName>
+</package>

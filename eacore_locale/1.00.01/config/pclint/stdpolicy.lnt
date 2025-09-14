@@ -1,0 +1,160 @@
+//******************************************************************************************
+//
+// Copyright (c) 2004 Electronic Arts Inc.
+//
+//******************************************************************************************
+
+// These are the EACore global Lint rules. There are separate rule files for each module
+// so module-specific exceptions go in there.
+//
+// Do not change this file unless you know what you are doing! Check with Stefan before
+// making any changes.
+
+
+-w4			// All messages on to start
+-t4			// Set tab size to 4 columns
+-wlib(0)	// No warnings for library files
+
++libclass(angle,foreign)	// treat files included with angle brackets or foreign
+							// directories as library files (i.e. no warnings) files from 
+-libdir(*\eacore\*)			// treat any include files from the eacore path as non-library
+							// files (i.e. generate warnings)
+
++fcp		// force C++ processing
+-fdh		// do not append a .h to header names
++fll		// enable long long
+
+-v			// Suppress verbose options
+-h1			// Limit message height (so it doesn't include the source line)
+-width(0,4)	// Let the line go as long as necessary (0 == no limit)
+
+// error format similar to MSC
+// Note that %c can also be used to specify column
+-"format=%f(%l): warning %t %n: %m"
+
+-e900		// Suppress the number or warnings summary line
+
++linebuf	// Double the size of the line buffer (default is 600 bytes)
+
+au-sm.lnt	// Pull in Scott Meyer's messages explicitly
+au-ds.lnt	// Pull in Dan Scott's messages explicitly
+
+// force the version to a low number to avoid eabase thinking it
+// is c99 compliant and try to load stdint.h
+-d__STDC_VERSION__=1L
+
+// We want these globally disabled
+
+// This tells Pc-Lint that the Abort and AssertFailed functions will exit so that code
+// below this will have correct value tracking
+-function(exit, EA::Core::Debug::Manager::Abort)
+-function(exit, EA::Core::Debug::Manager::AssertFailed)
+
+// these functions behave like printf, the number is the parameter that is the format
+-printf(1, EA::Core::Debug::Channel::Print)
+-printf(2, EA::Core::Std::Sprintf)
+-printf(2, EA::Core::Debug::Manager::Print)
+-printf(3, EA::Core::Std::Snprintf);
+
+// virtual function with default argument, API backwards compatibility issue
+-esym(1735, PPMalloc::DumpHeap) 
+
+//-strong(AcJXB, bool8_t)		// EABase redefines bool as bool8_t
+
+-esym(40, __FUNCTION__)		// lint doesn't know this exists
+
+-e534			// Ignoring return value of function ' '
+-e537			// Repeated include header
+-e641			// Converting enum ' ' to int
+-e655			// Bit-wise operation uses (compatible) enum's
+-e656			// Arithmetic operation uses (compatible) enum's
+-e708			// Union initialization
+-e715			// Symbol ' ' not referenced
+-e740			// Unusual pointer cast (incompatible indirect types)
+-e763			// Redundant declaration for symbol ' '
+-e788			// Enum constant ' ' not used within defaulted switch
+-emacro(910, NULL)	// Implicit conversion (initialization) from 0 to pointer. NULL is OK.
+-e911			// Implicit expression promotion from enum to int
+-e926			// cast from char * to char * is OK
+-e929			// cast from pointer to pointer
+-e930			// cast from enum to enum
+-e935			// int within struct
+-e946			// Relational or subtract operator applied to pointers
+-e947			// Substract operator applies to pointers
+-e952			// Parameter ' ' could be declared const
+-e957			// Function ' ' defined without a prototype in scope
+-e958			// Padding of n byte(s) is required to align member on n byte boundary
+-e959			// Nominal struct size ( ) is not an even multiple of the maximum member alignment (n bytes)
+-esym(961, 18)	// Violates MIRSA Advisory Rule 18, numerical constant requires suffix
+-esym(960, 33)	// Violates MIRSA Required Rule 33, side effects on right hand of logical operator: ' '
+-esym(961, 44)	// Violates MIRSA Advisory Rule 44, redundant explicit casting
+-esym(960, 54)	// Violates MIRSA Required Rule 54, null statement not on line by itself
+-esym(960, 58)	// Violates MIRSA Required Rule 58, break used outside of a switch
+-esym(960, 59)	// Violates MIRSA Required Rule 59, left brace expected for if, else, for, do and while
+-esym(961, 60)	// Violates MIRSA Advisory Rule 60, no 'else' at end of 'if ... else if' chain
+-esym(960, 69)	// Violates MIRSA Required Rule 69, function has variable number of arguments
+-esym(960, 73)	// Violates MIRSA Required Rule 73, either all parameters or no parameters should have identifiers
+-esym(961, 92)	// Violates MIRSA Advisory Rule 92, use of '#undef' is discouraged
+-esym(960, 98)	// Violates MIRSA Required Rule 98, multiple use of '#/##' operators in macro definition
+-emacro(961, UINT64_MAX)	// this eabase macro generates operator precedence warnings
+-e964			// header file ' ' not directly used in module ' '
+-e966			// Indirectly included header file ' ' not directly used in module ' '
+-e970			// Use of modifier of type ' ' outside of a typedef [MISRA Rule 13]
+-e971			// Use of 'char' without 'signed' or 'unsigned'
+-e1531			// Operator delete does not have to check against sizeof(class)
+-e1532			// Operator delete does not have to check argument for NULL, the allocator implementation will do this
+-e1551			// Function may throw exception '...' in destructor ' '
+-e1704			// Constructor ' ' has private access specification
+-e1712			// Default constructor not defined for class ' '
+-e1714			// Member function 'x' not referenced
+-e1717			// Empty prototype for function declaration, assuming '(void)'
+-e1727			// Inline ' ' not previously declared inline
+-esym(1735, PPMalloc::Free) 	// virtual function has default argument, ICoreAllocator dictates this
+-e1737			// class operator new can override global operator new
+-e1763			// Function marked as const indirectly modifies class...this will affect most accessors
+-e1774                  // Could use dynamic_cast to downcast polymorphic type
+-e1901			// Creating temporary of type ' '
+-e1911			// Implicit call of constructor ' '
+-e1914			// Default constructors do not have to be referenced
+-e1917			// Empty prototype for definition, assuming '(void)'
+-e1918			// Empty prototype for member declaration, assuming '(void)'
+-e1921			// Operator delete does not have to check against sizeof(class)
+-e1922			// Operator delete does not have to check argument for NULL, the Allocator implementation will do this
+-e1923			// Macro ' ' could become const variable (Unfortunately, this flags conditional
+				// compilation options so we let a rule in CodeWizard flag more limited cases of this)
+-e1932			// Base class ' ' is not abstract (we disable this but have a more relaxed version of
+				// this rule in CodeWizard to require base classes be non-instantiable)
+-e1933			// Call to unqualified virtual function ' ' from non-static member function
+-e1961			// Virtual member function ' ' could be made const
+
+// We should probably look at at least some of these
+//-e545			// Suspicious use of &
+//-e676			// Possibly negative subscript () in operator ' '
+//-e731			// Boolean argument to equal/not equal
+-e912			// Implicit binary conversion from ' ' to ' ' 
+-e915			// Implicit conversion (context) from type to type
+-e917			// Inplicit conversion (context) from type to type
+-e919			// Implicit conversion (context) from type to type (lower precision to higher precision)
+-e921			// Cast from one integral type to another
+-e922			// Cast to or from one of the float types
+-e925			// Cast from pointer to pointer
+-e927			// Cast from char (or unsigned char) pointer to non-char pointer
+-e953			// Variable ' ' (location) could be declared const
+//-e954			// Pointer variable ' ' (location) could be declared as pointing to const
+//-e1540			// Pointer member ' ' neither freed nor zero'ed by destructor
+//-e1740			// Pointer member ' ' not directly freed or zero'ed by destructor
+
+// C-style casts
+-emacro(*, va_start)
+-esym(*, vsprintf)
+-emacro(*, va_end)
+-emacro(*, atoi)
+
+// This warning is good to keep enabled since it points out potential thread-safety issues.
+// These variables are OK as globals and their access is either const or made thread-safe
+-esym(956, EA::Core::Debug::SYSTEMCHANNEL)
+-esym(956, EA::Core::Debug::ASSERTFORMAT)
+-esym(956, EA::Core::Xml::gEntities)
+-esym(956, EA::Core::Xml::gEntVals)
+-esym(956, EA::Core::Memory::gDefaultHeap)
+-esym(956, EA::Core::Memory::gDebugHeap)

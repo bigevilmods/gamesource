@@ -1,0 +1,21 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestRandom::UnitTestRandom()
+{
+
+}
+
+UnitTestRandom::~UnitTestRandom()
+{
+
+}
+
+void UnitTestRandom::Test()
+{
+
+}
+
+//#BLOCK
+

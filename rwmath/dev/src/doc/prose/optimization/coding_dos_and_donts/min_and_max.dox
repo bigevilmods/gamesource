@@ -1,0 +1,76 @@
+/*!
+\page p_min_and_max Min and Max
+
+\par Introduction
+
+As described previously, branches are very slow on next-gen hardware.  Scalar
+element accesses are also quite slow on the vector unit.  So, combining these
+two operations is going to result in poor performance.
+
+\par Example
+
+Here is a pattern that has been seen several times in client code.  Consider
+a simple bounding box class that has an API for adding points and updating the
+min and max bounds.
+
+\code
+
+class AABBox
+{
+public:
+    // Misc constructors and methods...
+
+    // Function to update the bounding box extents.
+	void AABBox::Update(rw::math::vpu::Vector4 &Point)
+	{
+		if(Point.GetX() < mMin.GetX())		mMin.SetX(Point.GetX());
+		if(Point.GetY() < mMin.GetY())		mMin.SetY(Point.GetY());
+		if(Point.GetZ() < mMin.GetZ())		mMin.SetZ(Point.GetZ());
+
+		if(Point.GetX() > mMax.GetX())		mMax.SetX(Point.GetX());
+		if(Point.GetY() > mMax.GetY())		mMax.SetY(Point.GetY());
+		if(Point.GetZ() > mMax.GetZ())		mMax.SetZ(Point.GetZ());
+
+	}
+
+private: 
+    Vector3 mMin;
+    Vector3 mMax;
+};
+
+\endcode
+
+This code is slow for a number of reasons.  First, it has 6 conditional
+statements.  That alone makes the code slow.  In addition to the conditions,
+the code updates single elements in a vector.  Updating an element
+involves permuting the vector to modify a single component while
+leaving the other elements unmodified.
+
+The code can be made much faster and simpler using higher level functions.
+Really, all this code is trying to do is compute a minimum/maximum.
+
+\code
+    
+    // Function to update the bounding box extents.
+	void AABBox::Update(rw::math::vpu::Vector4 &Point)
+	{
+        mMin = Min( Point, mMin );
+        mMax = Max( Point, mMax );
+	}
+
+\endcode
+
+On an architecture with VMX, a vector min/max is a single instruction.  So, a
+single instruction is able to do 4 comparisons (3 in this case) and update all
+the vector's elements.  Other architectures also have efficient ways to perform
+vector min/max's.
+
+Not only is the new code much faster (a synthetic benchmark was ~58x faster on
+PS3 PPU!), it is also much shorter and easier to read.
+
+It is a good idea to take a look at your code to find areas where you can change
+comparison operations to min/max.  The math library also provides clamp routines
+to efficiently clamp a vector/scalar between two values.
+
+
+*/

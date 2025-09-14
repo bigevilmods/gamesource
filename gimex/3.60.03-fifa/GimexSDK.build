@@ -1,0 +1,68 @@
+<project default="install">
+
+    <package name="GimexSDK" targetversion="3.60.03"/>
+
+    <target name="install">
+        <include file="scripts/Initialize.xml"/>
+    </target>
+
+    <target name="fastpackage">
+        <echo message="GimexSDK package builder ${package.targetversion}"/>
+
+        <delete dir="build"/>
+
+        <exec program='7z.exe' workingdir="../../">
+            <arg value=' a -tzip -mx=9 -mfb=200 -r ${package.name}-${package.targetversion}.zip ${package.name}\${package.targetversion}'/>
+        </exec>
+
+        <mkdir dir="build"/>
+        <move file="../../${package.name}-${package.targetversion}.zip" todir="build"/>
+
+    </target>
+
+	<createtask name="create-md-lib">
+		<parameters>
+			<option name="library" value="Required" />
+		</parameters>
+		<code>
+
+			<!-- create the output directories for the objects -->
+			<mkdir dir="${package.dir}\source\${create-md-lib.library}\md" />
+			<mkdir dir="${package.dir}\source\${create-md-lib.library}\md\objd" />
+			<mkdir dir="${package.dir}\source\${create-md-lib.library}\md\objz" />
+
+			<!-- build the obj files -->
+			<exec program="${package.dir}\source\${create-md-lib.library}\bld.bat"
+                  commandline="md"
+                  workingdir="${package.dir}\source\${create-md-lib.library}">
+				<env>
+					<option name="ICL" value="CL" />
+				</env>
+			</exec>
+
+			<!-- The next two exec's build the .lib files.  I tried the lib task, but it 
+                 wouldn't work for me for some reason.  This is less code anyways, and 
+                 you already need CL in your path because of the above ... so, this shouldn't
+                 be a big deal.
+			-->
+
+			<!-- call the librarian to put together the mdd lib (debug) -->
+			<exec program="lib" commandline="/out:lib\${create-md-lib.library}-mdd.lib source\${create-md-lib.library}\md\objd\*.obj" 
+                  workingdir="${package.dir}" />
+
+			<!-- call the library to put together the md lib (opt) -->
+			<exec program="lib" commandline="/out:lib\${create-md-lib.library}-md.lib source\${create-md-lib.library}\md\objz\*.obj" 
+                  workingdir="${package.dir}" />
+		</code>
+	</createtask>
+
+	<!-- Builds the md and mdd static libraries that are required if you wish to statically
+         link in a project that must compile against multi-threaded dll stdc library.
+      -->
+	<target name="build-md-libs">
+		<task name="create-md-lib" library="codex" />
+		<task name="create-md-lib" library="crapi" />
+		<task name="create-md-lib" library="gfilter" />
+	</target>
+
+</project>

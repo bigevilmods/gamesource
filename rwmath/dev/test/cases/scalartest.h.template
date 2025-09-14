@@ -1,0 +1,36 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#include "scalar.h"
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestScalar :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestScalar();
+    virtual ~UnitTestScalar();
+    void Test();
+
+//#BLOCK
+
+private:
+
+    float_test_type fOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type xArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type yArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type zArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    int32_t iOutArray[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+};
+
+
+

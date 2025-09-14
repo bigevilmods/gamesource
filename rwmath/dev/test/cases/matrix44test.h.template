@@ -1,0 +1,49 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestMatrix44 :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestMatrix44();
+    virtual ~UnitTestMatrix44();
+    void Test();
+
+//#BLOCK
+
+private:
+
+    EXPLICIT_NAMESPACE(Matrix44) m44_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Matrix44) m44_function_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Matrix44) m44_operator_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];  
+    float_test_type retValueFloat;
+    float_test_type x_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type y_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type z_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type w_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) q_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector4) v4_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Matrix44) matResult;
+    EXPLICIT_NAMESPACE(Matrix44) matResult1;
+    EXPLICIT_NAMESPACE(Matrix44) matResult2;
+    EXPLICIT_NAMESPACE(Matrix44) matResult3;
+    EXPLICIT_NAMESPACE(Matrix44) matResult4;
+    EXPLICIT_NAMESPACE(Matrix44) matResult5;
+    EXPLICIT_NAMESPACE(Matrix44) matResult6;
+    EXPLICIT_NAMESPACE(Matrix44) matResult7;
+    EXPLICIT_NAMESPACE(Matrix44) matResult8;
+    EXPLICIT_NAMESPACE(Vector3)  vec3Result;
+    EXPLICIT_NAMESPACE(Vector4)  vec4Result;
+    bool     retValueBool;
+
+};
+

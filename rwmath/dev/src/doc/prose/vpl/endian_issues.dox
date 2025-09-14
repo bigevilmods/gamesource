@@ -1,0 +1,38 @@
+/*!
+\page p_vpl_endian_issues Endian Issues
+
+Endianness is always a portability concern, and it remains a concern when
+porting vector code.  The VPL has been written so that it should be possible
+to deal with endian differences (when they exist) in a fairly straight forward
+manner.
+
+When operating on 16bit integers, 32bit integers, and floating point values,
+the VPL assumes that the vector elements have the same endianness as the host
+platform.  Native vector operations naturally use this ordering, and any
+operations that are simulated also use this ordering for consistency.
+
+\par Potential Issues
+
+Normally endian issues won't impact code written with the VPL.  However, there may
+be situations where there is an impact.  For example, \c VecPermute allows the
+individual bytes of a vector to be permuted.  If you are trying to permute specific bytes
+in an element, you may need to take endianness into consideration.  For example
+the most significant byte of the first 32bit integer element of a vector may be
+located at index 0 or index 3 depending on the systems endianness.  So, if
+operations are trying to access certain byte elements you will may need to have
+different permution constants depending on the platform.
+Often the same permution constant can be used across platforms.  For example,
+if a permution constant is moving an entire 32bit/16bit element, the endianness
+should not affect the result since endianness is preserved.
+
+Shift operations may also be somewhat confusing.  Shifting word elements left
+will perform a shift such that the word is shifted left.  For example, a shift of
+1 to the left would multiply elements by 2.  However, if you were to look at the data
+stored in a vector as a stream of bytes, it may actually appear to be a right shift since
+bits move from low memory addresses to high memory addresses.  On the other hand, shifting
+an entire vector (not elements within a vector) to the left will always shift
+data to lower memory addresses, and shifting data to the right will always
+shift data to higher memory addresses.  This should make it easier to write
+cross platform code, but it may be a bit confusing initially.
+
+*/

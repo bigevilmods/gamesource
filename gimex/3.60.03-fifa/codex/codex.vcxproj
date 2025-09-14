@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5728DE05-6585-4E2C-83BD-AAF12B62FCA7}</ProjectGuid>
+    <RootNamespace>codex</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;.\zip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;DEBUG;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(ProjectName).lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\include;.\zip;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;PC;GIMEXLOAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>false</ExceptionHandling>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\huffabout.cpp" />
+    <ClCompile Include="cmn\huffdecode.cpp" />
+    <ClCompile Include="cmn\huffencode.cpp" />
+    <ClCompile Include="cmn\refabout.cpp" />
+    <ClCompile Include="cmn\refdecode.cpp" />
+    <ClCompile Include="cmn\refencode.cpp" />
+    <ClCompile Include="cmn\dxtabout.cpp" />
+    <ClCompile Include="cmn\dxtdecode.cpp" />
+    <ClCompile Include="cmn\dxtencode.cpp" />
+    <ClCompile Include="zip\adler32.c" />
+    <ClCompile Include="zip\crc32.c" />
+    <ClCompile Include="zip\deflate.c" />
+    <ClCompile Include="zip\infblock.c" />
+    <ClCompile Include="zip\infcodes.c" />
+    <ClCompile Include="zip\inffast.c" />
+    <ClCompile Include="zip\inflate.c" />
+    <ClCompile Include="zip\inftrees.c" />
+    <ClCompile Include="zip\infutil.c" />
+    <ClCompile Include="zip\trees.c" />
+    <ClCompile Include="zip\zipabout.cpp" />
+    <ClCompile Include="zip\zipdecode.cpp" />
+    <ClCompile Include="zip\zipencode.cpp" />
+    <ClCompile Include="zip\zutil.c" />
+    <ClCompile Include="cmn\s3tcabout.cpp" />
+    <ClCompile Include="cmn\s3tcencode.cpp" />
+    <ClCompile Include="cmn\rifabout.cpp" />
+    <ClCompile Include="cmn\rifdecode.cpp" />
+    <ClCompile Include="cmn\rifencode.cpp" />
+    <ClCompile Include="cmn\btreeabout.cpp" />
+    <ClCompile Include="cmn\btreedecode.cpp" />
+    <ClCompile Include="cmn\btreeencode.cpp" />
+    <ClCompile Include="cmn\nilabout.cpp" />
+    <ClCompile Include="cmn\nildecode.cpp" />
+    <ClCompile Include="cmn\nilencode.cpp" />
+    <ClCompile Include="cmn\jlzabout.cpp" />
+    <ClCompile Include="cmn\jlzdecode.cpp" />
+    <ClCompile Include="cmn\jlzencode.cpp" />
+    <ClCompile Include="cmn\qopenlib.cpp" />
+    <ClCompile Include="cmn\qopentbl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmn\huffcodex.h" />
+    <ClInclude Include="cmn\refcodex.h" />
+    <ClInclude Include="cmn\dxtcodex.h" />
+    <ClInclude Include="cmn\zipcodex.h" />
+    <ClInclude Include="cmn\s3tccodex.h" />
+    <ClInclude Include="cmn\rifcodex.h" />
+    <ClInclude Include="cmn\btreecodex.h" />
+    <ClInclude Include="cmn\nilcodex.h" />
+    <ClInclude Include="cmn\jlzcodex.h" />
+    <ClInclude Include="cmn\qopen.h" />
+    <ClInclude Include="..\include\codex.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

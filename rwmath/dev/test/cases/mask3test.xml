@@ -1,0 +1,573 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestMask3" HEADER="mask3test.h" SOURCE="mask3test.inc" RWGENERICHEADER="rw/math/fpu/mask3.h rw/math/fpu/mask3_operation.h" RWHOSTHEADER="rw/math/vpu/mask3.h rw/math/vpu/mask3_operation.h" RWOPTIMALHEADER="rw/math/optimal/mask3.h rw/math/optimal/mask3_operation.h" GENERIC="true" HOST="true" OPTIMAL="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="construct_from_bool">
+      <![CDATA[
+
+        SetFunctionName("Mask3(bool, bool, bool)");
+
+        for( int i=0;i<8;i++)
+        {
+            bool x = (i & (1<<0)) ? true : false;
+            bool y = (i & (1<<1)) ? true : false;
+            bool z = (i & (1<<2)) ? true : false;
+            Mask3 mask(x,y,z);
+            Validate(
+                (mask.GetX().GetBool() == x) &&
+                (mask.GetY().GetBool() == y) &&
+                (mask.GetZ().GetBool() == z)
+            );
+        }
+        
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_uint32">
+      <![CDATA[
+#ifdef HOST_TESTING
+        SetFunctionName("Mask3(uint32_t, uint32_t, uint32_t)");
+
+        uint32_t values[] = { 1, 2, 3 };
+        Mask3 mask(values[0], values[1], values[2]);
+        
+        Validate( 
+            mask.GetX().ToUInt32() == values[0] &&
+            mask.GetY().ToUInt32() == values[1] &&
+            mask.GetZ().ToUInt32() == values[2]
+        );
+#endif
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_single_maskscalar">
+      <![CDATA[
+        SetFunctionName("Mask3(MaskScalar)");
+
+        bool boolArray[] = {true, false};
+        bool success = true;
+        for( int i=0;i<2;i++)
+        {
+            bool testValue = boolArray[i];
+            Mask3 mask(MaskScalar((bool)testValue));
+            success &=
+                (mask.GetX().GetBool() == testValue) &&
+                (mask.GetY().GetBool() == testValue) &&
+                (mask.GetZ().GetBool() == testValue);
+        }
+        Validate(success);
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_maskscalar">
+      <![CDATA[
+        SetFunctionName("Mask3(MaskScalar, MaskScalar, MaskScalar)");
+
+        for( int i=0;i<8;i++)
+        {
+            MaskScalar x( (i & (1<<0)) ? true : false );
+            MaskScalar y( (i & (1<<1)) ? true : false );
+            MaskScalar z( (i & (1<<2)) ? true : false );
+            Mask3 mask(x,y,z);
+            Validate(
+                (mask.GetX().GetBool() == x.GetBool()) &&
+                (mask.GetY().GetBool() == y.GetBool()) &&
+                (mask.GetZ().GetBool() == z.GetBool())
+            );
+        }
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_mask">
+      <![CDATA[
+
+        SetFunctionName("Mask3(const Mask3 &)");
+
+        Mask3 maskTemp(true, false, true);
+        Mask3 mask(maskTemp);
+        
+        Validate( 
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="assignment_operator">
+      <![CDATA[
+
+        SetFunctionName("Mask3& operator =(const Mask3&)");
+
+        Mask3 maskTemp(true, false, true);
+        Mask3 mask;
+        mask = maskTemp;
+        
+        Validate( 
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_float">
+      <![CDATA[
+
+#ifdef GENERIC_TESTING
+        SetFunctionName("Mask3(float_test_type)");
+
+        Mask3 mask((float_test_type)20.0f,
+                        (float_test_type)-7.0f,
+                        (float_test_type)0.0f);
+        
+        Validate( 
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="construct_from_vectorintrinsic">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+        SetFunctionName("Mask3(VectorIntrinsic)");
+
+        Mask3 maskTemp(true, false, true);
+        Mask3 mask(maskTemp.mV);
+        
+        Validate( 
+             mask.GetX().GetBool() &&
+            !mask.GetY().GetBool() &&
+             mask.GetZ().GetBool()
+        );
+#endif
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="GetX">
+      <![CDATA[
+
+        SetFunctionName("Mask3::GetX()");
+
+        Mask3 maskTrue(true, false, false);
+        Mask3 maskFalse(false, true, true);
+        
+        Validate( 
+            maskTrue.GetX().GetBool() &&
+           !maskFalse.GetX().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="GetY">
+      <![CDATA[
+
+        SetFunctionName("Mask3::GetY()");
+
+        Mask3 maskTrue(false, true, false);
+        Mask3 maskFalse(true, false, true);
+        
+        Validate( 
+            maskTrue.GetY().GetBool() &&
+           !maskFalse.GetY().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="GetZ">
+      <![CDATA[
+
+        SetFunctionName("Mask3::GetZ()");
+
+        Mask3 maskTrue(false, false, true);
+        Mask3 maskFalse(true, true, false);
+        
+        Validate( 
+            maskTrue.GetZ().GetBool() &&
+           !maskFalse.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="SetX">
+      <![CDATA[
+
+        SetFunctionName("Mask3::SetX(MaskScalar)");
+
+        Mask3 mask(false, false, false);
+
+        mask.SetX(MaskScalar(true));
+        bool result =  mask.GetX().GetBool() &&
+                      !mask.GetY().GetBool() &&
+                      !mask.GetZ().GetBool();
+
+        mask.SetX(MaskScalar(false));
+            result &= !mask.GetX().GetBool() &&
+                      !mask.GetY().GetBool() &&
+                      !mask.GetZ().GetBool();
+        
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="SetY">
+      <![CDATA[
+
+        SetFunctionName("Mask3::SetY(MaskScalar)");
+
+        Mask3 mask(false, false, false);
+
+        mask.SetY(MaskScalar(true));
+        bool result = !mask.GetX().GetBool() &&
+                       mask.GetY().GetBool() &&
+                      !mask.GetZ().GetBool();
+
+        mask.SetY(MaskScalar(false));
+            result &= !mask.GetX().GetBool() &&
+                      !mask.GetY().GetBool() &&
+                      !mask.GetZ().GetBool();
+        
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="SetZ">
+      <![CDATA[
+
+        SetFunctionName("Mask3::SetZ(MaskScalar)");
+
+        Mask3 mask(false, false, false);
+
+        mask.SetZ(MaskScalar(true));
+        bool result = !mask.GetX().GetBool() &&
+                      !mask.GetY().GetBool() &&
+                       mask.GetZ().GetBool();
+
+        mask.SetZ(MaskScalar(false));
+            result &= !mask.GetX().GetBool() &&
+                      !mask.GetY().GetBool() &&
+                      !mask.GetZ().GetBool();
+        
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_not">
+      <![CDATA[
+
+        SetFunctionName("Not(Mask3)");
+
+        Mask3 mask(true, false, true);
+        Mask3 result(Not(mask));
+        
+        Validate( 
+            !result.GetX().GetBool() &&
+             result.GetY().GetBool() &&
+            !result.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_and">
+      <![CDATA[
+
+        SetFunctionName("And(Mask3)");
+
+        Mask3 maskA(false, false, true);
+        Mask3 maskB(false, true, false);
+        Mask3 maskC(true, true, true);
+        Mask3 result1(And(maskA, maskB));
+        Mask3 result2(And(maskC, maskB));
+        
+        Validate( 
+            (!result1.GetX().GetBool()) &&
+            (!result1.GetY().GetBool()) &&
+            (!result1.GetZ().GetBool()) &&
+            ( result2.GetY().GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_or">
+      <![CDATA[
+
+        SetFunctionName("Or(Mask3)");
+
+        Mask3 maskA(false, false, true);
+        Mask3 maskB(false, true, false);
+        Mask3 maskC(true, true, true);
+        Mask3 result1(Or(maskA, maskB));
+        Mask3 result2(Or(maskC, maskB));
+        
+        Validate( 
+            (!result1.GetX().GetBool()) &&
+            ( result1.GetY().GetBool()) &&
+            ( result1.GetZ().GetBool()) &&
+            ( result2.GetY().GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="boolean_xor">
+      <![CDATA[
+
+        SetFunctionName("Xor(Mask3)");
+
+        Mask3 maskA(false, false, true);
+        Mask3 maskB(false, true, false);
+        Mask3 maskC(true, true, true);
+        Mask3 result1(Xor(maskA, maskB));
+        Mask3 result2(Xor(maskC, maskB));
+        
+        Validate( 
+            (!result1.GetX().GetBool()) &&
+            ( result1.GetY().GetBool()) &&
+            ( result1.GetZ().GetBool()) &&
+            (!result2.GetY().GetBool())
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compequal">
+      <![CDATA[
+        SetFunctionName("CompEqual(Mask3)");
+
+        Mask3 maskA(false, false, true);
+        Mask3 maskB(false, true, false);
+        Mask3 maskC(true, true, true);
+        Mask3 result1(CompEqual(maskA, maskB));
+        Mask3 result2(CompEqual(maskC, maskB));
+        
+        Validate( 
+            ( result1.GetX().GetBool()) &&
+            (!result1.GetY().GetBool()) &&
+            (!result1.GetZ().GetBool()) &&
+            ( result2.GetY().GetBool())
+        );
+      ]]>
+      </TEST>
+
+      <TEST NAME="compnotequal">
+      <![CDATA[
+        SetFunctionName("CompNotEqual(Mask3)");
+
+        Mask3 maskA(false, false, true);
+        Mask3 maskB(false, true, false);
+        Mask3 maskC(true, true, true);
+        Mask3 result1(CompNotEqual(maskA, maskB));
+        Mask3 result2(CompNotEqual(maskC, maskB));
+        
+        Validate( 
+            (!result1.GetX().GetBool()) &&
+            ( result1.GetY().GetBool()) &&
+            ( result1.GetZ().GetBool()) &&
+            (!result2.GetY().GetBool())
+        );
+      ]]>
+      </TEST>
+
+      <TEST NAME="companytrue">
+      <![CDATA[
+
+        SetFunctionName("CompAnyTrue");
+
+        bool result = true;
+        for( int i=0;i<8;i++)
+        {
+            bool x = (i & (1<<0)) ? true : false;
+            bool y = (i & (1<<1)) ? true : false;
+            bool z = (i & (1<<2)) ? true : false;
+            Mask3 mask(x,y,z);
+            bool isAnyTrue = CompAnyTrue(mask).GetBool();
+            bool ref = (i!=0);
+            result &= (isAnyTrue == ref);
+        }
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="compalltrue">
+      <![CDATA[
+
+        SetFunctionName("CompAllTrue");
+
+        bool result = true;
+        for( int i=0;i<8;i++)
+        {
+            bool x = (i & (1<<0)) ? true : false;
+            bool y = (i & (1<<1)) ? true : false;
+            bool z = (i & (1<<2)) ? true : false;
+            Mask3 mask(x,y,z);
+            bool isAnyTrue = CompAllTrue(mask).GetBool();
+            bool ref = (i==7);
+            result &= (isAnyTrue == ref);
+        }
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="settrue">
+      <![CDATA[
+
+        SetFunctionName("SetTrue()");
+
+        Mask3 mask3;
+        mask3.SetTrue();
+        
+        Validate( mask3.GetX().GetBool() &&
+                  mask3.GetY().GetBool() &&
+                  mask3.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="setfalse">
+      <![CDATA[
+
+        SetFunctionName("SetFalse()");
+
+        Mask3 mask3;
+        mask3.SetFalse();
+        
+        Validate( !mask3.GetX().GetBool() &&
+                  !mask3.GetY().GetBool() &&
+                  !mask3.GetZ().GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 Select(MaskScalar mask, Mask3 a, Mask3 b)");
+        Mask3 v1(true, true, false);
+        Mask3 v2(true, false, true);
+
+        Mask3 result1 = Select( MaskScalar(true), v1, v2 );
+        Mask3 result2 = Select( MaskScalar(false), v1, v2 );
+        Validate(
+            CompAllTrue(CompEqual(result1, v1)).GetBool() &&
+            CompAllTrue(CompEqual(result2, v2)).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="select_mask3">
+      <![CDATA[
+      
+        SetFunctionName("Mask3 Select(Mask3 mask, Mask3 a, Mask3 b)");
+        Mask3 v1(true, true, false);
+        Mask3 v2(true, false, true);
+        Mask3 ref1(true, true, true);
+        Mask3 ref2(true, false, false);
+        Mask3 mask1(true, true, false);
+        Mask3 mask2(false, false, true);
+
+        Mask3 result1 = Select( mask1, v1, v2 );
+        Mask3 result2 = Select( mask2, v1, v2 );
+        Validate(
+            CompAllTrue(CompEqual(result1, ref1)).GetBool() &&
+            CompAllTrue(CompEqual(result2, ref2)).GetBool()
+        );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="rotateleft_mask3">
+        <![CDATA[
+        
+        SetFunctionName("Mask3 RotateLeft(Mask3 mask)");
+        
+#ifdef HOST_TESTING
+        uint32_t values[] = { 1, 2, 3 };
+        Mask3 m3(values[0], values[1], values[2]);
+        Mask3 mask = RotateLeft(m3);
+        Validate( 
+            mask.GetX().ToUInt32() == values[1] &&
+            mask.GetY().ToUInt32() == values[2] &&
+            mask.GetZ().ToUInt32() == values[0]
+        );
+#else
+        float_test_type values[] = { 1.0f, 2.0f, 3.0f };
+        Mask3 m3(values[0], values[1], values[2]);
+        Mask3 mask = RotateLeft(m3);
+        Validate( 
+            ((float_test_type)mask.GetX().mS) == values[1] &&
+            ((float_test_type)mask.GetY().mS) == values[2] &&
+            ((float_test_type)mask.GetZ().mS) == values[0]
+        );
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="rotateright_mask3">
+        <![CDATA[
+        
+        SetFunctionName("Mask3 RotateRight(Mask3 mask)");
+        
+#ifdef HOST_TESTING
+        uint32_t values[] = { 1, 2, 3 };
+        Mask3 m3(values[0], values[1], values[2]);
+        Mask3 mask = RotateRight(m3);
+        Validate( 
+            mask.GetX().ToUInt32() == values[2] &&
+            mask.GetY().ToUInt32() == values[0] &&
+            mask.GetZ().ToUInt32() == values[1]
+        );
+#else
+        float_test_type values[] = { 1.0f, 2.0f, 3.0f };
+        Mask3 m3(values[0], values[1], values[2]);
+        Mask3 mask = RotateRight(m3);
+        Validate( 
+            ((float_test_type)mask.GetX().mS) == values[2] &&
+            ((float_test_type)mask.GetY().mS) == values[0] &&
+            ((float_test_type)mask.GetZ().mS) == values[1]
+        );
+#endif
+
+      ]]>
+      </TEST>
+      
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

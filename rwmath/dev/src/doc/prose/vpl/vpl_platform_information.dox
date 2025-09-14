@@ -1,0 +1,44 @@
+/*!
+\page p_vpl_platform_information VPL Platform Information
+
+At this time, the VPL officially supports the following platforms:
+- PC
+- Xbox 360
+- PS3 PPU and SPU
+- Wii
+
+
+\section s_vpl_platform_defines Platform "aliases"
+
+The headers may refer to the various platforms using other aliases.  Here
+are the aliases you may see.
+
+\par SSE
+SSE is used to refer to both the PC and the Xbox, since both support SSE operations.
+
+\par SSE2
+SSE2 is used to refer to PC. It actually also implies SSE (PC). It provides extra set of 
+floating point and integer instructions that SSE doesn't support.
+
+\par VMX
+VMX is used to refer to both the Xbox 360 and the PS3 PPU.  It actually gets
+used to describe operations that are supported on both platforms, and may include
+operations that standard VMX does not support.  For example, both the 360 and the PPU
+support the \c lvlx instruction even though standard VMX does not.  So, just think of
+this alias as referring to the Xbox and the PS3 PPU (not necessarily standard VMX).
+
+\par Broadway
+Broadway refers to the CPU in the Wii.  In theory, all the VPL code that
+supports the Wii should also support the GameCube.  So, this alias is used to
+denote either platform.  However, at this time, RWMath doesn't currently
+support the GameCube.
+
+\section s_vpl_platform_support Platform Support
+
+Unlike the higher level C++ API's for math, the VPL does not attempt to implement all operations
+efficiently across all platforms.  Instead, the VPL exposes common operations that can be implemented
+efficiently.  (Inefficient simulated code may be optionally compiled.)
+See \ref p_vpl_api_support_docs for more information regarding function support on each platform.
+
+*/
+

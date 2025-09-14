@@ -1,0 +1,41 @@
+/*!
+\page p_casting_between_math_types Casting Between Math Types
+
+In general, you should avoid casting (C style and reinterpret_cast's) between math types.  Casting should be
+avoided for several reasons:
+-# Casting my introduce aliasing bugs.  See \ref p_aliasing "aliasing documentation" for more information.
+-# Casting my not be safe, because the data layout of two classes could be different.
+-# Casting between types assumes a specific data layout.  Any changes to class members, alignment, or padding
+   could cause your code to break if it casts between types.
+
+In general, casting makes an implicit assumption that the two types are
+compatible (at some level).  This assumption may be invalid, or become invalid in
+the future.
+
+\par Example
+
+\code
+
+using namespace rw::math;
+vpu::Matrix44Affine myVPUMatrix(GetMatrix44Affine_Identity());
+fpu::Matrix44Affine myFPUMatrix = *reinterpret_cast<fpu::Matrix44Affine*>(&myVPUMatrix);
+
+\endcode
+
+This is an example of an illegal cast.  Using \c myFPUMatrix can fail in several ways.
+-# The VPU \c Matrix44Affine is actually 64 bytes in size (because it is
+   composed of 4 \c VectorIntrinsic types).  But, the FPU \c Matrix44Affine is only 48 bytes (12 floats).
+-# Accessing the vpu matrix through a fpu matrix pointer is illegal because float's and VectorIntrinsic intrinsics
+   are incompatible types.  This source code could cause the compiler to produce "bad" machine code.
+
+Instead of casting, try using the provided copy constructor for conversion between types.  
+
+\code
+
+using namespace rw::math;
+vpu::Matrix44Affine myVPUMatrix(GetMatrix44Affine_Identity());
+fpu::Matrix44Affine myFPUMatrix(myVPUMatrix);
+
+\endcode
+
+*/

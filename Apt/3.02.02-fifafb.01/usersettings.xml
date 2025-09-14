@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<project default="usersettings">
+    
+    <!-- By default this is empty. customers defining AptConfigureDefinesFromNant should ensure that all 
+        files that include apt add runtime.defines in their builds.
+    -->
+    <property name="runtime.defines">
+        ${property.value}
+                APTSDK_ENABLED
+                APTLIBRARY
+                APT_FORCE_CRASHES
+    </property>        
+
+	
+    <do unless="@{PropertyExists('APT_TEST_SUITE')}">
+        <property name="APT_TEST_SUITE" value="false" /> 
+    </do>	
+    <do if="${APT_TEST_SUITE} == true">
+        <property name="runtime.defines">
+            ${property.value}
+		    DO_COVERAGE
+		</property>
+    </do>	
+    
+	
+    <property name="cc.defines">
+		${property.value}
+		${runtime.defines}
+	</property>        	
+</project>

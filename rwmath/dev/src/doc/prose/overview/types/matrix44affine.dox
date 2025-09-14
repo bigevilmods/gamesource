@@ -1,0 +1,26 @@
+/*!
+\page p_matrix44_affine Matrix44Affine
+
+
+\c Matrix44Affine is what was previously referred to as a \c Matrix4x3 in previous math libraries.  We decided to rename the
+type because it was misleading.  Although users could only access the first 3 columns of a \c Matrix4x3, the matrix was
+mathematically speaking a 4x4 matrix with an assumed fourth column.
+
+The \c Matrix44Affine type is a 4x4 matrix that is restriced to affine transformations.  This implies that the fourth
+column is always [0, 0, 0, 1].  In reality, there is no need to maintain this last column, so for efficiency reasons it
+contains arbitrary values.  However, when the \c Matrix44Affine type is used, the last column is 
+assumed to be [0, 0, 0, 1] regardless of what is physically stored in that column.
+
+When accessing the matrices individual elements, you should only access the left most 4x3 submatrix.
+
+Here are the element indices that \c GetElem and \c SetElem use for indexing individual elements:
+
+<pre>
+[0   1   2  n/a]
+[3   4   5  n/a]
+[6   7   8  n/a]
+[9  10  11  n/a]
+</pre>
+
+    
+*/

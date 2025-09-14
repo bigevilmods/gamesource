@@ -1,0 +1,8 @@
+/*!
+********************************************************************************
+\page   p_copyright	Copyright and trademark information
+
+© 2004 Electronic Arts Inc. \n
+Information in this document is proprietary and is subject to change without notice. This software is proprietary and is to be used only by Electronic Arts studios. If you are an outside developer using this tool or technology, you are given permission to use it only to help complete the tasks outlined in your contract; using this tool or technology for any other purposes is in violation of your contract and is illegal. All trademarks are the property of their respective owners.
+
+*/

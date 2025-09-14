@@ -1,0 +1,53 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef HOST_TESTING
+    rw::math::vpu::VectorIntrinsic UnitTestVectorIntrinsic::CreateVectorIntrinsic(float x, float y, float z, float w)
+    {
+        union
+        {   
+            rw::math::vpu::VectorIntrinsic v;
+            float scalarFloat[4];
+        } vecUnion;
+
+        vecUnion.scalarFloat[0] = x;
+        vecUnion.scalarFloat[1] = y;
+        vecUnion.scalarFloat[2] = z;
+        vecUnion.scalarFloat[3] = w;
+        return vecUnion.v;
+    }
+#endif
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVectorIntrinsic<FloatType>::UnitTestVectorIntrinsic()
+#else
+UnitTestVectorIntrinsic::UnitTestVectorIntrinsic()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVectorIntrinsic<FloatType>::~UnitTestVectorIntrinsic()
+#else
+UnitTestVectorIntrinsic::~UnitTestVectorIntrinsic()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestVectorIntrinsic<FloatType>::Test()
+#else
+void UnitTestVectorIntrinsic::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

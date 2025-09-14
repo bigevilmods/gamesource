@@ -1,0 +1,63 @@
+/*!
+\page p_matrix_column_access Matrix Column Access
+
+
+\par Introduction
+
+Often scalar code that is ported to the VPU library is quite slow.  This is
+especially common when porting code that access many elements in a matrix.
+Generally speaking, accessing matrix data is not done randomly.  Instead, the
+access usually follow a pattern.  For example, often matrix columns are
+accessed, or the entire matrix is accessed as if it were transposed.
+These operations can be done efficiently on the VPU, but not if the calling
+code tries to manually access elements individually.
+
+\par Example
+
+Do not try to write code that operates on a column like this:
+
+\code
+    float *m = reinterpret_cast<float*>(&vpuMatrix44);
+    rw::math::vpu::Vector4 columnDifference;
+    columnDifference.Set(m[3]-m[0], m[7]-m[4], m[11]-m[8], m[15]-m[12]);
+\endcode
+
+First, this code reinterpret_cast's a VPU matrix to float data.  This is
+actually illegal according to the C++ standard.  See \ref p_casting_between_math_types
+for more details.
+
+Secondly, it does a large number of scalar operations that could all be done
+more efficiently on the vector unit.  Once these scalar operations are done
+(using floats), the results are converted to a VPU vector.  The conversion will
+cause a LHS because it must convert from float to a vector.
+
+The code could be rewritten to this instead:
+
+\code
+    rw::math::vpu::Vector4 columnDifference = vpuMatrix44.GetWColumn() - vpuMatrix44.GetXColumn();
+\endcode
+
+This code operates on entire vectors of data at once, does not violate the C++
+standard, and avoid LHS's.  This could should perform many times faster than the
+original code.  \b Note: The methods for accessing individual columns of a matrix were
+added in \ref s_version_1_00_00.
+
+If columns of a matrix are used repeatedly in computations, it is probably best
+to transpose the entire matrix:
+
+\code
+    rw::math::vpu::Matrix44 transposedMatrix = Transpose(vpuMatrix44);
+    rw::math::vpu::Vector4 columnDifference = transposedMatrix.wAxis - transposedMatrix.xAxis;
+    rw::math::vpu::Vector4 columnSum = transposedMatrix.wAxis + transposedMatrix.xAxis;
+\endcode
+
+It is always a good idea to check if a high-level math function does the
+operation you want.  Chances are the operation has already been optimized, and
+it will perform much better than a naive implementation.  Some user code
+manually transposes a matrix in a very inefficient way, when it would be much
+easier to call a pre-existing math function.  On many platforms, a matrix
+transpose is only 8 vector instructions.
+
+*/
+
+

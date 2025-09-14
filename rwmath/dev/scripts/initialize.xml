@@ -1,0 +1,23 @@
+<project>
+
+	<property name="package.rwmath.includedirs">
+		${package.rwmath.dir}/include
+	</property>
+	
+	<fileset name="package.rwmath.libs">
+		<includes name="${package.rwmath.builddir}/${config}/lib/${lib-prefix}rwmath${lib-suffix}" />
+	</fileset>
+	
+	<property name="package.rwmath.includedirs.spu">
+		${package.rwmath.dir}/include
+	</property>
+	
+	<fileset name="package.rwmath.libs.spu">
+		<includes name="${package.rwmath.builddir}/${config}/lib/${lib-prefix}rwmath_spu${lib-suffix}" />
+	</fileset>	
+
+    <!-- Provide module information for Visual Studio project file generation. -->
+    <property name="package.rwmath.runtime.buildmodules"     value="rwmath"/>
+    <property name="package.rwmath.runtime.buildmodules.spu" value="rwmath_spu"/>
+
+</project>

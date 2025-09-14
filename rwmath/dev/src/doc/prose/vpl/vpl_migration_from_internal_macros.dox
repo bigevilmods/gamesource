@@ -1,0 +1,21 @@
+/*!
+\page p_vpl_migration_from_internal_macros VPL Migration from Internal Macros
+
+Historically some users of the math library have used internal math macros to
+write cross platform code.  One reason for developing the VPL is to let users write
+the same style of code using a fully supported, tested, and documented API.  To
+help locate code using unsupported macros, a header that undefines internal macros
+has been created.
+
+To undefine internal macros, just include the file \c rw/math/undefine_macros.h
+\e after including all math headers for a compilation module.  Since the header
+undefines internal math macros, it needs to be included after math headers are
+included.  Once you have included the header, the compiler should indicate any
+places in your code that were attempting to use internal macros.
+
+It would be possible for the math headers to automatically undefine all
+internal macros, but doing so correctly would hurt build times for
+customers who may not care about the feature and increased the complexity of
+the header files.
+
+*/

@@ -1,0 +1,20 @@
+struct MathMembers { char *szName; int nIndex; };
+%%
+sin,1
+cos,2
+atan2,3
+round,4
+min,5
+max,6
+abs,7
+acos,8
+asin,9
+atan,10
+ceil,11
+exp,12
+floor,13
+log,14
+pow,15
+random,16
+sqrt,17
+tan,18

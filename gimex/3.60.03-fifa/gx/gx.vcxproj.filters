@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="expr.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="findfile.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gcolour.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gopen.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gsocket.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gx.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gxcram.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gxfilter.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gxinfo.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gxopt.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="gxvideo.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="hash.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="hashidi.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="invtable.c">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="range.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ranger.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="spit.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="stdgimex.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="ustr.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="wildmatch.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="wildname.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="expr.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="falloc.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="findfile.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gcolour.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gopen.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gsocket.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gtoolerror.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gx.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gxcram.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gxinfo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gxopt.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="gxvideo.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="hash.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="hashidi.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="range.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="ranger.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="spit.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="stdgimex.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gx.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gx.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

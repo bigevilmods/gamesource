@@ -1,0 +1,64 @@
+
+<html>
+<head>
+    <title>Devices</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Registering new device handlers</h1>
+
+<p>Before any device can be used, it must be registered with the library.
+When the library is initialized, some devices are registered for you:
+
+<ul>
+    <li>On the PC, every drive that has a letter mapped to it is registered.
+Internally, the GetLogicalDrives() function is used to get this
+information.</li>
+
+<li>On the Xenon system, only the D: drive is registered.</li>
+</ul></p>
+
+<p>If you want the library to use other devices, you have to derive a new class
+from the <tt>rw::core::filesys::DeviceDriver</tt> abstract class and pass an instance of
+your derived class to <tt>rw::core::filesys::Manager::RegisterDevice</tt>.  The new
+device object must have a name which ends in a colon (e.g., comm:).  If
+you want the library to search the new device for non-qualified file names,
+add it to the search path using <tt>rw::core::filesys::Manager::AddSearchLocation</tt>.</p>
+
+<p>Devices can be registered with a flag indicating that they are either physical or virtual
+devices. The distinction between a physical and virtual device is that a physical device 
+processes operations on its own thread whereas a virtual device processes operations on the
+calling thread. Historically virtual devices, such as .big file devices, are considered 
+virtual as they only perform minor bookkeeping and then proxy to a physical device to get
+the necessary data. However it can be beneficial to add device drivers, like rwfilesystem's
+HTTP driver, as physical in order for them to offload processing onto another thread.</p>
+
+<p>Device driver implementations cannot be assumed threadsafe if they are registered as 
+virtual; for example, the memmap driver is not safe to write to from multiple threads 
+when registered as virtual. If it is registered as physical then it would be thread 
+safe as all operations are processed only on the device thread.</p>
+
+<p>When you are finished with a device, use
+<tt>rw::core::filesys::Manager::UnregisterDevice</tt> to remove it.  There
+must be no open handles on the device when it is removed from the library.
+After the device has been removed, you can delete the object from the system.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

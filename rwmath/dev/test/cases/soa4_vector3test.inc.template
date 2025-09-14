@@ -1,0 +1,75 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestSoa4Vector3::UnitTestSoa4Vector3()
+{
+    mZero.x.mV   = Set( 0.0f );         mZero.y.mV   = Set( 0.0f );         mZero.z.mV   = Set( 0.0f );
+    mOne.x.mV    = Set( 1.0f );         mOne.y.mV    = Set( 1.0f );         mOne.z.mV    = Set( 1.0f );
+    mTwo.x.mV    = Set( 2.0f );         mTwo.y.mV    = Set( 2.0f );         mTwo.z.mV    = Set( 2.0f );
+    mNegOne.x.mV = Set( -1.0f );        mNegOne.y.mV = Set( -1.0f );        mNegOne.z.mV = Set( -1.0f );
+    mNaN.x.mV    = Set( UINT32_C(0x7f800001) );  mNaN.y.mV    = Set( UINT32_C(0x7f800001) );  mNaN.z.mV    = Set( UINT32_C(0x7f800001) );
+    mInf.x.mV    = Set( UINT32_C(0x7f800000) );  mInf.y.mV    = Set( UINT32_C(0x7f800000) );  mInf.z.mV    = Set( UINT32_C(0x7f800000) );
+
+    mMixedNaN.x.mV = Set( UINT32_C(0x40000000), UINT32_C(0x7f800001), UINT32_C(0x3f000000), UINT32_C(0xbf800001) );
+    mMixedNaN.y.mV = Set( UINT32_C(0xbf800001), UINT32_C(0x40a00000), UINT32_C(0x7f800001), UINT32_C(0xc1200000) );
+    mMixedNaN.z.mV = Set( UINT32_C(0x40a00000), UINT32_C(0xbf800001), UINT32_C(0x7f800001), UINT32_C(0xc1200000) );
+
+    mMixedInf.x.mV = Set( UINT32_C(0x40000000), UINT32_C(0x7f800000), UINT32_C(0x3f000000), UINT32_C(0xbf800000) );
+    mMixedInf.y.mV = Set( UINT32_C(0xbf800000), UINT32_C(0x40a00000), UINT32_C(0x7f800000), UINT32_C(0xc1200000) );
+    mMixedInf.z.mV = Set( UINT32_C(0x40a00000), UINT32_C(0xbf800000), UINT32_C(0x7f800000), UINT32_C(0xc1200000) );
+ 
+    mA.x.mV = Set( -1.0f, 2.0f, 3.0f,  -4.0f );
+    mA.y.mV = Set(  5.0f, 3.0f, 3.0f,   1.0f );
+    mA.z.mV = Set( 0.25f, 1.0f, 3.0f, -10.0f );
+
+    mB.x.mV = Set( 10.0f,  9.0f, -8.0f, -7.0f );
+    mB.y.mV = Set(  5.0f,  3.0f,  4.0f,  1.0f );
+    mB.z.mV = Set(  1.5f, -9.0f, -0.5f,  3.0f );
+
+    mC.x.mV = Set( 1.0f, 0.0f, -1.0f, 2.0f );
+    mC.y.mV = Set( 0.0f, 1.0f, -1.0f, 2.0f );
+    mC.z.mV = Set( 1.1f, 0.1f, -0.2f, 0.3f );
+}
+
+UnitTestSoa4Vector3::~UnitTestSoa4Vector3()
+{
+
+}
+
+
+::rw::math::vpu::VectorIntrinsic UnitTestSoa4Vector3::Set(float a)
+{
+    return Set( a, a, a, a );
+}
+
+
+::rw::math::vpu::VectorIntrinsic UnitTestSoa4Vector3::Set(float a, float b, float c, float d)
+{
+    MakeVectorIntrinsic(result, a, b, c, d);
+    return result;
+}
+
+
+::rw::math::vpu::VectorIntrinsic UnitTestSoa4Vector3::Set(uint32_t a)
+{
+    return Set( a, a, a, a );
+}
+
+
+::rw::math::vpu::VectorIntrinsic UnitTestSoa4Vector3::Set(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
+{
+    MakeVectorIntrinsicUnsignedInt(result, a, b, c, d);
+    return result;
+}
+
+
+void UnitTestSoa4Vector3::Test()
+{
+
+}
+
+using namespace ::rw::math::vpu;
+
+//#BLOCK
+

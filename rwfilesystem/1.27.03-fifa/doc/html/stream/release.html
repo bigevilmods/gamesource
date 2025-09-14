@@ -1,0 +1,39 @@
+
+<html>
+<head>
+    <title>Stream Release</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Releasing a chunk</h1>
+
+<p>When the chunk is no longer needed, it is released using the
+<tt>rw::core::filesys::Stream::ReleaseChunk</tt> function. This frees up space
+in the circular buffer and allows the streamer to continue reading from
+the file. The streamer will continue reading until it reaches either the
+end of file or a user-defined end chunk.</p>
+
+<p>Chunks do not need to be released in the same order they were gotten, but
+the streamer will not restart until the oldest chunk has been released.
+In other words, it does not fill any holes created by releasing chunks
+out of order.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

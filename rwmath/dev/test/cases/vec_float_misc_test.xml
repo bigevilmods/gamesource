@@ -1,0 +1,4628 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<!-- The Last Test is test283, please change this number when you add more tests, make sure test names do not repeat-->
+
+<CLASS NAME="UnitTestVecFloatMisc" HEADER="vec_float_misc_test.h" SOURCE="vec_float_misc_test.inc" RWHOSTHEADER="rw/math/vpu/vec_float_operation.h vec_float_utility.hpp" RWGENERICHEADER="" HOST="true" GENERIC="false">
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test260">
+      <![CDATA[
+
+        SetFunctionName("float& SelfAdd(float& a, VecFloat::InParam b)");
+
+        float f = 2.5f;
+        VecFloat v2(3.5f);
+        SelfAdd(f, v2);
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test261">
+      <![CDATA[
+
+        SetFunctionName("float& SelfAdd(float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 2.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        SelfAdd(f, v2);
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test262">
+      <![CDATA[
+
+        SetFunctionName("float& SelfAdd(float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 2.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        SelfAdd(f, v2);
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test263">
+      <![CDATA[
+
+        SetFunctionName("float& SelfSubtract(float& a, VecFloat::InParam b)");
+
+        float f = 1.5f;
+        VecFloat v2(3.5f);
+        SelfSubtract(f, v2);
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test264">
+      <![CDATA[
+
+        SetFunctionName("float& SelfSubtract(float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 1.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        SelfSubtract(f, v2);
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test265">
+      <![CDATA[
+
+        SetFunctionName("float& SelfSubtract(float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 1.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        SelfSubtract(f, v2);
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test266">
+      <![CDATA[
+
+        SetFunctionName("float& SelfMult(float& a, VecFloat::InParam b)");
+
+        float f = 3.5f;
+        VecFloat v2(-4.0f);
+        SelfMult(f, v2);
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test267">
+      <![CDATA[
+
+        SetFunctionName("float& SelfMult(float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 3.5f;
+        MakeVecRef( v2, Y, -4.0f );
+        SelfMult(f, v2);
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test268">
+      <![CDATA[
+
+        SetFunctionName("float& SelfMult(float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 3.5f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        SelfMult(f, v2);
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test269">
+      <![CDATA[
+
+        SetFunctionName("float& SelfDivide(float& a, VecFloat::InParam b)");
+
+        float f = 32.0f;
+        VecFloat v2(-4.0f);
+        SelfDivide(f, v2);
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test270">
+      <![CDATA[
+
+        SetFunctionName("float& SelfDivide(float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 32.0f;
+        MakeVecRef( v2, Y, -4.0f );
+        SelfDivide(f, v2);
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test271">
+      <![CDATA[
+
+        SetFunctionName("float& SelfDivide(float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 32.0f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        SelfDivide(f, v2);
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test272">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(const float& a, VecFloat::InParam b)");
+
+        float f = 2.5f;
+        VecFloat v2(3.5f);
+        VecFloat result = Add(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test273">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 2.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        VecFloat result = Add(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test274">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 2.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        VecFloat result = Add(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test275">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(const float& a, VecFloat::InParam b)");
+
+        float f = 1.5f;
+        VecFloat v2(3.5f);
+        VecFloat result = Subtract(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test276">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 1.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        VecFloat result = Subtract(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test277">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 1.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        VecFloat result = Subtract(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test278">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(const float& a, VecFloat::InParam b)");
+
+        float f = 3.5f;
+        VecFloat v2(-4.0f);
+        VecFloat result = Mult(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test279">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 3.5f;
+        MakeVecRef( v2, Y, -4.0f );
+        VecFloat result = Mult(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test280">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 3.5f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        VecFloat result = Mult(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test281">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(const float& a, VecFloat::InParam b)");
+
+        float f = 32.0f;
+        VecFloat v2(-4.0f);
+        VecFloat result = Divide(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test282">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 32.0f;
+        MakeVecRef( v2, Y, -4.0f );
+        VecFloat result = Divide(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test283">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 32.0f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        VecFloat result = Divide(f, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test284">
+      <![CDATA[
+
+        SetFunctionName("float& operator += (float& a, VecFloat::InParam b)");
+
+        float f = 2.5f;
+        VecFloat v2(3.5f);
+        f += v2;
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test285">
+      <![CDATA[
+
+        SetFunctionName("float& operator += (float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 2.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        f += v2;
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test286">
+      <![CDATA[
+
+        SetFunctionName("float& operator += (float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 2.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        f += v2;
+        Validate( IsEqualWithEpsilon(f, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test287">
+      <![CDATA[
+
+        SetFunctionName("float& operator -= (float& a, VecFloat::InParam b)");
+
+        float f = 1.5f;
+        VecFloat v2(3.5f);
+        f -= v2;
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test288">
+      <![CDATA[
+
+        SetFunctionName("float& operator -= (float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 1.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        f -= v2;
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test289">
+      <![CDATA[
+
+        SetFunctionName("float& operator -= (float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 1.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        f -= v2;
+        Validate( IsEqualWithEpsilon(f, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test290">
+      <![CDATA[
+
+        SetFunctionName("float& operator *= (float& a, VecFloat::InParam b)");
+
+        float f = 3.5f;
+        VecFloat v2(-4.0f);
+        f *= v2;
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test291">
+      <![CDATA[
+
+        SetFunctionName("float& operator *= (float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 3.5f;
+        MakeVecRef( v2, Y, -4.0f );
+        f *= v2;
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test292">
+      <![CDATA[
+
+        SetFunctionName("float& operator *= (float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 3.5f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        f *= v2;
+        Validate( IsEqualWithEpsilon(f, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test293">
+      <![CDATA[
+
+        SetFunctionName("float& operator /= (float& a, VecFloat::InParam b)");
+
+        float f = 32.0f;
+        VecFloat v2(-4.0f);
+        f /= v2;
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test294">
+      <![CDATA[
+
+        SetFunctionName("float& operator /= (float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 32.0f;
+        MakeVecRef( v2, Y, -4.0f );
+        f /= v2;
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test295">
+      <![CDATA[
+
+        SetFunctionName("float& operator /= (float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 32.0f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        f /= v2;
+        Validate( IsEqualWithEpsilon(f, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test296">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator + (const float& a, VecFloat::InParam b)");
+
+        float f = 2.5f;
+        VecFloat v2(3.5f);
+        float result = f + v2;
+        Validate( IsEqualWithEpsilon(result, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test297">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator + (const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 2.5f;
+        MakeVecRef( v2, Y, 3.5f );
+        float result = f + v2;
+        Validate( IsEqualWithEpsilon(result, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test298">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator + (const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 2.5f;
+        MakeVecRefIndex( v2, 1, 3.5f );
+        float result = f + v2;
+        Validate( IsEqualWithEpsilon(result, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test299">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator * (const float& a, VecFloat::InParam b)");
+
+        float f = 3.5f;
+        VecFloat v2(-4.0f);
+        float result = f * v2;
+        Validate( IsEqualWithEpsilon(result, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test300">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator * (const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 3.5f;
+        MakeVecRef( v2, Y, -4.0f );
+        float result = f * v2;
+        Validate( IsEqualWithEpsilon(result, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test301">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator * (const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 3.5f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        float result = f * v2;
+        Validate( IsEqualWithEpsilon(result, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test302">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator / (const float& a, VecFloat::InParam b)");
+
+        float f = 32.0f;
+        VecFloat v2(-4.0f);
+        float result = f / v2;
+        Validate( IsEqualWithEpsilon(result, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test303">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator / (const float& a, VecFloatRef<INDEX1> b)");
+
+        float f = 32.0f;
+        MakeVecRef( v2, Y, -4.0f );
+        float result = f / v2;
+        Validate( IsEqualWithEpsilon(result, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test304">
+      <![CDATA[
+
+        SetFunctionName("VecFloat operator / (const float& a, VecFloatRefIndex::InParam b)");
+
+        float f = 32.0f;
+        MakeVecRefIndex( v2, 1, -4.0f );
+        float result = f / v2;
+        Validate( IsEqualWithEpsilon(result, -8.0f) );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatVsVecFloatRefCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        VecFloatRefVsVecFloatCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        VecFloatRefIndexVsVecFloatRefCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        VecFloatRefVsVecFloatRefIndexCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        VecFloatVsVecFloatRefIndexCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        VecFloatRefIndexVsVecFloatCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareE<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareNE<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareGT<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareLT<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareGTE<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareLTE<VecFloat, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloat += bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloat -= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloat *= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloat /= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat + bVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat - bVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat * bVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat / bVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareE<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareNE<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareGT<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareLT<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareGTE<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, const float& b)");
+
+        TemplatedCompareLTE<VecFloat, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloat += bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloat -= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloat *= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloat /= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat + bfloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat - bfloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat * bfloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat / bfloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareE<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareNE<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGT<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLT<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGTE<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLTE<VecFloat, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloat += bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloat -= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloat *= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloat /= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat + bVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat - bVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat * bVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat / bVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareE<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareNE<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGT<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLT<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGTE<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test83">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloat::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLTE<VecFloat, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloat += bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test85">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloat -= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test86">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloat *= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloat /= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat + bVecFloatRefVectorAxisX ), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat - bVecFloatRefVectorAxisX ), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat * bVecFloatRefVectorAxisX ), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test91">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloat>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloat> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloat / bVecFloatRefVectorAxisX ), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test92">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareE<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test93">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareNE<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test94">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareGT<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test95">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareLT<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test96">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareGTE<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test97">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(const float& a, VecFloat::InParam b)");
+
+        TemplatedCompareLTE<float, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test98">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        afloat += bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test99">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        afloat -= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test100">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        afloat *= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test101">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        afloat /= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test102">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat + bVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test103">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat - bVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test104">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat * bVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test105">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat / bVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test106">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(const float& a, const float& b)");
+
+        TemplatedCompareE<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test107">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(const float& a, const float& b)");
+
+        TemplatedCompareNE<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test108">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(const float& a, const float& b)");
+
+        TemplatedCompareGT<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test109">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(const float& a, const float& b)");
+
+        TemplatedCompareLT<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test110">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(const float& a, const float& b)");
+
+        TemplatedCompareGTE<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test111">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(const float& a, const float& b)");
+
+        TemplatedCompareLTE<float, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test112">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        afloat += bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test113">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        afloat -= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test114">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        afloat *= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test115">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        afloat /= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test116">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat + bfloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test117">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat - bfloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test118">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat * bfloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test119">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<float>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat / bfloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test120">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareE<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test121">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareNE<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test122">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGT<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test123">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLT<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test124">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGTE<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test125">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(const float& a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLTE<float, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test126">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        afloat += bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test127">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        afloat -= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test128">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        afloat *= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test129">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        afloat /= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test130">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat + bVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test131">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat - bVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test132">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat * bVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test133">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat / bVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test134">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareE<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test135">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareNE<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test136">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGT<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test137">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLT<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test138">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGTE<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test139">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(const float& a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLTE<float, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test140">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        afloat += bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test141">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        afloat -= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test142">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        afloat *= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test143">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        afloat /= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(afloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test144">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat + bVecFloatRefVectorAxisX ), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test145">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat - bVecFloatRefVectorAxisX ), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test146">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat * bVecFloatRefVectorAxisX ), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test147">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<float>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<float> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        float afloat = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(afloat / bVecFloatRefVectorAxisX ), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test148">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareE<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test149">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareNE<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test150">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareGT<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test151">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareLT<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test152">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareGTE<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test153">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, VecFloat::InParam b)");
+
+        TemplatedCompareLTE<VecFloatRefIndex, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test154">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefIndex += bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test155">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefIndex -= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test156">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefIndex *= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test157">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefIndex /= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex + bVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test159">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex - bVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex * bVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test161">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex / bVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test162">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareE<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test163">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareNE<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test164">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareGT<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test165">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareLT<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test166">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareGTE<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test167">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, const float& b)");
+
+        TemplatedCompareLTE<VecFloatRefIndex, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test168">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefIndex += bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test169">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefIndex -= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test170">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefIndex *= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test171">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefIndex /= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test172">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex + bfloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test173">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex - bfloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test174">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex * bfloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test175">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex / bfloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test176">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareE<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test177">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareNE<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test178">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGT<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test179">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLT<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test180">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGTE<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test181">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLTE<VecFloatRefIndex, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test182">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefIndex += bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefIndex -= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test184">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefIndex *= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefIndex /= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test186">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex + bVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test187">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex - bVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test188">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex * bVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test189">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex / bVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test190">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareE<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test191">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareNE<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test192">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGT<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test193">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLT<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test194">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareGTE<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test195">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRefIndex::InParam a, VecFloatRef<INDEX> b)");
+
+        TemplatedCompareLTE<VecFloatRefIndex, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test196">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefIndex += bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test197">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefIndex -= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test198">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefIndex *= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test199">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefIndex /= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test200">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex + bVecFloatRefVectorAxisX ), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test201">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex - bVecFloatRefVectorAxisX ), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test202">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex * bVecFloatRefVectorAxisX ), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test203">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRefIndex>(), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRefIndex> factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRefIndex aVecFloatRefIndex = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefIndex / bVecFloatRefVectorAxisX ), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test204">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareE<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test205">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareNE<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test206">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareGT<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test207">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareLT<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test208">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareGTE<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test209">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX> a, VecFloat::InParam b)");
+
+        TemplatedCompareLTE<VecFloatRef<VectorAxisX>, VecFloat> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test210">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX += bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test211">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX -= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test212">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX *= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test213">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX /= bVecFloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test214">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX + bVecFloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test215">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX - bVecFloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test216">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX * bVecFloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test217">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloat>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloat> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX / bVecFloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test218">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareE<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test219">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareNE<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test220">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareGT<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test221">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareLT<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test222">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareGTE<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test223">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX> a, const float& b)");
+
+        TemplatedCompareLTE<VecFloatRef<VectorAxisX>, float> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test224">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX += bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test225">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX -= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test226">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX *= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test227">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX /= bfloat;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test228">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX + bfloat), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test229">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX - bfloat), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test230">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX * bfloat), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test231">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<float>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<float> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        float bfloat = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX / bfloat), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test232">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareE<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test233">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareNE<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test234">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGT<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test235">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLT<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test236">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareGTE<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test237">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX> a, VecFloatRefIndex::InParam b)");
+
+        TemplatedCompareLTE<VecFloatRef<VectorAxisX>, VecFloatRefIndex> operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test238">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX += bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test239">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX -= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test240">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX *= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test241">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX /= bVecFloatRefIndex;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test242">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX + bVecFloatRefIndex), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test243">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX - bVecFloatRefIndex), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test244">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX * bVecFloatRefIndex), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test245">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> >(), GetInParamName<VecFloatRefIndex>() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryA( 7.0f);
+        InstanceFactory<VecFloatRefIndex> factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRefIndex bVecFloatRefIndex = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX / bVecFloatRefIndex), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test246">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareE<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test247">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareNE<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test248">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareGT<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test249">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareLT<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test250">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareGTE<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test251">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        TemplatedCompareLTE<VecFloatRef<VectorAxisX>, VecFloatRef<VectorAxisX> > operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test252">
+      <![CDATA[
+
+        SetFunctionName("bool operator +=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX += bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test253">
+      <![CDATA[
+
+        SetFunctionName("bool operator -=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX -= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test254">
+      <![CDATA[
+
+        SetFunctionName("bool operator *=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX *= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test255">
+      <![CDATA[
+
+        SetFunctionName("bool operator /=(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        aVecFloatRefVectorAxisX /= bVecFloatRefVectorAxisX ;
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test256">
+      <![CDATA[
+
+        SetFunctionName("bool operator +(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX + bVecFloatRefVectorAxisX ), float_test_type(a+b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test257">
+      <![CDATA[
+
+        SetFunctionName("bool operator -(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX - bVecFloatRefVectorAxisX ), float_test_type(a-b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test258">
+      <![CDATA[
+
+        SetFunctionName("bool operator *(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX * bVecFloatRefVectorAxisX ), float_test_type(a*b)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test259">
+      <![CDATA[
+
+        SetFunctionName("bool operator /(%s a, %s b)", GetInParamName<VecFloatRef<VectorAxisX> > (), GetInParamName<VecFloatRef<VectorAxisX> >() );
+
+        const float a = 7.0f;
+        const float b = 23.3f;
+        InstanceFactory<VecFloatRef<VectorAxisX> >  factoryA( 7.0f);
+        InstanceFactory<VecFloatRef<VectorAxisX> > factoryB(23.3f);
+        VecFloatRef<VectorAxisX> aVecFloatRefVectorAxisX = factoryA.GetInstance();
+        VecFloatRef<VectorAxisX>  bVecFloatRefVectorAxisX  = factoryB.GetInstance();
+        Validate( IsEqualWithEpsilon(float_test_type(aVecFloatRefVectorAxisX / bVecFloatRefVectorAxisX ), float_test_type(a/b)) );
+
+      ]]>
+      </TEST>
+
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+<!-- The Last Test is test283, please change this number when you add more tests, make sure test names do not repeat-->
+
+</TESTCLASS>

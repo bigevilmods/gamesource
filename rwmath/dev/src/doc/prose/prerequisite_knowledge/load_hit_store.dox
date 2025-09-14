@@ -1,0 +1,55 @@
+/*!
+\page p_load_hit_store Load Hit Store
+
+Load-Hit-Store means, load instructions that follow stores to the same memory location (or a memory location with the lower 12 bits the same) will cause delays and reduce performance. Same thing as Store-Hit-Load, and Load-Hit-Load. 
+
+LHS and similar are not unique to PowerPC processor, but it doesn’t happen on Intel or AMD processors.
+
+Since a write will cost around 20+ cycles, the instruction that load the data will reissue 40 cyles after the load instruction. (see Xbox 360 CPU Caches section in Xbox 360 Development Kit Help file)
+
+\section lhs_examples Examples of Load-Hit-Stores
+
+Now that you have the theory, lets consider some concrete examples.
+
+\code
+float CastToFloat(int value)
+{
+    return static_cast<float>(value);
+}
+\endcode
+
+Calling CastToFloat will cause a LHS.  That is because the integer must be
+written to memory before it can be loaded into a floating point register for
+conversion.  Because the data is written, and then immediately loaded again, a
+LHS will be generated.
+
+Pretty much any conversion that must move data between register sets (i.e.
+integer, float, or VMX) will result in a LHS.
+
+\code
+union
+{
+    VectorIntrinsic vector;
+    float floatArray[4];
+} myUnion;
+
+myUnion.floatArray[0] = 1.0f;
+myUnion.floatArray[1] = 2.0f;
+myUnion.floatArray[2] = 3.0f;
+myUnion.floatArray[3] = 4.0f;
+myUnion.vector = VectorAdd( myUnion.vector, myUnion.vector );
+\endcode
+
+This code will also generate a LHS, because the 'float' data must be stored to
+memory before the VectorIntrinsic can be loaded into a VMX register. 
+
+\code
+VecFloat c = VecFloat(1.0f) + VecFloat(2.0f);
+\endcode
+
+Unfortunately, even this code will result in a LHS.  (Improvements in the compiler could eliminate the LHS.)  That is 
+because the compiler loads the float literal into a floating point register, stores the literal back to memory, and
+then loads it into a VMX register.  For performance critical code, it is better to use static VecFloat data that
+is already initialized, or construct values instead of loading them from a float.
+
+*/

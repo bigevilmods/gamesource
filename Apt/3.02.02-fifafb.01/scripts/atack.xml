@@ -1,0 +1,46 @@
+<project>
+    <!--
+        Generates a .tac file containing the human-readable
+        dissasembly of a single swf file (using aTack directly)
+    -->
+    <createtask name="decompile-one-swf">
+        <parameters>
+            <option name="filepath" value="Required" />
+        </parameters>
+        <code>
+            <!-- check that the file exists -->
+            <fail unless="@{FileExists(${decompile-one-swf.filepath})}" message="File '${decompile-one-swf.filepath}' doesn't exist"/>
+            <!-- check that the specified file has .swf extension -->
+            <fail unless="@{PathGetExtension(${decompile-one-swf.filepath})} == '.swf'" message="The specified path is not a .swf file."/>
+
+            <property name="swf-dir" value="@{PathGetDirectoryName(${decompile-one-swf.filepath})}"/>
+            <property name="swf-basename" value="@{PathGetFileNameWithoutExtension(${decompile-one-swf.filepath})}"/>
+
+            <!-- create empty file with the same name, but .eaf extension -->
+            <property name="eaf-path" value="@{PathCombine('${swf-dir}', '${swf-basename}.eaf')}" />
+            <property name="flm-path" value="@{PathCombine('${swf-dir}', '${swf-basename}.flm')}" />
+
+            <copy file="${decompile-one-swf.filepath}" tofile="${eaf-path}" />
+
+            <echo message="Decompiling ${decompile-one-swf.filepath}"/>
+            <!-- execute aTack like this: aTackCompiler.exe movie.eaf movie.eaf -->
+            <!-- keep executing atack until the returned value value between two consecutive passes is the same -->
+            <property name="curr-retval" value="-2"/>
+            <property name="prev-retval" value="-1"/>
+            <while condition="${curr-retval} != ${prev-retval}">
+                <exec program="${package.Apt.aTackCompiler}" failonerror="false" workingdir="${swf-dir}" stdout="false">
+                    <args>
+                        <arg value="${eaf-path}"/>
+                        <arg value="${eaf-path}"/>
+                    </args>
+                </exec>
+                <property name="prev-retval" value="${curr-retval}"/>
+                <property name="curr-retval" value="${exec.exitcode}"/>
+            </while>
+
+            <!-- delete auxiliary files -->
+            <delete file="${eaf-path}"/>
+            <delete file="${flm-path}"/>
+        </code>
+    </createtask>
+</project>

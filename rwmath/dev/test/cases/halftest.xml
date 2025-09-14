@@ -1,0 +1,312 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestHalf" HEADER="halftest.h" SOURCE="halftest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/half.h rw/math/fpu/scalar.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+        <TEST NAME="TestIsHalfNaN">
+            <![CDATA[
+
+        SetFunctionName("IsHalfNaN(half_t)");
+
+        using namespace rw::math::half;
+        
+        bool r1 = IsHalfNaN(0x6f12);
+        bool r2 = IsHalfNaN(0x7C00);
+        bool r3 = IsHalfNaN(0x7C0A);
+        bool r4 = IsHalfNaN(0xFC00);
+        bool r5 = IsHalfNaN(0xFCB0);
+        bool r6 = IsHalfNaN(0xFD00);
+        bool r7 = IsHalfNaN(0x7D00);
+        
+        Validate( r1 == false && r2 == false && r3 == true && r4 == false &&
+                  r5 == true  && r6 == true  && r7 == true);
+                  
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestIsHalfInfinite">
+            <![CDATA[
+
+        SetFunctionName("IsHalfInfinite(half_t)");
+
+        using namespace rw::math::half;
+
+        bool r1 = IsHalfInfinite(0x6f12);
+        bool r2 = IsHalfInfinite(0x7C00);
+        bool r3 = IsHalfInfinite(0x7C0A);
+        bool r4 = IsHalfInfinite(0xFC00);
+        bool r5 = IsHalfInfinite(0xFCB0);
+        
+        Validate( r1 == false && r2 == true && r3 == false && r4 == true && r5 == false);
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestHalfFromFloat">
+            <![CDATA[
+
+        SetFunctionName("HalfFromFloat(float)");
+
+        using namespace rw::math::half;
+
+        rw::math::detail::Flt32UInt32Union fi;
+        fi.i = 0x38800000;
+        uint16_t h1 = HalfFromFloat(fi.f);
+        fi.i = 0xb8800000;
+        uint16_t h2 = HalfFromFloat(fi.f);
+        fi.i = 0x477FFFFF;
+        uint16_t h3 = HalfFromFloat(fi.f);
+        fi.i = 0xC77FFFFF;
+        uint16_t h4 = HalfFromFloat(fi.f);
+        fi.i = 0x00000000;
+        uint16_t h5 = HalfFromFloat(fi.f);
+        fi.i = 0x80000000;
+        uint16_t h6 = HalfFromFloat(fi.f);
+        fi.i = 0x3c41a8e9;
+        uint16_t h7 = HalfFromFloat(fi.f);
+        fi.i = 0xc140c800;
+        uint16_t h8 = HalfFromFloat(fi.f);
+        
+        Validate( h1 == 0x0400 && h2 == 0x8400 && h3 == 0x7bff && h4 == 0xfbff &&
+                  h5 == 0x0000  && h6 == 0x8000  && h7 == 0x220d && h8 == 0xca06);
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestFloatFromHalf">
+            <![CDATA[
+
+        SetFunctionName("FloatFromHalf(float)");
+
+        using namespace rw::math::half;
+
+        float h1 = FloatFromHalf((uint16_t)0xfbff);
+        float h2 = FloatFromHalf((uint16_t)0x7bff);
+        float h3 = FloatFromHalf((uint16_t)0x0400);
+        float h4 = FloatFromHalf((uint16_t)0x8400);
+        float h5 = FloatFromHalf((uint16_t)0x0000);
+        float h6 = FloatFromHalf((uint16_t)0x8000);
+        float h7 = FloatFromHalf((uint16_t)0x3555);
+        float h8 = FloatFromHalf((uint16_t)0xca06);
+          
+        Validate( rw::math::fpu::IsSimilar(h1, -65504.0f) && rw::math::fpu::IsSimilar(h2, 65504.0f) && 
+                  rw::math::fpu::IsSimilar(h3, 6.1035156e-05f) && rw::math::fpu::IsSimilar(h4, -6.1035156e-05f) &&
+                  rw::math::fpu::IsSimilar(h5, 0.0f) && rw::math::fpu::IsSimilar(h6, -0.0f) && 
+                  rw::math::fpu::IsSimilar(h7, 0.33325195f) && rw::math::fpu::IsSimilar(h8, -12.046875f));
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestVector2FromHalfVector2">
+            <![CDATA[
+
+        SetFunctionName("Vector2FromHalfVector2(HalfVector2::InParam hv2)");
+
+        using namespace rw::math::half;
+
+        HalfVector2 hv2_0, hv2_1, hv2_2, hv2_3;
+        hv2_0.x = 0xfbff;
+        hv2_0.y = 0x7bff;
+        hv2_1.x = 0x0400;
+        hv2_1.y = 0x8400;
+        hv2_2.x = 0x0000;
+        hv2_2.y = 0x8000;
+        hv2_3.x = 0x3555;
+        hv2_3.y = 0xca06;
+        
+        rw::math::fpu::Vector2 v2_0 = Vector2FromHalfVector2(hv2_0);
+        rw::math::fpu::Vector2 v2_1 = Vector2FromHalfVector2(hv2_1);
+        rw::math::fpu::Vector2 v2_2 = Vector2FromHalfVector2(hv2_2);
+        rw::math::fpu::Vector2 v2_3 = Vector2FromHalfVector2(hv2_3);
+        
+        Validate( rw::math::fpu::IsSimilar(v2_0.x, -65504.0f) && rw::math::fpu::IsSimilar(v2_0.y, 65504.0f) && 
+                  rw::math::fpu::IsSimilar(v2_1.x, 6.1035156e-05f) && rw::math::fpu::IsSimilar(v2_1.y, -6.1035156e-05f) &&
+                  rw::math::fpu::IsSimilar(v2_2.x, 0.0f) && rw::math::fpu::IsSimilar(v2_2.y, -0.0f) && 
+                  rw::math::fpu::IsSimilar(v2_3.x, 0.33325195f) && rw::math::fpu::IsSimilar(v2_3.y, -12.046875f));
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestVector3FromHalfVector3">
+            <![CDATA[
+
+        SetFunctionName("Vector3FromHalfVector3(HalfVector3::InParam hv3)");
+
+        using namespace rw::math::half;
+
+        HalfVector3 hv3_0, hv3_1, hv3_2;
+        hv3_0.x = 0xfbff;
+        hv3_0.y = 0x7bff;
+        hv3_0.z = 0x0400;
+        hv3_1.x = 0x8400;
+        hv3_1.y = 0x0000;
+        hv3_1.z = 0x8000;
+        hv3_2.x = 0x3555;
+        hv3_2.y = 0xca06;
+        hv3_2.z = 0xca06;
+        
+        rw::math::fpu::Vector3 v3_0 = Vector3FromHalfVector3(hv3_0);
+        rw::math::fpu::Vector3 v3_1 = Vector3FromHalfVector3(hv3_1);
+        rw::math::fpu::Vector3 v3_2 = Vector3FromHalfVector3(hv3_2);
+     
+        Validate( rw::math::fpu::IsSimilar(v3_0.x, -65504.0f) && rw::math::fpu::IsSimilar(v3_0.y, 65504.0f) && 
+                  rw::math::fpu::IsSimilar(v3_0.z, 6.1035156e-05f) && rw::math::fpu::IsSimilar(v3_1.x, -6.1035156e-05f) &&
+                  rw::math::fpu::IsSimilar(v3_1.y, 0.0f) && rw::math::fpu::IsSimilar(v3_1.z, -0.0f) && 
+                  rw::math::fpu::IsSimilar(v3_2.x, 0.33325195f) && rw::math::fpu::IsSimilar(v3_2.y, -12.046875f) &&
+                  rw::math::fpu::IsSimilar(v3_2.z, -12.046875f) );
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestVector4FromHalfVector4">
+            <![CDATA[
+
+        SetFunctionName("Vector4FromHalfVector4(HalfVector4::InParam hv4)");
+
+        using namespace rw::math::half;
+
+        HalfVector4 hv4_0, hv4_1;
+        hv4_0.x = 0xfbff;
+        hv4_0.y = 0x7bff;
+        hv4_0.z = 0x0400;
+        hv4_0.w = 0x8400;
+        hv4_1.x = 0x0000;
+        hv4_1.y = 0x8000;
+        hv4_1.z = 0x3555;
+        hv4_1.w = 0xca06;
+        
+        rw::math::fpu::Vector4 v4_0 = Vector4FromHalfVector4(hv4_0);
+        rw::math::fpu::Vector4 v4_1 = Vector4FromHalfVector4(hv4_1);
+        
+        Validate( rw::math::fpu::IsSimilar(v4_0.x, -65504.0f) && rw::math::fpu::IsSimilar(v4_0.y, 65504.0f) && 
+                  rw::math::fpu::IsSimilar(v4_0.z, 6.1035156e-05f) && rw::math::fpu::IsSimilar(v4_0.w, -6.1035156e-05f) &&
+                  rw::math::fpu::IsSimilar(v4_1.x, 0.0f) && rw::math::fpu::IsSimilar(v4_1.y, -0.0f) && 
+                  rw::math::fpu::IsSimilar(v4_1.z, 0.33325195f) && rw::math::fpu::IsSimilar(v4_1.w, -12.046875f));
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestHalfVector2FromVector2">
+            <![CDATA[
+
+        SetFunctionName("HalfVector2FromVector2(fpu::Vector2::InParam v2)");
+
+        using namespace rw::math::half;
+
+        rw::math::fpu::Vector2 v2_0, v2_1, v2_2, v2_3;
+        rw::math::detail::Flt32UInt32Union fi;
+        fi.i = 0x38800000;
+        v2_0.x = fi.f; //6.1035156e-05f;
+        fi.i = 0xb8800000;
+        v2_0.y = fi.f; //-6.1035156e-05f;
+        fi.i = 0x477FFFFF;
+        v2_1.x = fi.f; //65504.0f;
+        fi.i = 0xC77FFFFF;
+        v2_1.y = fi.f; //-65504.0f;
+        fi.i = 0x00000000;
+        v2_2.x = fi.f; //0.0f;
+        fi.i = 0x80000000;
+        v2_2.y = fi.f; //-0.0f;
+        fi.i = 0x3c41a8e9;
+        v2_3.x = fi.f; //0.011820056f;
+        fi.i = 0xc140c800;
+        v2_3.y = fi.f; //-12.048828f;
+        
+        HalfVector2 hv2_0 = HalfVector2FromVector2(v2_0);
+        HalfVector2 hv2_1 = HalfVector2FromVector2(v2_1);
+        HalfVector2 hv2_2 = HalfVector2FromVector2(v2_2);
+        HalfVector2 hv2_3 = HalfVector2FromVector2(v2_3);
+        
+        Validate( hv2_0.x == 0x0400 && hv2_0.y == 0x8400 && hv2_1.x == 0x7bff && hv2_1.y == 0xfbff &&
+                  hv2_2.x == 0x0000  && hv2_2.y == 0x8000  && hv2_3.x == 0x220d && hv2_3.y == 0xca06);
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestHalfVector3FromVector3">
+            <![CDATA[
+
+        SetFunctionName("HalfVector3FromVector3(fpu::Vector3::InParam v3)");
+
+        using namespace rw::math::half;
+
+        rw::math::fpu::Vector3 v3_0, v3_1, v3_2;
+        rw::math::detail::Flt32UInt32Union fi;
+        fi.i = 0x38800000;
+        v3_0.x = fi.f; //6.1035156e-05f;
+        fi.i = 0xb8800000;
+        v3_0.y = fi.f; //-6.1035156e-05f;
+        fi.i = 0x477FFFFF;
+        v3_0.z = fi.f; //65504.0f;
+        fi.i = 0xC77FFFFF;
+        v3_1.x = fi.f; //-65504.0f;
+        fi.i = 0x00000000;
+        v3_1.y = fi.f; //0.0f;
+        fi.i = 0x80000000;
+        v3_1.z = fi.f; //-0.0f;
+        fi.i = 0x3c41a8e9;
+        v3_2.x = fi.f; //0.011820056f;
+        fi.i = 0xc140c800;
+        v3_2.y = fi.f; //-12.048828f;
+        fi.i = 0xc140c800;
+        v3_2.z = fi.f; //-12.048828f;
+        
+        HalfVector3 hv3_0 = HalfVector3FromVector3(v3_0);
+        HalfVector3 hv3_1 = HalfVector3FromVector3(v3_1);
+        HalfVector3 hv3_2 = HalfVector3FromVector3(v3_2);
+        
+        Validate( hv3_0.x == 0x0400 && hv3_0.y == 0x8400 && hv3_0.z == 0x7bff &&
+                  hv3_1.x == 0xfbff && hv3_1.y == 0x0000 && hv3_1.z == 0x8000  &&
+                  hv3_2.x == 0x220d && hv3_2.y == 0xca06 && hv3_2.z == 0xca06 );
+        
+      ]]>
+        </TEST>
+
+        <TEST NAME="TestHalfVector4FromVector4">
+            <![CDATA[
+
+        SetFunctionName("HalfVector4FromVector4(fpu::Vector4::InParam v4)");
+
+        using namespace rw::math::half;
+        
+        rw::math::fpu::Vector4 v4_0, v4_1;
+        rw::math::detail::Flt32UInt32Union fi;
+        fi.i = 0x38800000;
+        v4_0.x = fi.f; //6.1035156e-05f;
+        fi.i = 0xb8800000;
+        v4_0.y = fi.f; //-6.1035156e-05f;
+        fi.i = 0x477FFFFF;
+        v4_0.z = fi.f; //65504.0f;
+        fi.i = 0xC77FFFFF;
+        v4_0.w = fi.f; //-65504.0f;
+        fi.i = 0x00000000;
+        v4_1.x = fi.f; //0.0f;
+        fi.i = 0x80000000;
+        v4_1.y = fi.f; //-0.0f;
+        fi.i = 0x3c41a8e9;
+        v4_1.z = fi.f; //0.011820056f;
+        fi.i = 0xc140c800;
+        v4_1.w = fi.f; //-12.048828f;
+        
+        HalfVector4 hv4_0 = HalfVector4FromVector4(v4_0);
+        HalfVector4 hv4_1 = HalfVector4FromVector4(v4_1);
+        
+        Validate( hv4_0.x == 0x0400 && hv4_0.y == 0x8400 && hv4_0.z == 0x7bff && hv4_0.w == 0xfbff &&
+                  hv4_1.x == 0x0000  && hv4_1.y == 0x8000  && hv4_1.z == 0x220d && hv4_1.w == 0xca06);
+        
+      ]]>
+        </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

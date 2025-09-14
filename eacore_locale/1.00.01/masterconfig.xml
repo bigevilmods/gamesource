@@ -1,0 +1,17 @@
+<project>
+	<buildroot>build</buildroot>
+
+	<masterversions>
+		<grouptype name="prebuilt">
+			<package name="eaconfig"    version="1.05.00-pr08-beta"/>
+			<package name="PlayStation3GCC"	 version="040.009-non-proxy"/>
+			<package name="renderware"  version="RW4.5.1-235659"/>
+			<package name="teal"        version="1.00.03"             autobuildclean="false"/>
+			<package name="xenonsdk"    version="2.0.2099.9-non-proxy"/>
+			<package name="Util"                      version="1.6.5"/>
+		</grouptype>
+	</masterversions>
+
+	<ondemand>true</ondemand>	
+	<config package="eaconfig" default="ps3-gcc-dev-debug" excludes="gc* ps2* xbox*"/>
+</project>

@@ -1,0 +1,56 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestScalar<FloatType>::UnitTestScalar()
+#else
+UnitTestScalar::UnitTestScalar()
+#endif
+{
+
+    // Note:
+    // 1) create a small array so cache miss is minimal, but an array,
+    // as close to real environment as possible.
+    // 2) currently doesn't test from heap, only create data on stack.
+
+    //------------------------------------------------------------------------
+    // create test data
+    //========================================================================
+    // generate some random numbers, so we can use for timing test
+
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        // To test branching code performance (some tests rely on the sign of the value) the
+        // random floats should be both positive and negative.  That is why the random numerators
+        // are cast to signed values before conversion to float.
+        xArray[i] = static_cast<float>(static_cast<signed int>(rw::math::Random())) / static_cast<float>(rw::math::Random() % 30 +1);
+        yArray[i] = static_cast<float>(static_cast<signed int>(rw::math::Random())) / static_cast<float>(rw::math::Random() % 30 +1);
+        zArray[i] = static_cast<float>(static_cast<signed int>(rw::math::Random())) / static_cast<float>(rw::math::Random() % 30 +1);
+    }
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestScalar<FloatType>::~UnitTestScalar()
+#else
+UnitTestScalar::~UnitTestScalar()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestScalar<FloatType>::Test()
+#else
+void UnitTestScalar::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

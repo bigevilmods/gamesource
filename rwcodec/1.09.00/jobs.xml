@@ -1,0 +1,97 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<project>
+    <dependent name="job_manager" />
+
+    <property name="runtime.rwcodec.runtime.moduledependencies"/>
+
+    <!-- Build the chunk decompression jobs -->
+    <foreach item="String" in="lzma lzx uncompressed zlib refpack" property="codec_type">
+        <property name="job_name" value="rwcodec_${codec_type}_job"/>
+        <property name="runtime.buildmodules">
+            ${job_name}
+            ${property.value}
+        </property>
+
+        <property name="runtime.rwcodec.runtime.moduledependencies">
+            ${job_name}
+            ${property.value}
+        </property>
+
+        <property name="runtime.${job_name}.buildtype" value="SpuJob-pdc"/>
+        <property name="runtime.${job_name}.postbuildtarget" value="package.job_manager.spu_job_tasks.postbuildtarget"/>
+        <property name="runtime.${job_name}.vcproj.post-build-step">
+            ${nant.location}\nant.exe package.job_manager.spu_job_tasks.vcproj.post-build-step -buildfile:${nant.project.buildfile} -masterconfigfile:${nant.project.masterconfigfile} -buildroot:${nant.project.buildroot} -D:config=${config} -D:path=${package.configbindir}${eaconfig.runtime.outputfolder} -D:input="${job_name}${exe-suffix}"
+        </property>
+
+        <property name="runtime.${job_name}.usedependencies">
+            EABase
+        </property>
+
+        <property name="runtime.${job_name}.builddependencies">
+            EAAssert
+            job_manager
+            job_util
+            sony_edge
+        </property>
+
+        <property name="runtime.${job_name}.includedirs">
+            ${package.dir}/include
+            ${package.dir}/source
+        </property>
+
+        <fileset name="runtime.${job_name}.libs">
+            <includes name="${package.ps3sdk.appdir}/target/spu/lib/libdma.a"/>
+        </fileset>
+
+
+        <fileset name="runtime.${job_name}.sourcefiles">
+            <includes name="source/jobs/common.cpp"/>
+            <includes name="source/jobs/${codec_type}/*.cpp"/>
+            <includes fromfileset="package.job_manager.spu_pdc_startFile"/>
+        </fileset>
+    </foreach>
+
+    <!-- Build the refpackdeflate job -->
+    <property name="runtime.buildmodules">
+        rwcodec_refpackdeflate_job
+        ${property.value}
+    </property>
+
+    <property name="runtime.rwcodec.runtime.moduledependencies.ps3">
+        rwcodec_refpackdeflate_job
+        ${property.value}
+    </property>
+
+    <property name="runtime.rwcodec_refpackdeflate_job.buildtype" value="SpuJob-pdc-O2" />
+
+    <property name="runtime.rwcodec_refpackdeflate_job.postbuildtarget" value="package.job_manager.spu_job_tasks.postbuildtarget"/>
+    <property name="runtime.rwcodec_refpackdeflate_job.vcproj.post-build-step">
+        ${nant.location}\nant.exe package.job_manager.spu_job_tasks.vcproj.post-build-step -buildfile:${nant.project.buildfile} -masterconfigfile:${nant.project.masterconfigfile} -buildroot:${nant.project.buildroot} -D:config=${config} -D:path=${package.configbindir}${eaconfig.runtime.outputfolder} -D:input="rwcodec_refpackdeflate_job${exe-suffix}"
+    </property>
+
+    <property name="runtime.rwcodec_refpackdeflate_job.defines" value="JOB_BUILD_TYPE_PDC"/>
+
+    <property name="runtime.rwcodec_refpackdeflate_job.builddependencies">
+        coreallocator
+        EABase
+        EAAssert
+        job_manager
+        job_util
+        EAStdC
+    </property>
+
+    <property name="runtime.rwcodec_refpackdeflate_job.includedirs">
+        ${package.dir}/include
+        ${package.dir}/source
+    </property>
+
+    <fileset name="runtime.rwcodec_refpackdeflate_job.sourcefiles">
+        <includes name="source\rwrefpackdeflate.cpp"/>
+        <includes fromfileset="package.job_manager.spu_pdc_startFile"/>
+    </fileset>
+
+    <fileset name="runtime.rwcodec_refpackdeflate_job.libs">
+        <includes name="${package.PlayStation3GCC.appdir}/target/spu/lib/libdma.a"/>
+    </fileset>
+</project>
+

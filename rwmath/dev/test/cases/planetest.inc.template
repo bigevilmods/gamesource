@@ -1,0 +1,69 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestPlane<FloatType>::UnitTestPlane()
+#else
+UnitTestPlane::UnitTestPlane()
+#endif
+{
+
+    // Note:
+    // 1) create a small array so cache miss is minimal, but an array,
+    // as close to real environment as possible.
+    // 2) currently doesn't test from heap, only create data on stack.
+
+
+    //------------------------------------------------------------------------
+    // create test data
+    //========================================================================
+    int i;
+    // generate some random numbers, so we can use for timing test
+    for (i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        x_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        y_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        z_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        w_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+
+        v3_array[i].X() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v3_array[i].Y() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v3_array[i].Z() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+
+        v4_array[i].X() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].Y() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].Z() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].W() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+
+        p_function_array[i].A() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        p_function_array[i].B() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        p_function_array[i].C() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        p_function_array[i].D() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+    }
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestPlane<FloatType>::~UnitTestPlane()
+#else
+UnitTestPlane::~UnitTestPlane()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestPlane<FloatType>::Test()
+#else
+void UnitTestPlane::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

@@ -1,0 +1,103 @@
+/*!
+\page p_mask_operations Mask Operations
+
+\par Introduction
+
+This document outlines the types of operations that can be performed on Mask types.  It does not cover operations
+that involve Mask types and other mask types.  For information on these types
+see documentation for \ref p_comparison_operations "comparison operations" and \ref p_select_operations "select operations".
+
+\par Constructors
+
+The Mask types have constructors defined for initializing a mask from a boolean
+value (or tuple of boolean values).  The mask will then conceptually represent these
+boolean values.  Internally, the mask will represent a boolean value as a
+floating point value, or a bitmask.  However, users shouldn't normally need to
+concern themselves with the underlying representation unless they are doing
+extremely low level optimization.  In fact, for greater code portability, it
+is probably better to think of the mask types as a collection of true/false values.
+Also, although it is possible to construct masks using bool arguments, this is probably not
+a very efficient way to create the mask.  Generally speaking, masks should be created
+as a result of a \ref p_comparison_operations "comparison operation" involving
+another data type, or they should be returned as the result of a Mask
+operation.
+
+The FPU mask types also allow masks to be created from floating point values.
+A value of 0 or a positive float represents true, and a negative value
+represents false.  This constructor is present to allow pre-existing branch
+free FPU code to be easily rewritten for the Mask API.  Their may alsy be some
+tricky optimizations that are made possible by exposing this functionality.  However,
+users should be aware that using these constructors reduces portability between
+FPU mask code, and VPU mask code.
+
+The VPU mask types also allow masks to be created from VectorIntrinsic types,
+or one or more uint32_t bit masks.  An element whose bits are set to all zero is used
+to represent a value of false, and an element whose bits are set to all ones (i.e. 0xffffffff)
+is used to represent true.  Again, this funcionality is specific to the VPU
+Mask types, and not present in the FPU types.  However, this functionality may
+allow for some VPU specific optimizations, so it has been included in the API.
+Users should be aware that using these constructors reduces portability between
+FPU mask code, and VPU mask code.
+
+\par Accessors
+
+The MaskScalar type has a GetBool method that allows the state of the mask to be
+returned as a boolean value.  Generally speaking, users should avoid calling
+this method, because the entire point of the Mask API's is to avoid using bool
+values.  However, this method is useful for a couple reasons:
+-# The method allows easy inspection of the mask's state (i.e. for debugging).
+-# Even optimized code may need to occasionally branch based on a bool value.
+   Optimized code could still make use of Mask types (e.g. to perform a large
+   number of "boolean" operations) to arrive at a final result that is then
+   converted to a bool.
+
+The Mask2, Mask3, Mask4 types do not currently allow conversion to a bool.
+However, they do allow the creation of MaskScalar objects for a given element
+in the mask.  For example, the value in the Z element of a Mask3 can
+be extracted as a MaskScalar type using the \c GetZ method.  The Mask types
+also have methods for setting a specific element's value to that of a
+MaskScalar (e.g. \c SetZ).
+
+\par Boolean/Bitwise Operations
+
+The mask types also support standard boolean/bitwise operations like:
+- Not
+- And
+- Or
+- Xor
+
+Normally you may think of these operations as boolean operations since the Mask
+type is usually used to represent a boolean value.  However, the VPU mask type
+is internally just a bit mask, and these operations are implemented as bitwise
+operations.  So, if a Mask is initialized to a specific bit pattern, you may
+think of these operations as bitwise.
+
+\par Mask Comparison Operations
+
+The Mask types also allow comparisons between similar mask types.  For example
+you may use CompEqual or CompNotEqual to perform an element-wise comparison of
+two mask types.  This comparison is roughly equivalent to comparing two boolean
+variables with one another.
+
+The Mask2, Mask3, Mask4 types also have functions for testing whether or not
+any elements or all elements are true.  These functions are called CompAnyTrue
+and CompAllTrue.  These functions return a MaskScalar since this result is
+computed for the entire Mask (i.e. it is not element-wise).
+
+\code
+    // Return a mask indicating if any element of the vector is negative.
+    MaskScalar IsAnyElementNegative( Vector4::InParam v )
+    {
+        return CompAnyTrue( CompLessThan( v, GetVector4_Zero() ) );
+    }
+
+    // Return the zero vector if any element of the input vector is negative,
+    // otherwise return the original vector.
+    Vector4 ClampVectorsWithNegativeComponents( Vector4::InParam v )
+    {
+        MaskScalar hasNegativeElement = IsAnyElementNegative( v );
+        return Select( hasNegativeElement, GetVector4_Zero(), v );
+    }
+\endcode
+
+*/

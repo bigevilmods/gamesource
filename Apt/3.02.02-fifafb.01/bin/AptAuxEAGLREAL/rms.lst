@@ -1,0 +1,5 @@
+# had to add full paths to these to work around ea3c bug
+TextureApt.rms
+GouraudApt.rms
+
+

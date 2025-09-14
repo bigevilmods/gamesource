@@ -1,0 +1,7 @@
+/*!
+\page p_hijacking_namespaces Hijacking Namespaces
+
+I noticed a lot of code that just prefixed everything with rw::math:: all over the place. The first reason why you shouldn't do this is because as a programmer you ought to be lazy. If you find yourself fully qualifying typenames all the time you're doing more typing than you have to. The second and much more important reason why you shouldn't be prefixing with rw::math:: all over the place is because it makes switching between FPU and VPU nearly impossible.
+ 
+
+*/

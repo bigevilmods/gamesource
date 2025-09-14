@@ -1,0 +1,71 @@
+<project default="locomoto">
+
+	<include file="../../locale.build"/>
+	
+	<!--
+		This target builds the locomoto tool for compiling Excel
+		string databases into header files and locale databases.
+		It is not called as part of the normal build process
+		since the target program is provided prebuilt in the
+		package distribution.
+	-->
+	
+	<!-- Define this property if we are using vc9 -->
+	<property name="package.locomoto.isusingvc9" value="true" if="'${package.VisualStudio.version}' gte '9.0.0'"/>
+  
+	  <!-- Auto-detect Visual Studio 2005 - this affects VCPROJ generation -->
+	  <do if="@{PropertyExists('package.locomoto.isusingvc9')}">
+	 	<dependent name="WindowsSDK" />
+		<property name="build.PlatformSDKdir" value="${package.WindowsSDK.appdir}"/>
+	  </do>
+	  
+	  <do unless="@{PropertyExists('package.locomoto.isusingvc9')}">
+	   <property name="build.PlatformSDKdir" value="${package.VisualStudio.appdir}/Vc7/PlatformSDK"/> 
+	  </do>
+  
+
+	<target name="locomoto">
+
+		<!--
+			Only allow this target to work if the configuration is 
+			set to PC Release as there is no debug version of the
+			tool available.  If you really need to use a debug
+			version, remove the <fail> task and build the tool in
+			debug mode.  But since this will only very rarely be
+			required, we disallow it here and force you to actually
+			remove the <fail> task if you really want to build a
+			debug version of the tool.
+		-->
+		<fail
+			message="The locomoto program can only be built in the PC Release configuration"
+			unless="${config}==pc-vc71-release"/>
+
+		<build type="Program" outputdir="${build.dir}/${config}/bin" name="locomoto">
+			<sources>
+				<includes name="*.cpp"/>
+			</sources>
+
+			<ccoptions>
+				${cc.options}
+				-EHsc
+				-Zc:wchar_t
+			</ccoptions>
+
+			<includedirs>
+				${package.EABase.includedirs}
+				${package.teal.includedirs}
+			</includedirs>
+
+			<libraries>
+				<includes fromfileset="package.teal.libs"/>
+				<includes name="${build.PlatformSDKdir}/lib/Ole32.lib"/>
+				<includes name="${build.PlatformSDKdir}/lib/shell32.lib"/>
+			</libraries>
+		</build>
+
+		<copy
+			file="${build.dir}/${config}/bin/locomoto${config-type}${exe-suffix}"
+			tofile="${package.dir}/bin/${config-platform}/locomoto${exe-suffix}"
+			/>
+	</target>
+</project>

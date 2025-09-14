@@ -1,0 +1,23 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestSoa4Trig::UnitTestSoa4Trig()
+{
+
+}
+
+UnitTestSoa4Trig::~UnitTestSoa4Trig()
+{
+
+}
+
+void UnitTestSoa4Trig::Test()
+{
+
+}
+
+using namespace ::rw::math::vpu;
+
+//#BLOCK
+

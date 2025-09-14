@@ -1,0 +1,251 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestRandom" HEADER="randomtest.h" SOURCE="randomtest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/random.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="RandomTest">
+      <![CDATA[
+
+        SetFunctionName("RandomNumberGenerator::Random()");
+
+        ::rw::math::RandomNumberGenerator random;
+        
+        Validate(0 != random.Random());
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="RandomFloatTest">
+        <![CDATA[
+
+        SetFunctionName("RandomNumberGenerator::RandomFloat()");
+
+        ::rw::math::RandomNumberGenerator random;
+        float rf = random.RandomFloat();
+        float rf2 = random.RandomFloat();
+        
+        Validate(rf >= 0.0f && rf <= 1.0f && rf2 >= 0.0f && rf2 <= 1.0f);
+
+      ]]>
+      </TEST>
+
+      <!--
+      Tests to generate Gaussian/Poisson random numbers. If you want to generate these numbers and look at their distributions using historgram, uncomment
+      these tests. Here is an online tool to draw historgram 
+      http://www.shodor.org/interactivate/activities/histogram/?version=1.6.0_12&browser=Mozilla&vendor=Sun_Microsystems_Inc.
+      
+      <TEST NAME="GaussianRandomTest">
+        <![CDATA[
+
+        SetFunctionName("GaussianRandom(float, float)");
+        ::rw::math::RandomNumberGenerator random;
+        float rfs[10000];
+        for(int i = 0; i < 10000; i++)
+        {
+            rfs[i] = random.RandomFloat();
+        }
+        
+        for(int i = 0; i < 10000; i++)
+        {
+            float gr = ::rw::math::GaussianRandom(rfs[i]);
+            printf("%f\n", gr);
+        }
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="PoissonRandomTest">
+        <![CDATA[
+
+        /**
+            Poisson random generator from Rupert Jason NHL
+            int Poisson(float average)
+            {
+	            float p = 0;
+	            int r = 0;
+	            bool flag = true;
+	            while (flag) 
+	            {
+		            float randnum = ((float)rand()) / ((float)RAND_MAX);
+
+		            if (randnum <= 0.0f)
+			            break;
+
+		            p = p-log(randnum);  // rand is a number in the range (0,1].
+		            if (p<average) 
+			            r++;
+		            else 
+			            break;
+
+	            }
+	            return r;
+            }
+        **/
+        
+        SetFunctionName("PoissonRandom(float, float)");
+        ::rw::math::RandomNumberGenerator random;
+        float rfs[50000];
+        for(int i = 0; i < 50000; i++)
+        {
+            rfs[i] = random.RandomFloat();
+        }
+        
+        StartTimer(50000);
+        for(int i = 0; i < 50000; i++)
+        {
+            int gr = ::rw::math::PoissonRandom(rfs[i], 100);
+            (void)gr;
+            printf("%d\n", gr);
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+      
+      -->
+
+      <TEST NAME="RandomDeterministicTest1">
+      <![CDATA[
+        
+        SetFunctionName("RandomNumberGenerator::Random()");
+
+        ::rw::math::RandomNumberGenerator random1, random2;
+
+        random1.Random();
+        random2.Random();
+        random1.Random();
+        random2.Random();
+        random1.Random();
+        random2.Random();
+        random1.Random();
+        random2.Random();
+        
+        Validate(random1.Random() == random2.Random());
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="RandomDeterministicTest2">
+      <![CDATA[
+        
+        SetFunctionName("RandomNumberGenerator::Seed()");
+
+        ::rw::math::RandomNumberGenerator random;
+
+        random.Seed(0x32af23fa);
+
+        unsigned int saved = random.Random();
+
+        random.Random();
+        random.Random();
+        random.Random();
+
+        random.Seed(0x32af23fa);
+        
+        Validate(saved == random.Random());
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="RandomPlatformTest">
+      <![CDATA[
+        
+        SetFunctionName("RandomNumberGenerator::Random()");
+
+        ::rw::math::RandomNumberGenerator random;
+
+        unsigned int first = random.Random();
+        unsigned int second = random.Random();
+
+        random.Seed(0x32af23fa);
+
+        Validate((first == 0x559a51ed) && 
+                 (second == 0x274ea7f5) && 
+                 (random.Random() == 0x85b529ca));
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="RandomDistributionTest1">
+      <![CDATA[
+        
+        SetFunctionName("RandomNumberGenerator::Random()");
+
+        const int   TRIES                              = 10000;
+        const float DESIRED_DISTRIBUTION_ERROR_PERCENT = 0.02f;
+
+        ::rw::math::RandomNumberGenerator random;
+
+        int binEven = 0;
+        int binOdd = 0;
+
+
+        for(int i = 0; i < TRIES; ++i)
+        {
+            if(random.Random() % 2)
+                ++binOdd;
+            else
+                ++binEven;
+        }
+
+        Validate( abs(binOdd - binEven) <= TRIES * DESIRED_DISTRIBUTION_ERROR_PERCENT );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="random_expected_sequence">
+      <![CDATA[
+        // This test doesn't really check that the generator is necessarily "correct".
+        // Instead, it checks to make sure the sequence is not different than
+        // normal.  i.e. It tries to make sure that code changes to the random
+        // number generator don't change the output.
+        // If the random number generators implementation was to be changed intentionally,
+        // the values checked by this test will need to be updated.
+
+        SetFunctionName("RandomNumberGenerator::Random()");
+
+        uint32_t expectedSequence[] =
+        { 
+            0x559a51ed, 0x274ea7f5, 0xe827f7e0, 0x76b65632, 0x7f1b3feb, 0xeae8d5ee, 0x5101186f,
+            0x6575225a, 0x696464c0, 0x9adbe245, 0xa4b56a8e, 0x0e76d5ae, 0xac313f99, 0x0e604393,
+            0xf1c937a1, 0xaf5a6800, 0xac0a5294, 0xc8b6e262, 0xd204ab00, 0xf03e2412, 0x1732e4bf,
+            0x7616df2a, 0xe7619bed, 0x60ad7593, 0x6296d415, 0x689b6855, 0x58f9679e, 0xf48ec725,
+            0x46b87783, 0x1531a03a, 0x4ff2db39, 0x81117059, 0x3c9e90e6, 0x90869324, 0x74702dd0,
+            0x399bb3ae, 0xfac24f0b, 0x0bf53d4a, 0x6a7d0a6a, 0x2cb8cc96, 0xf1fd5fae, 0x5274a0d4,
+            0x4efca9f9, 0xc1070d71, 0xca78117c, 0x4585ebdb, 0x3497fd63, 0x32260d8e, 0xe097860f,
+            0x5a22ae67, 0xa0abe77c, 0x0da4e72f, 0xc1ebf3f5, 0x15ab2070, 0x08378706, 0xaff08582,
+            0xaa1ef8a9, 0x8ad477dd, 0x4cca90b7, 0xc14202a8, 0xffe1fa98, 0xd6974e87, 0x3973b932,
+            0xb28d15b0
+        };
+
+        ::rw::math::RandomNumberGenerator random;
+        bool result = true;
+        for(size_t i=0;i<sizeof(expectedSequence)/sizeof(expectedSequence[0]);++i)
+        {
+            uint32_t randomValue = random.Random();
+            result &= (randomValue == expectedSequence[i]);
+        }
+        Validate(result);
+
+      ]]>
+      </TEST>
+
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

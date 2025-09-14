@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{6744BD16-F2C8-4D78-9AD0-65C963CF8089}</ProjectGuid>
+    <RootNamespace>gfilter</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60610.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>build\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;DEBUG;WIN32_LEAN_AND_MEAN;PC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;WIN32_LEAN_AND_MEAN;PC;GIMEXLOAT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\dib.cpp" />
+    <ClCompile Include="cmn\expr.cpp" />
+    <ClCompile Include="cmn\facenter.cpp" />
+    <ClCompile Include="cmn\facomment.cpp" />
+    <ClCompile Include="cmn\facopy.cpp" />
+    <ClCompile Include="cmn\fblend.cpp" />
+    <ClCompile Include="cmn\fblur.cpp" />
+    <ClCompile Include="cmn\fchanmap.cpp" />
+    <ClCompile Include="cmn\fchroma.cpp" />
+    <ClCompile Include="cmn\fcolbal.cpp" />
+    <ClCompile Include="cmn\fcontrast.cpp" />
+    <ClCompile Include="cmn\fcreep.cpp" />
+    <ClCompile Include="cmn\fcrop.cpp" />
+    <ClCompile Include="cmn\fcsmap.cpp" />
+    <ClCompile Include="cmn\fdeband.cpp" />
+    <ClCompile Include="cmn\fdeint.cpp" />
+    <ClCompile Include="cmn\fdilate.cpp" />
+    <ClCompile Include="cmn\fdot3.cpp" />
+    <ClCompile Include="cmn\fdoubled.cpp" />
+    <ClCompile Include="cmn\fdrops.cpp" />
+    <ClCompile Include="cmn\fedge.cpp" />
+    <ClCompile Include="cmn\fembm.cpp" />
+    <ClCompile Include="cmn\fequalize.cpp" />
+    <ClCompile Include="cmn\ferode.cpp" />
+    <ClCompile Include="cmn\ffill.cpp" />
+    <ClCompile Include="cmn\fflip.cpp" />
+    <ClCompile Include="cmn\ffont.cpp" />
+    <ClCompile Include="cmn\fgamma.cpp" />
+    <ClCompile Include="cmn\fgrb.cpp" />
+    <ClCompile Include="cmn\fgrey.cpp" />
+    <ClCompile Include="cmn\fgrid.cpp" />
+    <ClCompile Include="cmn\fhalfsize.cpp" />
+    <ClCompile Include="cmn\fhsl.cpp" />
+    <ClCompile Include="cmn\fhsv.cpp" />
+    <ClCompile Include="cmn\finvert.cpp" />
+    <ClCompile Include="cmn\fline.cpp" />
+    <ClCompile Include="cmn\fmedian.cpp" />
+    <ClCompile Include="cmn\fmipmap.cpp" />
+    <ClCompile Include="cmn\fmipmont.cpp" />
+    <ClCompile Include="cmn\fnil.cpp" />
+    <ClCompile Include="cmn\fopenlib.cpp" />
+    <ClCompile Include="cmn\foutline.cpp" />
+    <ClCompile Include="cmn\fpalsort.cpp" />
+    <ClCompile Include="cmn\fphotoshop.cpp" />
+    <ClCompile Include="cmn\fpixel.cpp" />
+    <ClCompile Include="cmn\fpreten.cpp" />
+    <ClCompile Include="cmn\fpsnr.cpp" />
+    <ClCompile Include="cmn\fpsort.cpp" />
+    <ClCompile Include="cmn\fradfill.cpp" />
+    <ClCompile Include="cmn\frect.cpp" />
+    <ClCompile Include="cmn\fremap.cpp" />
+    <ClCompile Include="cmn\frot.cpp" />
+    <ClCompile Include="cmn\frotate.cpp" />
+    <ClCompile Include="cmn\fsafe.cpp" />
+    <ClCompile Include="cmn\fscale.cpp" />
+    <ClCompile Include="cmn\fscreen.cpp" />
+    <ClCompile Include="cmn\fshade.cpp" />
+    <ClCompile Include="cmn\fsharpen.cpp" />
+    <ClCompile Include="cmn\fshrink.cpp" />
+    <ClCompile Include="cmn\fsize.cpp" />
+    <ClCompile Include="cmn\fsmooth.cpp" />
+    <ClCompile Include="cmn\fstereo.cpp" />
+    <ClCompile Include="cmn\fswap.cpp" />
+    <ClCompile Include="cmn\ftedge.cpp" />
+    <ClCompile Include="cmn\ftemporalfix.cpp" />
+    <ClCompile Include="cmn\ftexmap.cpp" />
+    <ClCompile Include="cmn\ftexture.cpp" />
+    <ClCompile Include="cmn\ftranspose.cpp" />
+    <ClCompile Include="cmn\fundot3.cpp" />
+    <ClCompile Include="cmn\funembm.cpp" />
+    <ClCompile Include="cmn\fwarp.cpp" />
+    <ClCompile Include="cmn\fwrap.cpp" />
+    <ClCompile Include="cmn\fxcolour.cpp" />
+    <ClCompile Include="cmn\fyi.cpp" />
+    <ClCompile Include="cmn\fzoom.cpp" />
+    <ClCompile Include="cmn\hash.cpp" />
+    <ClCompile Include="cmn\hsv.cpp" />
+    <ClCompile Include="cmn\invtable.cpp" />
+    <ClCompile Include="cmn\ranger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\gfilter.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

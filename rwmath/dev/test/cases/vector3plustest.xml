@@ -1,0 +1,846 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestVector3Plus" HEADER="vector3plustest.h" SOURCE="vector3plustest.inc" RWHOSTHEADER="rw/math/vpu/vector3plus.h" RWGENERICHEADER="rw/math/fpu/vector3plus.h" RWOPTIMALHEADER="rw/math/optimal/vector3plus.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        SetFunctionName("Vector3Plus&      operator = (Vector3Plus::InParam v)");
+        Vector3Plus vRef( 1.0f, 2.1f, 3.2f, 4.3f );
+        Vector3Plus v;
+        v= vRef;
+        Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.UserData() == 4.3f);
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        SetFunctionName("Vector3Plus(const Vector3Plus&)");
+        Vector3Plus vRef( 1.0f, 2.1f, 3.2f, 4.3f );
+        Vector3Plus v(vRef);
+        Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.UserData() == 4.3f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="vector3_userdata_constructor">
+      <![CDATA[
+
+        SetFunctionName("Vector3Plus(const Vector3&, userData)");
+        Vector3Plus v(Vector3(1.0f, 2.1f, 3.2f), float_test_type(4.3f));
+        Validate((float)v.X() == 1.0f && (float)v.Y() == 2.1f && (float)v.Z() == 3.2f && (float)v.UserData() == 4.3f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("Vector3Plus(const fpu::Vector3PlusTemplate<FloatClassRHS> &_v)");
+            ::rw::math::fpu::Vector3PlusTemplate<double> doubleUnalignedVector;
+            ::rw::math::fpu::Vector3PlusTemplate<float> floatUnalignedVector;
+            ::rw::math::fpu::Vector3PlusTemplate<double> doubleAlignedVector;
+            ::rw::math::fpu::Vector3PlusTemplate<float> floatAlignedVector;
+
+            doubleUnalignedVector.Set(
+                0, 1, 2, 4
+                );
+            floatUnalignedVector.Set(
+                0, 1, 2, 4
+                );
+            doubleAlignedVector.Set(
+                0, 1, 2, 4
+                );
+            floatAlignedVector.Set(
+                0, 1, 2, 4
+                );
+
+            Vector3Plus ref;
+            ref.Set(
+                0, 1, 2, 4
+                );
+
+            Vector3Plus test_doubleUnalignedVector(doubleUnalignedVector);
+            Vector3Plus test_floatUnalignedVector(floatUnalignedVector);
+            Vector3Plus test_doubleAlignedVector(doubleAlignedVector);
+            Vector3Plus test_floatAlignedVector(floatAlignedVector);
+
+            Validate(
+                ((float)test_doubleUnalignedVector.X() == (float)ref.X() && (float)test_doubleUnalignedVector.Y() == (float)ref.Y() && (float)test_doubleUnalignedVector.Z() == (float)ref.Z() && (float)test_doubleUnalignedVector.UserData() == (float)ref.UserData()) &&
+                ((float)test_floatUnalignedVector.X() == (float)ref.X() && (float)test_floatUnalignedVector.Y() == (float)ref.Y() && (float)test_floatUnalignedVector.Z() == (float)ref.Z() && (float)test_floatUnalignedVector.UserData() == (float)ref.UserData()) &&
+                ((float)test_doubleAlignedVector.X() == (float)ref.X() && (float)test_doubleAlignedVector.Y() == (float)ref.Y() && (float)test_doubleAlignedVector.Z() == (float)ref.Z() && (float)test_doubleAlignedVector.UserData() == (float)ref.UserData()) &&
+                ((float)test_floatAlignedVector.X() == (float)ref.X() && (float)test_floatAlignedVector.Y() == (float)ref.Y() && (float)test_floatAlignedVector.Z() == (float)ref.Z() && (float)test_floatAlignedVector.UserData() == (float)ref.UserData())
+                );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+            SetFunctionName("Vector3Plus(VecFloat, VecFloat, VecFloat , VecFloat)");
+            Vector3Plus v(float_test_type(1.2f), float_test_type(2.3f), float_test_type(3.5f), float_test_type(4.5f));
+            Validate((float)v.X() == 1.2f && (float)v.Y() == 2.3f && (float)v.Z() == 3.5f && (float)v.UserData() == 4.5f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 4.0f);
+
+            SetFunctionName("Vector3Plus(VecFloatRef, VecFloatRef, VecFloatRef, VecFloatRef)");
+            Vector3Plus v = Vector3Plus(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.0f && (float)v.UserData() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.01f, 2.01f, 3.01f, 4.4f);
+
+            SetFunctionName("Vector3Plus(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            Vector3Plus v(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+            Validate((float)v.X() == 1.01f && (float)v.Y() == 2.01f && (float)v.Z() == 3.01f&& (float)v.UserData() == 4.4f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+
+            SetFunctionName("Vector3Plus(Vector4Intrinsic)");
+            Vector3Plus v(vi);
+            Validate((float)v.X() == 1.1f && (float)v.Y() == 2.1f && (float)v.Z() == 3.1f && (float)v.UserData() == 4.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+      
+      
+      <TEST NAME="test41">
+      <![CDATA[
+      
+            SetFunctionName("Vector3Plus(const FloatClass _xyzplus[4])");
+
+#ifdef HOST_TESTING
+            {
+                float floatData[] = {1.23f, 4.56f, 7.89f, 1.0f};
+                AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+                Vector3Plus vB(floatBuffer.GetFloatData());
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f && (float)vB.UserData() == 1.0f);
+            }
+#endif
+            {
+                float_basic_type fArray[4]={1.23f, 4.56f, 7.89f, 1.0f};
+                Vector3Plus vB(fArray);
+                Validate((float)vB.X() == 1.23f && (float)vB.Y() == 4.56f && (float)vB.Z() == 7.89f && (float)vB.UserData() == 1.0f);
+            }
+
+      ]]>
+      </TEST>
+
+      
+      <TEST NAME="test_construct_from_single_float">
+        <![CDATA[
+
+            SetFunctionName("Vector3Plus(float, float)");
+            Vector3Plus v(1.2f, 2.3f);
+            Validate((float)v.X() == 1.2f && (float)v.Y() == 1.2f && (float)v.Z() == 1.2f && (float)v.UserData() == 2.3f);
+
+      ]]>
+      </TEST>
+      
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+            Vector3Plus v3;
+
+            SetFunctionName("Set(float, float, float)");
+            v3.Set(1.1f, 2.2f, 3.4f, 4.5);
+            Validate((float)v3.X() == 1.1f && (float)v3.Y() == 2.2f && (float)v3.Z() == 3.4f&& (float)v3.UserData() == 4.5f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            Vector3Plus v3;
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+
+            SetFunctionName("Set(VecFloatRefIndex, VecFloatRefIndex, VecFloatRefIndex)");
+            v3.Set(VecFloatRefIndex(vi,0), VecFloatRefIndex(vi,1), VecFloatRefIndex(vi,2), VecFloatRefIndex(vi,3));
+            Validate((float)v3.X() == 1.1f && (float)v3.Y() == 2.1f && (float)v3.Z() == 3.1f && (float)v3.UserData() == 4.1f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            Vector3Plus v3;
+            MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.0f, 15.02f);
+
+            SetFunctionName("Set(VecFloatRef, VecFloatRef, VecFloatRef, VecFloatRef)");
+            v3.Set(VecFloatRefX(vi), VecFloatRefY(vi), VecFloatRefZ(vi), VecFloatRefW(vi));
+            Validate((float)v3.X() == 1.0f && (float)v3.Y() == 2.0f && (float)v3.Z() == 3.0f && (float)v3.UserData() == 15.02f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test_set_vec3_vecfloat">
+       <![CDATA[
+
+
+        SetFunctionName("Set(Vector3, VecFloat)");
+        Vector3 v3(1.0f, 2.1f, 3.2f);
+        Vector3Plus v;
+        v.Set(v3, float_test_type(4.3f));
+        Validate((float_basic_type)v.X() == 1.0f && (float_basic_type)v.Y() == 2.1f && (float_basic_type)v.Z() == 3.2f && (float_basic_type)v.UserData() == 4.3f);
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+            SetFunctionName("SetComponent(int i, float value)");
+            Vector3Plus v( 1.0f, 2.0f, 3.0f, 4.0f );
+            v.SetComponent( 1, 10.0f );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 10.0f && (float)v.Z() == 3.0f&& (float)v.UserData() == 4.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloat value)");
+            Vector3Plus v( 1.0f, 2.0f, 3.0f, 4.0f );
+            v.SetComponent( 1, VecFloat(12.0));
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 12.0f && (float)v.Z() == 3.0f && (float)v.UserData() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRefIndex value)");
+            Vector3Plus v( 1.0f, 2.0f, 3.0f, 4.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefIndex(vi,3) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 4.1f && (float)v.UserData() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("SetComponent(int i, VecFloatRef<INDEX> value)");
+            Vector3Plus v( 1.0f, 2.0f, 3.0f, 4.0f );
+            MakeVectorIntrinsic(vi, 1.1f, 2.1f, 3.1f, 4.1f);
+            v.SetComponent( 2, VecFloatRefZ(vi) );
+            Validate((float)v.X() == 1.0f && (float)v.Y() == 2.0f && (float)v.Z() == 3.1f && (float)v.UserData() == 4.0f);
+
+#endif
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="test42">
+      <![CDATA[
+
+#ifdef HOST_TESTING
+
+            SetFunctionName("VecFloatRefIndex Vector3Plus::GetComponent(int i)");
+            Vector3Plus v( 1.0f, 2.0f, 3.0f, 4.0f );
+            Validate(v.GetComponent(0) == VecFloat(1.0f) && v.GetComponent(1) == VecFloat(2.0f) && v.GetComponent(2) == VecFloat(3.0f) && v.GetComponent(3) == VecFloat(4.0f));
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("X() = float");
+            v3.X() = 1.0f;
+            Validate((float)v3.X() == 1.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("Y() = float");
+            v3.Y() = 2.0f;
+            Validate((float)v3.Y() == 2.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("Z() = float");
+            v3.Z() = 3.0f;
+            Validate((float)v3.Z() == 3.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("operator[0]");
+            v3[0] = 99.0f;
+            Validate((float)v3.X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("operator[1]");
+            v3[1] = 100.0f;
+            Validate((float)v3.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+            Vector3Plus v3(0.0f, 0.0f, 0.0f, 0.0f);
+
+            SetFunctionName("operator[2]");
+            v3[2] = 55.0f;
+            Validate((float)v3.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 2.0f, 3.0f, 4.0f);
+
+            SetFunctionName("X()");
+            Validate((float)v3.X() == 99.0f);
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 100.0f, 3.0f, 4.0f);
+
+            SetFunctionName("Y()");
+            Validate((float)v3.Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 100.0f, 55.0f, 4.0f);
+
+            SetFunctionName("Z()");
+            Validate((float)v3.Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 2.0f, 3.0f, 4.0f);
+
+            SetFunctionName("X() const");
+            Validate((float)const_cast<const Vector3Plus*>(&v3)->X() == 99.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 100.0f, 3.0f, 4.0f);
+
+            SetFunctionName("Y() const");
+            Validate((float)const_cast<const Vector3Plus*>(&v3)->Y() == 100.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+            Vector3Plus v3;
+            v3.Set(99.0f, 100.0f, 55.0f, 4.0f);
+
+            SetFunctionName("Z() const");
+            Validate((float)const_cast<const Vector3Plus*>(&v3)->Z() == 55.0f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+            Vector3Plus v3p;
+            v3p.Set(101.1f, 102.2f, 103.3f, 104.4f);
+
+            SetFunctionName("GetVector3()");
+            Vector3 v3 = v3p.GetVector3();
+            Validate((float_basic_type)v3.X() == 101.1f && (float_basic_type)v3.Y() == 102.2f && (float_basic_type)v3.Z() == 103.3f);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+            Vector3 v3;
+            v3.Set(-1.1f, -2.2f, -3.3f);
+            Vector3Plus v3p(0.0f, 0.0f, 0.0f, 0.0f);
+            v3p.SetVector3(v3);
+
+            SetFunctionName("SetVector3(Vector3)");
+            Validate((float_basic_type)v3p.X() == -1.1f && (float_basic_type)v3p.Y() == -2.2f && (float_basic_type)v3p.Z() == -3.3f);
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("Set(float, float, float, float)");
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Set(x_array[i], y_array[i], z_array[i], w_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("X() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].X() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("Y() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Y() = x_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("Z() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].Z() = z_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        SetFunctionName("UserData() = float");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                v3out_array[i].UserData() = w_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        SetFunctionName("X()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        SetFunctionName("Y()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        SetFunctionName("Z()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        SetFunctionName("UserData()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i].UserData();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        SetFunctionName("float_t& operator [] (int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        SetFunctionName("float_t operator [] (int i) const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = v3out_array[i][0];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        SetFunctionName("X() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3Plus*>(&v3out_array[i])->X();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        SetFunctionName("Y() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3Plus*>(&v3out_array[i])->Y();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        SetFunctionName("Z() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3Plus*>(&v3out_array[i])->Z();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        SetFunctionName("UserData() const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                retValueFloat = const_cast<const Vector3Plus*>(&v3out_array[i])->UserData();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+  
+  <!-- ******* last test is "test44" ****** -->
+
+</CLASS>
+
+</TESTCLASS>

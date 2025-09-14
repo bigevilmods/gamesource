@@ -1,0 +1,21 @@
+<package>
+    <contactName>
+    </contactName>
+
+    <contactEmail>
+    </contactEmail>
+
+    <summary>
+        RenderWare BigFile Library
+    </summary>
+
+    <description>
+    </description>
+
+    <homePageUrl>
+        http://eatech/C11/C2/P421/default.aspx
+    </homePageUrl>
+
+    <frameworkVersion>2</frameworkVersion>
+    <buildable>true</buildable>
+</package>

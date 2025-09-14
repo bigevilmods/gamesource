@@ -1,0 +1,10 @@
+struct LoadVarsMembers { char *szName; int nIndex; };
+%%
+load,1
+send,2
+sendAndLoad,3
+getBytesTotal,4
+getBytesLoaded,5
+loaded,6
+toString,7
+contentType,8

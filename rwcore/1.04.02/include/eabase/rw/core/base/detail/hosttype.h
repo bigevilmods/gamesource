@@ -1,0 +1,223 @@
+// (c) Electronic Arts. All Rights Reserved.
+
+/// \file
+/// Defines Windows host-specific types and macros.
+
+#ifndef RW_HOSTTYPE_H
+#define RW_HOSTTYPE_H
+
+#include <EABase/eabase.h>
+
+#define rwHOST_KETTLE      1
+#define rwHOST_ENDIAN (rwLIENDIAN)
+
+#define rwHOST_POINTERSIZE EA_PLATFORM_PTR_SIZE
+#define rwHOST_SIZETSIZE EA_PLATFORM_PTR_SIZE
+
+#define RWALIGN(O, A) EA_ALIGN(A) O
+
+#define RWINLINE  __inline__
+
+#if (defined(RWPLUGIN))
+#define RWAPIEXPORT __declspec(dllexport)
+#define RWAPIIMPORT __declspec(dllimport)
+#else
+#define RWAPIEXPORT
+#define RWAPIIMPORT
+#endif /* (defined(RWPLUGIN)) */
+
+#define atoi64(expr) _atoi64(expr)
+
+typedef char             RwInt8; /* signed */
+typedef unsigned char    RwUInt8;
+typedef signed short     RwInt16;
+typedef unsigned short   RwUInt16;
+typedef signed int       RwInt32;
+typedef unsigned int     RwUInt32;
+typedef RwUInt32         RwBool;
+typedef float            RwReal32;
+typedef double           RwReal64;
+typedef RwUInt32         RwSizet;
+typedef RwUInt32         RwHostPointer;     // deprecated
+typedef RwUInt32         RwHostPtr;         // deprecated use rw::HostPtr
+
+namespace rw
+{
+    typedef size_t HostPtr;
+
+    class uint128_t
+    {
+    public:
+
+        inline
+            uint128_t()
+        {
+            rwFUNCTION();
+            rwRETURNVOID();
+        }
+
+        explicit inline
+            uint128_t(uint64_t low)
+        {
+            rwFUNCTION();
+            m_low = low;
+            m_high = 0;
+            rwRETURNVOID();
+        }
+
+        inline
+            uint128_t(uint64_t low, uint64_t high)
+        {
+            rwFUNCTION();
+            m_low = low;
+            m_high = high;
+            rwRETURNVOID();
+        }
+
+        inline uint128_t &
+            operator=(uint128_t right)
+        {
+            rwFUNCTION();
+            m_low = right.m_low;
+            m_high = right.m_high;
+            rwRETURN(*this);
+        }
+
+        inline uint128_t &
+            operator|=(uint128_t right)
+        {
+            rwFUNCTION();
+            m_low |= right.m_low;
+            m_high |= right.m_high;
+            rwRETURN(*this);
+        }
+
+        inline uint128_t
+            operator~() const
+        {
+            uint128_t result;
+
+            rwFUNCTION();
+            result.m_low = ~m_low;
+            result.m_high = ~m_high;
+            rwRETURN(result);
+        }
+
+        inline uint128_t
+            operator&(uint128_t right) const
+        {
+            uint128_t result;
+
+            rwFUNCTION();
+            result.m_low = m_low & right.m_low;
+            result.m_high = m_high & right.m_high;
+            rwRETURN(result);
+        }
+
+        inline uint128_t
+            operator|(uint128_t right) const
+        {
+            uint128_t result;
+            rwFUNCTION();
+            result.m_low = m_low | right.m_low;
+            result.m_high = m_high | right.m_high;
+            rwRETURN(result);
+        }
+
+        inline uint128_t
+            operator^(uint128_t right) const
+        {
+            uint128_t result;
+
+            rwFUNCTION();
+            result.m_low = m_low ^ right.m_low;
+            result.m_high = m_high ^ right.m_high;
+            rwRETURN(result);
+        }
+
+        inline bool
+            operator==(uint128_t right) const
+        {
+            rwFUNCTION();
+            rwRETURN(m_low == right.m_low && m_high == right.m_high);
+        }
+
+        inline bool
+            operator!=(uint128_t right) const
+        {
+            rwFUNCTION();
+            rwRETURN(m_low != right.m_low || m_high != right.m_high);
+        }
+
+        inline uint64_t
+            GetLow() const
+        {
+            rwFUNCTION();
+            rwRETURN(m_low);
+        }
+
+        inline uint64_t
+            GetHigh() const
+        {
+            rwFUNCTION();
+            rwRETURN(m_high);
+        }
+    private:
+        uint64_t m_low;
+        uint64_t m_high;
+    };
+
+    class int128_t
+    {
+    private:
+        uint64_t m_low;
+        int64_t  m_high;
+    };
+}
+
+
+#if !defined( _INTPTR_T_DEFINED ) && !defined( _intptr_t_defined )
+
+#ifdef _WIN64
+    typedef int64_t intptr_t;
+#else
+    typedef int32_t RW_W64    intptr_t;
+#endif
+
+#define _intptr_t_defined
+#define _INTPTR_T_DEFINED
+#endif
+
+#if !defined( _UINTPTR_T_DEFINED ) && !defined( _uintptr_t_defined )
+
+#ifdef _WIN64
+    typedef uint64_t uintptr_t;
+#else
+    typedef uint32_t RW_W64   uintptr_t;
+#endif
+
+#define _uintptr_t_defined
+#define _UINTPTR_T_DEFINED
+#endif
+
+
+/**
+Determines if we must specialize a size_t data traits for the conditioning pipelines.
+Equal to 1 if we must specialize. Equal to 0 if we do not.
+*/
+#define rwHOST_SPECIALIZE_SIZET_TRAITS (0)
+
+typedef int64_t RwInt64;
+typedef uint64_t RwUInt64;
+
+#define RWUINT64CONST(x) (x##ull)
+#define RWINT64CONST(x) (x##ll)
+#define RWZERO64 ((RwUInt64)0)
+
+#define rwHOST_MAX_NATIVE_BITS 64
+
+typedef rw::uint128_t RwUInt128;
+typedef rw::int128_t RwInt128;
+
+#endif /* !RW_HOSTTYPE_H */
+

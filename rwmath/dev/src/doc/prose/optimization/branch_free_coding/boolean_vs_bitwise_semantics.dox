@@ -1,0 +1,65 @@
+/*!
+\page p_boolean_vs_bitwise_semantics Boolean vs Bitwise Semantics
+
+\par Introduction
+
+The Mask API was designed to allow users to easily create branch free code for
+both the FPU and the VPU.  Most PowerPC architectures have an \c fsel (i.e.
+floating point select) instruction for writing branch free FPU code.
+Architectures with VMX have a \c vsel instructions for performing vector
+selects.  Unfortunately, the methods for generating "masks" and the semantics
+for selection very considerably between FPU and VPU, and between platforms.
+
+If you look at selection from a hardware perspective, \c fsel allows for
+boolean operations.  The instruction allows selecting between two floating
+point values.
+
+However, vector selection is more powerful.  While it can be used to select entire
+vectors, it is actually a bitwise operation.  Each bit in the mask can be used to
+independently select a bit from either of the other operands.  So, element-wise
+selection using vector select is actually a subset of the operations possible.
+
+\par Portability vs Performance/Flexibility
+
+One of the goals of the math library is to allow code to be written that is
+portable between the FPU and the VPU libraries.  However, at the same time
+the math library does not want to prevent efficient operations that are
+possible at the hardware level.  Therefore, the VPU Mask type actually allows
+bitwise mask operations.
+
+A VPU mask may be constructed using a specific bit pattern by constructing
+the type from a \c VectorIntrinsic type or from \c uint32_t's.
+
+Here is an example that uses bitwise selection.  The example essentially copies
+the signs from one vector to another vector.  Note: This code will only operate
+on the VPU.  There is no FPU equivalent for this functionality.
+
+\code
+using namespace rw::math::vpu;
+Vector4 vec4(1.0f, 2.0f, 3.0f, 4.0f);
+Vector4 signs(-7.0f, 11.0f, 5.0f, -100.0f);
+Mask4 signSelectMask(0x7fffffff, 0x7fffffff, 0x7fffffff, 0x7fffffff);
+// Result should be Vector4(-1.0f, 2.0f, 3.0f, -4.0f);
+Vector4 result( Select(signSelectMask, vec4, signs ) );
+\endcode
+
+This example demonstrates how \c Select on the VPU is actually a bitwise
+operation and doesn't mearly choose one element or another. It can actually
+combine individual bits from two elements to create a new value.
+
+\par Semantics of And, Or, Not, and Xor
+
+If the inputs to these functions is a Mask that represents a element-wise
+boolean value, then the output will also be an element-wise boolean value.
+Put simply, <em>boolean inputs will produce boolean outputs</em>.
+So, normally it is safe (and convenient) to think of these operations as
+boolean.
+
+You only need to think of these operations as bitwise when a "non-boolean" Mask
+is involved.  Such a mask has a bit pattern that does not represent true or
+false.  (The VPU uses 0 to represent false values and 0xffffffff to true
+values.)  These masks can only be created by explicitly initializing the Mask
+with a bit pattern, or by performing an operation on another Mask that contains
+"non-boolean" values.
+
+*/

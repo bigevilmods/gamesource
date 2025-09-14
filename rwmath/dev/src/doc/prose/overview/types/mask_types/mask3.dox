@@ -1,0 +1,11 @@
+/*!
+\page p_mask3 Mask3
+
+The Mask3 type represents an aggregate of three true or false conditions.  You can think of the
+Mask3 type as representing an array of three boolean values.  The math library has comparison
+functions that generate Mask3 results.  For example, you can compare two Vector3 types to generate
+a Mask3.  Mask3's may also be used to "select" between Vector3 objects.  This
+ability allows "conditional" code to be written that does not contain any branch
+instuctions.
+
+*/

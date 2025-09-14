@@ -1,0 +1,23 @@
+struct TextMembers { char *szName; int nIndex; };
+%%
+autoSize,1
+background,2
+backgroundColor,3
+border,4
+borderColor,5
+hscroll,6
+length,7
+maxChars,8
+maxscroll,9
+multiline,10
+scroll,11
+text,12
+textColor,13
+textHeight,14
+textWidth,15
+type,16
+variable,17
+wordWrap,18
+_height,19
+_width,20
+mouseWheelEnabled,21

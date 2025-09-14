@@ -1,0 +1,10 @@
+/*!
+\page p_quat_pos QuatPos
+
+In many cases, representing a transformation using a 4x4 matrix is overkill.
+Often transformations only represent a transformation and a translation.  To
+take advantage of this observation, RWMath provides the \c QuatPos class.
+The class encorporates a \c Quaternion (to represent a rotation) and a \c Vector3
+(to represent a translation).
+    
+*/

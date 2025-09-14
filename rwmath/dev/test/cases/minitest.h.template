@@ -1,0 +1,22 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestMini :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestMini();
+    virtual ~UnitTestMini();
+    void Test();
+
+//#BLOCK
+
+};
+
+
+

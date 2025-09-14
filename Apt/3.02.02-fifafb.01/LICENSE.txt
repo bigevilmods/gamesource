@@ -1,0 +1,25 @@
+== Open Source License Information ==
+
+Open Source components are used and distributed with the Apt package. Open Source Tech Deal Sheets have been filed with EA Legal and approved. Here are the Open Source components being used and distributed:
+
+* SWF-File 0.36 (modified)
+* Data-TemporaryBag 0.08 (modified)
+* Triangle 1.16 (modified)
+* Flasm 1.51 (modified)
+
+In addition, the following unmodified Open Source components have been used to generate source code, but the components themselves are not used in the package, nor distributed:
+
+* gperf 2.7.2
+* Bison 2.1
+
+For Apt package versions greater than 2.09.00, the approved Deal Sheets can be found in the "legal/deal_sheets" directory, and the original unmodified Open Source distributions of the modified components can be found in the "legal/original_distros" directory.
+
+=== Internal Use ===
+
+The Open Source components have been approved for Internal Use, which means that none of these components can be included In-Product.  By default, this package only uses these components as standalone utilities and/or as portions of the asset pipeline, which both qualify as "Internal Use".
+
+If your team follows this usage, you should not need to submit any additional paperwork with EA Legal.
+
+However, if you want to directly include any of the Open Source components (including the pieces in the asset pipeline) as a part of your product’s distribution, you will need to file new Open Source Tech Deal Sheets with EA Legal.
+
+DISCLAIMER:  Due to the license restrictions on Triangle, the executable bin/Apt/triangle.exe must not be distributed to outsourcers or other 3rd-party developers.  However, they are allowed to use the instructions located at http://docs.ea.com/Apt:Technical_Reference/Apt/Build_Configuration#triangle to locally produce a version of Triangle.exe that they can use (but also not distribute).

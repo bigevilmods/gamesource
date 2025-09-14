@@ -1,0 +1,480 @@
+<html>
+<head>
+    <title>RWFilesystem - Change Log</title>
+    <link href="../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="toc.js"></script>
+    <script type="text/javascript" src="../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>RWFilesystem - Change Log</h1>
+
+<p>This document lists the changes for each RWFilesystem release and the work we
+  are currently doing.
+  </p>
+
+<h3>Version 1.27.03</h3>
+<h4>Changes</h4>
+<ul>
+  <li>Resolved warnings for iphone-arm64 configurations.</li>
+  <li>Resolved compiler warning on PS3SDK 460.001.</li>
+</ul>
+  
+<h3>Version 1.27.02</h3>
+<h4>Changes</h4>
+<ul>
+  <li>Fixed a JNI error that is known to occur on Android Samsung Galaxy Note 3's (but could occur on other Android devices as well).  Game teams shipping on Android
+  should update to this release to avoid potential crashes on Android devices.</li>
+</ul>
+  
+<h3>Version 1.27.01</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Removed unsupported and deprecated platform code (Wii, CTR, Samsung TV, PSP2, Gamecube)</li>
+    <li>Fixed bulk build issues on WinPRT</li>
+</ul>
+  
+<h3>Version 1.27.00</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Added an accessor function to the handle.h to access the parent file handle for a given handle which is useful when implementing virtual drivers.</li>
+    <li>Fixed a bug in file iteration for BSD-based platforms (including PS4 and Apple plaforms) in which the file iteration could return files that were previously deleted. </li>
+    <li>Added support for HTTPS when using the HttpDriver. Users must be sure to call NetconnStartup() with a meaningful service name as DirtySDK specifies. Users may specify their certificate with HttpDeviceDriver::SetCACert()</li>
+</ul>
+
+<h3>Version 1.26.00</h3>
+<h4>Changes</h4>
+<ul>
+    <li>The HTTPDriver has been modified so that it will abort connections that have timed out and report READFAIL to the user.</li>
+    <li>Added new API's in <tt>handle.h</tt> which are useful for authors of filesystem drivers.</li>
+    <li>Changed root directory on iPhone to be based on CFBundleName instead of CFBundleExecutable. Integrated from UFC.</li>
+    <li>Added a couple accessor functions in handle.h that are useful/necessary for implementing virtual filesystem device drivers.</li>
+</ul>
+  
+<h3>Version 1.25.01</h3>
+<h4>Changes</h4>
+<h5>Bug Fixes</h5>
+<ul>
+    <li>Fixed compilation error in HttpDeviceDriver caused by a change in the API fo the Device driver.</li>
+</ul>
+
+<h3>Version 1.25.00</h3>
+<h4>Changes</h4>
+<h5>Features</h5>
+<ul>
+    <li>Changes the definition of two functions in the DeviceDriver, <code>GetSize()</code> and <code>Close()</code>, to now support parent handles. We temporarily support the old versions of these methods, 
+        but will be removing <code>Close(void* h)</code> and <code>GetSize(void* h)</code> in the future to use the new functions, <code>Close(void * h, DeviceDriver * ddParent, void * ddFileHandle)</code> and
+        <code>GetSize(void * h, DeviceDriver * ddParent, void * ddFileHandle)</code>. Teams are encouraged to switch any custom drivers to support this new API addition before our next minor release.
+    </li>
+    <li>Implemented CloseFileHandleAsync functionality for Streams.</li>
+    <li>Added Gen4 support (Capilano and Kettle).</li>
+</ul>
+  
+<h3>Version 1.24.00</h3>
+<h4>Changes</h4>
+<h5>Bug Fixes</h5>
+<ul>
+    <li>Required update to change the default current working directory from /hostapp to /app0. Shipping games should not attempt to access /hostapp.</li>
+    <li>Updates the HttpDriver to work with DirtySDK 13.3.1.1.0 and greater which changed how Capilano managed connection as required by TRCs.</li>
+    <li>Fixed buffer overflow problem reported by UFC in rwhandle.cpp</li>
+</ul>
+<h5>Kettle Specific Changes</h5>
+<ul>
+    <li>Modified the default current working directory.  Instead of <tt>/hostapp/</tt> rwfilesystem now defaults to <tt>/app0/</tt>.  Users relying
+    on the value of the CWD may need to modify their code.  This change was made because retail applications should not read from <tt>/hostapp/</tt>.</li>
+</ul>
+
+<h3>Version 1.23.00</h3>
+<h4>Changes</h4>
+<h5>Added Features</h5>
+<ul>
+  <li>Added appbundle support for <tt>DirectoryEntry</tt> (i.e. to allow file listing) on Android.</li>
+  <li>Added appbundle support for <tt>GetNameFromHandle</tt> on Android.</li>
+</ul>
+
+<h3>Version 1.22.00</h3>
+<h4>Changes</h4>
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Fixed non bulk-build compilation error.</li>
+  <li>Made fixes for Windows Phone</li>
+  <li>Added drive T(emporary storage) to Capilano's default drive list.</li>
+</ul>
+
+<h3>Version 1.21.04</h3>
+<h4>Changes</h4>
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Implemented fix for Android &quot;JNI ERROR (app bug): local reference table overflow (max=512)&quot; </li>
+  <li>Fixed memory leak in case where file pattern is not found in OpenDirectory.</li>
+  <li>Removed expensive caching of file size in the async driver.</li>
+</ul>
+
+<h3>Version 1.21.03</h3>
+<h4>Changes</h4>
+
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Corrects warnings for produced by clang.</li>
+  <li>Httpdriver now implements a connection pool to avoid creating/destorying connections repeatedly at runtime.</li>
+  <li>Httpdriver now retries connections a configurable amount of times before failing in the even of a bad network connection.</li>
+  <li>A handful of optimizations have been done to the HttpDriver to improve download times as well as internal buffer usage.</li>
+</ul>
+
+<h5>Added Features</h5>
+<ul>
+  <li>Added BlackBerry 10 support.</li>
+</ul>
+
+<h3>Version 1.21.02</h3>
+<h4>Changes</h4>
+
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Added WiiU Support.</li>
+</ul>
+
+<h3>Version 1.21.01</h3>
+<h4>Changes</h4>
+
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Checks if mTerminate has been set before waiting on a condition variable. A situation can occur where the condition variable is signalled in Device::Unregister before the device thread has waited on the condition variable. As pthread condition variables do not maintain state information regarding whether or not they have been signalled (unlike a semaphore), this can lead to a hang when the device thread goes to wait on a condition that will never be signalled again.</li>
+</ul>
+
+<h5>Added Features</h5>
+<ul>
+  <li>Adding Terminate() and IsTerminating() functions to installer. (integrated from NHL & UFC)</li>
+  <li>Fixes install size on PS3. (integrated from NHL & UFC)</li>
+</ul>
+
+<h3>Version 1.21.00</h3>
+<h4>Changes</h4>
+
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Correcting incorrect buffersize when grabbing header value for filesize. Thanks goes to Alban Wood.</li>
+  <li>Early out of Download calls if the file we desire to download had zero size ( is empty). This corrects a bug where we would request 1 byte if the file was empty.</li>
+</ul>
+
+<h5>Added Features</h5>
+<ul>
+  <li>Added new functionality in streamer to detect and report errors.</li>  
+  <li>Implements interface for retrieving directory information which can be used by the http driver for directory traversal/lookup calls performed generically by rwfilesystem. This approach is necessary since directory information from servers is non-standard and retrieving that information is outside the scope of the http driver.
+<br><br>
+Test-Httpdriver.cpp provides an example of how the DirectoryHandler can be implemented.</li>
+</li>
+</ul>
+
+<h3>Version 1.20.03</h3>
+<h4>Changes</h4>
+
+<h5>Bug Fixes</h5>
+<ul>
+  <li>Must set the running flag to true before posting to the semaphore otherwise the thread that waits can be swapped in before the mRunning flag is set to true. This results in a failure of the operation, as it believes the device isn't started, and can lead to hangs in the scatterloader.</li>
+  <li>Changes initialize() for Http Driver to return true if the netconn library has already been initialized.</li>
+</ul>
+
+<h5>Added Features</h5>
+<ul>
+  <li>Optimization: Replaced calls to cellFsReadDir and cellFsStat with a single call to cellFsGetDirectoryEntries which calls the two functions internally but, from the Sony documentation, "processes the read at a higher speed than when the 2 APIs are called."</li>
+  <li>Added missing documentation (got the original docs from rwfilesystem-1.17.00's documentation .chm)</li>
+  <li>Switched to using a semaphore to block the main thread when starting device threads rather than a 5 second sleep loop.</li>
+  <li>Allowing the httpdriver to be registered to a single server so file paths do not need to include the fulll qualified URL. If a full URL is given (including one to a different server) we access the resource as normal.</li>
+  <li>Fixed url lengths to 256 which admittedly may be too small. 256 is the largest path used across rwfilesystem but if it poses a problem it may be best to increase it.</li>
+</ul>
+
+<h3>Version 1.20.02</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Additional documentation added.</li>
+    <li>Bug Fix: Clears the Append buffer after adding additonal headers so they do not carry over to future requests.</li>
+    <li>Bug Fix: Fixed off by one test for using EOF for the byte range in httpdriver</li>
+    <li>Bug Fix: Modified range to allow for values being inclusive in httpdriver</li>
+    <li>No longer kill connections after making head requests for file size, since we are likely to use the connection/file afterwards.</li>
+    <li>POST request have been changed to PUT requests which now use the Content-range header rather than Range so we may append to files.</li>
+    <li>Random HTTP Seeking and differing buffer size tests added</li>
+    <li>Removes Python Server implementation for testing, and instead depends on UTFInternet's HTTP Server for testing only.</li>
+    <li>Additional checking when downloading data chunks to ensure we don't request more than is available from the server. If we request more than we actually desire we will leave our connection open, disrupting different future requests.</li>
+    <li>Corrected restarting connection issues when making a GET request with the HttpDriver, increasing performance and lowering internal buffer requirements.</li>
+</ul>
+
+<h3>Version 1.20.01</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Added additional platform support.</li>
+    <li>Corrected restarting connection issues when making a GET request with the HttpDriver, increasing performance and lowering internal buffer requirements.</li>
+</ul>
+
+<h3>Version 1.20.00</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Added HTTP Driver support for use with generic/custom HTTP servers enabled with RWFILESYSEM_HTTP_ENABLED global property.</li>
+</ul>
+
+<h3>Version 1.19.01</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Fix in <i>Device::CheckForOptimalReadOp</i>, ensure that mAsyncOpList is not empty when entering in the loop. Thanks to Jared Zanette for reporting this issue.</li>
+</ul>
+
+<h3>Version 1.19.00</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Added Vita support (Integrated from dev-vita).</li>
+</ul>
+
+<h3>Version 1.18.05</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Fixed some build problems on playbook now that config-system has changed.</li>
+</ul>
+
+<h3>Version 1.18.04</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Correcting file inclusion case, such as instances of "eastl/map.h" -> "EASTL/map.h", to permit compilation in case-sensitive build environments.</li>
+	<li> Added Freebox platform support.</li>
+</ul>
+
+<h3>Version 1.18.03</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Enabled bulk builds.</li>
+    <li>Permit incremental updates to the cache partition by not clearing it when it is initialized if the version numbers match.</li>
+</ul>
+
+<h3>Version 1.18.02</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Fixed build errors for VS2010, Linux, and other platforms.</li>
+    <li>Fixed GetSearchPath so that it properly returns the path when the buffer size is large enough.</li>
+    <li>Fixed iOS5-related linker errors</li>
+    <li>Assert that the Device has started properly, and signal a failure in Device::Start if it doesn't initialize correctly.</li>
+</ul>
+
+<h3>Version 1.18.01</h3>
+<h4>Changes</h4>
+<ul>
+    <li>Unlock the async op list mutex before calling the post-op callback. Some situations caused a deadlock where the callback would itself call into the filesystem which this works around.</li>
+
+    <li>Refactored build on iOS to not use a custom Objective C++ buildset but rather the new EAConfig Mac OS/iOS config sets.</li>
+
+    <li>Removed the Win32-based DefaultFileStream implementation and replaced it with the same one used on Xbox 360 and PS3. This prevented file operations using the DefaultFileStream from using virtual devices, like bigfiles.</li>
+
+    <li>rwfilesystem now assumes that provided paths are encoded in UTF8 by default on Windows, rather than ANSI. This is to allow cleaner tconversion between wide character and multi-byte strings.</li>
+</ul>
+
+<h3>Version 1.18.00</h3>
+<h4>Changes</h4>
+<ul>
+<li>Fixed a bug that manifested when reading and writing small files on a memmap device as incorrect data, courtesy of Ren-Jie Huang.</li>
+
+<li>Removed infinite retry code from PS3 file system driver as the TRC that necessitated it is no longer valid.</li>
+
+<li>Removed a lot of duplicated code in the PS3 file system back end related to handle caching.</li>
+
+<li>Added read only support to CTR.</li>
+
+<li>The Java rwfilesystem.Startup method now expects to be passed an Activity instance instead of an AssetManager. Users will need to modify their initialization code to pass the expected type. This change simplifies the requirements for initializing the library.</li>
+</ul>
+<h3>Version 1.17.01</h3>
+<h4>Changes</h4>
+<ul>
+<li>Initial support was added for RIM's Playbook.</li><li>Added CodeStripper support scripts.</li><li>Exposed the Xbox 360 device driver's Close() method, courtesy of Todd Allendorf.</li><li>Added Stream::IsUsingDeviceDriver(), courtesy of Todd Allendorf.</li>
+</ul>
+<h3>Version 1.17.00</h3>
+<h4>Changes</h4>
+<ul>
+<li>The error handler callback is now called for all failed filesystem operations on all platforms.</li><li>Fixed bug where only first search location is returned when GetSearchPath is called.</li><li>Max length and number of locations limitation removed for search path.</li><li>The function Manager::GetMaxSearchPathLength() has been deprecated.</li><li>The initialization options maxSearchPathLength and maxSearchLocation has been deprecated.</li><li>The recommended way to get the search path is to call Manager::GetSearchPath() twice: once to get the length of the search path, then again to get the characters.</li>
+</ul>
+<h3>Version 1.16.02</h3>
+<h4>Changes</h4>
+<ul>
+<li>Cancel can now be called on an unscheduled AsyncOp without an assertion firing.</li>
+</ul>
+<h3>Version 1.16.01</h3>
+<h4>Changes</h4>
+<ul>
+<li>Dll builds are now supported for pc and pc64.</li>
+
+<li>Fixed a bug in 'MatchesWildcardPatternInternal' where the pattern "*?" would result in reading past the end of the string.</li>
+</ul>
+<h3>Version 1.16.00</h3>
+<h4>Changes</h4>
+<ul>
+<li>Two new functions, MatchesWildcardPattern and NoCaseMatchesWildcardPattern, have been added to the Path library.</li>
+
+<li>An issue was fixed where post-install files were not used in the calculation of free space within the PS3 incremental installer. The pre-install error handler callback signature was modified to take an extra parameter signifying the amount of free space needed, if it isn't available. Thanks to NHL (Gareth Lewin and Bob Dawe) for reporting this issue.</li>
+
+<li>Updated the behavior of the streamer to cancel its associated AsyncOp when the stream is killed. This issue was meant to improve behavior when network streams are no longer available. Thanks to Bryan Turkelson for the fix.</li>
+
+<li>Changed the AsyncOp Open Callback file name parameter to be an array. The storage mechanism for the operation's filename was changed in this release to avoid a memory leak in the case of cancelling an async op that had not yet been processed.</li>
+
+<li>Added Manager::GetMaxSearchPathLength() to return the maximum length of the search path, which is meant to be used in conjunction with Manager::GetSearchPath().</li>
+
+<li>Added Manager::GetSearchPath() to retrieve the current search path. See API documentation for details.</li>
+</ul>
+<h3>Version 1.15.00</h3>
+<h4>Changes</h4>
+<ul>
+<li>The prototype of the 'IncrementalInstaller_HandleErrorCallback' type has an extra 'int' formal parameter that can be used to pass additional error information to the handler. Currently it is used to pass the total amount of space missing if an out-of-space error occurs.</li>
+
+<li>A new null profiler is included and enabled by default. The conditional compilation options EA_FILESYSTEM_PROFILING and RW_CORE_FILESYS_ENABLE_STREAMTRACE have been removed and are no longer necessary.</li>
+
+<li>Error injection support is enabled by default. The conditional compilation option RW_CORE_FILESYS_ERROR_INJECTION has been removed and is no longer necessary.</li>
+
+<li>A pair of methods were added to the PS3FileDeviceDriver to enable or disable appending of Edat or Sdat to DRM flagged files. These changes were incorporated from changes made to the NBA code.</li>
+
+<li>Added a Tick() function to the file system manager for platforms that do not have threads. This executes any pending file system operations that have queued up.</li>
+
+<li>Clarified an assert message. Thanks to Darryl Gates for reporting this.</li>
+</ul>
+<h3>Version 1.14.00</h3>
+<h4>Changes</h4>
+<ul>
+<li>Support for rwstdc has been removed.</li>
+
+<li>Several new functions have been added for manipulating paths. See rw/core/filesys/path.h for complete details.</li>
+
+<li>Support for various mobile platforms, such as iPhone, have been added.</li>
+
+<li>On PS3 if the device driver is set to enable DRM and a file with the .edat extension is encountered, the extension is chopped off before the file name is returned by FindNext(). This was requested by Madden so that they could handle NPDRM files in a more transparent manner.</li>
+
+<li>To help mitigate problems with devices unregistering themselves, we have added checks to verify that the device is registered before adding operations to its queue. Devices now block the unregister process until all operations in their queue have been exhausted.</li>
+
+<li>Due to a requirement for the newly added iPhone support, this version of rwfilesystem requires an update to EAThread 1.15.02 or newer.</li>
+
+<li>EASTL has been added as a dependency.</li>
+
+<li>Two deprecated constructors for the Manager's Options class that took a pointer to an rw::core::debug::Channel instance have been removed. A replacement constructor that is identical, save for this Channel parameter, has been added.</li>
+
+<li>Manager::GetInstance() no longer asserts if no instance has been created.</li>
+
+<li>Placement new operators have been added to rwfilesystem public types as requested by FIFA.</li>
+
+<li>Various build fixes for compiler and SDK updates have been attended to.</li>
+
+<li>Stream tracing has been removed in favor of the rwfilesystem profiler interface.</li>
+</ul>
+<h3>Version 1.13.00 (October 24, 2009)</h3>
+<h4>Changes</h4>
+<ul>
+<li>ETCR-234. The function signature for manager.h from rwfilesystem. It isn't possible to forward- declare an enumeration, so the parameter has been changed to an unsigned int, which may be forward-declared.</li>
+</ul>
+<h4>New Features</h4>
+<ul>
+<li>ETCR-230. A new function for getting the file name from the open handle has been added to the library. Refer to the documentation for rw::core::filesys::GetNameFromHandle for details. A new virtual function has also been added to the DeviceDriver class which does the actual work of copying the file name.</li>
+</ul>
+<h4>Bug Fixes</h4>
+<p>The following bugs have been fixed in this release:</p>
+<ul>
+<li>ETCR-105. PS3 applications booted from the hard disk could leak file handles. Depending on when the first file was accessed from the BluRay or PC file server, a shared handle array with valid open handles in it could be zeroed out. This bug has been fixed. Thanks to Evan Williams for reporting this bug and helping me identify the root cause.</li>
+
+<li>ETCR-231. Build warnings that cropped up with SNC300 have been fixed.</li>
+
+<li>ETCR-232. The path passed to rw::core::filesys::Manager::SetCWD is copied to an internal buffer; it is no longer necessary to keep it in a global buffer.</li>
+</ul>
+<h3>Version 1.12.00 (July 15, 2009)</h3>
+<h4>Changes</h4>
+<ul>
+<li>BUG#33535. The error handler has a new parameter added to it: rw::core::filesys::Manager::OpError. This allows the game to distinguish between errors that may occur on either reads or writes, such as ERROR_IO_DEVICE on the Xbox 360. Your game's filesystem error callback will have to be updated to add this new parameter.</li>
+
+<li>BUG#34342. As of PS3 SDK 2.80, Sony has removed the GameData library that rwfilesystem was using to implement its installer technology. We therefore have modified the library to use the GameContent utility library. Regardless of whether you use the installer or not, you may get link errors. To fix them, add libsysutil_game_stub to your link line. If you use use the incremental installer, you must first load the PRX module CELL_SYSMODULE_SYSUTIL_GAME. Also, the interface for the incremental installer has been slightly modified. The titleLang array is now part of the IncrementalInstallerOptions structure. Refer to the incremental installer example for a working example.</li>
+</ul>
+<h4>New Features</h4>
+<ul>
+<li>BUG#33418. If no name is specified for file system thread, the name of the driver will be used. Thanks to Gareth Lewin for this suggestion.</li>
+
+<li>BUG#33504. rw::core::filesys::DefaultFileStream::Open will now create any necessary subdirectories if the file is opened for writing.</li>
+
+<li>BUG#33567. The ability to trigger external events from the driver read function has been added. The intention of this feature is that it can be used to start a decompression or other processing of the just-read data in one thread while a new read begins in another. This issue may have affected Skate 2, reading compressed data off the hard disc was slower than reading uncompressed data, and we believe the reason was that the next read could not begin until the decompression for the current read completed. See rw::core::filesys::DeviceDriver::ExecuteProcessingFunction for further details.</li>
+
+<li>BUG#33851. When a stream is created, the default greedy threshold has been set to 1/3 of the buffer size. That means that the streamer will schedule read operations at a higher priority when the buffer is 1/3 full or less, which reduces the risk of stream starvation. If you want the previous behaviour, call rw::core::filesys::Stream::SetGreedyLevel(0) after the stream is created.</li>
+
+<li>BUG#33574. On the Xbox 360, a slight modification needed to be made to support Play from Hard Drive. If the title was booted from the hard disk, we only create one thread for file I/O because the DVD is not available. The "cache:" device is added as a root on that single device. If the title was booted from a DVD, we create a second device for the hard drive and set the "cache:" drive to that device.</li>
+
+<li>BUG#34292. rw::core::filesys::PS3FileDeviceDriver::UseDRM is no longer static. This means it can be disabled for the Blu-Ray device and enabled for the hard disk device. Thanks to Andre Pham @ Tiburon for this feature.</li>
+
+<li>BUG#33585. The error callback handler has been changed to take an OpType parameter. This allows the application to disambiguate errors that could come from either reads or writes (e.g. ERROR_IO_DEVICE). Thanks to the NHL team for this fix.</li>
+</ul>
+<h4>Bug Fixes</h4>
+<p>The following bugs have been fixed in this release:</p>
+<ul>
+<li>BUG#33471. When the stream is killed, the half-full flag was not cleared, causing an invalid stream dropout event to be generated the next time that stream was used. This bug has been fixed.</li>
+
+<li>BUG#33582. Several TRC issues with the PS3 incremental installer were fixed. The IncrementalInstallerOptions structure now needs to set some new members when the Installer is started: installWillInstallString, installMakeSpaceString, installMakeSpaceForTropheys, installCorruptGameDataString. Refer to the incremental installer example for sample strings. Furthermore, it is now necessary for the game's graphics subsystem to be initialized before the incremental installer is started because we need to inform the game player that the game will be installed via a dialog box, which requires graphics. It is also necessary for the game to call the cellSysutilCheckCallback while the installer is running. Thanks to Ling Lo and Eric Turmel for providing these significant improvements to EATech.</li>
+
+<li>BUG#33633. A Greedy State Change event was being emitted if the streamer was already in the greedy state when the buffer usage was decremented. Fixed. Thanks to Mike Jones for bringing this to our attention.</li>
+</ul>
+<h3>Version 1.11.00 (February 11, 2009)</h3>
+<h4>Changes</h4>
+<ul>
+<li>BUG#27651. rwfilesystem internal intrusive list implementation has been removed and replaced by EASTL's intrusive_list container class. This change may break code that is derived from rw::core::filesys::DeviceDriver as the mRootList data member, which is a container, can be accessed by subclasses of DeviceDriver.</li>
+</ul>
+<h4>New Features</h4>
+<p>The following features have been added in this release:</p>
+<ul>
+<li>BUG#25709. Support for DRM files on the PS3 has been formalized. Provisional support for DRM files was added in version 1.07.00, but it wasn't well designed and it has been re-done the feature in version 1.11.00. The new way to enable DRM support to use rw::core::filesys::PS3FileDeviceDriver::UseDRM to enable the PS3 driver to try to open files in the DRM cache. The FOPEN_DRM flag is now deprecated and should be removed from your code. As a result of this change, it is now necessary to add libsysutil_np_stub.a to your list of libraries on the PS3, and if you enable DRM, you must also load the PRX module CELL_SYSMODULE_SYSUTIL_NP.</li>
+
+<li>BUG#28858. A new debug feature has been added to rwfilesystem which simulates read errors. It must be enabled at build time by defining the property package.rwfilesystem.EnableErrorInjection to true, and then using rw::core::filesys::Mananger::SetErrorInjectionFunction to set a callback function that returns false for the files you want to cause an error with. Thanks to Kevin Perry for the suggestion.</li>
+
+<li>BUG#32514. On the Xbox 360, if a write fails, the logic has been changed to retry the write if the game error handler returns true. This makes is consistent with the behavior of the read operation.</li>
+
+<li>BUG#32582. rwfilesystem now supports using cellFsSdataOpen for opening script files, which must be encrypted, according to TRC 072.</li>
+
+<li>BUG#30797. Virtual devices' Init functions were not being called before the device was accessed. A change has been made to call the Init function when the device is registered. Thanks to Jon Parise for find this bug and providing a patch for it.</li>
+
+<li>BUG#31718. rw::core::filesys::Options::mThreadParams has been added to allow setting the thread creation parameters before the file system Manager object is created. This is required on PS3 because the device threads are started when the device is registered on the PS3, not when the device is first accessed as it is on other platforms.</li>
+
+<li>rw::core::filesys::MemMapDeviceDriver::Format function added to the public API.</li>
+
+<li>BUG#32603. rw::core::filesys::PS3FileDeviceDriver::SetThroughputLimit This new function has been added which throttles the maximum throughput. This feature is intended for use in streaming games which want to limit the amount of processing (e.g. decompression) done on a single frame to avoid dropping frames in a 60Hz game. A similar function has been added for Xbox 360.</li>
+</ul>
+<h4>Bug Fixes</h4>
+<ul>
+<li>BUG#31128. In the Xenon device driver, the XGetFilePhysicalSortKey function was being called on non-DVD devices, which was causing a short stall on the thread. The driver has been modified to call XGetFilePhysicalSortKey only if the operation is executing on the DVD device.</li>
+
+<li>BUG#31247. Some combinations of open flags were not handled correctly in the MemMapDeviceDriver. This has been fixed.</li>
+
+<li>in the memory device driver, seeking beyond the end of the file was causing an assert. The assert has been removed, and seeking beyond the end of the file is now permitted. The file will be padded with zeros if data is written to an offset beyond the previous end of file.</li>
+
+<li>BUG#31976. A warning in rwfilesystem appeared when it was built with -fno-strict-aliasing. This warning has been fixed.</li>
+
+<li>BUG#31519. An issue was fixed in which the property package.rwfilesystem.enableprofiler was not being defined if the debugflags was set to 'custom' instead of 'on' or 'off'. (Thanks Antek Baranski for finding this problem and submitting a fix.)</li>
+
+<li>BUG#31468. Some alignment code was added several versions ago which caused much slower reads on compressed bigfiles. This alignment code has been removed.</li>
+
+<li>BUG#30805. The search path is now protected by a mutex. This means that users can modify the search path at any time without fear that the search path is being accessed by a device thread while it's being updated in another thread. The main use-case for this is for downloaded content that is stored on a memory card which could be removed while it's being searched.</li>
+
+<li>BUG#30671. The path to the installed files was hard-coded to /dev_hdd0/game/${titleId}/USRDIR. This is a TRC violation, so the path now comes from the PS3InstallDriver's mInstallPath member.</li>
+
+<li>build file fix: name of stream trace define should be RW_CORE_FILESYS_ENABLE_STREAMTRACE not USE_STREAM_TRACING (Thanks Darryl Gates)</li>
+
+<li>rw::core::filesys::MemMapDeviceDriverImpl::ReleaseMemory() no longer crashes if EASTL_VALIDATE_INTRUSIVE_LIST is enabled.</li>
+
+<li>BUG#28859. Some read-alignment optimization code was removed because it was having a substantial negative impact on read throughput performance in the case of compressed bigfiles. Thanks to James Tan for reporting this problem.</li>
+
+<li>BUG#32678. If the incremental install had no work to do because the files were already copied to GameData partition, and there were no files to be copied to the system cache, Incremental Installer would crash with a NULL dereference. This bug has been fixed. </li>
+
+</ul>
+<h3>Version 1.10.00</h3>
+
+<ul><li>Links to release notes for this and older versions are available on the package server.</li></ul>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

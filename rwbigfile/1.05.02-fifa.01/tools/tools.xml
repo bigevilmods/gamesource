@@ -1,0 +1,184 @@
+<project>
+    
+    <property name="tool.buildmodules">
+        bigfile
+        spit
+    </property>
+    
+    <property name="tool.buildmodules" if="${config-system} == 'pc' || ${config-system}== 'pc64'">
+        ${property.value}
+        bighead
+        glump
+        huff
+        winbig
+    </property>
+
+    <property name="tool.warningsuppression">
+
+    </property>
+    <property name="tool.warningsuppression" if="${config-system} == 'pc' || ${config-system}== 'pc64'">
+        -wd4191
+        -wd4255
+        -wd4365
+        -wd4555
+        -wd4917
+        -wd4389
+    </property>
+
+    <property name="tool.spit.buildtype" value="Library"/>
+    <property name="tool.bighead.buildtype" value="Program"/>
+    <property name="tool.glump.buildtype" value="Program"/>
+    <property name="tool.bigfile.buildtype" value="Program"/>
+    <property name="tool.huff.buildtype" value="Program"/>
+    <property name="tool.winbig.buildtype" value="WindowsProgram"/>
+
+    <foreach item="String" in="${tool.buildmodules}" delim=" " property="module">
+        <property name="tool.${module}.warningsuppression" value="${tool.warningsuppression}"/>
+        <fileset name="tool.${module}.libs" if="${config-system}==pc">
+            <includes name="ole32.lib" asis="true"/>
+        </fileset>
+
+        <property name="tool.${module}.builddependencies">
+            EAAssert
+            EAStdC
+            EASTL
+            zlib
+        </property>
+        
+        <property name="tool.${module}.usedependencies">
+            Endian
+            EABase
+            coreallocator
+        </property>
+        
+        <property name="tool.${module}.tool.moduledependencies" if="${module} != 'spit'">
+            spit
+        </property>
+    </foreach>
+
+    <property name="tool.bigfile.builddependencies">
+        ${property.value}
+        EAThread
+        job_manager
+        job_util
+        rwcodec
+        rwfilesystem
+    </property>
+	
+	<property name="tool.winbig.builddependencies">
+		${property.value}
+		job_manager
+		job_util
+		rwcodec
+		rwfilesystem
+		EAThread
+	</property>
+    
+    <property name="tool.bigfile.runtime.moduledependencies">
+        rwbigfile
+    </property>
+    
+    <property name="tool.winbig.runtime.moduledependencies">
+        rwbigfile
+    </property>
+
+
+    <fileset name="tool.glump.sourcefiles">
+        <includes name="glump/glump.cpp"/>
+        <includes name="spit/stdgimex.cpp"/>
+    </fileset>
+
+    <fileset name="tool.huff.sourcefiles">
+        <includes name="huff/*.cpp"/>
+        <includes name="spit/stdgimex.cpp"/>
+    </fileset>
+
+    <fileset name="tool.bighead.sourcefiles">
+        <includes name="bighead/bighead.cpp"/>
+        <includes name="spit/stdgimex.cpp"/>
+    </fileset>
+
+    <!--<foreach item="String" in="${tool.console.buildmodules}" delim=" " property="module">
+        <property name="tool.${module}.includedirs">
+            ${package.dir}/tools/spit
+            ${package.dir}/include
+        </property>
+    </foreach>-->
+
+    <do if="'${config-system}' == 'pc' || ${config-system}== 'pc64'">
+        <!-- Attempt to pull in the LZX compression library from the XenonSDK. -->
+        <trycatch>
+            <try>
+                <property name="xenonsdk-cross"/>
+                <dependent name="xenonsdk"/>
+                <do unless="@{PropertyExists('package.xenonsdk.cross-lib32-dir')}">
+                    <property name="package.xenonsdk.cross-lib32-dir" value="${package.xenonsdk.appdir}\lib\win32\vs2005"/>
+                    <do if="'${package.VisualStudio.version}' gte '9.0.0'">
+                        <do if="@{DirectoryExists('${package.xenonsdk.appdir}\lib\win32\vs2008')}">
+                            <property name="package.xenonsdk.cross-lib32-dir" value="${package.xenonsdk.appdir}\lib\win32\vs2008"/>
+                        </do>
+                    </do>
+                </do>
+                <fileset name="tool.bigfile.libs" append="true">
+                    <includes name="${package.xenonsdk.cross-lib32-dir}/xcompress.lib"/>
+                </fileset>
+            </try>
+            <!-- If a version of the Xenon SDK wasn't specified,
+                 LZX compression won't be needed -->
+            <catch/>
+        </trycatch>
+    </do>
+
+    <property name="tool.winbig.warningsuppression">
+        ${tool.warningsuppression}
+        -wd4266
+        -wd4310
+        -wd4555
+        -wd4625
+        -wd4626
+        -wd4702
+        -wd4917
+    </property>
+
+    <target name="tool.winbig.prebuildtarget" hidden="true">
+        <property name="res.name" value="winbig.res" />
+        <property name="res.resourcefile" value="${package.dir}/tools/winbig/winbig.rc" />
+        <property name="res.outputdir" value="${package.configbuilddir}/tool/winbig" />
+        <fileset name="res.sourcefiles">
+            <includes name="${res.resourcefile}" />
+            <includes name="${package.dir}/tools/winbig/res/*.*" />
+        </fileset>
+
+        <call target="build-res" force="true" />
+
+        <!-- Annoyingly, this doesn't add the resource file
+            to the list of objects linked.  This is either a
+            bug in eaconfig or a bug in Framework -->
+        <!--
+        <fileset name="tool.winbig.objects">
+            <includes name="${res.outputdir}/${res.name}" />
+        </fileset>
+        -->
+    </target>
+
+    <property name="tool.winbig.vcproj.pre-build-step"
+              value="${nant.location}\nant.exe tool.winbig.prebuildtarget -buildfile:${nant.project.buildfile} -masterconfigfile:${nant.project.masterconfigfile} -D:config=${config}"/>
+
+    <!-- Add the resources to the linked objects. -->
+    <fileset name="tool.winbig.objects">
+        <includes name="${package.configbuilddir}/tool/winbig/winbig.res" asis="true"/>
+    </fileset>
+
+    <target name="tool-publish" depends="tool-build" description="Build and copy the tools the package bin directory">        
+        <copy todir="${package.dir}/bin">
+                <fileset basedir="${package.configbindir}/tool">
+                    <includes name="*.exe" if="${config-system} == 'pc' || ${config-system}== 'pc64'"/>
+                    <includes name="bigfile" if="${config-system} == 'unix'"/>
+                </fileset>
+        </copy>
+    </target>
+
+    <target name="tool-publish-clean" description="Delete the package tools directory">
+        <delete dir="${package.dir}/bin"/>
+    </target>
+</project>

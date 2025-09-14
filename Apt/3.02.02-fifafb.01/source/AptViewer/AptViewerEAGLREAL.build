@@ -1,0 +1,432 @@
+<project default="AptViewer">
+  <!-- include package build file to get dependency and configuration information -->    
+	<property name="runtime.AptViewerEAGLREAL.buildtype" value="Program"/>
+	
+	<!-- Set up our build/use dependecies -->
+	<property name="runtime.AptViewerEAGLREAL.builddependencies">
+	    EABase
+	    coreallocator
+	    FontFusion	    
+	</property>
+    
+	<property name="runtime.AptViewerEAGLREAL.usedependencies.pc">
+		DirectX
+	    realgraphpc
+	    realcorepc
+	    EAGLPC
+	    snd		
+	</property>
+	<property name="runtime.AptViewerEAGLREAL.usedependencies.xbox">	       
+	    realgraphxbox
+	    realcorexbox
+	    EAGLXBOX
+	    snd
+	</property>
+	<property name="runtime.AptViewerEAGLREAL.usedependencies.ps2">
+	    realgraphps2
+	    realcoreps2
+	    EAGLPS2
+	    snd	
+	</property>
+	<property name="runtime.AptViewerEAGLREAL.usedependencies.gc">
+	    realgraphgcsn
+	    realcoregcsn
+	    EAGLGCSN
+	    snd	
+	</property>
+
+	<property name="runtime.AptAuxEAGLREAL.usedependencies.psp">	       
+	    realgraph
+	    realcore
+	    eagl
+	    snd
+	</property>
+	
+	<property name="runtime.AptViewerEAGLREAL.usedependencies.xenon">
+		xenonsdk
+	</property>
+
+  
+    <!-- Apt Debugger Dependencies -->
+    <include file="AptDebugger.xml" />
+    
+    <!-- These are warnings that we need to fix -->
+	<property name="runtime.AptViewerEAGLREAL.commonwarningsuppression">
+	    -wd4512     <!-- assignment operator could not be generated -->
+	    -wd4619     <!-- #pragma warning there is no warning number XXXX -->
+	    -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4244     <!-- conversion from int32_t to int16_t possible loss of data -->
+      -wd4062     <!-- enumerate 'ApAuxUnitType_LineSolid' in switch of enum 'AptAuxUnitType' is not handled -->
+      -wd4191     <!-- 'type cast' : unsafe conversion from 'PROC' to 'PFNGLMULTITEXCOORD2FVARBPROC' -->
+      -wd4189     <!-- 'ptr' : local variable is initialized but not referenced -->
+      -wd4296     <!-- '<' : expression is always false. IN EAGL -->
+	</property>
+	<property name="runtime.AptViewerEAGLREAL.warningsuppression.pc">
+        ${runtime.AptViewerEAGLREAL.commonwarningsuppression}
+	</property>	
+	<property name="runtime.AptViewerEAGLREAL.warningsuppression.xbox">
+        ${runtime.AptViewerEAGLREAL.commonwarningsuppression}
+        -wd4127     <!-- conditional expression is constant (XBOX) -->            
+	</property>	
+	<property name="runtime.AptViewerEAGLREAL.warningsuppression.ps2">
+	</property>	
+	<property name="runtime.AptViewerEAGLREAL.warningsuppression.gc">
+	</property>
+
+
+    <!-- This section sets up FW1 package quirks that FW2 doesn't care about -->
+    <property name="fw1config-type" value="d" if="${config-type} == deprecated-d" />    
+    <property name="fw1config-type" value="z" if="${config-type} == deprecated-z" />
+    <property name="fw1config-type" value="zd" if="${config-type} == deprecated-zd" />    
+    <property name="fw1config-type" value="z" if="${config-type} == p" />
+
+    <property name="realcorelib-sku"    value="" />		
+	<property name="realgraphlib-sku"   value="" />	
+	<property name="fw1config-platform" value="" /> 
+	<property name="eagldir"            value="" />
+	<property name="realgraphdir"       value="" />
+    <property name="realdir"            value="" />
+    <property name="dolphin-sku"        value="" />
+    <property name="dxlibdir"           value="" />
+    	
+	<property name="eagllib-prefix"     value="${lib-prefix}"/>			
+
+	<property name="dolphin-sku"        value="d" if='${fw1config-type} == d'/>
+	
+	<property name="config-zinp"        value="${fw1config-type}"/>
+	<property name="config-zinp"        value="z" if='${fw1config-type} == p'/>
+	<property name="config-zinp"        value="z" if='${fw1config-type} == zd'/>    
+
+	<property name="sndlib-type"        value="${fw1config-type}"   if='${fw1config-type} != zd'/>
+	<property name="sndlib-type"        value="z"                   if='${fw1config-type} == zd'/>                
+		
+	<property name="snddir"             value="${package.snd.dir}" />
+                
+	<property name="runtime.AptViewerEAGLREAL.defines">
+	    ${runtime.defines}
+	</property>
+                
+    <!-- Set up include dirs-->                
+	<property name="runtime.AptViewerEAGLREAL.includedirs">
+	    ${package.dir}/include/Apt
+		${package.dir}/include/AptFF
+		${package.dir}/include/AptAuxEAGLREAL
+		${package.dir}/source/AptViewer
+		${package.snd.dir}/include
+		
+        ${ToolIMIncDir}
+        ${RenderwareIncDir}
+        ${DirtySockIncDir}
+	</property>	                       
+       
+       
+    <!-- Set up the config specific include paths and dependencies -->
+    <!-- PC -->
+    <do if="${config-system} == pc">
+        <dependent name="realgraphpc" />
+        <dependent name="realcorepc" />
+        <dependent name="EAGLPC" />        
+        <dependent name="DirectX" /> 
+        
+	    <property name="runtime.AptViewerEAGLREAL.includedirs.pc">
+		    ${package.realgraphpc.dir}/include
+		    ${package.realcorepc.dir}/include
+		    ${package.EAGLPC.dir}/include/cmn
+		    ${package.EAGLPC.dir}/include/devcaps
+		    ${package.EAGLPC.dir}/include/pc
+	    </property>
+	    
+	    <property name="realcorelib-sku"    value="pc"/>
+	    <property name="eagllib-prefix"     value="lib"/>
+	    <property name="fw1config-platform" value="pc-vc71" />	    
+	    <!-- FIFA_BEGIN | DIVERGENCE | dmathieu@bioware.com | 2015-03-26 | fix for DirectX.frostbite -->
+		<property name="dxlibdir"			value="${package.DirectX.libdir}" />
+	    <!-- FIFA_END -->
+	    
+        <property name="eagldir"        value="${package.EAGLPC.dir}" />
+        <property name="realgraphdir"   value="${package.realgraphpc.dir}" />
+        <property name="realdir"        value="${package.realcorepc.dir}" />	    
+        
+		<property name="runtime.AptViewerEAGLREAL.defines">
+			PC
+		    ${runtime.defines}
+		</property>
+        
+    </do>
+    
+    <!-- XBOX -->
+    <do if="${config-system} == xbox">
+        <dependent name="realgraphxbox" />
+        <dependent name="realcorexbox" />
+        <dependent name="EAGLXBOX" />
+        <dependent name="Xdk" />
+    
+	    <property name="runtime.AptViewerEAGLREAL.includedirs.xbox">
+		    ${package.realgraphxbox.dir}/include
+		    ${package.realcorexbox.dir}/include
+		    ${package.EAGLXBOX.dir}/include/cmn
+		    ${package.EAGLXBOX.dir}/include/devcaps
+		    ${package.EAGLXBOX.dir}/include/xbox
+	    </property>
+	    
+	    <property name="realcorelib-sku"    value="xbox" />
+	    <property name="eagllib-prefix"     value="lib"/>
+	    <property name="fw1config-platform" value="xbox-vc7" />
+	    
+        <property name="eagldir"        value="${package.EAGLXBOX.dir}" />
+        <property name="realgraphdir"   value="${package.realgraphxbox.dir}" />
+        <property name="realdir"        value="${package.realcorexbox.dir}" />	   	    
+    </do>
+    
+    <!-- PS2 -->
+    <do if="${config-system} == ps2">
+        <dependent name="realgraphps2" />
+        <dependent name="realcoreps2" />
+        <dependent name="EAGLPS2" />    
+        
+	    <property name="runtime.AptViewerEAGLREAL.includedirs.ps2">
+		    ${package.realgraphps2.dir}/include
+		    ${package.realcoreps2.dir}/include
+		    ${package.EAGLPS2.dir}/include/cmn
+		    ${package.EAGLPS2.dir}/include/devcaps
+		    ${package.EAGLPS2.dir}/include/ps2
+	    </property>
+	    
+	    <property name="realcorelib-sku"    value="ps2" />
+	    <property name="fw1config-platform" value="ps2-sn" />
+
+        <property name="eagldir"        value="${package.EAGLPS2.dir}" />
+        <property name="realgraphdir"   value="${package.realgraphps2.dir}" />
+        <property name="realdir"        value="${package.realcoreps2.dir}" />	    
+	    
+        <copy todir="..\..\bin\AptAuxEAGLREAL\rms">
+          <fileset basedir="..\..\build\rms">
+              <includes name="**/*.*"/> 
+          </fileset>
+        </copy>
+    </do>
+            
+    <!-- NGC (SN ONLY) -->
+    <do if="${config-system} == gc">    
+        <dependent name="realgraphgcsn" />
+        <dependent name="realcoregcsn" />
+        <dependent name="EAGLGCSN" />         
+        
+	    <property name="runtime.AptViewerEAGLREAL.includedirs.gc">
+		    ${package.realgraphgcsn.dir}/include
+		    ${package.realcoregcsn.dir}/include
+		    ${package.EAGLGCSN.dir}/include/cmn
+		    ${package.EAGLGCSN.dir}/include/devcaps
+		    ${package.EAGLGCSN.dir}/include/gc
+	    </property>
+	    
+	    <property name="realcorelib-sku"    value="gcsn" />
+	    <property name="eagllib-prefix"     value="lib"/>
+	    <property name="fw1config-platform" value="gc-sn" />
+	    
+        <property name="eagldir"        value="${package.EAGLGCSN.dir}" />
+        <property name="realgraphdir"   value="${package.realgraphgcsn.dir}" />
+        <property name="realdir"        value="${package.realcoregcsn.dir}" />	    
+    </do>
+    
+    <!-- PSP -->
+    <do if="${config-system} == psp">        	    
+   	    <property name="runtime.AptViewerEAGLREAL.includedirs.psp">
+		    ${package.realgraph.dir}/include
+		    ${package.realcore.dir}/include
+		    ${package.eagl.dir}/include/cmn
+		    ${package.eagl.dir}/include/devcaps
+		    ${package.eagl.dir}/include/psp
+	    </property>		            
+
+    
+	    <property name="realcorelib-sku"    value="psp-gcc" if='${config-platform} == psp-gcc'/>
+	    <property name="realcorelib-sku"    value="psp-sn"	if='${config-platform} == psp-sn'/>
+	    
+	    <property name="realgraphlib-sku" value="psp-gcc/"  if='${config-platform} == psp-gcc'/>
+	    <property name="realgraphlib-sku" value="psp-sn/"   if='${config-platform} == psp-sn'/>	    
+	    
+        <property name="eagldir"        value="${package.eagl.dir}" />
+        <property name="realgraphdir"   value="${package.realgraph.dir}" />
+        <property name="realdir"        value="${package.realcore.dir}" />	    
+		<property name="runtime.AptViewerEAGLREAL.defines.psp">
+		    ${runtime.defines}
+			PSP		    <!-- has to add this for newer eaconfig that supports PSP -->
+		</property>
+        
+	    
+    </do>    
+
+    <!-- Set up source files-->
+	<fileset name="runtime.AptViewerEAGLREAL.sourcefiles">
+		<includes name="${package.Apt.dir}/source/AptViewer/eagl_real_viewer.cpp" />
+        <includes name="stubs.cpp"	if='${config-system} == psp'/>		
+	</fileset>
+    
+    
+    <!-- Set up lib dependencies -->
+	<fileset name="runtime.AptViewerEAGLREAL.libs">
+		<includes name="${package.configlibdir}/${lib-prefix}Apt${lib-suffix}" />
+		<includes name="${package.configlibdir}/${lib-prefix}AptAuxEAGLREAL${lib-suffix}" />
+		<includes name="${package.configlibdir}/${lib-prefix}Aptff${lib-suffix}" />		
+				
+		<includes name="${snddir}/lib/${config-platform}/${lib-prefix}snd${sndlib-type}${lib-suffix}"	                    if="${config-system} == psp"/>
+        <includes name="${snddir}/lib/${fw1config-platform}/${lib-prefix}snd${fw1config-type}${lib-suffix}"     if="${config-system} == ps2 || ${config-system} == xbox || ${config-system} == pc || ${config-system} == gc"/>
+		
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eagl${config-zinp}${lib-suffix}"       if="${config-system} == ps2 || ${config-system} == xbox || ${config-system} == pc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglGCC${config-zinp}${lib-suffix}"	if="${config-platform} == psp-gcc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglsn${config-zinp}${lib-suffix}"	    if="${config-platform} == psp-sn"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglSN${config-zinp}${lib-suffix}"     if="${config-platform} == gc-sn"/>
+
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglanim${config-zinp}${lib-suffix}"   if="${config-system} == ps2 || ${config-system} == xbox || ${config-system} == pc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglanimGCC${config-zinp}${lib-suffix}"    if="${config-platform} == psp-gcc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglanimsn${config-zinp}${lib-suffix}"	if="${config-platform} == psp-sn"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglanimSN${config-zinp}${lib-suffix}" if="${config-platform} == gc-sn"/>
+		
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglrm${config-zinp}${lib-suffix}"     if="${config-system} == ps2 || ${config-system} == xbox || ${config-system} == pc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglrmGCC${config-zinp}${lib-suffix}"	if="${config-platform} == psp-gcc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglrmSN${config-zinp}${lib-suffix}"	if="${config-platform} == psp-sn"/>
+
+
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglrmSN${config-zinp}${lib-suffix}"   if="${config-platform} == gc-sn"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglutil${config-zinp}${lib-suffix}"   if="${config-system} == ps2 || ${config-system} == xbox || ${config-system} == pc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglutilGCC${config-zinp}${lib-suffix}"    if="${config-platform} == psp-gcc"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglutilsn${config-zinp}${lib-suffix}"	if="${config-platform} == psp-sn"/>
+		<includes name="${eagldir}/lib.${config-system}/${eagllib-prefix}eaglutilSN${config-zinp}${lib-suffix}" if="${config-platform} == gc-sn"/>
+        
+		<includes name="${realgraphdir}/lib/${realgraphlib-sku}${lib-prefix}realfont${config-zinp}${lib-suffix}"/>
+		<includes name="${realgraphdir}/lib/${realgraphlib-sku}${lib-prefix}realshape${config-zinp}${lib-suffix}"/>
+		<includes name="${realgraphdir}/lib/${realgraphlib-sku}${lib-prefix}realgraph${config-zinp}${lib-suffix}"/>
+        
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realmem${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realcodec${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realinput${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realfile${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realmath${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realsystem${config-zinp}${lib-suffix}"/>
+        <includes name="${realdir}/lib/${realcorelib-sku}/${lib-prefix}realdebug${config-zinp}${lib-suffix}"/>
+
+		<group if="${package.Apt.EnableDebugger}">		
+            <group if="${package.Apt.AptDebuggerUseDirtyXSDK}">
+                <includes name="${DirtySockLibDir}\dirtysock${lib-suffix}" />
+		        <includes name="${ToolIMLibDir}/${config}/${lib-prefix}EA.ToolIM.UnmanagedAPI${lib-suffix}" />		                        
+                <!-- <includes name="${ToolIMLibDir}/${fw1config-platform}-${debuggerconfig-type}\DirtyXSDK_UmanagedApi/${lib-prefix}EA.ToolIM.UnmanagedAPI${fw1config-type}${lib-suffix}" /> -->
+            </group>
+		</group>
+		
+		<group if="${config-system} == pc">
+			<includes name="${eagldir}/lib.${config-system}/${lib-prefix}devCaps${config-zinp}${lib-suffix}"/>
+			<includes name="${lib-prefix}user32${lib-suffix}" asis='true'/>
+			<includes name="${lib-prefix}gdi32${lib-suffix}" asis='true'/>
+			<includes name="${lib-prefix}winmm${lib-suffix}" asis='true'/>
+			<includes name="${lib-prefix}advapi32${lib-suffix}" asis='true'/>
+			<includes name="${dxlibdir}/${lib-prefix}d3d8${lib-suffix}"/>
+			<includes name="${dxlibdir}/${lib-prefix}d3dx9${lib-suffix}"/>
+			<includes name="${dxlibdir}/${lib-prefix}dsound${lib-suffix}"/>
+			<!-- <includes name="${dxlibdir}/${lib-prefix}strmiids${lib-suffix}"/> -->
+			<includes name="${dxlibdir}/${lib-prefix}dxguid${lib-suffix}"/>
+			<includes name="${dxlibdir}/${lib-prefix}ddraw${lib-suffix}"/>
+			<includes name="${dxlibdir}/${lib-prefix}dinput${lib-suffix}"/>
+
+            <!-- <includes name="${package.VisualStudio.appdir}/vc7/platformsdk/lib/${lib-prefix}strmiids${lib-suffix}"/> -->
+			
+            <group if="${package.Apt.EnableDebugger}">
+                <includes name="${EACORECURRENTGENLIBDIR}/${config-platform}/${lib-prefix}eacore${fw1config-type}${lib-suffix}" />
+                <includes name="${package.VisualStudio.appdir}/vc7/platformsdk/lib/ws2_32.lib"/>
+			</group>			
+		</group>
+		
+		<group if="${config-system} == xbox">
+    		<includes name="${lib-prefix}d3d8i${lib-suffix}" asis='true'/>
+    		
+            <group if="${package.Apt.EnableDebugger}">
+				<!-- no need of EACore library with new toolim that uses RW4.5. But if you are using older toolim you will have to use this line. -->
+                <!-- <includes name="${EACORECURRENTGENLIBDIR}/${fw1config-platform}-${debuggerconfig-type}/${lib-prefix}eacore${fw1config-type}${lib-suffix}" />			-->
+                <includes name="${package.Xdk.appdir}\xbox\lib\Xonline.lib"/>		
+                <includes name="${package.Xdk.appdir}\xbox\lib\libcmtd.lib"/>		
+                <includes name="${lib-prefix}xnet${lib-suffix}" asis='true'/>
+			</group>			    		
+		</group>	
+			
+		<group if="${config-system} == ps2">
+			<includes name="${package.dir}/bin/AptAuxEAGLREAL/rms/ps2/aptrm${lib-suffix}"/>
+			<includes name="-lm" asis='true'/>
+			<includes name="-lmpeg" asis='true'/>
+			<includes name="-lgraph" asis='true'/>
+			<includes name="-lcdvd" asis='true'/>
+			<includes name="-lscf" asis='true'/>
+			<includes name="-ldev" asis='true'/>
+			<includes name="-ldma" asis='true'/>
+			<includes name="-lmc" asis='true'/>
+			<includes name="-lmtap" asis='true'/>
+			<includes name="-lpkt" asis='true'/>
+			<includes name="-lpad" asis='true'/>
+			<includes name="-lvu0" asis='true'/>
+			<includes name="-lipu" asis='true'/>
+			<includes name="-lsdr" asis='true'/>
+			<includes name="-lpc" asis='true'/>
+			<includes name="-lsn" asis='true'/>
+			
+            <group if="${package.Apt.EnableDebugger}">
+				<!-- no need of EACore library with new toolim that uses RW4.5. But if you are using older toolim you will have to use this line. -->
+                <!-- <includes name="${EACORECURRENTGENLIBDIR}/${fw1config-platform}-${debuggerconfig-type}/${lib-prefix}eacore${fw1config-type}${lib-suffix}" /> -->
+                <includes name="-leenet" asis='true'/>					
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\ent_smap.a" asis='true'/>					
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\eenetctl.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\netcnfif.a" asis='true'/>		
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\ent_eth.a" asis='true'/>							
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\eznetcnf.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\eznetctl_inet.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\ent_dump.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\ent_ppp.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\libhttp.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\libinsck.a" asis='true'/>
+				<includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\libkernl.a" asis='true'/>
+                <includes name="${package.PlayStation2SN.appdir}\sce\ee\lib\ntgui2.a" asis='true'/>
+            </group>
+		</group>	
+			
+		<group if="${config-system} == gc">
+		</group>	
+					
+		<group if="${config-system} == xenon">
+		    <group if="${package.Apt.EnableDebugger}">
+				<!-- no need of EACore library with new toolim that uses RW4.5. But if you are using older toolim you will have to use this line. -->
+                <!-- <includes name="${EACORECURRENTGENLIBDIR}/${config-platform}/${lib-prefix}eacore${fw1config-type}${lib-suffix}" /> -->
+		    </group>
+		</group>
+		
+		<group if="${config-system} == psp">	
+		
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/rtc_stub.a"	/>
+            <includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/libvfpu.a"	/>
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/libatrac3plus_stub_weak.a"	/>
+			
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/libsndp.a"	/>
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/libsas_weak.a"	/>
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/libwave.a"	/>
+			<includes name="${package.PlayStationPortableSN.appdir}/sce/psp/lib/mediaman_stub.a"	/>
+
+
+			
+			<includes name="${package.PlayStationPortableSN.libdir}/libsncpp.a"	/>
+			<includes name="${package.PlayStationPortableSN.libdir}/libc.a"		/>
+			<includes name="${package.PlayStationPortableSN.libdir}/libm.a"		/>
+			<includes name="${package.PlayStationPortableSN.libdir}/libsn.a"	/>
+			<includes name="${package.PlayStationPortableSN.libdir}/libgcs.a"	/>
+			<includes name="${package.PlayStationPortableSN.libdir}/libstl.a"	/>
+
+			<includes name="-lgum"			asis='true'/>
+			<includes name="-lgu"			asis='true'/>
+			<!-- <includes name="-lemu"			asis='true'/> -->
+			<includes name="-lm"			asis='true'/>
+
+			<includes name="-lgcs"			asis='true'/>
+			<includes name="-lc"			asis='true'/>
+			<includes name="-lsncpp"		asis='true'/>
+			<includes name="-lsn"			asis='true'/>		
+			<includes name="-lkernel"			asis='true'/>								
+		</group>		
+	</fileset> 			  	
+</project>
+

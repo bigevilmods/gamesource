@@ -1,0 +1,37 @@
+/*!
+\page p_vpl_simulated_operations VPL Simulated Operations
+
+\section s_vpl_sim_purpose Purpose of Simulated Operations
+
+Normally, VPL operations are only implemented on the platforms that can execute
+them efficiently.  However, there may be situations where efficiency is not
+a big concern.
+
+For example, when porting code from one platform to another it
+may be fine if performance is initially low.  The most important consideration is
+getting the code running.  Once the code is running properly, it can be optimized
+for the platform.
+
+In other situations a PC tool may wish to run VPL code that isn't normally
+supported on the PC.  If performance is not an issue, the VPL code can be
+simulated on the PC.
+
+Basically, the simulated operations are designed to let VPL code run on any
+platform.  However, it is not intended to do this efficiently.  For this reason,
+simulated operations are disabled unless they are explicitly enabled by the user.
+
+\section s_vpl_sim_when_to_avoid When to Avoid Simulated Operations
+
+Normally, simulated operations should not be used because they are inefficient.
+For high performance code, users should stick to operations that are
+efficiently implemented using native code.
+
+\section s_vpl_sim_how_to_enable How to Enable Simulated Operations
+
+If you want to enable simulated code, your build should define
+RW_MATH_ENABLE_SIMULATED_VPL_OPERATIONS <em>before including any rwmath headers</em>.
+Obviously, it can be difficult to ensure this is the case.  So, ideally the
+define should be passed directly to the compiler to ensure it is always defined before
+rwmath headers are included.
+
+*/

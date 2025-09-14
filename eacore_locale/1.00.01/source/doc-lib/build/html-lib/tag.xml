@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='ISO-8859-1' standalone='yes'?>
+<tagfile>
+  <compound kind="page">
+    <filename>index</filename>
+    <title></title>
+    <name>index</name>
+  </compound>
+  <compound kind="file">
+    <name>locale.cpp</name>
+    <path>C:/packages/eacore_locale/1.00.01/source/lib/</path>
+    <filename>locale_8cpp</filename>
+    <includes id="locale_8h" name="locale.h" local="yes">eacore/locale/locale.h</includes>
+  </compound>
+  <compound kind="file">
+    <name>locale.h</name>
+    <path>C:/packages/eacore_locale/1.00.01/include/eacore/locale/</path>
+    <filename>locale_8h</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_overview</name>
+    <title>Overview - eacore_locale help</title>
+    <filename>p_overview</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_copyright</name>
+    <title>Copyright and trademark information</title>
+    <filename>p_copyright</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_documenthistory</name>
+    <title>Document History</title>
+    <filename>p_documenthistory</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_whatis</name>
+    <title>What is eacore_locale?</title>
+    <filename>p_whatis</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_tools</name>
+    <title>What do you get?</title>
+    <filename>p_tools</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_support</name>
+    <title>Technical Support</title>
+    <filename>p_support</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_gettingstarted_overview</name>
+    <title>Overview</title>
+    <filename>p_gettingstarted_overview</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_gettingstarted_locale_overview</name>
+    <title>eacore_locale Overview</title>
+    <filename>p_gettingstarted_locale_overview</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_gettingstarted_locale</name>
+    <title>Working with localized strings</title>
+    <filename>p_gettingstarted_locale</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_lib_ref_overview</name>
+    <title>Library Reference Overview</title>
+    <filename>p_lib_ref_overview</filename>
+  </compound>
+  <compound kind="page">
+    <name>p_devlog</name>
+    <title>EA Core Locale Changelog</title>
+    <filename>p_devlog</filename>
+  </compound>
+  <compound kind="group">
+    <name>g_overview</name>
+    <title>Overview of eacore_locale help</title>
+    <filename>group__g__overview.html</filename>
+  </compound>
+  <compound kind="group">
+    <name>g_intro</name>
+    <title>Introduction to eacore_locale</title>
+    <filename>group__g__intro.html</filename>
+  </compound>
+  <compound kind="group">
+    <name>g_gettingstarted</name>
+    <title>Getting Started</title>
+    <filename>group__g__gettingstarted.html</filename>
+    <subgroup>g_gettingstarted_locale</subgroup>
+  </compound>
+  <compound kind="group">
+    <name>g_gettingstarted_locale</name>
+    <title>Using eacore_locale library</title>
+    <filename>group__g__gettingstarted__locale.html</filename>
+  </compound>
+  <compound kind="group">
+    <name>g_refs</name>
+    <title>Reference Guides</title>
+    <filename>group__g__refs.html</filename>
+    <subgroup>g_refs</subgroup>
+  </compound>
+  <compound kind="group">
+    <name>g_refs</name>
+    <title>Library Reference</title>
+    <filename>group__g__refs.html</filename>
+    <subgroup>g_lib_locale</subgroup>
+  </compound>
+  <compound kind="group">
+    <name>g_lib_locale</name>
+    <title>eacore_locale library reference</title>
+    <filename>group__g__lib__locale.html</filename>
+    <file>locale.cpp</file>
+    <file>locale.h</file>
+    <class kind="Class">EA::Core::Locale</class>
+  </compound>
+  <compound kind="group">
+    <name>g_devlog</name>
+    <title>Development Log</title>
+    <filename>group__g__devlog.html</filename>
+  </compound>
+  <compound kind="Class">
+    <name>EA::Core::Locale</name>
+    <filename>_class_e_a_1_1_core_1_1_locale.html</filename>
+    <member kind="enumeration">
+      <name>LocaleState</name>
+      <anchor>s6</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>LANGUAGEID</name>
+      <anchor>s6s0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>LANGUAGECOUNT</name>
+      <anchor>s6s1</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>STRINGCOUNT</name>
+      <anchor>s6s2</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>HASINDEX</name>
+      <anchor>s6s3</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumeration">
+      <name>CharacterType</name>
+      <anchor>s7</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>CT_ASCII</name>
+      <anchor>s7s4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="enumvalue">
+      <name>CT_UNICODE</name>
+      <anchor>s7s5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="function">
+      <type></type>
+      <name>Locale</name>
+      <anchor>a0</anchor>
+      <arglist>(const void *localefile, CharacterType chType=CT_UNICODE)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>GetState</name>
+      <anchor>a1</anchor>
+      <arglist>(LocaleState state) const</arglist>
+    </member>
+    <member kind="function">
+      <type>void</type>
+      <name>SetLanguage</name>
+      <anchor>a2</anchor>
+      <arglist>(int langId)</arglist>
+    </member>
+    <member kind="function">
+      <type>const char *</type>
+      <name>GetString</name>
+      <anchor>a3</anchor>
+      <arglist>(int StringID) const</arglist>
+    </member>
+    <member kind="function">
+      <type>const wchar_t *</type>
+      <name>WGetString</name>
+      <anchor>a4</anchor>
+      <arglist>(int StringID) const</arglist>
+    </member>
+  </compound>
+</tagfile>

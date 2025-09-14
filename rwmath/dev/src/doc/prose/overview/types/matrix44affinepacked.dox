@@ -1,0 +1,15 @@
+/*!
+\page p_matrix44_affine_packed Matrix44AffinePacked
+
+The \ref p_matrix44_affine "Matrix44Affine" class represents a 4x4 matrix with an implied fourth column.  For efficiency,
+the matrix is represented as 4 \c VectorIntrinsic values.  So, the last column, even though it is not maintained, still
+uses up memory.  Clearly for efficient calculations, this is the best strategy, but it does mean storing this data in
+memory is not as efficient as it could be.
+
+The \c Matrix44AffinePacked type provides an efficient storage mechanism for \c
+Matrix44Affine.  The \c Matrix44AffinePacked type does not store the last column,
+so it takes 3/4 the space of the \c Matrix44Affine type.  The \c Matrix44AffinePacked type
+does not provide any operations; it is only intended as a way of storing \c Matrix44Affine's.
+Users must convert the matrix back to a \c Matrix44Affine type before performing calculations.
+    
+*/

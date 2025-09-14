@@ -1,0 +1,68 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestSoa4Mask4 :
+    public UnitTest
+{
+public:
+
+    UnitTestSoa4Mask4();
+    virtual ~UnitTestSoa4Mask4();
+    void Test();
+
+    ::rw::math::vpu::Soa4Mask4 mAllTrue;
+    ::rw::math::vpu::Soa4Mask4 mAllFalse;
+    ::rw::math::vpu::Soa4Mask4 mMixed;
+
+    bool IsEqualBitwise( ::rw::math::vpu::VectorIntrinsicInParam v0, ::rw::math::vpu::VectorIntrinsicInParam v1 )
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion v0u, v1u;
+        v0u.vector = v0;
+        v1u.vector = v1;
+        return( 
+                v0u.scalarUInt[0] == v1u.scalarUInt[0] &&
+                v0u.scalarUInt[1] == v1u.scalarUInt[1] &&
+                v0u.scalarUInt[2] == v1u.scalarUInt[2] &&
+                v0u.scalarUInt[3] == v1u.scalarUInt[3]
+              );
+    }
+
+    bool IsEqual(::rw::math::vpu::Soa4MaskScalar::InParam a, ::rw::math::vpu::Soa4MaskScalar::InParam b)
+    {
+        return !memcmp( &a.mV, &b.mV, sizeof(::rw::math::vpu::VectorIntrinsic) );
+    }
+
+    bool IsEqual(::rw::math::vpu::Soa4Mask4::InParam a, ::rw::math::vpu::Soa4Mask4::InParam b)
+    {
+        return IsEqual( a.x, b.x ) && IsEqual( a.y, b.y ) && IsEqual( a.z, b.z ) && IsEqual( a.w, b.w );
+    }
+    
+
+    ::rw::math::vpu::Soa4MaskScalar CreateSoa4MaskScalar(bool x, bool y, bool z, bool w)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarUInt[0] = x ? 0xffffffffU : 0;
+        vu.scalarUInt[1] = y ? 0xffffffffU : 0;
+        vu.scalarUInt[2] = z ? 0xffffffffU : 0;
+        vu.scalarUInt[3] = w ? 0xffffffffU : 0;
+        return ::rw::math::vpu::Soa4MaskScalar(vu.vector);
+    }
+
+    ::rw::math::vpu::Soa4MaskScalar CreateSoa4MaskScalarFromUInt(uint32_t x, uint32_t y, uint32_t z, uint32_t w)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarUInt[0] = x;
+        vu.scalarUInt[1] = y;
+        vu.scalarUInt[2] = z;
+        vu.scalarUInt[3] = w;
+        return ::rw::math::vpu::Soa4MaskScalar(vu.vector);
+    }
+
+//#BLOCK
+
+};
+
+
+

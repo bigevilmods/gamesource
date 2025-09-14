@@ -1,0 +1,10 @@
+/*!
+\page p_maskscalar MaskScalar
+
+The MaskScalar type represents a true or false condition.  You can think of the
+MaskScalar type as representing a boolean value.  The math library has comparison
+functions that generate MaskScalar results.  MaskScalar's may also be used to
+"select" between different data.  This ability allows "conditional" code to be
+written that does not contain any branch instuctions.
+
+*/

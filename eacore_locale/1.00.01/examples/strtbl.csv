@@ -1,0 +1,7 @@
+id,value,IDL_ENGLISH,IDL_SPANISH,IDL_GERMAN,IDL_FRENCH
+IDS_HELLO,100,"Hello ""Again","Hola""",Groscott,Bon jour
+IDS_HELLO3,300,"Hello2,,,, ""Again""",Hola2,Groscott2,Bon jour2
+IDS_HELLO_WORLD,200,"Hello, World!","Hola, Earth!","Groscott, Dutch!","Salute, planet!"
+IDS_SENTENCE,150,This is an English sentence,This is an Spanish sentence,This is an German sentence,This is an French sentence
+IDS_QUOTE_TEST,250,"""This string is in quotes""","""This string is in quotes""","""This string is in quotes""","""This string is in quotes"""
+IDS_TRC,500,Memory card in slot %d has %d KB free space.,Memory card in slot %d has %d KB free space.,Memory card in slot %d has %d KB free space.,Memory card in slot %d has %d KB free space.

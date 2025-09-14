@@ -1,0 +1,58 @@
+<project default="build">
+
+    <!-- Downloadable content example only applies on PS3 at this time -->
+    <property name="example.buildmodules" if="${config-system} == ps3">
+        ${property.value}
+        example-dlc
+    </property>
+
+    <property name="example.example-dlc.buildtype" value="Program" />
+
+    <fileset name="example.example-dlc.sourcefiles">
+        <includes name="*.cpp"/>
+    </fileset>
+
+    <property name="example.example-dlc.includedirs">
+        ${package.dir}/include
+        ${package.dir}/include/${config-system}
+    </property>
+
+    <property name="example.example-dlc.builddependencies">
+        coreallocator
+        EABase
+        EAAssert
+        EAThread
+        EASTL
+        PPMalloc
+        EAStdC
+    </property>
+
+    <property name="example.example-dlc.runtime.moduledependencies">
+        rwfilesystem
+    </property>
+
+    <fileset name="example.example-dlc.libs.ps3">
+        <includes name="${package.PlayStation3GCC.appdir}/target/ppu/lib/libsysutil_game_stub.a"/>
+    </fileset>
+
+    <target name="example.example-dlc.postbuildtarget">
+        <copy todir="${package.configbindir}/example">
+            <fileset basedir="${package.dir}/examples/dlc">
+                <includes name="packed.big"/>
+            </fileset>
+        </copy>
+
+        <!-- Create the DLC file.  This should be copied via target
+        manager to your PS3 dev kit, before the example is run, to
+        /dev_hdd0/game/ABAB22335/USRDIR -->
+        <exec program="${package.ps3sdk.appdir}/host-win32/bin/make_edata_npdrm.exe"
+              workingdir="${package.dir}/examples/dlc">
+            <args>
+                <arg value="packed.big"/>
+                <arg value="${package.configbindir}/example/packed.big.edat"/>
+            </args>
+
+        </exec>
+    </target>
+
+</project>

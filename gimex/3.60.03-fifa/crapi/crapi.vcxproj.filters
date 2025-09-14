@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\alpha.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\copenlib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\cpair.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\cremap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\exact.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fu.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ksom.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\lloyd.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\nil.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\pq.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\quant4d.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\wu.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\wu555.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\wu777.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\wudata.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cmn\alpha.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\copen.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\cpair.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\crapi.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\exact.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\fu.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\helper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\kolb.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\ksom.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\lloyd.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\nil.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\pq.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\quantize.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\wu.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\wu555.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\wu777.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="cmn\wudata.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

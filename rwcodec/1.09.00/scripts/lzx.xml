@@ -1,0 +1,26 @@
+<project>
+    <property name="package.rwcodec.use_lzx" value="@{OptionSetGetValue('config-options-common', 'toolconfig')} == on" unless="@{PropertyExists('package.rwcodec.use_lzx')}"/>
+
+    <do if="${package.rwcodec.use_lzx}">
+        <property name="xenonsdk-cross"/>
+        <dependent name="xenonsdk"/>
+
+        <property name="debug-postfix" value="d" if="@{OptionSetGetValue('config-options-common', 'debugflags')} == on"/>
+
+        <fileset name="package.rwcodec.lzx.libs">
+            <includes name="${package.xenonsdk.cross-lib-dir}/xcompress${debug-postfix??}.lib" />
+        </fileset>
+
+        <property name="package.rwcodec.lzx.includedirs">
+            ${package.xenonsdk.cross-include-dir}
+        </property>
+
+        <property name="package.rwcodec.lzx.defines">
+            RW_CORE_CODEC_LZXCOMPRESSION
+        </property>
+
+        <echo message="rwcodec: Using LZX compression"/> 
+    </do>
+
+</project>
+

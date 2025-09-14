@@ -1,0 +1,37 @@
+
+<html>
+<head>
+    <title>Stream Alignment</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Considering alignment</h1>
+
+<p>Each platform EA Core currently supports have preferred data and buffer
+alignments. These data and buffer alignments permit them to perform
+optimally.  Unaligned data or buffers will still work, but the throughput
+will typically be much slower.</p>
+
+<p>The stream author must ensure that any streams begin on an aligned
+offset within a larger file.  Individual chunks within a single request
+do not have alignment restrictions; only the first one needs to be aligned.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

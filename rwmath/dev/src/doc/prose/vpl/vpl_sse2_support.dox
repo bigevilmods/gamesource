@@ -1,0 +1,37 @@
+/*!
+\page p_vpl_sse2_support VPL SSE2 Support
+
+The SSE2 support has been officially added in the VPL for PC platform only. 
+Using SSE2 also implies using SSE with the difference that the most of the simulated
+SSE functions are now implemented by native SSE2 instructions. The existing SSE
+functions using native SSE instructions remain untouched and are still used in SSE2 support.
+
+\section s_vpl_sse2_enable Enable SSE2
+
+The SSE2 support is not enabled by default. To use it, you need to pass a compiler option
+'-arch:SSE2' while you compile your programs. RWMath unittest is a good example. See following
+section for details.
+
+\section s_vpl_sse2_build Build RWMath Test with SSE2
+
+A new build type 'SSE2Program' is created in rwmath.build file. 
+
+\code
+
+<optionset name="config-options-program-sse2" fromoptionset="config-options-program">
+    <option name="buildset.name" value="SSE2Program"/>
+    <option name="buildset.cc.options">
+        ${option.value} -arch:SSE2
+    </option>
+</optionset>
+
+<task name="GenerateBuildOptionset" configsetname="config-options-program-sse2" />
+\endcode
+
+To build the test with this build type, pass a property 'test.enableSSE2=true' to 
+the NAnt command line. For example:
+
+nant.exe -D:config=pc-vc-dev-opt -D:test.enableSSE2=true rwmath-test-run
+
+*/
+

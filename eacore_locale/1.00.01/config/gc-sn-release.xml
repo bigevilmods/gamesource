@@ -1,0 +1,3 @@
+<project>
+	<include file="${package.tlconfig.dir}/config/gc-sn-release.xml" />
+</project>

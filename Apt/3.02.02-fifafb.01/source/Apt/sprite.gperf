@@ -1,0 +1,92 @@
+struct SpriteMembers { char *szName; int nIndex; };
+%%
+_x, 1
+_y, 2
+_xscale, 3
+_yscale, 4
+_currentframe, 5
+_totalframes, 6
+_alpha, 7
+_visible, 8
+_width, 9
+_height, 10
+_rotation, 11
+_target, 12
+_framesloaded, 13
+_name, 14
+_droptarget, 15
+_url, 16
+_highquality, 17
+_focusrect, 18
+_soundbuftime, 19
+_quality, 20
+_xmouse, 21
+_ymouse, 22
+extern, 23
+isNaN,26
+unescape,27
+escape,28
+Boolean,29
+blendMode,30
+filters,31
+parseInt,32
+parseFloat,33
+_parent,34
+_skipeval,35
+_CustomControlType,36
+attachMovie,100
+duplicateMovieClip,101
+getURL,102
+gotoAndPlay,103
+gotoAndStop,104
+loadMovie,105
+loadVariables,106
+play,107
+prevFrame,108
+removeMovieClip,109
+stop,110
+getBytesLoaded,111
+getBytesTotal,112
+nextFrame,113
+createTextField,114
+getDepth,115
+createEmptyMovieClip,116
+getBounds,117
+hitTest,118
+removeTextField,119
+swapDepths,120
+unloadMovie,121
+setMask,122
+getNewTextFormat,123
+getTextFormat,124
+setTextFormat,125
+startDrag,126
+localToGlobal,127
+_z,128
+_xrotation,129
+_yrotation,130
+_renderflags,131
+globalToLocal,132
+loadMovieNum,133
+unloadMovieNum,134
+_zscale,135
+getInstanceAtDepth,136
+onData,200
+onDragOut,201
+onDragOver,202
+onEnterFrame,203
+onKeyDown,204
+onKeyUp,205
+onKillFocus,206
+onLoad,207
+onMouseDown,208
+onMouseMove,209
+onMouseUp,210
+onPress,211
+onRelease,212
+onReleaseOutside,213
+onRollOut,214
+onRollOver,215
+onSetFocus,216
+onUnload,217
+onMouseWheel,218

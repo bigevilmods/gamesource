@@ -1,0 +1,12 @@
+/*!
+**********************************************************************
+
+\page p_gettingstarted_overview Overview
+
+This section includes the following topics:
+
+- \ref p_gettingstarted_locale_overview
+
+\sa
+- \ref g_refs
+*/

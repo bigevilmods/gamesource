@@ -1,0 +1,21 @@
+/*!
+\page p_address_of_accessors The Address Of vector.X()
+
+Because component access on a vector returns a proxy object rather than a float
+(as explained \ref p_accessors "here"), the address of vector.X() is not a
+pointer to a float.  Taking the address of vector.X() would actually return the
+address of the proxy object.
+
+If you need to pass around a "reference" to a specific vector element, you
+should pass the VecFloatRef type by value.  Reading/writing using this reference
+will have the same semantics as reading/writing an actual reference type.
+
+Ideally, proxy objects would behave exactly like a float member of a vector.
+However, in some cases this is not possible.  For example, if we could have
+provided an overload for the & operator on VecFloatRef types.  This operator
+could allow us to return the float address of the element.  However, this
+could lead to aliasing bugs because we are casting the address of a vector to 
+an incompatible type (i.e. a float type).
+
+
+*/

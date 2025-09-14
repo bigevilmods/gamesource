@@ -1,0 +1,88 @@
+<project default="build">
+    <property name="currDir" value="@{PathGetFullPath('.')}" />
+    <property name="currVer" value="@{PathGetFileName('${currDir}')}" />
+    <package name="rwcodec" targetversion="${currVer}" />
+
+    <property name="Dll" value="false" unless="@{PropertyExists('Dll')}"/>
+
+    <property name="runtime.buildmodules" value="rwcodec"/>
+    <property name="runtime.rwcodec.buildtype" value="Library"/>
+    <property name="runtime.rwcodec.buildtype" value="DynamicLibrary" if="${Dll}"/>
+
+    <property name="runtime.rwcodec.usedependencies">
+        ${property.value}
+        coreallocator
+        EABase
+        rwmath
+    </property>
+
+    <property name="runtime.rwcodec.usedependencies" unless="${Dll}">
+        ${property.value}
+        EAAssert
+        EAThread
+        job_manager
+        EAStdC
+        zlib
+        lzma
+        lz4
+    </property>
+
+    <property name="runtime.rwcodec.builddependencies" if="${Dll}">
+        ${property.value}
+        EAAssert
+        EAThread
+        job_manager
+        EAStdC
+        zlib
+        lzma
+        lz4
+    </property>
+
+    <property name="runtime.rwcodec.autodependencies">
+        ${property.value}
+        EAAssert
+        EAThread
+        job_manager
+        EAStdC
+        zlib
+        lzma
+        lz4
+    </property>
+
+    <fileset name="runtime.rwcodec.sourcefiles">
+        <includes name="source/**/*.cpp"/>
+    </fileset>
+
+    <fileset name="runtime.rwcodec.bulkbuild.sourcefiles" fromfileset="runtime.rwcodec.sourcefiles"/>
+
+    <property name="runtime.rwcodec.includedirs">
+        ${package.dir}/include
+        ${package.dir}/source
+        ${package.configbindir}
+    </property>
+
+    <property name="runtime.rwcodec.defines" if="${Dll}">
+        ${property.value}
+        RWCODEC_API=__declspec(dllexport)
+    </property>
+
+    <include file="${package.dir}/scripts/lzx.xml"/>
+    <property name="runtime.rwcodec.defines" if="${package.rwcodec.use_lzx}">
+        ${property.value}
+        ${package.rwcodec.lzx.defines}
+    </property>
+
+    <property name="runtime.rwcodec.includedirs" if="${package.rwcodec.use_lzx}">
+        ${property.value}
+        ${package.rwcodec.lzx.includedirs}
+    </property>
+
+    <fileset name="runtime.rwcodec.libs" if="${package.rwcodec.use_lzx} and ${Dll}">
+        <includes fromfileset="package.rwcodec.lzx.libs"/>
+    </fileset>
+
+    <include file="${package.dir}/jobs.xml" if="${config-system} == 'ps3'"/>
+    <include file="${package.dir}/tools/tools.xml"/>
+
+    <include file="source/doc-lib/doc-basic.build"/>
+</project>

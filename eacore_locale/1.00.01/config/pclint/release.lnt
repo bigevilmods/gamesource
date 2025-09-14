@@ -1,0 +1,11 @@
+//******************************************************************************************
+//
+// Copyright (c) 2003 Electronic Arts Inc.
+//
+//******************************************************************************************
+
+// Lint option disabling for RELEASE version only!
+
+// The DEBUGASSERT code is disabled in release so many occurances of checking for null
+// pointers do not exist in release versions
+-e613		// Possible use of null pointer ' '

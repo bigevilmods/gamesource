@@ -1,0 +1,23 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestSoa4Float::UnitTestSoa4Float()
+{
+
+}
+
+UnitTestSoa4Float::~UnitTestSoa4Float()
+{
+
+}
+
+void UnitTestSoa4Float::Test()
+{
+
+}
+
+using namespace ::rw::math::vpu;
+
+//#BLOCK
+

@@ -1,0 +1,15 @@
+struct ArrayMembers { char *szName; int nIndex; };
+%%
+length,1
+concat,2
+join,3
+pop,4
+push,5
+shift,6
+unshift,7
+reverse,8
+sort,9
+splice,10
+slice,11
+sortOn,12
+toString,13

@@ -1,0 +1,34 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestMiscHost" HEADER="mischosttest.h" SOURCE="mischosttest.inc" RWHOSTHEADER="rw/math/vpu/vector3_operation.h" RWGENERICHEADER="" COMMON="false" GENERIC="false" HOST="true" >
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="nearestpointonlineseg2d">
+      <![CDATA[
+
+        SetFunctionName("NearestPointOnLineSeg2D");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+            {
+                NearestPointOnLineSeg2D(v3a_array[i], v3b_array[i], v3c_array[i], v3d_array[i], vout_array[i]);
+            }
+        }
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+</TESTCLASS>

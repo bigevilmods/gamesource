@@ -1,0 +1,18 @@
+﻿<project>
+	<buildroot>build</buildroot>
+
+	<masterversions>
+		
+		<package name="VisualStudio"            version="8.0.0-2" />
+		<package name="eaconfig"                version="1.24.01"/>
+	</masterversions>
+	
+<ondemand>true</ondemand>
+  <packageroots>
+    <packageroot>${nant.location}\..\..\..</packageroot>
+    <packageroot>..\..</packageroot>
+    <packageroot>..</packageroot>
+  </packageroots>
+
+	<config package="eaconfig" default="pc-vc-dev-debug" includes="pc-*" />
+</project>

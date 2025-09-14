@@ -1,0 +1,18 @@
+/*!
+\page p_platform_support Platform Support
+
+RWMath is officially supported on the following platforms:
+- PS3 (both PPU and SPU)
+- XBox 360 (VMX128)
+- Wii (Paired Instructions)
+- PC (SSE)
+- Unix (both generic support via the FPU or optionally optimized support via SSE instructions on supporting systems)
+- iPhone/iPad/iPod, Android, Playbook, and Palm Pre (Neon support is optionally available)
+    - rwmath checks if __ARM_NEON__ is defined to determine whether or not to use arm instructions.
+- Vita (Neon)
+- Airplay
+- Nintendo 3DS
+- Freebox (an x86 set-top box)
+- Mac OSX (on x86)
+
+*/

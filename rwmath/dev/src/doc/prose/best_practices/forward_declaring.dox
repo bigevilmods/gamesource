@@ -1,0 +1,12 @@
+/*!
+\page p_forward_declaring Forward Declaring Math Types
+
+Often, to reduce dependencies and to improve build times, users will forward declare types.  We have seen many users
+write forward declarations for math types.  Unfortunately, due to the complexity of the math types, it is easy to make
+errors when forward declaring them.  Also, forward declarations may need to be updated if math types are modified in
+the future.  For these reasons, we highly recommend that instead of manually forward declaring types, you make use
+of a type forwarding header provided by the math library.
+
+Just include <tt>rw/math/types_fwd.h</tt> to include forward declarations for all the math types.
+
+*/

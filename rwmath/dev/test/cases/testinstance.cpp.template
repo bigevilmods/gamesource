@@ -1,0 +1,52 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+// turn on assertions and alignment checks in debug builds of the tests.
+#ifdef RWDEBUG
+    #define RW_MATH_ENABLE_ASSERTS
+    #define RW_MATH_ENABLE_ALIGNMENT_CHECK_CONSTRUCTORS
+    #define RW_MATH_ENABLE_ALIGNMENT_CHECK_FUNCTIONS
+#endif
+
+#include "EABase/eabase.h"
+#include "EAStdC/EAMemory.h"
+
+#ifdef EA_COMPILER_MSVC
+// Disabled : warning C4985: 'ceil': attributes not present on previous declaration.
+#pragma warning(disable: 4985)
+#endif
+
+#include "testconfig.h"
+#include "unittest.h"
+#include "testing_math.h"
+#include "unittest_output.h"
+#include "macros.h"
+
+#include <rw/math/random.h>
+#include <rw/math/types_fwd.h>
+
+// TODO remove these includes??
+#if defined GENERIC_TESTING
+    #include <rw/math/fpu/constants.h>
+#else
+    #include <rw/math/vpu/constants.h>
+#endif
+
+#include <rw/math/fpu/constants_operation.h>
+
+#if defined __SPU__
+    #include <spu_printf.h>
+#endif
+
+
+#if EA_PLATFORM_REVOLUTION
+// Increase the memory limit in Metrowerks compiler.  This allows the optimized unit tests to be built.
+#pragma ppc_opt_defuse_mem_limit 1024
+#endif
+
+// Enable simulated operations so that all VPL tests can be run for all platforms.
+#define RW_MATH_ENABLE_SIMULATED_VPL_OPERATIONS
+
+//#BLOCK
+

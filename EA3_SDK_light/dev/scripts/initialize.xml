@@ -1,0 +1,18 @@
+<project>
+
+	<!-- EAStdC header files location. -->
+	<property name="package.EA3_SDK_light.includedirs">
+		${package.EA3_SDK_light.dir}/include/EA3_LIB
+		${package.EA3_SDK_light.dir}/include/EA3Util
+	</property>
+
+	<!-- EAStdC libraries location. -->
+	<fileset name="package.EA3_SDK_light.libs">
+		<includes name="${package.EA3_SDK_light.builddir}/${config}/lib/${lib-prefix}EA3_SDK_light${lib-suffix}" />
+	</fileset>
+
+	<fileset name="package.EA3_SDK_light.dlls" if="${Dll??false}">
+		<includes name="${package.EA3_SDK_light.builddir}/${config}/bin/EA3_SDK_light${dll-suffix}" />
+	</fileset>
+        
+</project>

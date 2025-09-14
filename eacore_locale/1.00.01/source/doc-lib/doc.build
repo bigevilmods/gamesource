@@ -1,0 +1,67 @@
+﻿<project default="doc-lib">
+	<include file="../source.build"/>
+	
+    <target name="htmllib" depends="cleanhtml-lib" description="Build HTML documentation using Doxygen" hidden="true">
+        <echo message="Parsing and extracting documentation with Doxygen..." />
+
+		<dependent name="HelpToolkit" version="5.00.01"/>
+
+		<!-- make dirs and copy required files for documentation -->
+        <mkdir dir="${doxygen.outdir}" />
+        <mkdir dir="${doxygen.outdir}/${doxygen.htmloutdir}" />
+        <copy todir="${doxygen.outdir}/${doxygen.htmloutdir}" flatten="true" overwrite="true">
+            <fileset>
+                <includes name="${doxygen.srcbooksdir}/_web/**" />
+                <includes name="${doxygen.srcbooksdir}/_images/**" />
+                <includes name="${doxygen.srcbooksdir}/_html/**" />
+            </fileset>
+        </copy>
+        <attrib readonly="false">
+            <fileset>
+                <includes name="${doxygen.outdir}/${doxygen.htmloutdir}/**"/>
+            </fileset>
+        </attrib>  
+        
+		<!-- run Doxygen to extract documentation -->
+        <exec program="${package.HelpToolkit.application.doxygenEA}" workingdir="doxygen-config">
+            <arg value="${doxygen.configfile}" />
+        </exec>
+        
+		<!-- replace special tags in index.html -->
+        <exec program="${package.ActivePython.exe}">
+            <arg value="${package.HelpToolkit.application.doxytagger} -pall doxygen-config/${doxygen.configfile} ${doxygen.outdir}/${doxygen.htmloutdir}/index.html" />
+        </exec>
+        
+		<!-- adjust hhc file -->
+        <exec program="${package.ActivePython.exe}">
+            <arg value="${package.HelpToolkit.application.hhcbookupdate} ${doxygen.outdir}/${doxygen.htmloutdir}/index.hhc" />
+        </exec>
+        
+        <echo message="Generated HMTL documentation in: ${doxygen.outdir}/${doxygen.htmloutdir}" />
+    </target>
+
+    <target name="doc-lib" description="Build HTML Help File (CHM)">
+    	<include file="doxygen-config/lib-settings.xml"/>
+    	<call target="htmllib" force="true"/>
+    	
+        <echo message="Compiling HTML Help File: ${package.dir}/doc/${doxygen.helpfilename}" />
+        
+		<!-- compile -->
+        <exec program="${package.HelpToolkit.application.hhc}" workingdir="${doxygen.outdir}/${doxygen.htmloutdir}" failonerror="false">
+            <arg value="index.hhp" />
+        </exec>
+		<copy file="${doxygen.outdir}/${doxygen.htmloutdir}/index.chm" tofile="${package.dir}/doc/${doxygen.helpfilename}" overwrite="true" />
+        <move file="${doxygen.outdir}/${doxygen.htmloutdir}/index.chm" tofile="${doxygen.outdir}/${doxygen.htmloutdir}/${doxygen.helpfilename}" overwrite="true" />
+    </target>
+
+    <target name="cleanhtml-lib" description="Clean HTML documentation using Doxygen" hidden="true">
+        <echo message="Cleaning documentation build directories..." />
+        <delete file="${package.dir}/doc/${doxygen.helpfilename}" failonmissing="false" />
+        <delete dir="${doxygen.outdir}/${doxygen.htmloutdir}" failonmissing="false" />
+    </target>
+
+    <target name="display-lib" depends="doc-lib" description="Displays HTML Help File">
+        <echo message="Displaying documentation..." />
+        <start filename="${package.dir}/doc/${doxygen.helpfilename}"/>
+    </target>
+</project>

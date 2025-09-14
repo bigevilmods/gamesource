@@ -1,0 +1,52 @@
+<project>
+
+    <!-- Augh. This is ugly and because we need certain packages to add EASTL use dependencies. -->
+
+    <dependent name="EASTL"/>
+
+    <property name="package.rwfilesystem.includedirs">
+        ${package.EASTL.includedirs}
+        ${package.rwfilesystem.dir}/include
+        ${package.rwfilesystem.dir}/include/${config-system}
+    </property>
+
+    <property name="package.rwfilesystem.includedirs" if="${config-system} == osx">
+        ${package.EASTL.includedirs}
+        ${package.rwfilesystem.dir}/include
+        ${package.rwfilesystem.dir}/include/apple
+    </property>
+    
+    <property name="package.rwfilesystem.includedirs" if="${config-system} == iphone">
+        ${package.EASTL.includedirs}
+        ${package.rwfilesystem.dir}/include
+        ${package.rwfilesystem.dir}/include/apple
+    </property>
+
+    <property name="package.rwfilesystem.includedirs" if="${config-system} == android || ${config-system} == unix || ${config-system} == unix64 || @{StrIndexOf('${config-system}', 'bsd')} != -1">
+        ${package.rwfilesystem.dir}/include
+        ${package.rwfilesystem.dir}/include/unix
+    </property>
+
+    <property name="package.rwfilesystem.includedirs" if="${config-compiler} == 'vc'">
+        ${package.EASTL.includedirs}
+        ${package.rwfilesystem.dir}/include
+        ${package.rwfilesystem.dir}/include/microsoft
+    </property>
+
+    <property name="package.rwfilesystem.libdir" value="${package.rwfilesystem.builddir}/${config}/lib"/>
+
+    <fileset name="package.rwfilesystem.libs">
+        <includes name="${package.rwfilesystem.libdir}/${lib-prefix}rwfilesystem${lib-suffix}"/>
+    </fileset>
+
+    <do if="'${config-system}' == 'ps3'">
+        <fileset name="package.rwfilesystem.libs.external" append="true">
+            <includes name="${package.ps3sdk.appdir}/target/ppu/lib/libsysutil_game_stub.a"/>
+        </fileset>
+    </do>
+
+    <fileset name="package.rwfilesystem.java.classes" basedir="${package.rwfilesystem.builddir}/${config}/bin/rwfilesystem/classes" >
+        <includes name="**\*.class"/>
+    </fileset>
+
+</project>

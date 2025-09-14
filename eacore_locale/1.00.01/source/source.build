@@ -1,0 +1,51 @@
+<project default="lib-locale">
+	<include file="../eacore_locale.build"/>
+	<include file="doc-lib/doc.build"/>
+	
+	<property name="locale-lib-includedirs">
+		${package.EABase.includedirs}
+		${package.Endian.includedirs}
+		${package.dir}/include
+	</property>
+
+	<target name="lib-locale">
+		<property name="name" value="locale"/>
+		<fileset name="sources">
+			<includes name="lib/locale.cpp"/>
+		</fileset>
+
+		<choose>
+			<do if="${config-compiler} == 'lint'">
+				<call target="lint"/>
+			</do>
+
+			<do if="${config-compiler} != 'lint'">
+				<build name="${name}" type="Library" outputdir="${build.dir}/${config}/${name}">
+					<includedirs>
+						${locale-lib-includedirs}
+					</includedirs>
+
+					<sources fromfileset="sources"/>
+				</build>
+
+				<call target="publishlib" force="true"/>
+			</do>
+		</choose>
+	</target>
+
+	<target name="lint" description = "Internal lint target">
+		<echo message="Running PC-Lint..."/>
+		<lint-cc outputdir="${build-dir}/${config}/${name}">
+			<options>
+				${package.dir}/config/pclint/module/${name}.lnt
+			</options>
+			
+			<includedirs>
+				${locale-lib-includedirs}
+			</includedirs>
+			
+			<sources fromfileset="sources"/>
+		</lint-cc>
+	</target>
+
+</project>

@@ -1,0 +1,22 @@
+/*!
+\page p_write_your_own Write Your Own Math Library
+
+You should consider the math library not as a drop-in solution, but as a basket
+of functionality that you can pick and choose from depending on your needs.
+Alias the namespaces you need (mapping rw::math::vpu/fpu to
+your_project::math), or create typedefs for types you care about. Maybe even
+create a project specific <my_project_name_math.h> that your game-team (or even
+better, sub-team) uses instead <rwmath.h>. When you decide to switch your
+particular area from the FPU to the VPU, you can just flick the typedef or
+namespace around, and things should compile again relatively quickly.
+
+We will be providing more information about how you can use the math library in the future.  Some of
+our users are already experimenting with ways of switching from FPU to VPU math and vice-versa.  This
+allows them to take advantage of the performance of VPU operations in release, and get better debug performance
+using the FPU.
+
+Importing math into your own namespace also allows you to easily add your own
+math functions without creating a new namespace, and without "hijacking" our
+namespace.
+
+*/

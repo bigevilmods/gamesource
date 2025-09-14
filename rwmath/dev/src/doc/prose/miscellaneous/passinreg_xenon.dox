@@ -1,0 +1,24 @@
+/*!
+\page p_passinreg_xenon Pass and Return In Register on Xbox 360
+
+On Xbox 360, in order to pass or return math types in register, these types must not have a non-default copy
+constructor, nor a non-default assignment operator. The affected math types are VPU Mask2, Mask3, Mask4, MaskScalar,
+VecFloat, Vector2, Vector3, and Vector4.
+
+By default, those types all have non-default copy constructors and assignment operators. However a macro has been created 
+to disable these constructors and operators. 
+
+\code
+
+RW_MATH_DISABLE_VECTOR_COPY_CTOR_AND_ASSIGNMENT_OPERATOR
+\endcode
+
+Once this macro is defined, all of the non-default copy constructors and assignment operators for the above math types will be
+compiled away on all platforms. Since this requirement is specific to Xbox 360, you might want to conditionally define this macro
+based on your platforms.
+
+Also note that once the non-default copy constructors and assignment operators are compiled away, 
+the \ref p_member_initializer "math type member validation mechanism" will be automatically disabled.
+
+*/
+

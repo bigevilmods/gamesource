@@ -1,0 +1,66 @@
+<project>
+    <!--
+    EA3_LIB Module
+    -->
+
+    <property name="runtime.EA3_LIB.buildtype" value="DynamicLibrary"/>
+    <property name="runtime.EA3_LIB.usedependencies">
+        EABase
+        coreallocator
+    </property>
+    <property name="runtime.EA3_LIB.builddependencies">
+        EAAssert
+        EASTL
+        EAThread
+        PPMalloc
+        xceedzip
+    </property>
+    <property name="runtime.EA3_LIB.warningsuppression">
+        -wd4127  <!-- conditional expression is constant -->
+        -wd4217  <!-- member template functions cannot be used for copy-assignment or copy-construction -->
+        -wd4255  <!-- no function prototype given: converting '()' to '(void)' -->
+        -wd4625  <!-- copy constructor could not be generated because a base class copy constructor is inaccessible -->
+        -wd4626  <!-- assignment operator could not be generated because a base class assignment operator is inaccessible -->
+        -wd4555  <!-- expression has no effect; expected expression with side-effect -->
+        -wd4686  <!-- possible change in behavior, change in UDT return calling convention -->
+        -wd4800  <!-- forcing value to bool 'true' or 'false' (performance warning) -->
+        -wd4365  <!-- signed/unsigned mismatch -->
+        -wd4333  <!-- right shift by too large amount, data loss -->
+        -wd4548
+        -wd4996  <!-- The POSIX name for this item is deprecated -->
+        -wd4571  <!-- catch(...) semantics changed since Visual C++ 7.1; structured exceptions (SEH) are no longer caught -->
+        <!-- VC8 warnings -->
+        -wd4738  <!-- disable warning: storing 32-bit float result in memory, possible loss of performance (e.g. converting double to float) -->
+    </property>
+    <property name="runtime.EA3_LIB.defines">
+        EA3_EXPORTS
+        _CRT_SECURE_NO_DEPRECATE
+    </property>
+    <property name="runtime.EA3_LIB.defines" if="@{OptionSetGetValue('${config.optionset.name}', 'debugflags')} == 'on'">
+        ${property.value}
+        DEBUG_EA3_MEM
+    </property>
+
+    <property name="runtime.EA3_LIB.includedirs">
+        ${package.dir}/include/EA3_LIB
+    </property>
+    <fileset name="runtime.EA3_LIB.sourcefiles">
+        <includes name="**.cpp"/>
+    </fileset>
+
+    <do unless="@{PropertyExists('Dll')}">
+        <property name="runtime.EA3_LIB.buildtype" value="Library"/>
+        <property name="runtime.EA3_LIB.builddependencies">
+            EAAssert
+            EAThread
+        </property>
+        <property name="runtime.EA3_LIB.usedependencies">
+            EABase
+            coreallocator
+            EASTL
+            PPMalloc
+            xceedzip
+        </property>
+    </do>
+
+</project>

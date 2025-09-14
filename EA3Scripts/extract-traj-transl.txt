@@ -1,0 +1,16 @@
+; Get trajectory bone.
++skelexpr -quiet -count {
+	HasName('Trajectory') && (Trajectory = This());
+}
+
+; Read Trajectory
++animexpr -nnc -expr {
+ 	mat = GetAnimGlobal(Trajectory, 0);
+	
+;	extract the translation
+	Print(mat[3][0]);
+	Print(",");
+	Print(mat[3][1]);
+	Print(",");
+	Printl(mat[3][2]);
+}

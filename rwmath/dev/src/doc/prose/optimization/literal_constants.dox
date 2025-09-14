@@ -1,0 +1,76 @@
+/*!
+\page p_literal_constants Literal Constants
+
+\par Introduction
+
+At the moment, constructing VPU types from literal constants is quite a slow
+operation.  Unfortunately, there is not much the math libary can do except
+encourage changes to be made in the C++ compilers that we use.
+
+\par Source of the Problem
+
+Creating VPU data from literals is currently causing LHS's (on PPC
+architectures).  That is because the compiler loads a float constant from
+memory, and then stores it to a temporary location so its address can be
+passed to the VPU type constructor.  Because the data is stored to a temporary
+and then immediately loaded, a LHS is generated.
+
+If the compiler had instead passed a reference to the constant that was
+originally in memory, this problem could be avoided.
+
+\par Partial Solutions
+
+There are several partial solutions available.
+
+The first (and best solution when it can be applied) is to generate constants
+instead of creating them from literals.  For example instead of creating
+a VecFloats like this:
+
+\code
+    VecFloat one(1.0f);
+    VecFloat zero = 0.0f;
+\endcode
+
+Try creating them like this:
+
+\code
+    VecFloat one = GetVecFloat_One();
+    VecFloat zero = GetVecFloat_Zero();
+\endcode
+
+The math library only includes a few frequently used constants, but when
+possible you should try and use these functions.
+
+Another way to construct a VecFloat is from a variable that is already in
+memory (i.e. not a literal).  This should be reasonably efficient because
+the data is already in memory, and loading it will not cause a LHS.  Note:
+the data must have been written to memory ~20 cycles before trying to load it
+again, or a LHS will occur.
+
+You may also consider using global static data.  For example, instead of doing this:
+
+\code
+    Vector4 ScaleVector( Vector4 input )
+    {
+        const Vector4 scaleXYZW( 1.0f, 2.0f, 3.0f, 4.0f );
+        return input * scaleXYZW;
+    }
+\endcode
+
+Try doing this:
+
+\code
+    const static Vector4 gScaleVectorConstant_ScaleXYZW( 1.0f, 2.0f, 3.0f, 4.0f );
+
+    Vector4 ScaleVector( Vector4 input )
+    {
+        return input * gScaleVectorConstant_ScaleXYZW;
+    }
+\endcode
+
+The first example will need to load/store a bunch of float literal data every
+time the function is invoked causing a LHS.  The second example will pay the
+conversion cost once (when it is initialized).  After initialization accessing
+the scale variable will only require a single vector load.
+
+*/

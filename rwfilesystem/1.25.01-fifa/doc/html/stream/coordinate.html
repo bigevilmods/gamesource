@@ -1,0 +1,85 @@
+
+<html>
+<head>
+    <title>Stream Coordination</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Coordinating input and output</h1>
+
+<p>I/O Coordination between the streamer and the rest of the file system
+works by using the priority levels provided by the primitive layer of the
+library. Essentially, the streamer queues its file reading operations
+at one of two priority levels.  (Normal priority is 0):</p>
+
+<ul>
+<li>low priority level: -1000</li>
+<li>high priority level: +1000</li>
+</ul>
+
+<p>When the streamer first queues a file operation for a given stream, it
+does so at the low priority level. This allows any file activity already
+in progress to continue uninterrupted. Once the stream has gained control
+of the file system, it continues to re-queue itself at the high priority
+level until it is full and no more data can be read in. This ensures that
+the streamer will not be interrupted while it is filling the stream buffer
+(unless an even higher priority operation comes along). When it later
+needs to restart, the stream will re-queue itself at the low priority
+level. The net effect is that if multiple streams are accessing the same
+device, they will do so in a round-robin fashion. It is also possible to
+issue file system requests during streamer operation, as long as they are
+short enough that the streams do not starve and infrequent enough that
+the streams have time to recover between requests. </p>
+
+<p>For applications with more demanding I/O coordination requirements, the
+streamer provides a mechanism for automatically restarting a stream when
+it is about to starve. To do this, the application sets a threshold level
+for each stream, which we call the greedy level. Anytime a stream buffer
+drops below its greedy level, the stream enters the greedy state, in which
+it begins re-queuing itself at the high priority level instead of the low
+one. Any file operation already queued for that stream also gets its
+priority boosted to the high level. The effect is that the stream will
+restart as soon as it crosses below the greedy level. When the stream
+crosses back over the greedy level, it will return to the normal state
+(and will continue reading until the stream is topped-up). </p>
+
+<p>For the above mechanism to work, two conditions must be met. First, all
+asynchronous read and write operations issued from the primitive layer must
+be relatively short (say about 8K). This minimizes the delay before the
+streamer can restart itself. All library functions built on the primitive
+layer automatically break reads and writes into small segments, so there is
+no need to worry about this unless you write your own routines. The
+second consideration involves the use of multiple streams on the same
+device. If more than one stream is in use and greedy levels are specified,
+the streams must have different values set for their high priority levels.
+This is to prevent the streams from fighting over the file device if more
+than one enters the greedy state at the same time. Priority levels for
+each stream can be set using the <tt>rw::core::filesys::Stream::SetPriority</tt>
+function.</p>
+
+<p>The greedy level for each stream can be set using function
+<tt>rw::core::filesys::Stream::SetGreedyLevel</tt>. This value defaults to zero
+when a stream is created, which means that the stream will never enter the
+greedy state because it cannot cross below the greedy level. If for any
+reason you need manual control over the greedy state, this can be
+accomplished using the <tt>rw::core::filesys::Stream::SetGreedyState</tt> function.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

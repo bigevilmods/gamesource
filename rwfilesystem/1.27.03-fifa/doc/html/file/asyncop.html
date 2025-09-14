@@ -1,0 +1,75 @@
+<html>
+<head>
+    <title>Asynchronous Operations</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Asynchronous Operations</h1>
+
+<p>
+When an application wishes to load a file, we strongly encourage the use of asynchronous file loading. 
+This allows the game to continue processing input and do rendering on one thread while the system does 
+the loading in the background. When the load is complete, the caller is notified by a callback function, 
+or the caller may poll for completion (usually once per frame). Because File I/O is slow compared with 
+most other tasks a CPU performs in modern games, games should avoid blocking reads where the CPU spins 
+waiting for the operation completes.
+</p>
+<p>
+EA Core provides a class to assist with asynchronous operations: <code>rw::core::filesys::AsyncOp</code>. The AsyncOp 
+class provides functions which may or will need to touch the disk and hence could be slow. The class uses 
+a producer-consumer model with a condition variable and a semaphore to ensure that it does not use any more 
+CPU cycles than necessary. When an operation is started, it is placed onto an internal queue and executed on 
+the high-priority background thread. When the operation completes, any threads waiting on the operation are 
+signalled so they don't have to poll for completion (which wastes CPU).
+</p>
+
+<p>
+To initiate a new operation, create an <code>rw::core::filesys::AsyncOp</code> object and use its Open, Read, Write, or 
+Close functions. Although these functions return immediately, the caller is responsible for keeping the object 
+alive until the operation completes. After the operation has begun, it can be polled for completion or blocked 
+until it is completed. After one operation completes, the AsyncOp object can be used to schedule another operation. 
+If you create an operation on the stack, be sure the function does not return until the operation has completed. 
+If an uncompleted operation goes out of scope, it will trigger an invalid memory reference or cause other nasty 
+memory-stomping bugs.
+</p>
+
+<p>
+File operations have an associated priority. Priorities are relative to each other. When two or more operations 
+are pending (on the same device) the one with the highest priority will be executed first. Operations of the same 
+priority will be executed in the order they were queued. The priority of an queued operation which has not yet been 
+executed can be changed by using the SetPriority method of an AsyncOp object.
+</p>
+
+<p>
+File operations may have an associated callback function, which is set when the operation is started. The callback 
+is called when the file operation transitions from the unfinished state to one of the finished states. Callbacks may 
+initiate new operations and may complete file operations, but may not perform a blocking operation. Since callbacks 
+are called from a high-priority thread, they must be thread-safe and reentrant and should complete their work as quickly 
+as possible. The next operation on a device cannot begin until the callback for the operation just completed returns. 
+If you need to do some processing on a file, use a semaphore or condition variable to wake up another thread from the 
+file system callback and do the work on that thread. Note that the operation object must remain valid until the callback 
+is called; it can be released during the callback but not by another thread before the callback is called. If you didn't 
+install a callback, you may release the operation object as soon as its status changes to something other than 
+<code>rw::core::filesys::AsyncOp::OPSTATUS_PENDING</code>. 
+</p>
+
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

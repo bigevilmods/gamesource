@@ -1,0 +1,21 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestHalf::UnitTestHalf()
+{
+
+}
+
+UnitTestHalf::~UnitTestHalf()
+{
+
+}
+
+void UnitTestHalf::Test()
+{
+
+}
+
+//#BLOCK
+

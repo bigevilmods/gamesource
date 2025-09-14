@@ -1,0 +1,4 @@
+﻿<project>
+	<dependent name="eaconfig" />
+	<include file="${package.eaconfig.dir}/config/psp-sn-dev-debug.xml" />
+</project>

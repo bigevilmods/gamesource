@@ -1,0 +1,152 @@
+<project default="build">
+
+    <!--
+        Disable the eaconfig "feature" of automatically linking the runtime
+        modules into each example.  The correct method of specifying a
+        dependency is to create a property of the form
+        "example.${example module}.runtime.moduledependencies" and list the
+        runtime modules that are required.
+    -->
+    <property name="eaconfig.example.usepackagelibs" value="false" readonly="true"/>
+
+    <property name="example.buildmodules" value=""/>
+
+    <!-- Incremental installer example only applies on PS3 & Xenon -->
+    <property name="example.buildmodules" if="${config-system} == ps3 || ${config-system} == xenon">
+        ${property.value}
+        example-incremental_installer
+    </property>
+
+    <property name="example.example-incremental_installer.buildtype" value="Program" />
+
+    <fileset name="example.example-incremental_installer.sourcefiles">
+        <includes name="incremental_installer/*.cpp"/>
+        <excludes name="incremental_installer/gamedata.cpp" unless="${config-system} == ps3" />
+    </fileset>
+
+    <property name="example.example-incremental_installer.usedependencies">
+        EABase
+        coreallocator
+        job_manager
+    </property>
+
+    <property name="example.example-incremental_installer.builddependencies">
+        coreallocator
+        EAAssert
+        EABase
+        EAThread
+        EASTL
+        PPMalloc
+        job_manager
+        job_util
+        EAStdC
+    </property>
+
+    <property name="example.example-incremental_installer.runtime.moduledependencies">
+        rwfilesystem
+    </property>
+
+    <property name="example.example-incremental_installer.vcproj.post-build-step"
+              value="${nant.location}\nant.exe example.example-incremental_installer.postbuildtarget -buildfile:${nant.project.buildfile} -buildroot:${nant.project.buildroot} -masterconfigfile:${nant.project.masterconfigfile} -D:config=${config}"/>
+
+    <target name="example.example-incremental_installer.postbuildtarget">
+        <!-- Copy icon files to the target output directory -->
+        <copy todir="${package.configbindir}/example">
+            <fileset basedir="${package.dir}/examples/data">
+                <includes name="ICON0.PNG"/>
+                <includes name="ICON1.PAM"/>
+                <includes name="PIC1.PNG"/>
+                <includes name="data.big"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <do if="${config-system} == ps3">
+        <fileset name="example.example-incremental_installer.libs">
+            <includes name="${package.ps3sdk.appdir}/target/ppu/lib/libsysutil_game_stub.a"/>
+        </fileset>
+
+        <property name="ii_example_outdir"
+                  value="${package.configbuilddir}/example/example-incremental_installer/incremental_installer"/>
+
+        <property name="example.example-incremental_installer.vcproj.pre-build-step"
+              value="${nant.location}\nant.exe example.example-incremental_installer.prebuildtarget -buildfile:${nant.project.buildfile} -buildroot:${nant.project.buildroot} -masterconfigfile:${nant.project.masterconfigfile} -D:config=${config}"/>
+
+        <target name="example.example-incremental_installer.prebuildtarget">
+
+            <mkdir dir="${ii_example_outdir}"/>
+
+            <depends property="compile_fragment_shader">
+                <inputs>
+                    <includes name="incremental_installer/fpshader.cg" />
+                </inputs>
+                <outputs>
+                    <includes name="${ii_example_outdir}/fpshader.ppu.obj" />
+                </outputs>
+            </depends>
+
+            <depends property="compile_vertex_shader">
+                <inputs>
+                    <includes name="incremental_installer/vpshader.cg" />
+                </inputs>
+                <outputs>
+                    <includes name="${ii_example_outdir}/vpshader.ppu.obj" />
+                </outputs>
+            </depends>
+
+            <do if="${compile_fragment_shader}">
+                <exec program="${package.ps3sdk.appdir}/host-win32/Cg/bin/sce-cgc.exe">
+                    <args>
+                        <arg value="-quiet"/>
+                        <arg value="-profile sce_fp_rsx"/>
+                        <arg value="-o incremental_installer/fpshader.fpo"/>
+                        <arg value="incremental_installer/fpshader.cg"/>
+                    </args>
+                </exec>
+
+                <exec program="${package.ps3sdk.appdir}/host-win32/ppu/bin/ppu-lv2-objcopy.exe">
+                    <args>
+                        <arg value="-I binary"/>
+                        <arg value="-O elf64-powerpc-celloslv2"/>
+                        <arg value="-B powerpc"/>
+                        <arg value="incremental_installer/fpshader.fpo"/>
+                        <arg value="${ii_example_outdir}/fpshader.ppu.obj"/>
+                    </args>
+                </exec>
+
+                <delete file="incremental_installer/fpshader.fpo"/>
+            </do>
+
+            <do if="${compile_vertex_shader}">
+                <exec program="${package.ps3sdk.appdir}/host-win32/Cg/bin/sce-cgc.exe">
+                    <args>
+                        <arg value="-quiet"/>
+                        <arg value="-profile sce_vp_rsx"/>
+                        <arg value="-o incremental_installer/vpshader.vpo"/>
+                        <arg value="incremental_installer/vpshader.cg"/>
+                    </args>
+                </exec>
+
+                <exec program="${package.ps3sdk.appdir}/host-win32/ppu/bin/ppu-lv2-objcopy.exe">
+                    <args>
+                        <arg value="-I binary"/>
+                        <arg value="-O elf64-powerpc-celloslv2"/>
+                        <arg value="-B powerpc"/>
+                        <arg value="incremental_installer/vpshader.vpo"/>
+                        <arg value="${ii_example_outdir}/vpshader.ppu.obj"/>
+                    </args>
+                </exec>
+
+                <delete file="incremental_installer/vpshader.vpo"/>
+            </do>
+        </target>
+
+        <fileset name="example.example-incremental_installer.objects">
+            <includes name="${ii_example_outdir}/fpshader.ppu.obj" asis="true"/>
+            <includes name="${ii_example_outdir}/vpshader.ppu.obj" asis="true"/>
+        </fileset>
+    </do>
+
+    <include file="dlc/dlc.xml" if="${config-system} == ps3"/>
+
+</project>

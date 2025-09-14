@@ -1,0 +1,22 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestHalf :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestHalf();
+    virtual ~UnitTestHalf();
+    void Test();
+
+//#BLOCK
+
+};
+
+
+

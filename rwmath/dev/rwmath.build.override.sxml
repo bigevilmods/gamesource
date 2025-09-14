@@ -1,0 +1,340 @@
+<project default="build">
+
+  <!-- Turn space separated math defines into a list of newline separated defines. These
+       definitions are then passed to the compiler when building the math library and
+       the math unit tests. -->
+  <foreach property='single-definition' item="String" in="${math-defines??}" delim=" ">
+    <property name="math-defines-list">
+      ${math-defines-list??}
+      ${single-definition}
+    </property>
+  </foreach>
+
+  <property name="skip-spu-build" value="${skip-spu-build??false}"/>
+  <property name="spu-elf-options" value="--spu-response-file spu-response.cmd" unless="${skip-spu-build}"/>
+
+  <property name="dir" value="@{PathGetFullPath('.')}"/>
+  <property name="ver" value="@{PathGetFileName('${dir}')}"/>
+  <package name="rwmath" targetversion="${ver}" />
+
+  <property name="disable-trap2-support" value="${disable-trap2-support??false}"/>
+  <property name="disable-trap2-support" value="true" if="${config-system}==palm or 
+                                                          ${config-system}==iphone or 
+                                                          ${config-system}==rev or
+                                                          ${config-system}==unix or
+                                                          ${config-system}==android or
+                                                          ${config-system}==airplay" />
+
+  <property name="trap2-define" value="ENABLE_TRAP2_UNIT_TEST_SUPPORT" if="not ${disable-trap2-support}"/>
+
+  <runtime>
+    <Library name="rwmath" debug="false">
+      <dependencies>
+        <build>EABase</build>
+      </dependencies>
+      <config>
+        <defines>${math-defines-list??}</defines>
+      </config>
+      <sourcefiles>
+        <includes name="src/*.cpp"/>
+        <do if="${config-system}==rev">
+          <includes name="src/wii/**.cpp"/>
+        </do>
+        <do if="${config-system}==iphone or ${config-system}==palm or ${config-system}==android">
+          <includes name="src/neon/vpu/*.cpp"/>
+        </do>
+      </sourcefiles>
+    </Library>
+
+    <do if="${config-system} == ps3 and not ${skip-spu-build}">
+      <SPULibrary name="rwmath_spu">
+        <dependencies>
+          <build>EABase</build>;
+        </dependencies>
+        <config>
+          <defines>${math-defines-list??}</defines>
+        </config>
+        <sourcefiles>
+          <includes name="src/*.cpp"/>
+          <includes name="src/ps3/spu/*.s"/>
+        </sourcefiles>
+      </SPULibrary>
+    </do>
+  </runtime>
+
+  <tests>
+    <Program name="rwmathtest" debug="false">
+      <echo>TRACING: 5</echo>
+      <dependencies>
+        <build>
+          rwmath
+          EABase
+          <do unless="${disable-trap2-support} == true">
+            trap2 UTFSockets EAThread PPMalloc EAAssert coreallocator
+          </do>
+        </build>
+      </dependencies>
+      <config>
+        <defines>
+          ${math-defines-list??}
+          ${trap2-define??}
+        </defines>
+        <do if="${test.enableSSE2??}">
+          <echo message="WARNING: SSE2 is only available for PC configs!" unless="${config-system}==pc"/>
+          <option name="buildset.cc.options">-arch:SSE2</option>
+        </do>
+      </config>
+      <includedirs>
+        ${package.dir}/include
+        ${package.builddir}/test/test_0
+        ${package.dir}/test/harness
+      </includedirs>
+      <libraries>
+        <do if="${config-system}==xenon">
+          <includes name="${package.xenonsdk.appdir}/lib/xbox/tracerecording.lib"/>
+          <includes name="${package.xenonsdk.appdir}/lib/xbox/xbdm.lib"/>
+          <includes name="${package.xenonsdk.appdir}/lib/xbox/xonline.lib"/>
+        </do>
+        <do if="${config-system}==ps3">
+          <includes name="${package.ps3sdk.libsn}" if="${config-system}==ps3"/>
+          <excludes name="${package.configlibdir}/${lib-prefix}rwmath_spu${lib-suffix}"/>
+        </do>
+      </libraries>
+      <sourcefiles>
+        <includes name="${package.builddir}/test/${config-system}/test_0/*.cpp"/>
+        <includes name="test/harness/*.cpp"/>
+        <includes name="test/spulauncher/spulauncher.cpp" if="${config-system}==ps3"/>
+      </sourcefiles>
+    </Program>
+
+    <fileset name="test.rwmathtest.deploy-contents-fileset">
+      <includes name="${package.configbindir}/test/**"/>
+    </fileset>
+
+    <do if="${recursive-spu-build??false}">
+      <foreach item="Folder" in="${package.builddir}/test/ps3_spu/" property="test-folder" if="${config-system}==ps3">
+        <property name="test-name" value="@{PathGetFileName(${test-folder})}"/>
+        <Program debug="false">
+          <config>
+            <option name="buildset.cc.options">-ffunction-sections -mraw</option>
+            <option name="buildset.link.options">-mraw</option>
+          </config>
+          <dependencies>
+            <build>EABase EAAssert rwmath</build>
+          </dependencies>
+          <config>
+            <defines>${math-defines-list??}</defines>
+          </config>
+          <includedirs>
+            ${package.dir}/include
+            ${package.dir}/test/harness
+            ${test-folder}/test_0
+            ${test-folder}
+          </includedirs>
+          <libraries>
+            <includes name="${package.configlibdir}/${lib-prefix}rwmath_spu${lib-suffix}"/>
+            <excludes name="${package.configlibdir}/${lib-prefix}rwmath${lib-suffix}"/>
+          </libraries>
+          <sourcefiles>
+            <includes name="${test-folder}/*.cpp"/>
+            <includes name="test/harness/unittest.cpp"/>
+            <includes name="test/harness/unittest_constants.cpp"/>
+            <includes name="test/harness/unittest_output.cpp"/>
+            <includes name="test/harness/unittest_spuproxy.cpp"/>
+            <includes name="test/harness/testing_math.cpp"/>
+          </sourcefiles>
+        </Program>
+
+        <!--
+                 - For some odd reason the Sony runtime is unable to load the SPU elf
+                 - file's.  An out of memory error is reported.  Stripping the elf's
+                 - solves the problem.  But it seems like an unnecessary step since
+                 - the symbols do not need to be uploaded to the SPU.  If Sony fixes
+                 - the runtime issue, this stripping step will be unnecessary.
+                -->
+        <target name="test.${test-name}.postbuildtarget" hidden="true">
+          <!-- I would like to do use the line below, but it doesn't work :-( It ends up running the command for the last test for each test.  It looks like it isn't instantiating the task properly. -->
+          <!-- <exec program="${package.PlayStation3GCC.appdir}\host-win32\spu\bin\spu-lv2-strip.exe" commandline="${package.builddir}/${config}/bin/test/${test-name}.elf"/> -->
+
+          <!-- Instead I do this absolutely evil hack to take the target name, and 'extract' the correct filename from it. -->
+          <property name="filename" value="@{StrRemove('${target.name}', '0', '5')}"/>
+          <property name="filename" value="@{StrReplace('${filename}', 'postbuildtarget', 'elf')}"/>
+          <exec program="${package.ps3sdk.appdir}\host-win32\spu\bin\spu-lv2-strip.exe" commandline="${package.builddir}/${config}/bin/test/${filename}"/>
+        </target>
+      </foreach>
+    </do>
+  </tests>
+
+  <depends property="test-needs-generating">
+    <inputs>
+      <includes name="test/cases/**"/>
+      <includes name="test/buildtests.py"/>
+      <includes name="test/codegenerator.py"/>
+    </inputs>
+    <outputs>
+      <includes name="${package.builddir}/test/${config-system}/test-timestamp"/>
+    </outputs>
+  </depends>
+
+  <depends property="spu-test-needs-generating" if="${config-system}==ps3">
+    <inputs>
+      <includes name="test/cases/**"/>
+      <includes name="test/buildtests.py"/>
+      <includes name="test/codegenerator.py"/>
+    </inputs>
+    <outputs>
+      <includes name="${package.builddir}/test/ps3_spu/test-timestamp"/>
+    </outputs>
+  </depends>
+
+  <property name="test.rwmathtest.vcproj.prebuildtarget" value="test.rwmathtest.vcproj.prebuildtarget"/>
+
+  <!-- Wrap the NAnt pre-build target, so that it's executed only once, even when this target is used from a 'call' task. -->
+  <target name="test.rwmathtest.vcproj.prebuildtarget" depends="test.rwmathtest.prebuildtarget"/>
+
+  <target name="test.rwmathtest.prebuildtarget" hidden="true">
+    <choose>
+      <do if="${config-system} == 'unix' || ${config-system} == 'iphone'">
+        <property name="math-python-interpreter" value="python"/>
+      </do>
+      <do>
+        <dependent name="ActivePython" />
+        <property name="math-python-interpreter" value="${package.ActivePython.exe}"/>
+      </do>
+    </choose>
+
+    <!-- Additional properties for generating unit tests. -->
+    <property name="additional-test-options" value="" unless="@{PropertyExists('additional-test-options')}" />
+
+    <do if="${test-needs-generating}">
+      <do if="${config-system}!=ps3">
+        <echo message="buildtests.py --output-dir=${package.builddir}/test/${config-system} ${additional-test-options} --generate-separate-instance-cpps" />
+        <exec program="${math-python-interpreter}" workingdir="${package.dir}/test" commandline="buildtests.py --output-dir=${package.builddir}/test/${config-system} ${additional-test-options} --generate-separate-instance-cpps" message="Generating Renderware Math Unit Tests for ${config-system} because of old or missing test-timestamp file." />
+      </do>
+
+      <do if="${config-system}==ps3">
+        <exec program="${math-python-interpreter}" workingdir="${package.dir}/test" commandline="buildtests.py --output-dir=${package.builddir}/test/${config-system} --generate-ppu-batch-file ${additional-test-options}" message="Generating Renderware Math Unit Tests for ${config-system} because of old or missing test-timestamp file." />
+      </do>
+    </do>
+
+    <do if="${config-system}==ps3">
+      <!-- Copy a batchfile that has all the commands needed to run the unit tests on the PPU -->
+      <copy file="${package.builddir}/test/ps3/run-ppu-elf-fast.bat" tofile="${package.builddir}/${config}/run-ppu-elf-fast.bat"/>
+
+      <do if="not ${skip-spu-build}">
+        <do if="${spu-test-needs-generating??false}">
+          <exec program="${math-python-interpreter}" workingdir="${package.dir}/test" commandline="buildtests.py --output-dir=${package.builddir}/test/ps3_spu -m 80 --generate-spu-batch-file ${additional-test-options}" message="Generating Renderware Math Unit Tests for ps3_spu"/>
+        </do>
+        <!-- Copy a batchfile that has all the commands needed to run the unit tests on the SPU -->
+        <copy file="${package.builddir}/test/ps3_spu/run-spu-elf-fast.bat" tofile="${package.builddir}/${config}/run-spu-elf-fast.bat"/>
+        <copy file="${package.builddir}/test/ps3_spu/spu-response.cmd" tofile="${package.builddir}/${config}/bin/test/spu-response.cmd"/>
+      </do>
+    </do>
+  </target>
+
+  <target name="test.rwmathtest.postbuildtarget" hidden="true" if="(${config-system}==ps3) and (${skip-spu-build}!=true)">
+    <echo message="Building the SPU tests"/>
+    <nant buildfile="rwmath.build" target="test-build">
+      <property name="config" value="${config}"/>
+      <property name="recursive-spu-build" value="true"/>
+      <property name="disable-trap2-support" value="${disable-trap2-support}"/>
+    </nant>
+  </target>
+
+  <dependent name="eaconfig" initialize="false"/>
+
+  <do if="${package.eaconfig.version} gte '1.22.00'">
+    <task name="AddNetworkLibsToModule" module="test.rwmathtest"/>
+  </do>
+
+  <include file="scripts/task-trap2-test.xml" if="${disable-trap2-support}==false"/>
+
+  <target name="rwmath-test-run-trap2" if="${disable-trap2-support}==false">
+    <dependent name="trap2"/>
+    <call target="detail-test-run-trap2"/>
+  </target>
+
+  <target name="rwmath-test-run">
+    <call target="rwmath-test-run-trap2" if="${disable-trap2-support}==false"/>
+    <do if="${disable-trap2-support}==true">
+      <do if="'${config-system}'=='rev'">
+        <call target="test-build"/>
+        <mkdir dir="${package.builddir}/logs/wii" />
+        <!-- First start wiicorder to view the output -->
+        <start filename="${package.dir}\test\wiicorder\wiicorder.exe" workingdir="${package.builddir}/logs/wii"/>
+        <!-- Now run the elf on the Wii -->
+        <exec program="c:\ndev\bin\ndevrun.exe" commandline="-enfw ${package.builddir}\${config}\bin\test\rwmathtest.elf">
+          <env>
+            <!-- Set environment vars required by Nintendo tools -->
+            <!-- Note: At this time the non-proxy packages for these tools, so the paths are hardcoded.  This hack should be changed when proper packages are available. -->
+            <option name="PATH" value="c:\ndev\bin;C:\RVL_SDK\X86\bin" />
+            <option name="REVOLUTION_SDK_ROOT" value="C:\RVL_SDK" />
+          </env>
+        </exec>
+      </do>
+    </do>
+  </target>
+
+  <choose>
+    <!-- Copy of eaconfig's test-build target.  For all platforms except
+         AirPlay this is identical to the test-build target in eaconfig.
+         For the Airplay platform, eaconfig is not used properly so the
+         test prebuild target is not called as it is on the other platforms.
+         Therefore, in order to make this work on Airplay, the test-build
+         target has been modified to have an explicit dependency on the
+         test.rwmathtest.prebuildtarget target.  When the time comes that
+         Airplay uses eaconfig as it should do, this target may be removed
+         and we can use the one in eaconfig instead.
+    -->
+    <do if="${config-system} == airplay">
+      <target name="test-build" depends="test.rwmathtest.prebuildtarget" style="build" description="Build the tests for a specific configuration">
+        <call target="build" force="false" if="@{TargetExists('build')}" />
+        <property name="eaconfig.build.target" value="eaconfig-build" />
+        <property name="eaconfig.build.group" value="test" />
+        <call target="eaconfig-build-caller" force="true" />
+      </target>
+    </do>
+    <do>
+      <target name="test-build" style="build" description="Build the tests for a specific configuration">
+        <call target="build" force="false" if="@{TargetExists('build')}" />
+        <property name="eaconfig.build.target" value="eaconfig-build" />
+        <property name="eaconfig.build.group" value="test" />
+        <call target="eaconfig-build-caller" force="true" />
+      </target>
+    </do>
+  </choose>
+
+  <target name="doc.prebuildtarget" hidden="true">
+    <!-- 
+       - The doc.prebuildtarget is used to programmatically generate documentation
+       - that should be part of the doxygen build.
+       - For example, the VPL library headers are parsed to generate documentation
+       - that specifies what functionality is supported on each platform.  The API
+       - documentation also has platform support information automatically added.
+    -->
+    <property name="docs-dir" value="${package.builddir}/doc"/>
+    <property name="preprocessed-docs-dir" value="${package.builddir}/preprocessed_docs"/>
+    <property name="doc.type" value="HelpToolKit" />
+    <property name="doxygen.sourcebooksdir" value="${package.dir}/src/doc/toolkit" />
+    <property name="doxygen.inputspecfile" value="${package.builddir}/doc/inputspec.xml" />
+    <property name="doxygen.configfile" value="${package.dir}/src/doc/toolkit/config.doxy" />
+
+    <dependent name="ActivePython" />
+    <dependent name="ps3sdk" />
+    <echo message="Doc Prebuild Step"/>
+    <!-- Delete previously generated docs if they exist. -->
+    <delete dir="${preprocessed-docs-dir}" failonmissing="false"/>
+    <!-- Create directory for new docs-->
+    <mkdir dir="${preprocessed-docs-dir}" />
+    <property name="script.verbosity.property" value="--verbose" if="${nant.verbose}"/>
+    <!-- Generate/preprocess documentation -->
+    <dependent name="EABase"/>
+    <exec program="${package.ActivePython.exe}" workingdir="${package.dir}/src/scripts" commandline="vpl_api_parse.py ${script.verbosity.property??} --output-dir=${preprocessed-docs-dir} --input-file=..\..\include\rw\math\vpl\float_operation.h --input-file=..\..\include\rw\math\vpl\mem_operation.h --input-file=..\..\include\rw\math\vpl\vec_operation.h --input-file=..\..\include\rw\math\vpl\vecutil_operation.h --include-dir=..\..\include --include-dir=${package.EABase.dir}/include/common --cpp=${package.ps3sdk.appdir}\host-win32\ppu\bin\ppu-lv2-cpp.exe" message="Generating Renderware Math Unit Tests for ${config-system} because of old or missing test-timestamp file." />
+
+    <!-- Generate the inputspec.xml file used by Doxygen -->
+    <mkdir dir="${docs-dir}" />
+    <!-- Make sure output dir exists -->
+    <exec program="${package.ActivePython.exe}" workingdir="${package.dir}/src/scripts" commandline="generate_doc_inputspec.py ${package.dir} ${package.builddir} ${package.builddir}/doc/inputspec.xml" message="Generating Renderware Math Unit Tests for ${config-system} because of old or missing test-timestamp file." />
+  </target>
+
+</project>

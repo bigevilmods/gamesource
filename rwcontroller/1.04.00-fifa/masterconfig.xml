@@ -1,0 +1,41 @@
+<project>
+    <masterversions>
+        <!-- Configuration package section -->
+        <package name="eaconfig" version="1.22.00" />
+        <package name="nantToVSTools" version="3.07.00" />
+
+        <!-- SDK and compiler package section -->
+        <package name="DirectX" version="9.0c.2007.04-proxy" />
+        <package name="IncrediBuild" version="3.01.788" />
+        <package name="PlayStation3GCC" version="192.001-lite" />
+        <package name="sndbs" version="1.4.28" />
+        <package name="snvsi" version="1.6.18" />
+        <package name="VisualStudio" version="8.0.0-2" />
+        <package name="xenonsdk" version="2.0.5426.2-proxy" />
+
+        <!-- Released packages -->
+        <package name="coreallocator" version="1.02.04" />
+        <package name="EAAssert" version="1.00.03" />
+        <package name="EABase" version="2.0.14" />
+        <package name="EAThread" version="1.11.01" />
+        <package name="rwstdc" version="1.02.00" />
+        <package name="trap2" version="1.05.07-pr13-1" />
+        <package name="unit" version="2.03.00" />
+
+        <!-- Docs packages -->
+        <package name="CriterionDocTools" version="1.1.3" />
+        <package name="Doxygen" version="1.4.7" />
+        <package name="Saxon" version="8.7.3" />
+        <package name="rwsocket" version="1.00.01" />
+    </masterversions>
+    <ondemand>true</ondemand>
+
+    <packageroots>
+        <packageroot>${nant.location}\..\..\..</packageroot>
+        <packageroot>..\..</packageroot>
+    </packageroots>
+
+    <buildroot>build</buildroot>
+
+    <config package="eaconfig" default="pc-vc-dev-debug" />
+</project>

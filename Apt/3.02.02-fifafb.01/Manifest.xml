@@ -1,0 +1,26 @@
+<package>
+    <packageName>Apt</packageName>
+    <versionName>3.02.02-fifafb.01</versionName>
+    <contactName>Core Technology UI</contactName>
+    <contactEmail>CoreTechnologyUISupport?EASports@ea.com</contactEmail>
+    <homePageUrl>http://confluence.ea.com/display/CoreTechUI</homePageUrl>
+    <summary>
+        Apt is a runtime and pipeline for conversion and playback of Adobe Flash files.
+
+        This package is a cross-platform library which provides a bytecode interpreter, garbage collection, and other low-level interfaces. Games need to provide an implementation layer on top of this package, typically called an "AptAux" layer, specific to their title's chosen rendering technology, asset format, and so on.
+    </summary>
+
+    <changes>
+        Baltimore release. See <a href="http://packages.ea.com/zipentry.aspx/Apt-3.02.02/Apt/3.02.02/changelog.txt">changelog.txt</a> for changes.
+    </changes>
+
+    <status>Official</status>
+    
+    <license>EA Proprietary (Internal Use Only)</license>
+    <licenseComment>
+        Open Source components are used and distributed with the Apt package. Open Source Tech Deal Sheets have been filed with EA Legal and approved. Please read the <a href="http://docs/Apt:User_Guide/Overview#Open_Source_License_Information">Apt Open Source License Information page</a>.
+    </licenseComment>
+    
+    <frameworkVersion>2</frameworkVersion>
+    <buildable>true</buildable>
+</package>

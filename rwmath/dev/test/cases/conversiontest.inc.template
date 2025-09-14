@@ -1,0 +1,21 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestConversion::UnitTestConversion()
+{
+
+}
+
+UnitTestConversion::~UnitTestConversion()
+{
+
+}
+
+void UnitTestConversion::Test()
+{
+
+}
+
+//#BLOCK
+

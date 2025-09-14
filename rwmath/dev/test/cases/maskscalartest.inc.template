@@ -1,0 +1,36 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestMaskScalar<FloatType>::UnitTestMaskScalar()
+#else
+UnitTestMaskScalar::UnitTestMaskScalar()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestMaskScalar<FloatType>::~UnitTestMaskScalar()
+#else
+UnitTestMaskScalar::~UnitTestMaskScalar()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestMaskScalar<FloatType>::Test()
+#else
+void UnitTestMaskScalar::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

@@ -1,0 +1,5 @@
+struct SoundMembers { char *szName; int nIndex; };
+%%
+attachSound, 1
+start, 2
+stop, 3

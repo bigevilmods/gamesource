@@ -1,0 +1,92 @@
+/*!
+\page p_constants Constants
+
+Getting constants
+
+[ Following section apply only to PowerPC core on XBox360 and PS3 ]
+
+User can get constants through different method,
+-# using literal constant
+-# using instructions to construct constant
+
+Typically programmers use literal constants in their math code:
+
+\code
+
+void main()
+{
+    volatile float f = 2.0f;
+    volatile float data = 3.0f;
+
+    volatile float r = data / f;
+}
+
+\endcode
+
+Here is the generated assembly code with O2 on XBox360
+
+<pre>
+82030000  lis              r11,-32256		; 8200h
+82030004  li               r3,0
+82030008  lfs              fr0,2692(r11)
+8203000C  lis              r11,-32256		; 8200h
+82030010  stfs             fr0,-12(r1)
+82030014  lfs              fr0,2688(r11)
+82030018  stfs             fr0,-16(r1)
+8203001C  lfs              fr0,-16(r1)	; ? LHS ~40 cycles
+82030020  lfs              fr13,-12(r1)
+82030024  fdivs            fr0,fr0,fr13
+82030028  stfs             fr0,-12(r1)
+8203002C  blr              
+</pre>
+
+When a literal float is used (at least on Xenon's compiler), the literal is
+loaded from memory (literals are output by the compiler at compile time).
+The FPU lacks instructions necessary for loading immediate values (i.e. values
+encoded into the instruction), and other instructions for generating constants.
+
+The VMX instruction set does not have instructions for easily generating a value (in general).
+However, there are some tricks that can be used to generate specific values.
+The VMX instruction set allows small integer values to be created from
+immediate values.  VMX also has instructions for converting a fixed point value
+to a floating point value.
+
+For example a value of 1.0f can be splatted across an entire vector like so:
+
+\code
+__vector4 one = __vcfsx(__vspltisw(1), 0);
+\endcode
+
+This code will splat an integer 1 across the vector, and then convert that into
+floating point value.  The resulting code is only two instructions.  Loading a floating point value would cause
+a LHS (using current compilers), and still require a splat instruction.  Also, loading a float could cause a D-cache miss,
+while creating the constant will not miss D-cache, and actually takes less instructions (so there is actually a reduced
+chance of an I-cache miss as well).
+
+Some other constants can be generated.
+- Small integers
+- Powers of two
+
+More complicated values like PI and E are loaded from memory instead of using a huge number of VMX operations.
+
+As result, user should use RWMath function calls to retrieve constants rather
+than using an immediate value.  Using functions allows the math library to
+construct or load a constant in the most efficient manner.
+
+Note
+On PS3 SPU, Intel/AMD, and PS2 there are no LHS's.  However, we may still be
+able to optimize some operations on those platforms.  For example, on the SPU
+we can use a single load immediate instruction to create constants where the
+lower 16 bits of each element is 0.
+
+\subsection Use of literal values
+ 
+Because the interoperability of the VPU and the FPU library, and the fact that
+our FPU library supports double precision math (for physics and pipeline
+purposes), the compiler has become a lot more picky on overloading.  That means
+that there are now a few cases where using an integer literal (e.g.  0 instead
+of 0.f) will create an ambiguous overload. When you're working with literals,
+specify them in the type you need them (integer, float, double, unsigned,
+etc.).  Try to avoid implicit promotion of integers to floating point types.
+    
+*/

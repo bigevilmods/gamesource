@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <packageName>EA3_SDK_light</packageName>
+  <summary>irrlicht - 3D graphics engine</summary>
+  <description>
+        This package is a light version of EAOS/EA3/EA3_SDK_PC package, for mobile devices.
+        It enables irrlicht to read EA3 files.
+    </description>
+  <status>Unsupported</status>
+  <buildable>true</buildable>
+  <license>EA Proprietary (Internal Use Only)</license>
+  <licenseComment></licenseComment>
+  <frameworkVersion>2</frameworkVersion>
+  <contactName>Max Burke</contactName>
+  <contactEmail>mburke@ea.com</contactEmail>
+  <relationship>
+    <builds>
+      <build name="xcode" supported="true" />
+    </builds>
+  </relationship>
+</package>

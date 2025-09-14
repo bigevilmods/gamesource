@@ -1,0 +1,38 @@
+//******************************************************************************************
+//
+// Copyright (c) 2003 Electronic Arts Inc.
+//
+//******************************************************************************************
+
+// Microsoft Visual C++ 7.x configuration options
+
+-si4 -sl4 -sp4	// set up pointer lengths
+
+env-vc7.lnt		// Visual Studio environment options
+co-msc70.lnt	// MS C++ options
+
+-d__asm=asm
+
+-emacro(1924, MAXULONG_PTR)			// C-style cast
+-emacro(960, _S_I*)					// S_I_WRITE, etc. use octal notation
+-emacro(1924, INVALID_HANDLE_VALUE) // C-style cast
+-emacro(961, INVALID_HANDLE_VALUE)	// operator dependence
+-emacro(923, INVALID_HANDLE_VALUE)	// cast from int to pointer
+
+// header file 'x' not directly used in module 'y'
+-efile(964, xtl.h)
+-efile(964, XTL.h)
+-efile(964, guiddef.h)
+-efile(964, d3dx9.h)
+-efile(964, d3d9types.h)
+
+-e1702	// operator '*' is both an ordinary function and a member function, stupid __vector4 again
+
+-esym(1754, __vector4)	// expected symbol 'x' to be declared for class '__vector4'
+-esym(18, __vector4)	// Symbol '__vector4' redeclared
+-esym(39, __vector4)	// Redefinition of symbol '__vector4'
+-e123					// Junk in the August 2004 SDK headers.
+-e125					// Junk in the August 2004 SDK headers.
+-e527					// Junk in the August 2004 SDK headers.
+-e746					// Junk in the August 2004 SDK headers.
+-e1055					// function undeclared

@@ -1,0 +1,139 @@
+/*!
+\page p_choosing_fpu_or_vpu Choosing FPU or VPU Math
+
+\section s_choosing_fpu_or_vpu_introduction Introduction
+
+For code that operates on entire vectors/matrices/quaternions, the VPU is the
+clear choice for best performance.  The VPU is able to perform many operations in a single
+instruction.  While the FPU must implement vector operatins using a series of
+scalar operations.  Therefore, it is recommended that for best performance
+code that operates on entire vectors should use the VPU library.
+
+The FPU library is useful in situations where full IEEE precision is
+important, or when data is not 16 byte aligned.
+
+The situation becomes much more complex when dealing with scalar code.  Scalar
+code may perform better on the FPU, than on the VPU.  Read the sections below
+to learn more about the strengths and weaknesses of the two systems when
+dealing with scalar code.
+
+
+\subsection s_fpu_advantages FPU Advantages for Scalar Code
+ 
+First of all, float’s are part of the C/C++ language.  Therefore, the compiler
+can often be smarter.  For example, if you write:
+
+\code
+   float a = b * c + d;
+\endcode
+
+The compiler \e may automatically convert the expression to a fused multiply add
+(on PPC/SPU).  Whereas the compiler can’t do that automatically for a VecFloat
+type.  (However, you could explicitly use the MultAdd function for the VPU).
+In general though, the compiler has been optimized to work with float types,
+and may have some tricks available because it has high level knowledge about
+how float’s can be manipulated.  It may be able to reorder float operations
+more intelligently than corresponding vector operations.
+
+ 
+
+The compiler may also be smarter about calculating expressions at compile time.
+For example, the compiler may be able to fold constant expressions at compile
+time when floats are involved.  For example:
+
+\code
+    float a = b + (2.0f + 2.0f);
+\endcode
+
+Can be converted to:
+
+\code
+    float a = b + 4.0f;
+\endcode
+
+It is unlikely (although not impossible) that a compiler would do this for
+vector operations.
+
+Many operations are also lower latency on the FPU.  The fpu on Xenon/PS3 PPU
+generally have a latency of 10 cycles vs a 12 cycle latency for VMX math
+operations.
+
+The FPU is also much faster when it comes to accessing a single element in a
+math type.  Reading and writing single components of a vector/matrix/quaternion
+should be significantly faster than accessing a single element in a vector.
+
+Working with literals is also much faster than the VPU at the moment.  Loading
+a float literal usually requires a memory access (i.e. on PPC).  Converting a
+float literal to a vector (i.e. on VMX) causes a LHS.  If you code has a lot of
+literals in it and they can not easily be changed to global constants, the FPU
+may give you much better performance.  Compiler improvements may close this
+gap, but at the moment the VPU code is quite slow at converting from a literal
+to a VecFloat.
+
+Doing compare/branches on the FPU also seems to be quite a bit faster.  Some of
+this performance is because branching on the VPU has not been very will
+optimized yet.  However, even with optimized code, I think the VPU will be
+slower.  In theory the VPU should be close to the same performance.  Again, I
+think that compiler’s will have to improve in this area to make the VPU
+competitive with the FPU.
+
+\par Notes:
+
+- Most of my discussion is about the PPC cores on Xenon/PS3.  So if you are more concerned with other platforms, the situation may not be as bad. 
+- The PS3 SPU is virtually always working with vectors.  So, many of these advantages will not apply to the SPU. 
+- SSE is actually much closer in performance to the x87 FPU.  In some ways it is superior, because it is a set of registers instead of being a stack based architecture like the x87.  64bit PC architectures have actually deprecated the FPU, and compilers will generate SSE instructions instead of x87 instructions.  However, accessing SSE using ‘float’ operations may still offer advantages (for example better compiler high level understanding of the code and constant folding).  So selecting float operations at the language level may still be faster than writing explicit “VPU” code. 
+ 
+
+\subsection s_vpu_advatanges VPU Advantages for Scalar Code
+
+Some scalar operations are faster on the VPU than the FPU.  For example, doing
+a \c Floor using the VPU is faster than doing a \c Floor on the FPU because of the
+operations available.  Most VPU instruction sets also have approximation
+instructions that are faster than doing a full precision FPU calculation.
+
+Branch free code (using compare/selects) is also faster than the FPU.  A fsel
+on PPC has 10 cycles of latency vs just 4 cycles for a vsel using VMX.  Doing
+"boolean" operations on masks is also much faster on the VPU.  So branch free
+VPU scalar code may be faster than branch free FPU code.
+
+Writing scalar VPU code also means you can incrementally move towards properly
+vectorized VPU code.  If you write all your code for the FPU, it may be
+difficult to take advantage of VPU operations because of LHS penalties.
+Essentially you may need to take a step back (convert scalar fpu to potentially
+slower scalar VPU code) before you can take a big leap forward (writing
+properly vectorized VPU code).
+
+
+\subsection s_personal_experience Personal Experience with Scalar Code
+ 
+My personal experience has been that unoptimized FPU math that is scalar in
+nature will be faster than unoptimized scalar VPU code.  However, properly
+vectorized VPU code will almost always be faster (often significantly so).
+Even optimized scalar code can often be faster if enough operations are
+processed together (to hide latency) or the scalar operations leverage
+specialized instructions only available on the VPU.
+
+If the code being written is almost all scalar operations, and it is unlikely
+you have time to do much optimization of this code going forward, the FPU is
+probably your best bet.  i.e. simplistic code will be better optimized by the
+compiler if you target the FPU.
+
+If the code is scalar, but you have plans to optimize the code, I think using
+VPU operations will give you more room for improvement.  Initially the VPU code
+may be slower than FPU code, but with enough effort the VPU code should be able
+to surpass the FPU code in performance.  However, doing so will probably
+require a fairly large amount of time, and a conversion of some scalar
+operations to vector operations.  So, if time/effort for optimization is
+available, the VPU should be your best long term choice for performance.
+However, it would be naïve of me to suggest simply converting all your scalar
+code over to scalar VPU code will improve performance.
+
+Unfortunately there is no simple answer to whether the FPU or VPU should be used.  I
+am sure that some teams will find the FPU gives the best performance for some
+parts of their code base.  While other teams will find that the VPU can be used
+effectively throughout their game.  I just want to make sure that you have
+realistic expectations.  At the same time, the VPU can be enormously powerful,
+and I don’t want to dissuade you too much from using it.
+
+*/
+

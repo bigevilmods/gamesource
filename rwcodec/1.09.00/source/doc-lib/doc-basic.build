@@ -1,0 +1,40 @@
+<project>
+    <property name="doc-srcdir" value = "${package.dir}\source\doc-lib" />
+    <property name="doc-dstdir" value = "${package.builddir}\doc" />
+
+    <target name="docsdoxygen" hidden="true">
+        <dependent name="Doxygen"/>
+        <echo message="Executing doxygen..." />
+
+        <property name="doc-doxygen-outdir" value="${doc-dstdir}"/>
+        <property name="doc-doxygen-configfile" value="doxygenconfig-basic"/>
+
+        <mkdir dir="${doc-doxygen-outdir}" unless="@{DirectoryExists('${doc-doxygen-outdir}')}" />
+
+        <!-- Settings for the doxygen config file -->
+        <dependent name="Doxygen"/>
+        <property name="exec.env.PROJECTNAME" value="${package.name}" />
+        <property name="exec.env.PROJECTVERSION" value="${package.targetversion}" />
+        <property name="exec.env.OUTDIR" value="${doc-doxygen-outdir}" />
+        <property name="exec.env.WARNLOGFILE" value="${doc-doxygen-outdir}/buildwarnings.txt" />
+        <property name="exec.env.GENHTML" value="YES" />
+
+        <exec program="${package.Doxygen.bindir}\doxygen.exe" workingdir="${doc-srcdir}/doxygen-config">
+            <args>
+                <arg value="${doc-doxygen-configfile}" />
+            </args>
+        </exec>
+    </target>
+
+    <target name="docsclean" hidden="true">
+        <echo message="Cleaning previous documentation build files..." />
+        <delete dir="${doc-dstdir}"/>
+    </target>
+
+    <target name="docsbuild">
+        <echo message="Building documentation files for all platforms..." />
+        <call target="docsclean"/>
+        <call target="docsdoxygen"/>
+    </target>
+
+</project>

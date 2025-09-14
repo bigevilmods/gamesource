@@ -1,0 +1,111 @@
+/*!
+\page p_branch_free_coding Branch Free Coding using Comparisons and Selections
+
+\par Introduction
+
+For a variety of \ref p_branching "reasons" branches on next-gen hardware
+architectures can be quite slow.  Luckily, next-gen hardware also provides
+techniques for avoiding branches in some situations.  
+
+One technique for avoiding branches, is to convert if-then-else sequences
+to branch free code that performs comparisons (i.e. the condition of the if)
+and a select (i.e. to choose the 'then' or the 'else' result).
+
+\par Conditional Calculations
+
+What do most calculations involving conditions look like?  Usually they look something like this:
+
+\code
+    if( someCondition() )
+    {
+        result = thenCalculation();
+    }
+    else
+    {
+        result = elseCalculation();
+    }
+\endcode
+
+Normally the compiled code is executed as follows:
+-# Calculate someCondition()
+-# Execute a conditional branch instruction that either branches to one of the clauses, or falls through to the other clause.
+-# Execute the code for then or else (depending on if the branch was taken).
+-# Potentially perform another branch back to the code after the if-then-else block (either the then or the else clause will need to have a return branch).
+
+\image html ifthenelse-branching.png
+
+You should also note that these steps have to be performed in order.  For
+example, you can't execute the thenCode until you perform a branch to the code,
+and you can't perform the branch until you have calculated the condition for
+the if.  If these steps are high latency, a large amount of time may be wasted
+waiting for them to complete before executing the next step.
+
+Branch free coding allows the same answer to be calculated in a different way.
+The first thing to notice, is that \c someCondition(), \c thenCalculation(),
+and \c elseCalculation() do not have any dependencies on one another (assuming
+they have no side-effects).  So, we can actually execute them "simultaneously".
+By "simultaneously" I mean their instructions can be interleaved, and can be
+pipelined together.  After the three computations are done, a select operation
+can be performed.  The select operation chooses the result of either \c
+thenCalculation() or \c elseCalculation() based on the value calculated for \c
+someCondition().
+
+\b Note: Even if calculations have side-effects it may be possible to use
+branch free coding techniques.  Take a look at \ref p_gotchas_for_branch_free_code
+for more details.
+
+The order of operations for branch/select looks like this:
+-# Compute condition mask, then-result, else-result.
+-# Select either then-result or else-result based on condition mask.
+
+\image html ifthenelse-select.png
+
+\par Mask API
+
+Writing branch free code can be tricky.  Many of the operations (especially
+branch free FPU code) require some tricks to simulate boolean operations or to
+correctly handle edge cases.  Branch free code also relies on platform specific
+instructions/intrinsics, so writing portable branch free code can be difficult.
+
+The API also provides a large subset of operations that behave the same on
+both the FPU and the VPU versions of the math library.  So, you can write
+branchless code for either library using the same API.
+
+The API is broken down into various components.  They are:
+- \ref p_mask_types "Mask Types"
+- Mask Operations
+- Comparison Operations
+- Select Operations
+
+\par A Simple Example
+
+Consider the following (rather arbitrary) example code.  
+
+\code
+
+if( Dot(vector4A, vector4B) < GetVecFloat_Zero() )
+{
+    // Negate vector4A to make the dot product positive.
+    vector4A = -vector4A;
+}
+\endcode
+
+This can be rewritten to be branchless as follows:
+
+\code
+
+MaskScalar negativeDotProduct = CompLessThan(Dot(vector4A, vector4B), GetVecFloat_Zero());
+vector4A = Select( negativeDotProduct, -vector4A, vector4A );
+
+\endcode
+
+Or more simply:
+\code
+vector4A = Select( CompLessThan(Dot(vector4A, vector4B), GetVecFloat_Zero()), -vector4A, vector4A );
+\endcode
+
+You can think of \c negativeDotProduct as representing the result of the
+condition <code>Dot(vector4A, vector4B) < GetVecFloat_Zero()</code>.  The result of the comparison
+is then used to select \c -vector4A or \c vector4A (to leave vector4A unmodified).
+
+*/

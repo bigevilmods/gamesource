@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <manifestVersion>2</manifestVersion>
+  <frameworkVersion>2</frameworkVersion>
+  <buildable>true</buildable>
+  <isSupported>true</isSupported>
+  <contactEmail>EATechCoreTeam@ea.com</contactEmail>
+  <contactName>EATech</contactName>
+  <owningTeam>Core</owningTeam>
+  <tags>eatech</tags>
+  <licenseDetails />
+  <sourceLocation>//EAOS/rwmath/DL/rwmath/dev</sourceLocation>
+  <driftVersion>dev</driftVersion>
+  <relationship>
+    <builds>
+      <build name="solution" supported="false" />
+      <build name="nant" supported="true" targets="build test-build tool-build" />
+      <build name="test" supported="true" targets="test-run-fast" />
+    </builds>
+    <platforms>
+      <platform name="pc" build="Supported" test="Supported" />
+      <platform name="pc64" build="Supported" test="Supported" />
+      <platform name="xenon" build="Supported" test="Supported" />
+      <platform name="ps3" build="Supported" test="Supported" />
+      <platform name="rev" build="Supported" test="Supported" />
+      <platform name="freebox" build="Supported" test="Supported" />
+      <platform name="unix" build="Supported" test="Supported" />
+      <platform name="unix64" build="Supported" test="Supported" />
+      <platform name="osx" build="Supported" test="Supported" />
+      <platform name="iphone" build="Supported" test="Supported" />
+      <platform name="android" build="Supported" test="Supported" />
+      <platform name="marmalade" build="Supported" test="NotSupported" />
+      <platform name="palm" build="Supported" test="NotSupported" />
+      <platform name="playbook" build="Supported" test="Supported" />
+      <platform name="ctr" build="Supported" test="NotSupported" />
+      <platform name="psp2" build="Supported" test="Supported" />
+      <platform name="caps" build="Supported" test="Supported" />
+      <platform name="winrt" build="Supported" test="Supported" />
+    </platforms>
+  </relationship>
+</package>

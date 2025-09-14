@@ -1,0 +1,84 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestMatrix44AffinePacked<FloatType>::UnitTestMatrix44AffinePacked()
+#else
+UnitTestMatrix44AffinePacked::UnitTestMatrix44AffinePacked()
+#endif
+{
+
+    // Note:
+    // 1) create a small array so cache miss is minimal, but an array,
+    // as close to real environment as possible.
+    // 2) currently doesn't test from heap, only create data on stack.
+
+
+    //------------------------------------------------------------------------
+    // create test data
+    //========================================================================
+
+    // generate some random numbers, so we can use for timing test
+    int i;
+    for (i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+    {
+        x_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        y_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        z_array[i] = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        q_array[i].X() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        q_array[i].Y() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        q_array[i].Z() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        q_array[i].W() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].X() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].Y() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].Z() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v4_array[i].W() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v3_array[i].X() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v3_array[i].Y() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+        v3_array[i].Z() = (float)rw::math::Random() / (float)(rw::math::Random() % 30 + 1);
+    }
+
+    for (i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+    {
+        m44_function_array[i].Set(x_array[i], y_array[i], z_array[i],
+                             z_array[i], y_array[i], x_array[i],
+                             z_array[i], x_array[i], y_array[i],
+                             y_array[i], z_array[i], x_array[i]
+                             );
+    }
+
+    for (i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+    {
+        m44_operator_array[i].Set(x_array[i], y_array[i], z_array[i],
+                         x_array[i], y_array[i], z_array[i],
+                         x_array[i], y_array[i], z_array[i],
+                         x_array[i], y_array[i], z_array[i]
+                        );
+    }
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestMatrix44AffinePacked<FloatType>::~UnitTestMatrix44AffinePacked()
+#else
+UnitTestMatrix44AffinePacked::~UnitTestMatrix44AffinePacked()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestMatrix44AffinePacked<FloatType>::Test()
+#else
+void UnitTestMatrix44AffinePacked::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

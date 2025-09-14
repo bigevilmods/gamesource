@@ -1,0 +1,37 @@
+<project>
+	<dependent name="PcLint" version="8.00q"/>
+
+		<!-- indicates to the build task to execute the lint-cc and lint-link custom build steps -->
+		<property name='build.tasks' value='lint-cc lint-link' />
+
+		<property name="lint-cc.options">
+			-b							<!-- suppress banner -->
+			-u							<!-- suppress inter-module messages -->
+			-oo(%objectfile%)			<!-- output object file -->
+			${lint-platform-options}	<!-- from config.xml -->
+
+			<!-- indirections local to this project -->
+			${package.dir}/config/pclint/stdpolicy.lnt
+			<!-- platform-specific indirections -->
+			${lint-platform-indirections}
+
+			-library					<!-- we are building a library -->
+		</property>
+
+		<property name="lint-link.options">
+			-u
+			-b
+			-oo(%objectfile%)
+			-library
+		</property>
+
+		<property name="lint-cc.includedirs">
+			${lint-cc.includedirs}			<!-- specific lint includedirs -->
+			${lint-platform-includedirs}	<!-- platform specific includedirs from config.xml -->
+		</property>
+
+		<property name="lint-cc.defines">
+			${lint-platform-defines}		<!-- from config.xml -->
+		</property>
+		
+</project>

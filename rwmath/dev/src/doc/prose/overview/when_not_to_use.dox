@@ -1,0 +1,40 @@
+/*!
+\page p_when_not_to_use When Not To use
+
+\section estimating_values Estimating Values
+Generally, RWMath tries to calculate "full precision" values.  i.e. it refines
+estimated values until they are of high precision.  Sometimes RWMath also
+provides "estimate" or "fast" versions of functions.  These functions sacrifice
+precision for performance.  However, in some cases there may not be a "estimate" version
+of the function you are using.  In that case, users may want to write a custom version
+of the function that calculates the answer to the minimal precision required.  (Of course, if many
+users want an "estimate" version of a function, we can always add it to the library.)
+
+Similarly, some functions will check for boundary condition such as
+a zero vector or zero input. If users can assume zero is never passed in, those
+checks may not be necessary and a custom implementation could be used for
+improved performance.
+
+Optimizing math is not an easy task, because there are many ways a function could be optimized.  In many cases these
+optimizations are mutually exclusive.  For example, a function could be optimized for:
+- Code size
+- Latency
+- Throughput
+- Optimal code when unrolled (i.e. with hoisting of common sub expressions)
+- Register usage
+- Memory Usage
+- Avoiding use of constants at all costs (i.e. to void D-cache misses)
+
+Generally we try to optimize code based on reasonable assumptions, and how we expect a function to be used in general.
+However, users may want code optimized for a specific use case.  So, in this case it \e may be better to use custom
+code.  However, users should always try using RWMath first, to see if the code is already faster than custom code.  We
+have often found user code that has been "optimized" is \e substatially slower than the code that was in RWMath.  So,
+it is probably a good idea to profile the RWMath code before attempting to write your own highly optimized code.
+
+\section code_improvements Code Improvements
+
+In some cases, we have not had time to optimize a function, or the function may not be as optimized as possible.  If you
+write an optimized version of a function, please send it to us.  We will do our best to encorporate your changes back
+into the math library.
+
+*/

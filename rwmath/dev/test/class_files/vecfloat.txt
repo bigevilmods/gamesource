@@ -1,0 +1,5 @@
+UnitTestFastFloatVecFloat
+UnitTestFastFloatVecFloatRef
+UnitTestFastFloatVecFloatRefIndex
+UnitTestFastFloatMisc
+UnitTestVector4

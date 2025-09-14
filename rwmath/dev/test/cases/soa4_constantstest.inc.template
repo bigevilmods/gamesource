@@ -1,0 +1,23 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestSoa4Constants::UnitTestSoa4Constants()
+{
+
+}
+
+UnitTestSoa4Constants::~UnitTestSoa4Constants()
+{
+
+}
+
+void UnitTestSoa4Constants::Test()
+{
+
+}
+
+using namespace ::rw::math::vpu;
+
+//#BLOCK
+

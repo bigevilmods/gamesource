@@ -1,0 +1,35 @@
+<project>
+	<!-- ***** USER SETTINGS FOR HELP BUILD ***** -->
+	<property name="help.rootdir" value="./doc" />
+
+	<property name="doxygen.projectname" value="eacore_locale" />
+	<property name="doxygen.projectshortname" value="eacore_locale" />
+	<property name="doxygen.projectversion" value="1.00.01" />
+	<property name="doxygen.projectwebpage" value="http://ignition.ea.com/Pages/TechnologyPages/default.aspx?" />
+
+    <property name="doxygen.srcbooksdir" value="srcbooks" />
+	<property name="doxygen.outdir" value="./build" />
+	<property name="doxygen.htmloutdir" value="html-lib" />
+	<property name="doxygen.helpfilename" value="help-${doxygen.projectshortname}.chm" />
+	
+	<property name="doxygen.configfile" value="help.doxy" />
+	<property name="doxygen.inputspecfile" value="inputspec.xml" />
+	<property name="doxygen.warnlogfile" value="${doxygen.outdir}/buildwarnings.txt" />
+	<property name="doxygen.tagfile" value="${doxygen.outdir}/${doxygen.htmloutdir}/tag.xml" />
+	
+    <property name="doxygen.defines" value="EA_PLATFORM_WINDOWS EA_PLATFORM_PLAYSTATION2 EA_PLATFORM_XBOX EA_PLATFORM_GAMECUBE EA_DEBUG EA_SYSTEM_LITTLE_ENDIAN EA_SYSTEM_BIG_ENDIAN" />
+    <property name="doxygen.enabledsections" value=""/>
+
+	<!-- pass the user settings to the Doxygen config file: -->
+    <property name="exec.env.PROJECTNAME" value="${doxygen.projectname}" />
+    <property name="exec.env.PROJECTVERSION" value="${doxygen.projectversion}" />
+    <property name="exec.env.PREDEFINED" value="${doxygen.defines}" />
+    <property name="exec.env.ENABLEDSECTIONS" value="${doxygen.enabledsections}" />
+    <property name="exec.env.SRCBOOKSDIR" value="${doxygen.srcbooksdir}" />
+    <property name="exec.env.OUTDIR" value="${doxygen.outdir}" />
+    <property name="exec.env.HTMLOUTDIR" value="${doxygen.htmloutdir}" />
+    <property name="exec.env.INPUTSPECFILE" value="${doxygen.inputspecfile}" />
+    <property name="exec.env.WARNLOGFILE" value="${doxygen.warnlogfile}" />
+    <property name="exec.env.TAGFILE" value="${doxygen.tagfile}" />
+
+</project>

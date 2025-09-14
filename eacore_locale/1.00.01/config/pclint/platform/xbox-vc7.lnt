@@ -1,0 +1,26 @@
+//******************************************************************************************
+//
+// Copyright (c) 2003 Electronic Arts Inc.
+//
+//******************************************************************************************
+
+// Microsoft Visual C++ 7.x configuration options
+
+-si4 -sl4 -sp4	// set up pointer lengths
+
+env-vc7.lnt		// Visual Studio environment options
+co-msc70.lnt	// MS C++ options
+
+-d__asm=asm
+
+// Disabling options specific to the VC7 version
+
+-emacro(960, _S_I*)					// Octal constant notation used for the _S_IWRITE, etc. defines
+-emacro(1924, MAXULONG_PTR)
+
+// VC7 causes some trouble so we have to avoid with these disable statements
+-esym(126, __MIDL___MIDL_itf_wtypes_0003_0001)	// Inconsistent structure definition
+-esym(578, y1)						// Declaration of symbol ' ' hides symbol ' '
+-esym(578, stat)						// Declaration of symbol ' ' hides symbol ' '
+
+

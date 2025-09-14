@@ -1,0 +1,74 @@
+
+<html>
+<head>
+    <title>Streaming Overview</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Streaming Overview</h1>
+
+<p>The Streaming module of the File library consists of a set of functions
+that are built on top of the primitive layer of the library. These
+functions are used a lot by the audio library and may be used directly
+by a video player in your game.</p>
+
+<p>Any file may be streamed - you just have to write a parser for your data
+format, or you can choose to use the default parser, which makes a chunk
+every 2K in the file.</p>
+
+<p>When the streamer is running, it asynchronously reads blocks of data from
+the file as quickly as possible and stores them in a circular buffer.
+Clients of the streamer obtain a pointer to the next chunk by calling the
+<tt>rw::core::filesys::Stream::GetChunk</tt> function. When the chunk is no longer
+needed, it is released using <tt>rw::core::filesys::Stream::ReleaseChunk</tt>.
+This frees the space in the circular buffer and allows the streamer to
+continue reading from the file. The streamer will continue reading until
+it reaches either the end of file or a user-defined end chunk.</p>
+
+<p>You can queue up multiple requests for the streamer, which will service
+them in the order specified. For each request queued, a unique request ID
+is returned and can be used to check the status of the request or to
+cancel it. It is also possible to kill an entire stream, which returns it
+to the state it was in after being initialized.</p>
+
+<p>Programs can create multiple streams which can run simultaneously, either
+from the same device or from different devices. The streamer provides a
+mechanism for coordinating access to a device by multiple streams as well
+as by other file I/O functions.</p>
+
+<p>The streamer also provides a mechanism for separating chunks into multiple
+classes based on their chunk type and for delivering chunks from each
+class to separate output points called taps.</p>
+
+<h2>See Also</h2>
+<ul>
+<li><a href="create.html">Create</a></li>
+<li><a href="filters.html">Filters</a></li>
+<li><a href="start.html">Start</a></li>
+<li><a href="pointer.html">Pointer</a></li>
+<li><a href="release.html">Release</a></li>
+<li><a href="destroy.html">Destroy</a></li>
+<li><a href="coordinate.html">Coordinate</a></li>
+<li><a href="alignment.html">Alignment</a></li>
+<li><a href="performance.html">Performance</a></li>
+</ul>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

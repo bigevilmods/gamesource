@@ -1,0 +1,17 @@
+<project>
+
+    <property name="package.rwbigfile.runtime.buildmodules">
+        rwbigfile
+    </property>
+	
+    <property name="package.rwbigfile.includedirs">
+        ${package.rwbigfile.dir}/include
+    </property>
+
+    <property name="package.rwbigfile.libdir" value="${package.rwbigfile.builddir}/${config}/lib"/>
+
+    <fileset name="package.rwbigfile.libs">
+        <includes name="${package.rwbigfile.libdir}/${lib-prefix}rwbigfile${lib-suffix}" />
+    </fileset>
+
+</project>

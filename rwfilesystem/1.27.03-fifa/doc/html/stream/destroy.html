@@ -1,0 +1,35 @@
+
+<html>
+<head>
+    <title>Stream Destruction</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Destroying a stream</h1>
+
+<p>When a stream is no longer needed, it must be destroyed by calling the
+stream objects' Destroy method.  This function can be called at any time
+since it kills the stream and blocks until all stream activity ends.  It
+then releases any system resources used by that stream.  Only after the
+call to Destroy returns can the user-allocated circular buffer be
+released.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

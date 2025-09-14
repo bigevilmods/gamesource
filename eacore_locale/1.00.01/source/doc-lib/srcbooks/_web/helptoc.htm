@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>HELP</title>
+<link rel="stylesheet" href="barstyle.css">
+</head>
+
+<SCRIPT Language="JavaScript">
+function loadright()
+{
+   var re = new RegExp("\\?(\\w*)\\=(.*)","g");
+   var r = re.exec(top.location.href);
+   if (r && r.length>=3 && r[1]=="right")
+      top.frames[1].location.href = r[2];
+}
+</SCRIPT>
+
+<body topmargin="0" leftmargin="0" onload="loadright();">
+<font size="2" face="Arial"> 
+<p><img src="tab1.gif" border="0" usemap="#tabs"></p>
+<p align="center"> 
+<SCRIPT LANGUAGE="javascript">
+isIE  = (navigator.appName == "Microsoft Internet Explorer") && (navigator.userAgent.indexOf("Opera") == -1);
+isWin = (navigator.appVersion.indexOf("Windows") != -1);
+if (isIE && isWin)
+{
+	document.write("<object id=\"hhctrl\" classid=\"clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11\" align=\"baseline\" border=\"0\" width=\"95%\" height=\"90%\" type=\"application/x-oleobject\">");
+	document.write("<param name=\"Command\" value=\"Contents\">");
+	document.write("<param name=\"Item1\" value=\"index.hhc\">");
+	document.write("<param name=\"FrameName\" value=\"right\">");
+	document.write("</object>");
+}
+else
+{
+    dirPos = document.location.href.lastIndexOf("/");
+    dirPath = document.location.href.substring(0,dirPos+1)
+	document.location.href = dirPath+"helptoc2.htm";
+}
+</SCRIPT>
+</p>
+</font>
+<map name="tabs">
+    <area shape="rect" coords="3,2,59,17">
+    <area shape="rect" coords="101,2,148,18" href="helpsrch.htm">
+    <area shape="rect" coords="60,2,99,18" href="helpidx.htm">
+</map>
+</body>
+</html>
+

@@ -1,0 +1,55 @@
+﻿<project default="build">
+
+	<property name="package.tlconfig.version" value="1.00.18" unless="@{PropertyExists('package.tlconfig.version')}"/>
+	<property name="package.tlconfig.noDirectX" value="true" unless="@{PropertyExists('package.tlconfig.noDirectX')}"/>
+
+	<dependent name="tlconfig" version="${package.tlconfig.version}"/>
+
+	<package name="eacore_locale"
+		targetversion="1.00.01"
+		defaultconfig="pc-vc71-debug"
+		excludetargets="cleanall"
+		/>
+
+	<property name="package.EABase.version" value="2.0.7" unless="@{PropertyExists('package.EABase.version')}"/>
+	<property name="package.Endian.version" value="0.5.2" unless="@{PropertyExists('package.Endian.version')}"/>
+	<property name="package.teal.version" value="1.00.03" unless="@{PropertyExists('package.teal.version')}"/>	
+	
+	<dependent name="EABase" 	version="${package.EABase.version}"/>
+	<dependent name="Endian" 	version="${package.Endian.version}"/>
+	<dependent name="teal" 		version="${package.teal.version}"/>
+	
+	<include file="examples/example.build"/>
+	<include file="source/source.build"/>
+
+	<target name="cleanall" description="Clean all configurations">
+		<delete dir="build"/>
+		<delete dir="lib"/>
+		<delete dir="doc"/>
+	</target>
+
+	<target name="buildall" description="Build all configurations plus documentation">
+		<foreach item="String" in="${package.configs}" property="name">
+			<nant buildfile="${package.dir}/${package.name}.build" target="build">
+				<property name="config" value="${name}"/>
+			</nant>
+		</foreach>
+		<call target="doc"/>
+	</target>
+
+	<target name="examples"
+		depends="example-locale"
+		description="Build example program for current config">
+	</target>
+
+	<target name="doc" 
+		depends="doc-lib"
+		description="Build chm file for the lib">
+	</target>
+
+	<!-- fake target that causes all the components in the package to build by depending on those targets -->
+	<target name="build"
+		depends="lib-locale"
+		description="Build current configuration"/>
+
+</project>

@@ -1,0 +1,105 @@
+/*!
+\page p_vpl_library The Vectorization Portability Library
+
+\section s_vpl_what_is_the_vpl What is the VPL?
+
+The VPL is a library that is designed to make writing low level high
+performance code more portable between platforms.  The library provides a
+common vector type and common functionality (subject to hardware support)
+across vector hardware.
+
+\section s_vpl_goals_of_the_vpl Goals of the VPL
+
+The Vectorization Portability Library was designed to satisfy 3 major goals:
+-# Allow users to write highly optimized code.
+-# Allow users to write code that is portable between platforms.
+-# Make writing efficient and portable code as easy as possible. 
+
+In some cases these goals are mutually exclusive to some degree.  In cases
+where two goals are in conflict, the highest priority goal should take
+precendence.
+
+\section s_motivation Motivation for the library
+
+Teams have been writing optimized code for Xbox 360 and the PS3 (both PPU and SPU cores). Writing this code is already quite tedious. The work is made even more difficult because low level optimized code for one platform will rarely compile on other platforms.
+
+Portability problems exist for several reasons:
+
+- The names of intrinsic functions may vary between platforms. e.g. vec_add vs spu_add vs __vaddfp.
+- The types are different on different platforms
+  - Xenon uses __vector4 for basicaly all vector operations (i.e. there is no differentiation between float/int vectors)
+  - GCC uses specific vector float, vector signed int, etc types.
+  - VisualStudio on PC uses __m128
+  - Platforms may be able to accomplish the same operation, but using slightly different instructions. (Or the optimal choice of instructions may be different between platforms)
+  - Some platforms expose intrinsics that are not available on other platforms. 
+
+Because of these portability problems, teams need to either:
+
+-# Avoid the use of these instructions/intrinsics (i.e. avoid optimizing code).
+-# Create a wrapper layer that hides platform differences.
+-# "Hijack" RWMath's middle layer to use macros that are relatively cross platform.
+ - Note: this middle layer is not productized, and is not intended to be used by clients. 
+-# Port optimized code to each platform manually
+ - This porting effort would require renaming intrinsics, using different instructions (in most cases) and casting types to and from types supported on the platform. 
+
+\section s_vpl_what_the_vpl_provides What the VPL provides
+
+The VPL provides a single vector type (\c VectorIntrinsic) and a set of
+functions that are useful for vectorizaton.  Functions are implemented 
+on all platforms that can \e efficiently support them.  This means that
+functions are \e not portable to all platforms.  The library is meant
+to be used for writing high performance code, so functions that would be
+inefficient on some platforms are not implemented on those platforms.
+
+Please refer to \ref p_vpl_api_support_docs for a table of all VPL functions,
+and the platforms that support them.
+
+To allow for prototyping of code, or to allow VPL code to be used in
+a tool (where performance may not be important) the library also has
+"simulated" versions of all functions.  However, the simulated functions
+are unoptimized and not intended for high performance use.
+
+\section s_vpl_why_use_the_vpl Why use the VPL
+
+There are several use cases for using the VPL.
+
+\par Writing Vectorized Code for Multiple Platforms
+
+In many cases, it may be possible to write vectorized code (for example a
+single function) using the VPL which will run on all target platforms.  Writing
+the code with the VPL means the code does not need to be written multiple
+times.  This reduces development time, and reduces code maintenance costs.
+
+As an example, in many cases Xbox 360 VMX128 and PS3 VMX code will be virtually
+identical.  So the VPL can make it easy to write code once that will execute on
+both of these platforms.
+
+Using the VPL may also make it easier to move VMX code on the PPU to the SPU.
+Since, the instruction set of the SPU is quite similar (altought certainly not
+identical) to VMX.
+
+\par Prototyping Vectorized Code
+
+Often, developing vectorized code for an architecture (such as the SPU) is made
+difficult by poor tools support.  For example, debugging SPU code on target, or
+even launching SPU code may be more difficult than executing similar code on
+the PC.  Using the VPL may make it easier to prototype code on one platform
+before porting it to the target platform.  Even if platform specific code is
+required, writing the initial implementation of the code using the VPL may save
+time.
+
+\par Allowing for Common Tool Code and Runtime Code
+
+Often teams need to perform identical operations in tool side code, and in
+runtime game code.  If high performance runtime code is required, the game team
+will need to write and maintain generic tool side code, and optimized platform
+specific runtime code.
+The VPL allows teams to write optimized runtime code, and execute the same code
+on the tool side through \e simulation.  It should be pointed out, that the simulated
+code may actually be slower than generic C++ code.  So, the simulated code should
+probably only be used in cases where tool side performance is not critical.
+
+\section s_vpl_overview_further_reading Further Reading
+
+Please see the complete \ref p_vpl documentation for more information about the VPL.
+*/

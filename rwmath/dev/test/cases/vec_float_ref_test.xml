@@ -1,0 +1,1442 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<!-- The Last Test is test54, please change this number when you add more tests, make sure test names do not repeat-->
+
+<CLASS NAME="UnitTestVecFloatRef" HEADER="vec_float_ref_test.h" SOURCE="vec_float_ref_test.inc" RWHOSTHEADER="rw/math/vpu/vec_float_operation.h vec_float_utility.hpp" RWGENERICHEADER="" HOST="true" GENERIC="false">
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test0">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef(VectorIntrinsic &v)");
+
+        MakeVectorIntrinsic(v, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        Validate(
+            GetFloat(refX) == 1.0f &&
+            GetFloat(refY) == 2.0f &&
+            GetFloat(refZ) == 3.0f &&
+            GetFloat(refW) == 4.0f
+            );
+
+      ]]>
+      </TEST>
+      
+        <TEST NAME="test80">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef(VecFloatRef &v)");
+
+        MakeVectorIntrinsic(v, 3.0f, 2.3f, 3.4f, 4.5f);
+        VecFloatRefX refX1(v);
+        VecFloatRefX refX2(refX1);
+        
+		VecFloatRefY refY1(v);
+        VecFloatRefY refY2(refY1);
+        
+        VecFloatRefZ refZ1(v);
+        VecFloatRefZ refZ2(refZ1);
+        
+        VecFloatRefW refW1(v);
+        VecFloatRefW refW2(refW1);
+ 
+        Validate(
+            GetFloat(refX2) == 3.0f &&
+            GetFloat(refY2) == 2.3f &&
+            GetFloat(refZ2) == 3.4f &&
+            GetFloat(refW2) == 4.5f
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+        SetFunctionName("float GetFloat() const");
+
+        MakeVectorIntrinsic(v, 2.5f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        float f = GetFloat(refX);
+
+        Validate( f == 2.5f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+        SetFunctionName("void SetFloat(float f)");
+
+        MakeVectorIntrinsic(v, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        refX.SetFloat(9.0f);
+
+        Validate( GetFloat(refX) == 9.0f );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+        SetFunctionName("const VectorIntrinsic& GetVector() const");
+
+        MakeVectorIntrinsic(v1, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v1);
+        const VectorIntrinsic &v2 = refX.GetVector();
+
+        Validate( &v1 == &v2 );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+        SetFunctionName("int GetIndex() const");
+
+        MakeVectorIntrinsic(v, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        Validate(
+            refX.GetIndex() == 0 &&
+            refY.GetIndex() == 1 &&
+            refZ.GetIndex() == 2 &&
+            refW.GetIndex() == 3
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX>& operator =(VecFloatRefX/Y/Z/W rhs)");
+        
+        MakeVectorIntrinsic(v1, 16.0f, 0.0f, 32.0f, 0.0f);
+        VecFloatRefX refV1X(v1);
+        VecFloatRefY refV1Y(v1);
+        VecFloatRefZ refV1Z(v1);
+        VecFloatRefW refV1W(v1);
+        
+        MakeVectorIntrinsic(v2, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefX refV2X(v2);
+        VecFloatRefY refV2Y(v2);
+        VecFloatRefZ refV2Z(v2);
+        VecFloatRefW refV2W(v2);
+        
+        refV1X = refV2X;
+        refV1Y = refV2X;
+        refV1Z = refV2X;
+        refV1W = refV2X;
+        MakeVectorIntrinsic(r1expected, 1.0f, 1.0f, 1.0f, 1.0f);
+        bool r1 = IsEqual(v1, r1expected);
+            
+        refV1X = refV2Y;
+        refV1Y = refV2Y;
+        refV1Z = refV2Y;
+        refV1W = refV2Y;
+        MakeVectorIntrinsic(r2expected, 2.0f, 2.0f, 2.0f, 2.0f);
+        bool r2 = IsEqual(v1, r2expected);
+        
+        refV1X = refV2Z;
+        refV1Y = refV2Z;
+        refV1Z = refV2Z;
+        refV1W = refV2Z;
+        MakeVectorIntrinsic(r3expected, 3.0f, 3.0f, 3.0f, 3.0f);
+        bool r3 = IsEqual(v1, r3expected);
+        
+        refV1X = refV2W;
+        refV1Y = refV2W;
+        refV1Z = refV2W;
+        refV1W = refV2W;
+        MakeVectorIntrinsic(r4expected, 4.0f, 4.0f, 4.0f, 4.0f);
+        bool r4 = IsEqual(v1, r4expected);
+
+        Validate( r1 && r2 && r3 && r4 );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="testDoesNotCompile">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX>& operator =(VecFloatRefIndex rhs)");
+        MakeVectorIntrinsic(v1, 16.0f, 0.0f, 32.0f, 0.0f);
+        VecFloatRefIndex refV1X(v1, 0);
+        VecFloatRefIndex refV1Z(v1, 2);
+        MakeVectorIntrinsic(v2, 1.0f, 1.0f, 1.0f, 1.0f);
+        VecFloatRefY refV2Y(v2);
+        VecFloatRefW refV2W(v2);
+
+        // Copy elements of v1 into v2 using ref indexes.
+        refV2Y = refV1Z;
+        refV2W = refV1X;
+
+        MakeVectorIntrinsic(v2expected, 1.0f, 32.0f, 1.0f, 16.0f);
+
+        Validate( IsEqual(v2, v2expected) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX>& operator =(VecFloat::InParam rhs)");
+
+        InstanceFactory<VecFloat> factoryA(10.0f);
+        InstanceFactory<VecFloat> factoryB(20.0f);
+        InstanceFactory<VecFloat> factoryC(30.0f);
+        InstanceFactory<VecFloat> factoryD(40.0f);
+        VecFloat aVecFloat = factoryA.GetInstance();
+        VecFloat bVecFloat = factoryB.GetInstance();
+        VecFloat cVecFloat = factoryC.GetInstance();
+        VecFloat dVecFloat = factoryD.GetInstance();
+
+        MakeVectorIntrinsic(v, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        refX = aVecFloat;
+        refY = bVecFloat;
+        refZ = cVecFloat;
+        refW = dVecFloat;
+        Validate(
+            float_test_type(GetFloat(refX)) == float_test_type(aVecFloat) &&
+            float_test_type(GetFloat(refY)) == float_test_type(bVecFloat) &&
+            float_test_type(GetFloat(refZ)) == float_test_type(cVecFloat) &&
+            float_test_type(GetFloat(refW)) == float_test_type(dVecFloat)
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+        SetFunctionName("operator float() const");
+
+        MakeVectorIntrinsic(v, 1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        float f1 = refX;
+        float f2 = refY;
+        float f3 = refZ;
+        float f4 = refW;
+
+        Validate(
+             f1 == 1.0f &&
+             f2 == 2.0f &&
+             f3 == 3.0f &&
+             f4 == 4.0f
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+        SetFunctionName("operator float() const");
+
+        MakeVectorIntrinsic(v, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        refX = 10.0f;
+        refY = 20.0f;
+        refZ = 30.0f;
+        refW = 40.0f;
+
+        Validate(
+            GetFloat(refX) == 10.0f &&
+            GetFloat(refY) == 20.0f &&
+            GetFloat(refZ) == 30.0f &&
+            GetFloat(refW) == 40.0f
+            );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX>& operator =(float f)");
+
+        MakeVectorIntrinsic(v, 0.0f, 0.0f, 0.0f, 0.0f);
+        VecFloatRefX refX(v);
+        VecFloatRefY refY(v);
+        VecFloatRefZ refZ(v);
+        VecFloatRefW refW(v);
+        refX = 10.0f;
+        refY = 20.0f;
+        refZ = 30.0f;
+        refW = 40.0f;
+        Validate(
+            GetFloat(refX) == 10.0f &&
+            GetFloat(refY) == 20.0f &&
+            GetFloat(refZ) == 30.0f &&
+            GetFloat(refW) == 40.0f
+            );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfAdd(VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        VecFloat v2(3.5f);
+        SelfAdd(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfAdd(VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRef( v2, Y, 3.5f );
+        SelfAdd(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfAdd(VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVectorIntrinsic(vi, 1.0f, 2.0f, 3.5f, 4.0f);
+        VecFloatRefIndex vr(vi, 2);
+        SelfAdd(v1, vr);
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfAdd(VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        float f = 3.5f;
+        SelfAdd(v1, f);
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfSubtract(VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        VecFloat v2(3.5f);
+        SelfSubtract(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfSubtract(VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRef( v2, Z, 3.5f );
+        SelfSubtract(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfSubtract(VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRefIndex( v2, 1, 3.5f );
+        SelfSubtract(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfSubtract(VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        float f = 3.5f;
+        SelfSubtract(v1, f);
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfMult(VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        VecFloat v2(-4.0f);
+        SelfMult(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfMult(VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRef( v2, X, -4.0f );
+        SelfMult(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfMult(VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRefIndex( v2, 1, -4.0f );
+        SelfMult(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfMult(VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        float f = -4.0f;
+        SelfMult(v1, f);
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfDivide(VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        VecFloat v2(-4.0f);
+        SelfDivide(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfDivide(VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRef( v2, X, -4.0f );
+        SelfDivide(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test41">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfDivide(VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRefIndex( v2, 1, -4.0f );
+        SelfDivide(v1, v2);
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test42">
+      <![CDATA[
+
+        SetFunctionName("VecFloatRef<INDEX1>& SelfDivide(VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        float f = -4.0f;
+        SelfDivide(v1, f);
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test43">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        VecFloat v2(3.5f);
+        VecFloat result = Add(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRef( v2, Y, 3.5f );
+        VecFloat result = Add(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRefIndex( v2, 1, 3.5f );
+        VecFloat result = Add(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Add(VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        float f = 3.5f;
+        VecFloat result = Add(v1, f);
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        VecFloat v2(3.5f);
+        VecFloat result = Subtract(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRef( v2, Z, 3.5f );
+        VecFloat result = Subtract(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRefIndex( v2, 1, 3.5f );
+        VecFloat result = Subtract(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Subtract(VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        float f = 3.5f;
+        VecFloat result = Subtract(v1, f);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        VecFloat v2(-4.0f);
+        VecFloat result = Mult(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRef( v2, X, -4.0f );
+        VecFloat result = Mult(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRefIndex( v2, 1, -4.0f );
+        VecFloat result = Mult(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Mult(VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        float f = -4.0f;
+        VecFloat result = Mult(v1, f);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(VecFloatRef<INDEX1> a, VecFloat b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        VecFloat v2(-4.0f);
+        VecFloat result = Divide(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRef( v2, X, -4.0f );
+        VecFloat result = Divide(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRefIndex( v2, 1, -4.0f );
+        VecFloat result = Divide(v1, v2);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+        SetFunctionName("VecFloat Divide(VecFloatRef<INDEX1> a, float b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        float f = -4.0f;
+        VecFloat result = Divide(v1, f);
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator += (VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        VecFloat v2(3.5f);
+
+        v1 += v2;
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator += (VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRef( v2, Y, 3.5f );
+
+        v1 += v2;
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator += (VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRefIndex( v2, 1, 3.5f );
+
+        v1 += v2;
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator += (VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        float f = 3.5f;
+
+        v1 += f;
+        Validate( IsEqualWithEpsilon(v1, 6.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator -= (VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        VecFloat v2(3.5f);
+        v1 -= v2;
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator -= (VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRef( v2, Z, 3.5f );
+        v1 -= v2;
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator -= (VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRefIndex( v2, 2, 3.5f );
+        v1 -= v2;
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator -= (VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        float f = 3.5f;
+        v1 -= f;
+        Validate( IsEqualWithEpsilon(v1, -2.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator *= (VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        VecFloat v2(-4.0f);
+        v1 *= v2;
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator *= (VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRef( v2, X, -4.0f );
+        v1 *= v2;
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator *= (VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRefIndex( v2, 0, -4.0f );
+        v1 *= v2;
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator *= (VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        float f = -4.0f;
+        v1 *= f;
+        Validate( IsEqualWithEpsilon(v1, -14.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator /= (VecFloatRef<INDEX1> &a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        VecFloat v2(-4.0f);
+        v1 /= v2;
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator /= (VecFloatRef<INDEX1> &a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRef( v2, X, -4.0f );
+        v1 /= v2;
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator /= (VecFloatRef<INDEX1> &a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRefIndex( v2, 0, -4.0f );
+        v1 /= v2;
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloatRef<INDEX1>& operator /= (VecFloatRef<INDEX1> &a, const float& b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        float f = -4.0f;
+        v1 /= f;
+        Validate( IsEqualWithEpsilon(v1, -8.0f) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator + (VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        VecFloat v2(3.5f);
+        VecFloat result = v1 + v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator + (VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRef( v2, Y, 3.5f );
+        VecFloat result = v1 + v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator + (VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        MakeVecRefIndex( v2, 1, 3.5f );
+        VecFloat result = v1 + v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator + (VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, X, 2.5f );
+        float f = 3.5f;
+        VecFloat result = v1 + f;
+        Validate( IsEqualWithEpsilon(result, float_test_type(6.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator - (VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        VecFloat v2(3.5f);
+        VecFloat result = v1 - v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator - (VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRef( v2, Z, 3.5f );
+        VecFloat result = v1 - v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator - (VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        MakeVecRefIndex( v2, 2, 3.5f );
+        VecFloat result = v1 - v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator - (VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, Z, 1.5f );
+        float f = 3.5f;
+        VecFloat result = v1 - f;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-2.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator * (VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, X, 3.5f );
+        VecFloat v2(-4.0f);
+        VecFloat result = v1 * v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator * (VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRef( v2, X, -4.0f );
+        VecFloat result = v1 * v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator * (VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        MakeVecRefIndex( v2, 0, -4.0f );
+        VecFloat result = v1 * v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator * (VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, W, 3.5f );
+        float f = -4.0f;
+        VecFloat result = v1 * f;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-14.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator / (VecFloatRef<INDEX1> a, VecFloat::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        VecFloat v2(-4.0f);
+        VecFloat result = v1 / v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator / (VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRef( v2, X, -4.0f );
+        VecFloat result = v1 / v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator / (VecFloatRef<INDEX1> a, VecFloatRefIndex::InParam b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        MakeVecRefIndex( v2, 0, -4.0f );
+        VecFloat result = v1 / v2;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test79">
+      <![CDATA[
+
+#if !defined(RW_MATH_NO_OPERATOR_OVERLOADS)
+
+        SetFunctionName("VecFloat operator / (VecFloatRef<INDEX1> a, const float& b)");
+
+        MakeVecRef( v1, W, 32.0f );
+        float f = -4.0f;
+        VecFloat result = v1 / f;
+        Validate( IsEqualWithEpsilon(result, float_test_type(-8.0f)) );
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+        SetFunctionName("bool operator ==(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+        SetFunctionName("bool operator !=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareNE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+        SetFunctionName("bool operator >(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareGT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+        SetFunctionName("bool operator <(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareLT operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+        SetFunctionName("bool operator >=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareGTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+        SetFunctionName("bool operator <=(VecFloatRef<INDEX1> a, VecFloatRef<INDEX2> b)");
+
+        VecFloatRefCompareLTE operatorToTest;
+        bool result = TestComparisonOperator(operatorToTest);
+        Validate( result );
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+</CLASS>
+
+<!-- The Last Test is test80, please change this number when you add more tests, make sure test names do not repeat-->
+
+</TESTCLASS>

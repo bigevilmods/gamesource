@@ -1,0 +1,65 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+
+template <class FloatClass> class Vector2Template;
+template <class FloatClass> class Vector3Template;
+template <class FloatClass> class Vector4Template;
+template <class FloatClass> class QuaternionTemplate;
+template <class FloatClass> class QuatPosTemplate;
+template <class FloatClass> class Matrix33Template;
+template <class FloatClass> class Matrix44Template;
+template <class FloatClass> class PlaneTemplate;
+template <class FloatClass> class Vector3PlusTemplate;
+template <class FloatClass> class Matrix44AffineTemplate;
+
+template<class FloatType>
+#endif
+class UnitTestVector4 :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestVector4();
+    virtual ~UnitTestVector4();
+    void Test();
+
+//#BLOCK
+
+private:
+
+#ifdef HOST_TESTING
+    rw::math::vpu::VectorIntrinsic CreateVectorIntrinsic(float x, float y, float z, float w);
+#endif
+
+private:
+
+    float_test_type x_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type y_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type z_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float_test_type w_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    #ifdef HOST_TESTING
+    VectorIntrinsic vecintrinsic_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    #endif
+
+    EXPLICIT_NAMESPACE(Vector4) v4a_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector4) v4b_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector4) v4out_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+    float_test_type retValueFloat;
+    bool retValueBool;
+
+    EXPLICIT_NAMESPACE(Vector4) v4a_norm_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector4) v4b_norm_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+
+};
+
+
+

@@ -1,0 +1,11 @@
+/*!
+\page p_mask4 Mask4
+
+The Mask4 type represents an aggregate of four true or false conditions.  You can think of the
+Mask4 type as representing an array of four boolean values.  The math library has comparison
+functions that generate Mask4 results.  For example, you can compare two Vector4 types to generate
+a Mask4.  Mask4's may also be used to "select" between Vector4 objects.  This
+ability allows "conditional" code to be written that does not contain any branch
+instuctions.
+
+*/

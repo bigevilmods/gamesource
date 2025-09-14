@@ -1,0 +1,171 @@
+/*!
+\page p_vec_float VecFloat
+
+The <code>VecFloat</code> type is a class that abstracts the floating point scalar on vector hardware. Since the scalar and 
+vector register sets on such hardware are disjointed, switching between floating point and vector operations is very costly. It 
+is more effective to simulate a single float by duplicating it across all elements in a vector and operate on that instead.
+
+In the \ref p_vpu_library "VPU library" vectorized floats are offered through the <code>VecFloat</code>,
+<code>VecFloatRef\<VectorAxis\></code> and <code>VecFloatRefIndex</code> types. The FPU library offers surrogate types to enable FPU and 
+VPU substitutability. These FPU versions are explained below.
+
+\section VecFloat
+
+<code>VecFloat</code> is the type that allows us to treat a vector register as a single scalar value. This is achieved by duplicating the 
+scalar value across the register four times. For example, the value 3.14 is actually stored as (3.14, 3.14, 3.14, 3.14).
+
+For efficiency reasons, the use of <code>VecFloat</code>s is encouraged when using the \ref p_vpu_library "VPU library", but be aware of the 
+trade-offs mentioned below.
+
+<code>VecFloat</code> offers all the common arithmetic operations and functions to allow code to be written in the most natural way. To illustrate, 
+consider the following piece of code...
+
+\code
+    float a = 3.14f;
+    float b = 2.71f;
+    float c = 42.f;
+    float d = 1.f;
+    
+    a = rw::math::fpu::Sin(b) * c + 2.f * d;
+\endcode
+
+To run this piece on the vector hardware one would simply write...
+
+\code
+    VecFloat a = 3.14f;
+    VecFloat b = 2.71f;
+    VecFloat c = 42.f;
+    VecFloat d = 1.f;
+    
+    a = rw::math::vpu::Sin(b) * c + 2.f * d;
+\endcode
+
+It is important to realize that you cannot cast a <code>VecFloat</code> to an array of four floating point numbers because of aliasing issues. Doing
+this can occasionally work but it is undefined behavior and more often than not will cause havok in your code. More information on this can be found
+in the section on \ref p_aliasing "aliasing".
+
+\section Tradeoffs
+
+As the code snippet above illustrates, using <code>VecFloat</code>s is like having a cake and eating it too. Unfortunately, there are some trade-offs
+that you should be faware of before you start sprinkling <code>VecFloat</code>s through your code.
+
+First and foremost, <code>sizeof(VecFloat) > sizeof(float)</code>. To be more precise, a <code>VecFloat</code> is four times larger than a good
+old <code>float</code>. That means that your storage requirements go up considerably if you use <code>VecFloat</code>s everywhere. It probably won't
+make much sense to store a player's health in a <code>VecFloat</code> considering you'll do very little arithmetic with it anyway. Conversely, if you 
+are writing a tight innerloop that operates on a mix of scalar and vector types, it probably makes sense to keep it running on the vector unit by
+using <code>VecFloat</code>s.
+
+The second trade-off is that <code>VecFloat</code>s have more stringent alignment requirements than <code>float</code>s. Since a <code>VecFloat</code>
+wraps the vector intrinsic type, it shares its need for alignment. This is no different from <code>Vector</code>, <code>Matrix</code>, etcetera.
+
+\section s_vec_float_ref VecFloatRef<VectorAxis>
+
+In our quest to offer elegant and fast \ref p_scalar_access "scalar access" and implement \ref p_accessors  "accessors" for the different math types, 
+we invented the <code>VecFloatRef</code> type. This type abstracts the notion of a reference to a single scalar inside a vector. To illustrate, 
+consider the FPU equivalent.
+\code
+    struct Vector
+    {
+        float x, y, z, w;
+    };
+    
+    Vector v;
+    v.y = 3.14f;
+    
+    float& vecFloatRef = v.y;
+    
+    assert(vecFloatRef == 3.14f);
+\endcode
+
+Now rewritten using the VPU library, this looks as follows...
+\code
+    Vector4 v;
+    v.Y() = 3.14f;
+    VecFloatRefY vecFloatRef = v.Y();
+    
+    assert(GetFloat(vecFloatRef) == 3.14f);
+\endcode
+
+Behind the scenes, this scalar code is converted into a series of vector
+operations that perform the same calculations.
+
+\section VecFloatRefIndex
+
+\c VecFloatRef types offer a good replacement for floats, in most situations.
+However, one issue is that they rely on compile time knowledge.  So, it is not
+possible to switch the reference to a different element at runtime time.  That
+presents a problem if you wanted to access the i'th element at runtime.
+
+\code
+VecFloat SumHorizontally( Vector4 vec )
+{
+    VecFloat result(0.0f);
+    // Using a for loop is silly, but it is used to illustrate a point.
+    for(int i=0;i<4;++i)
+    {
+        result += vec.GetElem(i);
+    }
+}
+\endcode
+
+In this case GetElem would need to return a different reference type for each
+value of \c i.  So, instead of trying to return a VecFloatRef (which would be
+impossible in this situation), we return a \c VecFloatRefIndex.
+
+A \c VecFloatRefIndex stores a reference to a vector, as well as an element
+index.  That way the element being referred to can be determined at runtime.
+\c VecFloatRefIndex objects behave the same as VecFloatRef objects, however
+they are not as efficient.  Because the element being accessed is only known
+at runtime, it the math library can not produce optimized code for accessing
+specific elements.  Many useful VMX/VMX128 instructions use immediate values,
+and are therefore completely unusable when dealing with the VecFloatRefIndex
+type.
+
+It is recommended that users avoid the VecFloatRefIndex type for any
+performance critical code.  The type exists more for API completeness, and to
+facilitate porting legacy code.
+
+\internal
+
+The following docs need to be cleaned up and completed before they are included.
+
+\section VecFloat on the FPU
+
+Todo...
+
+\section GetFloat
+
+Todo...
+
+\section Todo
+
+Rework from James' document
+
+However, there is an overhead of doing that, if data is originally stored in
+float, loading that into VMX register and splat (techi word for duplicate)
+across VMX register. Generally, if there’s enough independent instructions,
+infrequent load from float to VMX register isn’t that expensive, the cost of
+latency would be well hidden between instructions.
+
+To make things easier for end user, currently, user can create a VecFloat class by float, simply do the following
+
+VecFloat a = 1.0f; // same as float a = 1.0f what use to do
+float f = static_cast<float>(a); // use operator float() to return  copy of float data
+
+
+You cannot use float& to a VecFloat type
+
+----------------------------Wrong----------------------------
+VecFloat a = 1.0f; // same as float a = 1.0f what use to do
+float f& = static_cast<float&>(a); // doesn't work
+----------------------------Wrong----------------------------
+
+
+You should not use reinterpret_cast<float*> to a VecFloat type, even through it will compile fine and may work. It actually violate a ISO C/C++ standards, and it is called aliasing. (see reinterpret_cast on vector types for more detail)
+
+----------------------------Wrong----------------------------
+VecFloat a = 1.0f; // same as float a = 1.0f what use to do
+float f* = reinterpret_cast<float*>(&a); // will compile but doesn’t work when certain optimization is turned on
+----------------------------Wrong----------------------------
+    
+*/

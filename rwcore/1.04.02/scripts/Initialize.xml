@@ -1,0 +1,24 @@
+<project>
+
+    <!-- TODO: figure out how to sort this out-->
+    <do unless="@{PropertyExists('config-renderware-hostos')}">
+        <property name="config-renderware-hostos" value="${config-system}"/>
+        <property name="config-renderware-hostos" value="xbox2" if="${config-system} == xenon"/>
+        <property name="config-renderware-hostos" value="win" if="${config-system} == pc || ${config-system} == pc64"/>
+    </do>
+    <property name="config-renderware-targetos" value="${config-renderware-hostos}" unless="@{PropertyExists('config-renderware-targetos')}"/>
+
+  <property name="package.rwcore.includedirs">
+        ${package.rwcore.dir}/include/cmn
+        ${package.rwcore.dir}/include/${config-renderware-targetos}
+    </property>
+
+    <property name="package.rwcore.libdir" value="${package.rwcore.builddir}/${config}/lib"/>
+
+    <fileset name="package.rwcore.libs">
+        <includes name="${package.rwcore.libdir}/${lib-prefix}rwcore${lib-suffix}"/>
+    </fileset>
+
+    <property name="package.rwcore.runtime.buildmodules" value="rwcore"/>
+
+</project>

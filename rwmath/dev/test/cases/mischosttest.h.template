@@ -1,0 +1,82 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestMiscHost :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestMiscHost();
+    virtual ~UnitTestMiscHost();
+    void Test();
+
+    static inline rw::math::VecFloat MagnitudeXZ(rw::math::Vector3::InParam v)
+    {
+        using namespace rw::math::vpu;
+        Vector3 mult = v * v;
+        return Sqrt(mult.X() + mult.Z());
+    }
+
+    static inline rw::math::VecFloat MagnitudeSquaredXZ(rw::math::Vector3::InParam v)
+    {
+        using namespace rw::math::vpu;
+        Vector3 mult = v * v;
+        return mult.X() + mult.Z();
+    }
+
+    static inline rw::math::VecFloat MagnitudeSquaredXZ(rw::math::Vector3::InParam v1, rw::math::Vector3::InParam v2)
+    {
+        using namespace rw::math::vpu;
+        Vector3 mult = v1 * v2;
+        return mult.X() + mult.Z();
+    }
+
+    static inline void NearestPointOnLineSeg2D(rw::math::Vector3::InParam segStart, rw::math::Vector3::InParam segEnd, rw::math::Vector3::InParam posQuery, rw::math::Vector3::OutParam posNearest, rw::math::VecFloat::OutParam vfDistToNearestFromLinePoint)
+    {
+        rw::math::Vector3 lineSegment = segEnd - segStart;
+        lineSegment.SetY(GetVecFloat_Zero());
+        
+        rw::math::Vector3 lineSegmentNormal;
+        rw::math::CheckedNormalizeReturnMagnitude(lineSegment, lineSegmentNormal);
+
+        rw::math::Vector3 toQueryPoint = posQuery - segStart;
+        toQueryPoint.SetY(GetVecFloat_Zero());
+
+        rw::math::VecFloat distToNearestPointOnLine = rw::math::Dot(lineSegmentNormal, toQueryPoint);
+        rw::math::Vector3 nearestPointOnLine = segStart + distToNearestPointOnLine * lineSegmentNormal;
+        nearestPointOnLine.SetY(GetVecFloat_Zero());
+
+        posNearest = nearestPointOnLine;
+
+        rw::math::VecFloat distToNearestPointFromStartSqr = MagnitudeSquaredXZ(nearestPointOnLine - segStart);
+        rw::math::VecFloat lineSegmentLengthSqr = MagnitudeSquaredXZ(lineSegment);
+
+        rw::math::MaskScalar isOutOfSegOnStartSide = rw::math::CompLessThan(distToNearestPointOnLine, rw::math::GetVecFloat_Zero());
+        rw::math::MaskScalar isPossiblyOutOfSegOnEndSide = rw::math::CompGreaterThan(distToNearestPointFromStartSqr, lineSegmentLengthSqr);
+
+        posNearest = rw::math::Select(isPossiblyOutOfSegOnEndSide, segEnd, posNearest);
+        posNearest = rw::math::Select(isOutOfSegOnStartSide, segStart, posNearest);
+
+        vfDistToNearestFromLinePoint = MagnitudeXZ(posQuery - posNearest);
+    }
+
+//#BLOCK
+
+private:
+
+    EXPLICIT_NAMESPACE(Vector3) v3a_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3b_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3c_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3d_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(VecFloat) vout_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+
+};
+

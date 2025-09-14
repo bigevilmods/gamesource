@@ -1,0 +1,89 @@
+/*!
+\page p_projection_matrix_functions Projection Matrix Functions
+
+\section s_projection_matrix_introduction Introduction
+
+Most math functions have little flexibility in implementation.  There is
+usually a single correct way to perform an operation.  However, projection
+matrices are fairly unique.  There are many implementation decisions that
+are fairly arbitrary.  For example, what range of Z values should points be
+tranformed into?  This documentation was written to help explain the choices
+made in RWMath, and to make the parameters used to construct the matrices
+less mysterious.
+
+\section s_projection_matrix_coordinate_systems Coordinate Systems
+
+Two types of coordinate systems are supported by RWMath's matrix projection
+functions.  They are left handed, and right handed coordinate systems.  The key
+difference is how the Z axis is treated.
+
+In a left handed coordinate system, the camera looks down the positive Z axis.
+So, the greater a Z value becomes, the farther it moves away from the camera.
+
+In a right handed coordinate system the camera looks down the negative Z axis.
+So, the more negative a Z value becomes, the farther it moves away from the camera.
+
+\htmlonly
+MSDN has a more in depth description of the two coordinate systems.  Please
+refer to <a href="http://msdn2.microsoft.com/en-us/library/bb204853.aspx">Coordinate
+Systems</a> on MSDN.
+\endhtmlonly
+
+If you are using RWMath functions to compute projection matrices for a specific
+platform or graphics API, you should check to make sure that you use the correct
+coordinate system.  Direct3D uses a left hand coordinate system.  But other
+API's, such as OpenGL, may use a right handed coordinate system.  You should also
+make sure that the Z values are transformed to the correct range for your rendering
+system.
+
+\section s_projection_matrix_near_and_far_planes Near and Far Planes
+
+The near and far planes represent the nearest and farthest planes of the view
+frustum.  All of the RWMath projection matrix functions take a \c zn (z near)
+and \c zf (z far) value.  These values are all positive distances.  They are
+\e not z positions.  So two equivalent projection matrices, in left handed and
+right handed coordinate systems, use the same values values for \c zn and \c zf.
+
+\section s_projection_matrix_how_points_are_transformed How points are transformed
+
+Regardless of the function that is used to construct a projection matrix, all Z values
+are mapped between 0 and 1.  Values at the near plane are mapped to 0, and
+values at the far plane are mapped to 1.
+
+\par Perspective Projections
+
+Points projected by a perspective matrix will have x, y values within the
+frustum mapped between -1 and 1 along the x and y axis after a divide by w.  There are functions for
+creating perspective matrices given a width and height (i.e. \c w or \c h), or
+by specifying the left, right, bottom and top dimensions (i.e. \c l, \c r, \c
+b, or \c t).  The dimensions passed to the functions specify the dimensions of the
+view frustum at the near plane.  It is also possible to specify a FOV in
+radians and the aspect ratio.
+
+After division by w, points on the left most side of the frustum are mapped to
+x=-1 and points on the right side of the frustum are mapped to x=1.
+After division by w, points on the bottom of the frustum are mapped to
+y=-1 and points on the top of the frustum are mapped to y=1.
+
+\par Orthographic Projections
+
+The orthographic projection matrices map points similar to the perspective
+matrix.  The main difference is that all points in the frustum are between -1
+and 1 on the x, and y axis (no division by w is necessary).
+
+Points on the left most side of the frustum are mapped to
+x=-1 and points on the right side of the frustum are mapped to x=1.
+Points on the bottom of the frustum are mapped to
+y=-1 and points on the top of the frustum are mapped to y=1.
+
+\par Function Naming
+
+The naming of the perspective functions is fairly self explanatory.  For
+example the function \c Matrix44FromPerspectiveLH creates a 4x4 perspective
+matrix for a left hand coordinate system.  All projection matrix functions have
+LH and RH versions.  For backwards compatibility, the functions also have a
+name that lacks the LH or RH suffix.  All functions that don't specify a
+coordinate system are implicitly right handed.
+
+*/
+

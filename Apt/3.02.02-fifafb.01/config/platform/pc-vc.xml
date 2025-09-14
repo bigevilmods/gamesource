@@ -1,0 +1,11 @@
+<project>
+
+  <include file="${package.eaconfig.dir}/config/platform/pc-vc.xml" />
+
+  <optionset name="config-options-common">
+    <option name="buildset.cc.options">
+      @{OptionSetGetValue('config-options-common', 'buildset.cc.options')}
+      -wd4365 <!-- conversion from 'int' to 'uint32' -->
+    </option>
+  </optionset>
+</project>

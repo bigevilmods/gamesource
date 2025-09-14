@@ -1,0 +1,6841 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestMatrix44Affine" HEADER="matrix44affinetest.h" SOURCE="matrix44affinetest.inc" RWHOSTHEADER="rw/math/vpu/matrix44affine_operation.h" RWGENERICHEADER="rw/math/fpu/matrix44affine_operation.h" RWOPTIMALHEADER="rw/math/optimal/matrix44affine_operation.h" HOST="true" GENERIC="true" OPTIMAL="true">
+
+<!-- The Last Test is test211, please change this number when you add more tests, make sure test names do not repeat-->
+
+  <TYPE NAME="class">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test1">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44Affine(Quaternion &q, Vector3&)");
+
+        Quaternion q;
+        Matrix44Affine ref;
+        Vector3 v3(2.f, 3.f, 4.f);
+
+        q.Set(0, 0, SQRT_HALF, SQRT_HALF);
+
+        ref.Set(
+             0, 1, 0,
+            -1, 0, 0,
+             0, 0, 1,
+             2, 3, 4
+            );
+
+        Matrix44Affine r(q, v3);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test2">
+      <![CDATA[
+
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("Matrix44Affine(const fpu::Matrix44AffineTemplate<FloatClassRHS> &_m)");
+
+        ::rw::math::fpu::Matrix44AffineTemplate<double> doubleUnalignedMatrix;
+        ::rw::math::fpu::Matrix44AffineTemplate<float> floatUnalignedMatrix;
+        ::rw::math::fpu::Matrix44AffineTemplate<double> doubleAlignedMatrix;
+        ::rw::math::fpu::Matrix44AffineTemplate<float> floatAlignedMatrix;
+
+        doubleUnalignedMatrix.Set(
+                                  0, 1, 0,
+                                 -1, 0, 0,
+                                  0, 0, 1,
+                                  2, 3, 4
+                                 );
+        floatUnalignedMatrix.Set(
+                                  0, 1, 0,
+                                 -1, 0, 0,
+                                  0, 0, 1,
+                                  2, 3, 4
+                                 );
+        doubleAlignedMatrix.Set(
+                                  0, 1, 0,
+                                 -1, 0, 0,
+                                  0, 0, 1,
+                                  2, 3, 4
+                                 );
+        floatAlignedMatrix.Set(
+                                  0, 1, 0,
+                                 -1, 0, 0,
+                                  0, 0, 1,
+                                  2, 3, 4
+                                 );
+
+        Matrix44Affine ref;
+        ref.Set(
+                                  0, 1, 0,
+                                 -1, 0, 0,
+                                  0, 0, 1,
+                                  2, 3, 4
+
+                );
+
+        Matrix44Affine test_doubleUnalignedMatrix(doubleUnalignedMatrix);
+        Matrix44Affine test_floatUnalignedMatrix(doubleUnalignedMatrix);
+        Matrix44Affine test_doubleAlignedMatrix(doubleUnalignedMatrix);
+        Matrix44Affine test_floatAlignedMatrix(doubleUnalignedMatrix);
+
+        Validate(IsSimilar(test_doubleUnalignedMatrix, ref) &&
+                 IsSimilar(test_floatUnalignedMatrix, ref) &&
+                 IsSimilar(test_doubleAlignedMatrix, ref) &&
+                 IsSimilar(test_floatAlignedMatrix, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test3">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44Affine(float m0, ..., float m15)");
+        Matrix44Affine m(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        Validate(
+                m.GetElem( 0) == float_test_type( 2.0f) &&
+                m.GetElem( 1) == float_test_type( 3.0f) &&
+                m.GetElem( 2) == float_test_type( 4.0f) &&
+                m.GetElem( 3) == float_test_type( 5.0f) &&
+                m.GetElem( 4) == float_test_type( 6.0f) &&
+                m.GetElem( 5) == float_test_type( 7.0f) &&
+                m.GetElem( 6) == float_test_type( 8.0f) &&
+                m.GetElem( 7) == float_test_type( 9.0f) &&
+                m.GetElem( 8) == float_test_type(10.0f) &&
+                m.GetElem( 9) == float_test_type(11.0f) &&
+                m.GetElem(10) == float_test_type(12.0f) &&
+                m.GetElem(11) == float_test_type(13.0f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="matrix44affine_vecfloat_construction">
+      <![CDATA[
+
+        #ifdef HOST_TESTING
+
+        SetFunctionName("Matrix44Affine(VecFlaot m0, ..., VecFlaot m15)");
+        Matrix44Affine m(VecFloat(2.0f), VecFloat(3.0f), VecFloat(4.0f), VecFloat(5.0f), VecFloat(6.0f), VecFloat(7.0f), VecFloat(8.0f), VecFloat(9.0f), VecFloat(10.0f), VecFloat(11.0f), VecFloat(12.0f), VecFloat(13.0f));
+        Validate(
+                m.GetElem( 0) == VecFloat( 2.0f) &&
+                m.GetElem( 1) == VecFloat( 3.0f) &&
+                m.GetElem( 2) == VecFloat( 4.0f) &&
+                m.GetElem( 3) == VecFloat( 5.0f) &&
+                m.GetElem( 4) == VecFloat( 6.0f) &&
+                m.GetElem( 5) == VecFloat( 7.0f) &&
+                m.GetElem( 6) == VecFloat( 8.0f) &&
+                m.GetElem( 7) == VecFloat( 9.0f) &&
+                m.GetElem( 8) == VecFloat(10.0f) &&
+                m.GetElem( 9) == VecFloat(11.0f) &&
+                m.GetElem(10) == VecFloat(12.0f) &&
+                m.GetElem(11) == VecFloat(13.0f)
+                );
+
+        #endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test4">
+      <![CDATA[
+
+
+
+        Matrix44Affine m(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        SetFunctionName("Matrix44Affine(Matrix44Affine&)");
+        Matrix44Affine mat(m);
+        Validate(
+                mat.GetElem( 0) == float_test_type( 2.0f) &&
+                mat.GetElem( 1) == float_test_type( 3.0f) &&
+                mat.GetElem( 2) == float_test_type( 4.0f) &&
+                mat.GetElem( 3) == float_test_type( 5.0f) &&
+                mat.GetElem( 4) == float_test_type( 6.0f) &&
+                mat.GetElem( 5) == float_test_type( 7.0f) &&
+                mat.GetElem( 6) == float_test_type( 8.0f) &&
+                mat.GetElem( 7) == float_test_type( 9.0f) &&
+                mat.GetElem( 8) == float_test_type(10.0f) &&
+                mat.GetElem( 9) == float_test_type(11.0f) &&
+                mat.GetElem(10) == float_test_type(12.0f) &&
+                mat.GetElem(11) == float_test_type(13.0f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="construct_from_matrix44">
+      <![CDATA[
+
+
+
+        Matrix44 m(1.0f, 2.0f, 3.0f, 0.0f, 5.0f, 6.0f, 7.0f, 0.0f, 9.0f, 10.0f, 11.0f, 0.0f, 13.0f, 14.0f, 15.0f, 1.0f);
+        SetFunctionName("Matrix44Affine(Matrix44&)");
+        Matrix44Affine mat(m);
+        Validate(
+                mat.GetElem( 0) == float_test_type( 1.0f) &&
+                mat.GetElem( 1) == float_test_type( 2.0f) &&
+                mat.GetElem( 2) == float_test_type( 3.0f) &&
+
+                mat.GetElem( 3) == float_test_type( 5.0f) &&
+                mat.GetElem( 4) == float_test_type( 6.0f) &&
+                mat.GetElem( 5) == float_test_type( 7.0f) &&
+
+                mat.GetElem( 6) == float_test_type( 9.0f) &&
+                mat.GetElem( 7) == float_test_type(10.0f) &&
+                mat.GetElem( 8) == float_test_type(11.0f) &&
+
+                mat.GetElem( 9) == float_test_type(13.0f) &&
+                mat.GetElem(10) == float_test_type(14.0f) &&
+                mat.GetElem(11) == float_test_type(15.0f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test5">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44Affine(const FloatClass m[12])");
+#ifdef HOST_TESTING
+        float floatData[] = { 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f };
+        AlignedFloatBuffer floatBuffer(floatData, sizeof(floatData));
+        Matrix44Affine m(floatBuffer.GetFloatData());
+#else
+        float_basic_type EA_PREFIX_ALIGN(RW_MATH_MATRIX44AFFINE_ALIGNMENT) fArray[12] EA_POSTFIX_ALIGN(RW_MATH_MATRIX44AFFINE_ALIGNMENT)={2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f};
+        Matrix44Affine m(fArray);
+#endif
+        Validate(
+                m.GetElem( 0) == float_test_type( 2.0f) &&
+                m.GetElem( 1) == float_test_type( 3.0f) &&
+                m.GetElem( 2) == float_test_type( 4.0f) &&
+                m.GetElem( 3) == float_test_type( 5.0f) &&
+                m.GetElem( 4) == float_test_type( 6.0f) &&
+                m.GetElem( 5) == float_test_type( 7.0f) &&
+                m.GetElem( 6) == float_test_type( 8.0f) &&
+                m.GetElem( 7) == float_test_type( 9.0f) &&
+                m.GetElem( 8) == float_test_type(10.0f) &&
+                m.GetElem( 9) == float_test_type(11.0f) &&
+                m.GetElem(10) == float_test_type(12.0f) &&
+                m.GetElem(11) == float_test_type(13.0f)
+                );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test6">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44Affine(Vector3&, Vector3&, Vector3&, Vector3&)");
+        Vector3 v1(2.0f, 3.0f, 4.0f);
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Vector3 v3(10.0f, 11.0f, 12.0f);
+        Vector3 v4(14.0f, 15.0f, 16.0f);
+        Matrix44Affine m(v1, v2, v3, v4);
+        Validate(
+                m.GetElem( 0) == float_test_type( 2.0f) &&
+                m.GetElem( 1) == float_test_type( 3.0f) &&
+                m.GetElem( 2) == float_test_type( 4.0f) &&
+                m.GetElem( 3) == float_test_type( 6.0f) &&
+                m.GetElem( 4) == float_test_type( 7.0f) &&
+                m.GetElem( 5) == float_test_type( 8.0f) &&
+                m.GetElem( 6) == float_test_type(10.0f) &&
+                m.GetElem( 7) == float_test_type(11.0f) &&
+                m.GetElem( 8) == float_test_type(12.0f) &&
+                m.GetElem( 9) == float_test_type(14.0f) &&
+                m.GetElem(10) == float_test_type(15.0f) &&
+                m.GetElem(11) == float_test_type(16.0f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test213">
+      <![CDATA[
+
+        SetFunctionName("Matrix44Affine(MatrixAffinePacked &)");
+        Matrix44AffinePacked mPacked((float_basic_type)0.0f, (float_basic_type)1.5f, (float_basic_type)6.8f, 
+                                     (float_basic_type)7.8f, (float_basic_type)8.9f, (float_basic_type)0.0f, 
+                                     (float_basic_type)7.8f, (float_basic_type)7.0f, (float_basic_type)8.0f, 
+                                     (float_basic_type)0.0f, (float_basic_type)1.0f, (float_basic_type)12.6f);
+        Matrix44Affine m(mPacked);
+        Validate(
+                (float_test_type)m.GetElem( 0) == float_test_type( 0.0f) &&
+                (float_test_type)m.GetElem( 1) == float_test_type( 1.5f) &&
+                (float_test_type)m.GetElem( 2) == float_test_type( 6.8f) &&
+                (float_test_type)m.GetElem( 3) == float_test_type( 7.8f) &&
+                (float_test_type)m.GetElem( 4) == float_test_type( 8.9f) &&
+                (float_test_type)m.GetElem( 5) == float_test_type( 0.0f) &&
+                (float_test_type)m.GetElem( 6) == float_test_type(7.8f) &&
+                (float_test_type)m.GetElem( 7) == float_test_type(7.0f) &&
+                (float_test_type)m.GetElem( 8) == float_test_type(8.0f) &&
+                (float_test_type)m.GetElem( 9) == float_test_type(0.0f) &&
+                (float_test_type)m.GetElem(10) == float_test_type(1.0f) &&
+                (float_test_type)m.GetElem(11) == float_test_type(12.6f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="test7">
+      <![CDATA[
+
+
+
+        SetFunctionName("SetZero()");
+
+        Matrix44Affine m;
+        m.SetZero();
+
+        Validate(IsSimilar(m, GetMatrix44Affine_Zero()));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test8">
+      <![CDATA[
+
+
+
+        SetFunctionName("SetIdentity()");
+
+        Matrix44Affine m;
+        m.SetIdentity();
+
+        Validate(IsSimilar(m, GetMatrix44Affine_Identity()));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test9">
+      <![CDATA[
+
+
+
+        SetFunctionName("Set(float m0, ... float m15)");
+
+        Matrix44Affine m;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(
+                m.GetElem( 0) == float_test_type( 2.0f) &&
+                m.GetElem( 1) == float_test_type( 3.0f) &&
+                m.GetElem( 2) == float_test_type( 4.0f) &&
+                m.GetElem( 3) == float_test_type( 5.0f) &&
+                m.GetElem( 4) == float_test_type( 6.0f) &&
+                m.GetElem( 5) == float_test_type( 7.0f) &&
+                m.GetElem( 6) == float_test_type( 8.0f) &&
+                m.GetElem( 7) == float_test_type( 9.0f) &&
+                m.GetElem( 8) == float_test_type(10.0f) &&
+                m.GetElem( 9) == float_test_type(11.0f) &&
+                m.GetElem(10) == float_test_type(12.0f) &&
+                m.GetElem(11) == float_test_type(13.0f)
+                );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test10">
+      <![CDATA[
+
+
+
+        SetFunctionName("Set(Vector3, Vector3, Vector3, Vector3)");
+
+        Vector3 v1( 2.0f,  3.0f,  4.0f);
+        Vector3 v2( 6.0f,  7.0f,  8.0f);
+        Vector3 v3(10.0f, 11.0f, 12.0f);
+        Vector3 v4(14.0f, 15.0f, 16.0f);
+
+        Matrix44Affine m;
+        m.Set(v1,v2,v3,v4);
+
+        Validate(
+            m.GetElem( 0) == float_test_type( 2.0f) &&
+            m.GetElem( 1) == float_test_type( 3.0f) &&
+            m.GetElem( 2) == float_test_type( 4.0f) &&
+            m.GetElem( 3) == float_test_type( 6.0f) &&
+            m.GetElem( 4) == float_test_type( 7.0f) &&
+            m.GetElem( 5) == float_test_type( 8.0f) &&
+            m.GetElem( 6) == float_test_type(10.0f) &&
+            m.GetElem( 7) == float_test_type(11.0f) &&
+            m.GetElem( 8) == float_test_type(12.0f) &&
+            m.GetElem( 9) == float_test_type(14.0f) &&
+            m.GetElem(10) == float_test_type(15.0f) &&
+            m.GetElem(11) == float_test_type(16.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test11">
+      <![CDATA[
+
+
+
+        SetFunctionName("SetElem(int, float), GetElem(int i)");
+
+        Matrix44Affine m;
+        m.SetZero();
+        m.SetElem( 0,float_test_type( 2.0f) );
+        m.SetElem( 1,float_test_type( 3.0f) );
+        m.SetElem( 2,float_test_type( 4.0f) );
+        m.SetElem( 3,float_test_type( 5.0f) );
+        m.SetElem( 4,float_test_type( 6.0f) );
+        m.SetElem( 5,float_test_type( 7.0f) );
+        m.SetElem( 6,float_test_type( 8.0f) );
+        m.SetElem( 7,float_test_type( 9.0f) );
+        m.SetElem( 8,float_test_type(10.0f) );
+        m.SetElem( 9,float_test_type(11.0f) );
+        m.SetElem(10,float_test_type(12.0f) );
+        m.SetElem(11,float_test_type(13.0f) );
+
+        Validate(
+            m.GetElem( 0) == float_test_type( 2.0f) &&
+            m.GetElem( 1) == float_test_type( 3.0f) &&
+            m.GetElem( 2) == float_test_type( 4.0f) &&
+            m.GetElem( 3) == float_test_type( 5.0f) &&
+            m.GetElem( 4) == float_test_type( 6.0f) &&
+            m.GetElem( 5) == float_test_type( 7.0f) &&
+            m.GetElem( 6) == float_test_type( 8.0f) &&
+            m.GetElem( 7) == float_test_type( 9.0f) &&
+            m.GetElem( 8) == float_test_type(10.0f) &&
+            m.GetElem( 9) == float_test_type(11.0f) &&
+            m.GetElem(10) == float_test_type(12.0f) &&
+            m.GetElem(11) == float_test_type(13.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test12">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetElem(int i) const");
+
+        Matrix44Affine m;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(
+            ((const Matrix44Affine*)(&m))->GetElem( 0) ==float_test_type(  2.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 1) ==float_test_type(  3.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 2) ==float_test_type(  4.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 3) ==float_test_type(  5.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 4) ==float_test_type(  6.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 5) ==float_test_type(  7.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 6) ==float_test_type(  8.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 7) ==float_test_type(  9.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 8) ==float_test_type( 10.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem( 9) ==float_test_type( 11.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(10) ==float_test_type( 12.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(11) ==float_test_type( 13.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test13">
+      <![CDATA[
+
+
+
+        SetFunctionName("SetElem(int row, int column, float), GetElem(int row, int column)");
+
+        Matrix44Affine m;
+        m.SetZero();
+        m.SetElem(0,0,float_test_type( 2.0f) );
+        m.SetElem(0,1,float_test_type( 3.0f) );
+        m.SetElem(0,2,float_test_type( 4.0f) );
+        m.SetElem(1,0,float_test_type( 6.0f) );
+        m.SetElem(1,1,float_test_type( 7.0f) );
+        m.SetElem(1,2,float_test_type( 8.0f) );
+        m.SetElem(2,0,float_test_type(10.0f) );
+        m.SetElem(2,1,float_test_type(11.0f) );
+        m.SetElem(2,2,float_test_type(12.0f) );
+        m.SetElem(3,0,float_test_type(14.0f) );
+        m.SetElem(3,1,float_test_type(15.0f) );
+        m.SetElem(3,2,float_test_type(16.0f) );
+
+        Validate(
+            m.GetElem(0, 0) == float_test_type( 2.0f) &&
+            m.GetElem(0, 1) == float_test_type( 3.0f) &&
+            m.GetElem(0, 2) == float_test_type( 4.0f) &&
+            m.GetElem(1, 0) == float_test_type( 6.0f) &&
+            m.GetElem(1, 1) == float_test_type( 7.0f) &&
+            m.GetElem(1, 2) == float_test_type( 8.0f) &&
+            m.GetElem(2, 0) == float_test_type(10.0f) &&
+            m.GetElem(2, 1) == float_test_type(11.0f) &&
+            m.GetElem(2, 2) == float_test_type(12.0f) &&
+            m.GetElem(3, 0) == float_test_type(14.0f) &&
+            m.GetElem(3, 1) == float_test_type(15.0f) &&
+            m.GetElem(3, 2) == float_test_type(16.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test14">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetElem(int row, int column) const");
+
+        Matrix44Affine m;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(
+            ((const Matrix44Affine*)(&m))->GetElem(0, 0) == float_test_type( 2.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(0, 1) == float_test_type( 3.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(0, 2) == float_test_type( 4.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(1, 0) == float_test_type( 5.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(1, 1) == float_test_type( 6.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(1, 2) == float_test_type( 7.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(2, 0) == float_test_type( 8.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(2, 1) == float_test_type( 9.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(2, 2) == float_test_type(10.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(3, 0) == float_test_type(11.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(3, 1) == float_test_type(12.0f) &&
+            ((const Matrix44Affine*)(&m))->GetElem(3, 2) == float_test_type(13.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test15">
+      <![CDATA[
+
+
+
+        SetFunctionName("operator () (int row, int column)");
+
+        Matrix44Affine m;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(
+            m.operator()(0, 0) == float_test_type( 2.0f) &&
+            m.operator()(0, 1) == float_test_type( 3.0f) &&
+            m.operator()(0, 2) == float_test_type( 4.0f) &&
+            m.operator()(1, 0) == float_test_type( 5.0f) &&
+            m.operator()(1, 1) == float_test_type( 6.0f) &&
+            m.operator()(1, 2) == float_test_type( 7.0f) &&
+            m.operator()(2, 0) == float_test_type( 8.0f) &&
+            m.operator()(2, 1) == float_test_type( 9.0f) &&
+            m.operator()(2, 2) == float_test_type(10.0f) &&
+            m.operator()(3, 0) == float_test_type(11.0f) &&
+            m.operator()(3, 1) == float_test_type(12.0f) &&
+            m.operator()(3, 2) == float_test_type(13.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test16">
+      <![CDATA[
+
+
+
+        SetFunctionName("operator () (int row, int column) const");
+
+        Matrix44Affine m;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(
+            ((const Matrix44Affine*)(&m))->operator()(0, 0) == float_test_type( 2.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(0, 1) == float_test_type( 3.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(0, 2) == float_test_type( 4.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(1, 0) == float_test_type( 5.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(1, 1) == float_test_type( 6.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(1, 2) == float_test_type( 7.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(2, 0) == float_test_type( 8.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(2, 1) == float_test_type( 9.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(2, 2) == float_test_type(10.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(3, 0) == float_test_type(11.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(3, 1) == float_test_type(12.0f) &&
+            ((const Matrix44Affine*)(&m))->operator()(3, 2) == float_test_type(13.0f)
+            );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test17">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetRow(0)");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.GetRow(0);
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test18">
+      <![CDATA[
+
+
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(1)");
+        Vector3 &r2 = m.GetRow(1);
+        Validate(r2 == Vector3(2.0f, 2.0f, 2.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test19">
+      <![CDATA[
+
+
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(2)");
+        Vector3 &r3 = m.GetRow(2);
+        Validate(r3 == Vector3(3.0f, 3.0f, 3.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test20">
+      <![CDATA[
+
+
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(3)");
+        Vector3 &r4 = m.GetRow(3);
+        Validate(r4 == Vector3(4.0f, 4.0f, 4.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test21">
+      <![CDATA[
+
+
+
+        Vector3 v1(2.0f, 3.0f, 4.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("SetRow(0)");
+        m.SetRow(0, v1);
+        Validate(m.GetRow(0) == v1);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test22">
+      <![CDATA[
+
+
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("XAxis() = vector3");
+        m.XAxis() = v2;
+        Validate(m.GetRow(0) == v2);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test23">
+      <![CDATA[
+
+
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("SetRow(1)");
+        m.SetRow(1, v2);
+        Validate(m.GetRow(1) == v2);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test24">
+      <![CDATA[
+
+
+
+        Vector3 v1(2.0f, 3.0f, 4.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("YAxis() = vector3");
+        m.YAxis() = v1;
+        Validate(m.GetRow(1) == v1);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test25">
+      <![CDATA[
+
+
+
+        Vector3 v3(10.0f, 11.0f, 12.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("SetRow(2)");
+        m.SetRow(2, v3);
+        Validate(m.GetRow(2) == v3);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test26">
+      <![CDATA[
+
+
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("ZAxis() = vector3");
+        m.ZAxis() = v2;
+        Validate(m.GetRow(2) == v2);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test27">
+      <![CDATA[
+
+
+
+        Vector3 v4(14.0f, 15.0f, 16.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("SetRow(3)");
+        m.SetRow(3, v4);
+        Validate(m.GetRow(3) == v4);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test28">
+      <![CDATA[
+
+
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m;
+
+        SetFunctionName("WAxis() = vector3");
+        m.WAxis() = v2;
+        Validate(m.GetRow(3) == v2);
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test29">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetRow(0) const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.GetRow(0);
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test30">
+      <![CDATA[
+
+
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(1) const");
+        const Vector3 &r2 = m.GetRow(1);
+        Validate(r2 == Vector3(2.0f, 2.0f, 2.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test31">
+      <![CDATA[
+
+
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(2) const");
+        const Vector3 &r3 = m.GetRow(2);
+        Validate(r3 == Vector3(3.0f, 3.0f, 3.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test32">
+      <![CDATA[
+
+
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("GetRow(3) const");
+        const Vector3 &r4 = m.GetRow(3);
+        Validate(r4 == Vector3(4.0f, 4.0f, 4.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test33">
+      <![CDATA[
+
+
+
+        SetFunctionName("XAxis()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.XAxis();
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test34">
+      <![CDATA[
+
+
+
+        SetFunctionName("YAxis()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.YAxis();
+
+        float rf = 2.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test35">
+      <![CDATA[
+
+
+
+        SetFunctionName("ZAxis()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.ZAxis();
+
+        float rf = 3.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test36">
+      <![CDATA[
+
+
+
+        SetFunctionName("WAxis()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.WAxis();
+
+        float rf = 4.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test37">
+      <![CDATA[
+
+
+
+         SetFunctionName("XAxis() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.XAxis();
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test38">
+      <![CDATA[
+
+
+
+        SetFunctionName("YAxis() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.YAxis();
+
+        float rf = 2.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test39">
+      <![CDATA[
+
+
+
+        SetFunctionName("ZAxis() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.ZAxis();
+
+        float rf = 3.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test40">
+      <![CDATA[
+
+
+
+         SetFunctionName("WAxis() const");
+
+          const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.WAxis();
+
+        float rf = 4.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="RightVector3">
+      <![CDATA[
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("Right() = vector3");
+        m.Right() = v2;
+        Validate(m.GetRow(0) == v2);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="UpVector3">
+      <![CDATA[
+
+        Vector3 v1(2.0f, 3.0f, 4.0f);
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("Up() = vector3");
+        m.Up() = v1;
+        Validate(m.GetRow(1) == v1);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="AtVector3">
+      <![CDATA[
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("At() = vector3");
+        m.At() = v2;
+        Validate(m.GetRow(2) == v2);
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="PosVector3">
+      <![CDATA[
+
+        Vector3 v2(6.0f, 7.0f, 8.0f);
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+
+        SetFunctionName("Pos() = vector3");
+        m.Pos() = v2;
+        Validate(m.GetRow(3) == v2);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="Right">
+      <![CDATA[
+
+        SetFunctionName("Right()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.Right();
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="Up">
+      <![CDATA[
+
+        SetFunctionName("Up()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.Up();
+
+        float rf = 2.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="At">
+      <![CDATA[
+
+        SetFunctionName("At()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.At();
+
+        float rf = 3.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="Pos">
+      <![CDATA[
+
+        SetFunctionName("Pos()");
+
+        Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Vector3 &r = m.Pos();
+
+        float rf = 4.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="RightConst">
+      <![CDATA[
+
+        SetFunctionName("Right() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.Right();
+
+        float rf = 1.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="UpConst">
+      <![CDATA[
+
+        SetFunctionName("Up() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.Up();
+
+        float rf = 2.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="AtConst">
+      <![CDATA[
+
+        SetFunctionName("At() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.At();
+
+        float rf = 3.0f;
+        Validate( r == Vector3(rf, rf, rf));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="PosConst">
+      <![CDATA[
+
+        SetFunctionName("Pos() const");
+
+        const Matrix44Affine m(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        const Vector3 &r = m.Pos();
+
+        float rf = 4.0f;
+        Validate( r == Vector3(rf, rf, rf));
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="select_maskscalar">
+      <![CDATA[
+      
+        SetFunctionName("Matrix44Affine Select(MaskScalar mask, Matrix44Affine a, Matrix44Affine b)");
+        Matrix44Affine m1(
+            1.0f, 1.0f, 1.0f,
+            2.0f, 2.0f, 2.0f,
+            3.0f, 3.0f, 3.0f,
+            4.0f, 4.0f, 4.0f
+            );
+        Matrix44Affine m2((float_test_type)2.0f * m1);
+
+        Matrix44Affine result1 = Select( MaskScalar(true), m1, m2 );
+        Matrix44Affine result2 = Select( MaskScalar(false), m1, m2 );
+        Validate(
+            result1 == m1 &&
+            result2 == m2
+        );
+
+      ]]>
+      </TEST>
+
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test44">
+      <![CDATA[
+
+        SetFunctionName("SetZero()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44affine_array[i].SetZero();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test45">
+      <![CDATA[
+
+        SetFunctionName("SetIdentity()");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44affine_array[i].SetIdentity();
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test46">
+      <![CDATA[
+
+        SetFunctionName("Set(float m0, float m1, float m2, float m3, float m4, float m5, float m6, float m7, float m8)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44affine_array[i].Set(x_array[i], y_array[i], z_array[i],
+                                 x_array[i], y_array[i], z_array[i],
+                                 x_array[i], y_array[i], z_array[i],
+                                 x_array[i], y_array[i], z_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test47">
+      <![CDATA[
+
+        SetFunctionName("GetElem(int i)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = m44affine_array[i].GetElem(0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test48">
+      <![CDATA[
+
+        SetFunctionName("GetElem(int i) const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = ((const Matrix44Affine*)&(m44affine_array[i]))->GetElem(0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test49">
+      <![CDATA[
+
+        SetFunctionName("GetElem(int row, int column)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = m44affine_array[i].GetElem(0, 0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test50">
+      <![CDATA[
+
+        SetFunctionName("GetElem(int row, int column)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+               retValueFloat = ((const Matrix44Affine*)&(m44affine_array[i]))->GetElem(0, 0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test51">
+      <![CDATA[
+
+        SetFunctionName("operator()(int row, int column)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = m44affine_array[i].operator()(0, 0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test52">
+      <![CDATA[
+
+        SetFunctionName("operator()(int row, int column) const");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = ((const Matrix44Affine*)&(m44affine_array[i]))->operator()(0, 0);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test53">
+      <![CDATA[
+
+
+
+        SetFunctionName("Negate(const Matrix44Affine &m)");
+
+        Matrix44Affine m, r, ref;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = Negate(m);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.SetElem(i, -m.GetElem(i));
+        }
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test54">
+      <![CDATA[
+
+
+
+        SetFunctionName("Mult(const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine m, r, ref;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        float_test_type s = 2.0f;
+        r = Mult(m, s);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.SetElem(i, m.GetElem(i) * s);
+        }
+
+        Validate(IsSimilar(r, ref));
+
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test55">
+      <![CDATA[
+
+
+
+        SetFunctionName("Divide(const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine m, r, ref;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        float_test_type s = 2.0f;
+        r = Divide(m, s);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.SetElem(i, m.GetElem(i) / s);
+        }
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test56">
+      <![CDATA[
+
+
+
+        SetFunctionName("Add(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+        r = Add(a, b);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.SetElem(i, a.GetElem(i) + b.GetElem(i) );
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test57">
+      <![CDATA[
+
+
+
+        SetFunctionName("Subtract(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+        r = Subtract(a, b);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.SetElem(i, a.GetElem(i) - b.GetElem(i) );
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test58">
+      <![CDATA[
+
+
+
+        SetFunctionName("SelfAdd(Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+        r = a;
+        SelfAdd(r, b);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) + b.GetElem(i);
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test59">
+      <![CDATA[
+
+
+
+        SetFunctionName("SelfSubtract(Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+        r = a;
+        SelfSubtract(r, b);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) - b.GetElem(i);
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test60">
+      <![CDATA[
+
+
+
+        SetFunctionName("SelfMult(Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfMult(r, s);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test61">
+      <![CDATA[
+
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("SelfMult(Matrix44Affine &m, const VecFloatRef<INDEX> a)");
+
+        Matrix44Affine a, r, ref;
+        Vector4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfMult(r, vec.Y());
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * vec.Y();
+        }
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test62">
+      <![CDATA[
+
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("SelfMult(Matrix44Affine &m, const VecFloatRefIndex a)");
+
+        Matrix44Affine a, r, ref;
+        Vector4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex zRef = vec.GetComponent(2);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfMult(r, zRef);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * zRef;
+        }
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test63">
+      <![CDATA[
+
+
+
+        SetFunctionName("SelfDivide(Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfDivide(r, s);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / s;
+        }
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test64">
+      <![CDATA[
+
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("SelfDivide(Matrix44Affine &m, const VecFloatRef<INDEX> a)");
+
+        Matrix44Affine a, r, ref;
+        Vector4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfDivide(r, vec.Y());
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / vec.Y();
+        }
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test65">
+      <![CDATA[
+
+
+#ifdef HOST_TESTING
+
+        SetFunctionName("SelfDivide(Matrix44Affine &m, const VecFloatRefIndex a)");
+
+        Matrix44Affine a, r, ref;
+        Vector4 vec(1.0f, 2.0f, 3.0f, 4.0f);
+        VecFloatRefIndex zRef = vec.GetComponent(2);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        r = a;
+        SelfDivide(r, zRef);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / zRef;
+        }
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test66">
+      <![CDATA[
+
+
+
+        SetFunctionName("Mult(const Vector4 &v, const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+        Vector4 v4, ra;
+        v4.Set(6.0f, -1.0f, -3.0f, 1.0f);
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        Vector4 r = Mult(v4, m); // test with non-aliasing
+
+        ra.Set(6.0f, -1.0f, -3.0f, 1.0f);
+        ra = Mult(ra, m);  // test with aliasing
+
+        Vector4 ref(
+                  m.GetElem(0, 0) * v4.X() + m.GetElem(1, 0) * v4.Y() + m.GetElem(2, 0) * v4.Z() + m.GetElem(3, 0) * v4.W(),
+                  m.GetElem(0, 1) * v4.X() + m.GetElem(1, 1) * v4.Y() + m.GetElem(2, 1) * v4.Z() + m.GetElem(3, 1) * v4.W(),
+                  m.GetElem(0, 2) * v4.X() + m.GetElem(1, 2) * v4.Y() + m.GetElem(2, 2) * v4.Z() + m.GetElem(3, 2) * v4.W(),
+                  v4.W());
+
+        Validate(IsSimilar(r, ref) && IsSimilar(ra, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test67">
+      <![CDATA[
+
+
+
+        SetFunctionName("Mult(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ra, ref;
+
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+        ra.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+
+        r = Mult(a, b); // test with non-aliasing
+
+        ra = Mult(ra, b);  // test with aliasing
+
+        for (int32_t i = 0; i < 4; ++i)
+        {
+            float_test_type elemI3 = (i==3) ? (float_test_type)1.0f : (float_test_type)0.0f;
+            ref.SetElem(i, 0, a.GetElem(i, 0) * b.GetElem(0, 0) + a.GetElem(i, 1) * b.GetElem(1, 0) + a.GetElem(i, 2) * b.GetElem(2, 0) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 0) );
+            ref.SetElem(i, 1, a.GetElem(i, 0) * b.GetElem(0, 1) + a.GetElem(i, 1) * b.GetElem(1, 1) + a.GetElem(i, 2) * b.GetElem(2, 1) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 1) );
+            ref.SetElem(i, 2, a.GetElem(i, 0) * b.GetElem(0, 2) + a.GetElem(i, 1) * b.GetElem(1, 2) + a.GetElem(i, 2) * b.GetElem(2, 2) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 2) );
+        }
+
+        Validate(IsSimilar(r, ref) && IsSimilar(ra, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test68">
+      <![CDATA[
+
+
+
+        SetFunctionName("Transpose(const Matrix44Affine &m)");
+
+        Matrix44Affine m, r, ref;
+
+        m.Set(
+            1,  2,  3,
+            5,  6,  7,
+            9, 10, 11,
+            0,  0,  0
+             );
+        ref.Set(
+            1,  5,  9,
+            2,  6, 10,
+            3,  7, 11,
+            0,  0,  0
+            );
+
+        r = Transpose(m);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test69">
+      <![CDATA[
+
+
+
+        SetFunctionName("OrthoNormalize(Matrix44Affine &m)");
+        Matrix44Affine mat1(
+                0.98854077f, 0.30964674f, 0.61170041f,
+                0.73956566f, 0.25522057f, 0.67839563f,
+                0.00371731f, 0.62518794f, 0.33200953f,
+                0.59005729f, 0.11574174f, 0.02587099f
+            );
+
+        Matrix44Affine r1 = OrthoNormalize(mat1);
+
+        Matrix44Affine mat2 = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.0f, 3.0f));
+        Matrix44Affine r2 = OrthoNormalize(mat2);
+
+        bool r1Ortho = IsOrthogonal(r1);
+        bool r1Normal = IsNormal(r1);
+        Validate( r1Ortho && r1Normal &&
+                 IsOrthogonal(r2) && IsNormal(r2) && IsSimilar(mat2, r2) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test70">
+      <![CDATA[
+
+
+
+      // There appears to be a code generation issue on at least
+      // some versions of GCC on OSX.  For now we just disable
+      // this test.
+      #if !( defined(EA_PLATFORM_OSX) && defined(EA_COMPILER_GNUC) )
+
+        SetFunctionName("InverseOrthonormal(Matrix44Affine &m)");
+        Matrix44Affine mat = OrthoNormalize(Matrix44Affine(
+                0.98854077f, 0.30964674f, 0.61170041f,
+                0.73956566f, 0.25522057f, 0.67839563f,
+                0.00371731f, 0.62518794f, 0.33200953f,
+                0.59005729f, 0.11574174f, 0.02587099f
+            ));
+
+        Matrix44Affine r = InverseOrthonormal(mat);
+        // See if mat * InverseOrthonormal(mat) gives the identity matrix.
+        Matrix44Affine matProduct = Mult(mat, r);
+        Validate(IsSimilar(matProduct, GetMatrix44Affine_Identity() ) );
+
+      #endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test71">
+      <![CDATA[
+
+
+
+        SetFunctionName("Determinant(const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+
+        m.Set(
+            2, 1, 0,
+            1, 2, 1,
+            0, 1, 2,
+            0, 0, 1
+            );
+
+        float_test_type r = Determinant(m);
+
+        Validate(IsEqualWithEpsilon(r, (float_test_type)4.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test72">
+      <![CDATA[
+
+
+
+        SetFunctionName("Determinant(const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+
+        m.Set(
+            -2, 1, 0,
+            1, 2, 1,
+            0, 1, 2,
+            0, 0, 1
+            );
+
+        float_test_type r = Determinant(m);
+
+        Validate(IsEqualWithEpsilon(r, (float_test_type)-8.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test73">
+      <![CDATA[
+
+
+
+        SetFunctionName("Determinant(const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+
+        m.Set(
+            2, 1, 0,
+            0, 2, 4,
+            0, 1, 2,
+            0, 0, 1
+            );
+
+        float_test_type r = Determinant(m);
+
+        Validate(IsEqualWithEpsilon(r, (float_test_type)0.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test74">
+      <![CDATA[
+
+
+
+        SetFunctionName("Inverse(const Matrix44Affine &m, float& determinant)");
+
+        Matrix44Affine m, r, ref;
+
+        m.Set(
+            1, 0, 0,
+            0, 0, 1,
+            0,-1, 0,
+            0, 0, 0
+            );
+
+        ref.Set(
+            1, 0, 0,
+            0, 0,-1,
+            0, 1, 0,
+            0, 0, 0
+            );
+
+        float_test_type d;
+        r = Inverse(m, d);
+        float_test_type dRef = Determinant(m);
+
+        Validate(IsSimilar(r, ref) &&
+                 IsSimilar((float_test_type)d, (float_test_type)dRef, (float_test_type)0.001f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="testInverse">
+      <![CDATA[
+
+
+
+        SetFunctionName("Stress Test - Inverse(const Matrix44Affine &m)");
+
+        Matrix44Affine identity(
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1,
+            0, 0, 0
+            );
+
+        bool success = true;
+        for( int i=0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++ )
+        {
+            // Build a matrix from random SQT data
+            Matrix44Affine m = Matrix44AffineFromScaleQuaternionTranslation( v3_array[i], q_array[i], v3_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE - (i+1)] );
+            Matrix44Affine inverseM = Inverse(m);
+            Matrix44Affine product = Mult( m, inverseM );
+            success &= IsSimilar( product, identity, (float_test_type)0.001f );
+        }
+
+        Validate(success);
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test75">
+      <![CDATA[
+
+
+
+        SetFunctionName("Inverse(const Matrix44Affine &m, float& determinant)");
+
+        Matrix44Affine m, r, ref;
+
+        m.Set(
+            -2, 1, 0,
+            1, 2, 1,
+            0, 1, 2,
+            0, 0, 1
+            );
+
+        ref.Set(
+            -0.375f, 0.25f, -0.125,
+            0.25, 0.5,-0.25,
+            -0.125, -0.25, 0.625,
+            0.125, 0.25, -0.625
+            );
+
+        float_test_type d;
+        r = Inverse(m, d);
+        float_test_type dRef = Determinant(m);
+
+        Validate(IsSimilar(r, ref) &&
+                 IsSimilar(Mult(m,r),GetMatrix44Affine_Identity()) &&
+                 IsSimilar((float_test_type)d, (float_test_type)dRef, (float_test_type)0.001f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test76">
+      <![CDATA[
+
+
+
+        SetFunctionName("Inverse(const Matrix44Affine &m)");
+
+        Matrix44Affine mA, rA, refA;
+        Matrix44Affine mB, rB, refB;
+        Matrix44Affine mC, rC, refC;
+
+        mA.Set(
+            1, 0, 0,
+            0, 0, 1,
+            0,-1, 0,
+            0, 0, 0
+            );
+
+        refA.Set(
+            1, 0, 0,
+            0, 0,-1,
+            0, 1, 0,
+            0, 0, 0
+            );
+
+        rA = Inverse(mA);
+
+        mB.Set(
+            0.559f, 0.000f, 0.829f,
+            0.811f, 0.208f, -0.547f,
+            -0.172f, 0.978f, 0.116f,
+            600.0f, -700.0f, 1856.0f
+            );
+
+        refB.Set(
+             0.55925071f,  0.81098920f, -0.17248033f,
+             0.00000000f,  0.20749015f,  0.97836614f,
+             0.82916629f, -0.54685521f,  0.11630459f,
+            -1874.47750f,  673.612850f,  572.483150f
+            );
+
+        rB = Inverse(mB);
+
+        mC.Set(
+            2.0f, 4.0f, 8.0f,
+            1.0f, 9.0f, 4.0f,
+            7.0f, 8.0f, 3.0f,
+            13.0f, 5.0f, 19.0f
+            );
+
+        refC.Set(
+            0.01428571f, -0.14857143f, 0.16000000f, 
+            -0.07142857f, 0.14285714f, 0.00000000f, 
+            0.15714286f, -0.03428571f, -0.04000000f,
+            -2.81428571f, 1.86857143f, -1.32000000f
+            );
+
+        rC = Inverse(mC);
+
+        Validate(IsSimilar(rA, refA) &&
+                 IsSimilar(rB, refB, (float_test_type)0.001f) &&
+                 IsSimilar(rC, refC, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test77">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsSimilar(const Matrix44Affine &a, const Matrix44Affine &b, float_t epsilon = rw::math::kSmallFloat)");
+
+        Matrix44Affine a, b, c, d, e, f;
+
+        a.Set(
+             1.0f,  2.0f,  0.0f,
+            -1.0f,  1.0f,  1.0f,
+             1.0f,  2.0f,  3.0f,
+             3.0f,  4.0f,  5.0f
+            );
+
+        b.Set(
+            1.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  2.0f,  3.0f,
+            3.0f,  4.0f,  5.0f
+            );
+        c.Set(
+            2.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  2.0f,  3.0f,
+            3.0f,  4.0f,  5.0f
+            );
+        d.Set(
+            1.0f,  2.0f,  0.0f,
+           -1.0f,  2.0f,  1.0f,
+            1.0f,  2.0f,  3.0f,
+            3.0f,  4.0f,  5.0f
+            );
+        e.Set(
+            1.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  2.0f,  4.0f,
+            3.0f,  4.0f,  5.0f
+            );
+        f.Set(
+            2.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  2.0f,  3.0f,
+            3.0f,  4.0f,  6.0f
+            );
+        bool isSimilarTest1 = IsSimilar(a, b);
+        bool isSimilarTest2 = !IsSimilar(a, c);
+        bool isSimilarTest3 = !IsSimilar(a, d);
+        bool isSimilarTest4 = !IsSimilar(a, e);
+        bool isSimilarTest5 = !IsSimilar(a, f);
+
+        bool isSimilarTest6 = true;
+        for(int row=0;row<4;row++)
+        {
+            for(int col=0;col<3;col++)
+            {
+                Matrix44Affine testMatrix = a;
+                // Perturb the matrix to make it different from a.
+                testMatrix.GetElem(row, col) = testMatrix.GetElem(row, col) + (float_test_type)1.0f;
+                if( IsSimilar(a,testMatrix) )
+                {
+                    isSimilarTest6 = false;
+                    break;
+                }
+            }
+        }
+
+        Validate( isSimilarTest1 &&  isSimilarTest2 &&  isSimilarTest3 &&  isSimilarTest4 && isSimilarTest5 && isSimilarTest6 );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="isanynan">
+      <![CDATA[
+
+
+#if !defined EA_PLATFORM_PS3_SPU
+        SetFunctionName("IsAnyNaN(Matrix44Affine v)");
+
+        float_test_type nan = float_test_type((float_basic_type)testing::GetNaN());
+        int numPermutations = 1 << Matrix44Affine::NumberOfCols;
+        bool result = true;
+        // Doing all possible permutations of the matrix could be pretty slow. Instead,
+        // all permutations along the diagonal will be done.
+        for( int curPermutation=0;curPermutation<numPermutations;curPermutation++)
+        {
+            Matrix44Affine mat;
+            mat.SetZero();
+            for( int elem = 0; elem < Matrix44Affine::NumberOfCols; elem++ )
+            {
+                if( curPermutation & (1<<elem) )
+                {
+                    mat.SetElem( elem, elem, nan );
+                }
+            }
+            if( curPermutation == 0 )
+            {
+                // All bits are zero so the matrix has no NaN's
+                result &= !IsAnyNaN(mat);
+            }
+            else
+            {
+                // At least one element is NaN.
+                result &= IsAnyNaN(mat);
+            }
+        }
+        Validate(result);
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test78">
+      <![CDATA[
+
+
+// on SPU, NaN operations evaluates to 0
+#if !defined EA_PLATFORM_PS3_SPU
+    {
+
+        SetFunctionName("IsValid(Matrix44Affine m)");
+
+        Matrix44Affine a, b;
+
+        a.Set(
+             1.0f,  2.0f,  0.0f,
+            -1.0f,  1.0f,  1.0f,
+             1.0f,  2.0f,  3.0f,
+             3.0f,  4.0f,  5.0f
+            );
+
+        b.Set(
+            1.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  (float)testing::GetNaN(),  3.0f,
+            3.0f,  4.0f,  5.0f
+            );
+
+        Validate(IsValid(a) && !IsValid(b));
+    }
+#endif  
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test80">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetNormalError(Matrix44Affine mat)");
+        Matrix44Affine mat1(
+           -0.84664704f,  0.53202246f,  0.01186974f,
+           -0.47348943f, -0.74294347f, -0.47312024f,
+           -0.24289205f, -0.40618605f,  0.88091790f,
+            0.00000000f,  0.00000000f,  0.00000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+
+        float_test_type error1 = GetNormalError(mat1);
+        float_test_type error2 = GetNormalError(mat2);
+        Validate(   IsSimilar( error1, (float_test_type)0.0f ) &&
+                    IsSimilar( error2, (float_test_type)2.1333718f ) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test81">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsNormal(a, tolerance)");
+        Matrix44Affine mat1(
+           -0.84664704f,  0.53202246f,  0.01186974f,
+           -0.47348943f, -0.74294347f, -0.47312024f,
+           -0.24289205f, -0.40618605f,  0.88091790f,
+            0.00000000f,  0.00000000f,  0.00000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+
+        bool r1 = IsNormal(mat1);
+        bool r2 = IsNormal(mat2);
+        Validate( r1 && !r2 );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test82">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetOrthogonalRowSetError(a, tolerance)");
+        Matrix44Affine mat1(
+           -0.84664704f,  0.53202246f,  0.01186974f,
+           -0.47348943f, -0.74294347f, -0.47312024f,
+           -0.24289205f, -0.40618605f,  0.88091790f,
+            0.00000000f,  0.00000000f,  0.00000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+        float_test_type error1 = GetOrthogonalRowSetError(mat1);
+        float_test_type error2 = GetOrthogonalRowSetError(mat2);
+        Validate(   IsSimilar( error1, (float_test_type)0.0f ) &&
+                    IsSimilar( error2, (float_test_type)3.7729628f ) );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="GetOrthogonalErrorTest">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetOrthogonalError(a, tolerance)");
+        Matrix44Affine mat1(
+           -0.84664704f,  0.53202246f,  0.01186974f,
+           -0.47348943f, -0.74294347f, -0.47312024f,
+           -0.24289205f, -0.40618605f,  0.88091790f,
+            0.00000000f,  0.00000000f,  0.00000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+        float_test_type error1 = GetOrthogonalError(mat1);
+        float_test_type error2 = GetOrthogonalError(mat2);
+        Validate(   IsSimilar( error1, (float_test_type)0.0f ) &&
+                    IsSimilar( error2, (float_test_type)10.383299f ) );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="IsOrthogonalTest2">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsOrthogonal(Matrix44Affine mat)");
+        Matrix44Affine mat1(
+             0.3333333f,  0.6666667f,  0.6666667f,
+            -0.8944272f,  0.4472136f,  0.0f,
+            -0.2981424f, -0.5962848f,  0.7453560f,
+             0.0000000f,  0.0000000f,  0.0000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+        bool r1 = IsOrthogonal(mat1);
+        bool r2 = IsOrthogonal(mat2);
+        Validate( r1 && !r2 );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="isrotation">
+      <![CDATA[
+
+        SetFunctionName("IsRotation(m)");
+        Matrix44Affine testMat1(Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.0f, 3.0f)));
+        Matrix44Affine testMat2(-1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        Matrix44Affine testMat3(2.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        Matrix44Affine testMat4(testMat1);
+        testMat4.wAxis = Vector3(1.0f, 2.0f, 3.0f);
+
+        bool isRot1 = IsRotation(testMat1, float_test_type(SMALL_FLOAT));
+        bool isRot2 = IsRotation(testMat2, float_test_type(SMALL_FLOAT));
+        bool isRot3 = IsRotation(testMat3, float_test_type(SMALL_FLOAT));
+        bool isRot4 = IsRotation(testMat4, float_test_type(SMALL_FLOAT));
+
+
+        Validate( isRot1 &&
+                 !isRot2 &&
+                 !isRot3 &&
+                 !isRot4 );
+      ]]>
+      </TEST>
+
+      <TEST NAME="isrotation3x3">
+      <![CDATA[
+
+        SetFunctionName("IsRotation3x3(m)");
+        Matrix44Affine testMat1(Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.0f, 3.0f)));
+        Matrix44Affine testMat2(-1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        Matrix44Affine testMat3(2.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f);
+        Matrix44Affine testMat4(testMat1);
+        testMat4.wAxis = Vector3(1.0f, 2.0f, 3.0f);
+
+        bool isRot1 = IsRotation3x3(testMat1, float_test_type(SMALL_FLOAT));
+        bool isRot2 = IsRotation3x3(testMat2, float_test_type(SMALL_FLOAT));
+        bool isRot3 = IsRotation3x3(testMat3, float_test_type(SMALL_FLOAT));
+        bool isRot4 = IsRotation3x3(testMat4, float_test_type(SMALL_FLOAT));
+
+
+        Validate( isRot1 &&
+                 !isRot2 &&
+                 !isRot3 &&
+                 isRot4 );
+      ]]>
+      </TEST>
+      <TEST NAME="IsOrthogonalRowSetTest">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsOrthogonalRowSet(Matrix44Affine mat)");
+        Matrix44Affine mat1(
+           -0.84664704f,  0.53202246f,  0.01186974f,
+           -0.47348943f, -0.74294347f, -0.47312024f,
+           -0.24289205f, -0.40618605f,  0.88091790f,
+            0.00000000f,  0.00000000f,  0.00000000f
+        );
+        Matrix44Affine mat2(
+            0.68568960f, 0.40620248f, 0.19983377f,
+            0.15312167f, 0.40948255f, 0.56186607f,
+            0.69708506f, 0.87841258f, 0.58961773f,
+            0.84155184f, 0.11383597f, 0.68539797f
+        );
+        bool r1 = IsOrthogonalRowSet(mat1);
+        bool r2 = IsOrthogonalRowSet(mat2);
+        Validate( r1 && !r2 );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="IsOrthogonalTest1">
+      <![CDATA[
+
+        SetFunctionName("Test for BUG#17316: IsOrthogonal(const Matrix44Affine& a) should return false for zero matrix");
+
+        Matrix44Affine zero;
+        zero.SetZero();
+
+        Validate(!IsOrthogonal(zero));
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test84">
+      <![CDATA[
+
+
+
+    
+// on SPU, NaN operations evaluates to 0
+#if !defined EA_PLATFORM_PS3_SPU
+    {
+
+        SetFunctionName("IsValid3x3(Matrix44Affine m)");
+
+        Matrix44Affine a, b;
+
+        a.Set(
+             1.0f,  2.0f,  0.0f,
+            -1.0f,  1.0f,  1.0f,
+             1.0f,  2.0f,  3.0f,
+             3.0f,  4.0f,  (float)testing::GetNaN()
+            );
+
+        b.Set(
+            1.0f,  2.0f,  0.0f,
+           -1.0f,  1.0f,  1.0f,
+            1.0f,  (float)testing::GetNaN(),  3.0f,
+            3.0f,  4.0f,  5.0f
+            );
+
+        Validate(IsValid3x3(a) && !IsValid3x3(b));
+
+    }
+#endif  
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test86">
+      <![CDATA[
+
+
+
+        SetFunctionName("Vector3 TransformPoint(Vector3::InParam pt, Matrix44Affine::InParam matrix)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector3 vec[3] =
+        {
+            Vector3( 1.0f, 2.0f, 3.0f ),
+            Vector3( 3.0f, -2.0f, 1.0f ),
+            Vector3( 9.0f, -2.0f, 8.0f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3( 0.1611920f, 0.0900622f, 5.6348029f),
+            Vector3( 1.0305913f, 3.5340564f, 9.0086802f),
+            Vector3(-6.5688316f, 0.6254043f, 13.343252f)
+        };
+        Vector3 res[3];
+        for( int i=0; i<3; ++i)
+        {
+            res[i] = TransformPoint( vec[i], a );
+        }
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test87">
+      <![CDATA[
+
+
+
+        SetFunctionName("void TransformPoints(const Vector3* const pts, int numPoints, Matrix44Affine::InParam matrix, Vector3* transformedPts)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector3 vec[3] =
+        {
+            Vector3( 1.0f, 2.0f, 3.0f ),
+            Vector3( 3.0f, -2.0f, 1.0f ),
+            Vector3( 9.0f, -2.0f, 8.0f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3( 0.1611920f, 0.0900622f, 5.6348029f),
+            Vector3( 1.0305913f, 3.5340564f, 9.0086802f),
+            Vector3(-6.5688316f, 0.6254043f, 13.343252f)
+        };
+        Vector3 res[3];
+        TransformPoints( vec, 3, a, res );
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test88">
+      <![CDATA[
+
+
+
+        SetFunctionName("Vector3 TransformVector(Vector3::InParam vec, Matrix44Affine::InParam matrix)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector3 vec[3] =
+        {
+            Vector3( 1.0f, 2.0f, 3.0f ),
+            Vector3( 3.0f, -2.0f, 1.0f ),
+            Vector3( 9.0f, -2.0f, 8.0f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3(-2.83880798f, -2.40993783f, -0.36519710f),
+            Vector3(-1.96940866f, 1.03405643f, 3.00868025f),
+            Vector3(-9.56883155f, -1.87459570f, 7.34325225f)
+        };
+        Vector3 res[3];
+        for( int i=0; i<3; ++i)
+        {
+            res[i] = TransformVector( vec[i], a );
+        }
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test89">
+      <![CDATA[
+
+
+
+        SetFunctionName("TransformVectors(const Vector3* const vecs, int numVectors, Matrix44Affine::InParam matrix, Vector3 * transformedVecs)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector3 vec[3] =
+        {
+            Vector3( 1.0f, 2.0f, 3.0f ),
+            Vector3( 3.0f, -2.0f, 1.0f ),
+            Vector3( 9.0f, -2.0f, 8.0f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3(-2.83880798f, -2.40993783f, -0.36519710f),
+            Vector3(-1.96940866f, 1.03405643f, 3.00868025f),
+            Vector3(-9.56883155f, -1.87459570f, 7.34325225f)
+        };
+        Vector3 res[3];
+        TransformVectors( vec, 3, a, res );
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test90">
+      <![CDATA[
+
+
+
+        SetFunctionName("Vector3 Transform(Vector4::InParam vec, Matrix44Affine::InParam matrix)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector4 vec[3] =
+        {
+            Vector4( 1.0f, 2.0f, 3.0f, 0.0f ),
+            Vector4( 3.0f, -2.0f, 1.0f, 1.0f ),
+            Vector4( 9.0f, -2.0f, 8.0f, 0.5f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3(-2.83880798f, -2.40993783f, -0.36519710f),
+            Vector3(1.03059134f, 3.53405643f, 9.00868025f),
+            Vector3(-8.06883155f, -0.62459570f, 10.34325225f)
+        };
+        Vector3 res[3];
+        for( int i=0; i<3; ++i)
+        {
+            res[i] = Transform( vec[i], a );
+        }
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test91">
+      <![CDATA[
+
+
+
+        SetFunctionName("void Transform(const Vector4* const vecs, int numVectors, Matrix44Affine::InParam matrix, Vector3 * transformedVecs)");
+        Matrix44Affine a(
+            -0.8149562f,   0.5008597f,   0.2915235f,
+            -0.4312790f,  -0.1881537f,  -0.8823812f,
+            -0.3870979f,  -0.8448300f,   0.3693473f,
+             3.0000000f,   2.5000000f,   6.0000000f
+            );
+        Vector4 vec[3] =
+        {
+            Vector4( 1.0f, 2.0f, 3.0f, 0.0f ),
+            Vector4( 3.0f, -2.0f, 1.0f, 1.0f ),
+            Vector4( 9.0f, -2.0f, 8.0f, 0.5f )
+        };
+        Vector3 ref[3] =
+        {
+            Vector3(-2.83880798f, -2.40993783f, -0.36519710f),
+            Vector3(1.03059134f, 3.53405643f, 9.00868025f),
+            Vector3(-8.06883155f, -0.62459570f, 10.34325225f)
+        };
+        Vector3 res[3];
+        Transform( vec, 3, a, res );
+        Validate(   IsSimilar(res[0], ref[0]) &&
+                    IsSimilar(res[1], ref[1]) &&
+                    IsSimilar(res[2], ref[2]) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test92">
+      <![CDATA[
+
+
+
+        SetFunctionName("EulerXYZFromMatrix44Affine(const Matrix44Affine& m)");
+
+        Matrix44Affine m;
+        Vector3 r, ref;
+
+        m.Set(
+            0, 1, 0,
+            -1, 0, 0,
+            0, 0, 1,
+            0, 0, 0
+            );
+
+        ref.Set(0, 0, HALF_PI);
+
+        r= EulerXYZFromMatrix44Affine(m);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test93">
+      <![CDATA[
+
+
+
+        SetFunctionName("EulerXYZFromMatrix44Affine(const Matrix44Affine& m)");
+
+        Matrix44Affine m;
+        Vector3 r, ref;
+        float_test_type angle = -HALF_PI;
+        float_test_type zero = 0.0f;
+
+        for (; angle < (float_test_type) HALF_PI; angle += float_test_type(0.25f))
+        {
+            m.Set(
+                Cos(angle), 0, Sin(-angle),
+                0, 1, 0,
+                Sin(angle), 0, Cos(angle),
+                0, 0, 0
+                );
+
+            ref.Set(zero, angle, zero);
+
+            r= EulerXYZFromMatrix44Affine(m);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test94">
+      <![CDATA[
+
+
+
+        SetFunctionName("EulerXYZFromMatrix44Affine(const Matrix44Affine& m)");
+
+        Matrix44Affine m;
+        Vector3 r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type zero = 0.0f;
+
+        for (; angle < (float_test_type) PI; angle += float_test_type(0.25f))
+        {
+            m.Set(
+                1, 0, 0,
+                0, Cos(angle), Sin(angle),
+                0, Sin(-angle), Cos(angle),
+                0, 0, 0
+                );
+
+            ref.Set(angle, zero, zero);
+
+            r= EulerXYZFromMatrix44Affine(m);
+
+            Validate(
+                testing::IsSimilarAngle((float)r.X(), (float)ref.X(), 0.001f) &&
+                testing::IsSimilarAngle((float)r.Y(), (float)ref.Y(), 0.001f) &&
+                testing::IsSimilarAngle((float)r.Z(), (float)ref.Z(), 0.001f)
+            );
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test95">
+      <![CDATA[
+
+
+
+        SetFunctionName("EulerXYZFromMatrix44Affine(const Matrix44Affine& m)");
+
+        Matrix44Affine m;
+        Vector3 r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type zero = 0.0f;
+
+        for (; angle < (float_test_type) PI; angle += float_test_type(0.25f))
+        {
+            m.Set(
+                Cos(angle), Sin(angle), 0,
+                Sin(-angle), Cos(angle), 0,
+                0, 0, 1,
+                0, 0, 0
+                );
+
+            ref.Set(zero, zero, angle);
+
+            r= EulerXYZFromMatrix44Affine(m);
+
+            Validate(
+                testing::IsSimilarAngle((float)r.X(), (float)ref.X(), 0.001f) &&
+                testing::IsSimilarAngle((float)r.Y(), (float)ref.Y(), 0.001f) &&
+                testing::IsSimilarAngle((float)r.Z(), (float)ref.Z(), 0.001f)
+            );
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test96">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternion(const Quaternion &q)");
+
+        Quaternion q;
+        Matrix44Affine r, ref;
+
+        q.Set(0, 0, SQRT_HALF, SQRT_HALF);
+
+        ref.Set(
+             0, 1, 0,
+            -1, 0, 0,
+             0, 0, 1,
+             0, 0, 0
+            );
+
+        r = Matrix44AffineFromQuaternion(q);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test97">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternion(const Quaternion &q)");
+
+        Quaternion q;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type half = 0.5f;
+        float_test_type zero = 0.0f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+
+            q.Set(Sin(half * angle), zero, zero, Cos(half * angle));
+
+            ref.Set(
+                1, 0, 0,
+                0, Cos(angle), Sin(angle),
+                0, Sin(-angle), Cos(angle),
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromQuaternion(q);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test98">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternion(const Quaternion &q)");
+
+        Quaternion q;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type half = 0.5f;
+        float_test_type zero = 0.0f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+
+            q.Set(zero, Sin(half * angle), zero, Cos(half * angle));
+
+            ref.Set(
+                Cos(angle), 0, Sin(-angle),
+                0, 1, 0,
+                Sin(angle), 0, Cos(angle),
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromQuaternion(q);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test99">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternion(const Quaternion &q)");
+
+        Quaternion q;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type half = 0.5f;
+        float_test_type zero = 0.0f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+
+            q.Set(zero, zero, Sin(half * angle), Cos(half * angle));
+
+            ref.Set(
+                Cos(angle), Sin(angle), 0,
+                Sin(-angle), Cos(angle), 0,
+                0, 0, 1,
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromQuaternion(q);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test100">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromAxisRotationAngle(const Vector3 &axis, float_t angle)");
+
+        Vector3 axis;
+        float_test_type angle;
+        Matrix44Affine r, ref;
+
+        axis.Set(1, 0, 0);
+        ref.Set(
+            1, 0, 0,
+            0, 0, 1,
+            0,-1, 0,
+            0, 0, 0
+            );
+        angle = HALF_PI;
+
+        r = Matrix44AffineFromAxisRotationAngle(axis, angle);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test101">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromAxisRotationAngle(const Vector3 &axis, float_t angle)");
+
+        Vector3 axis;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+            axis.Set(1, 0, 0);
+            ref.Set(
+                1, 0, 0,
+                0, Cos(angle), Sin(angle),
+                0, Sin(-angle), Cos(angle),
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromAxisRotationAngle(axis, angle);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test102">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromAxisRotationAngle(const Vector3 &axis, float_t angle)");
+
+        Vector3 axis;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+            axis.Set(0, 1, 0);
+            ref.Set(
+                Cos(angle), 0, Sin(-angle),
+                0, 1, 0,
+                Sin(angle), 0, Cos(angle),
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromAxisRotationAngle(axis, angle);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test103">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromAxisRotationAngle(const Vector3 &axis, float_t angle)");
+
+        Vector3 axis;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+            axis.Set(0, 0, 1);
+            ref.Set(
+                Cos(angle), Sin(angle), 0,
+                Sin(-angle), Cos(angle), 0,
+                0, 0, 1,
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromAxisRotationAngle(axis, angle);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test104">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromEulerXYZ(const Vector3 &euler)");
+
+        Vector3 euler;
+        Matrix44Affine r, ref;
+
+        euler.Set(HALF_PI, 0.0f, 0.0f);
+        ref.Set(
+            1, 0, 0,
+            0, 0, 1,
+            0,-1, 0,
+            0, 0, 0
+            );
+
+        r = Matrix44AffineFromEulerXYZ(euler);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test105">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromEulerXYZ(const Vector3 &euler)");
+
+        Vector3 euler;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type zero = 0.0f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+            euler.Set(angle, zero, zero);
+            ref.Set(
+                1, 0, 0,
+                0, Cos(angle), Sin(angle),
+                0, Sin(-angle), Cos(angle),
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromEulerXYZ(euler);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test106">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromEulerXYZ(const Vector3 &euler)");
+
+        Vector3 euler;
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+        float_test_type zero = 0.0f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+            euler.Set(zero, zero, angle);
+            ref.Set(
+                Cos(angle), Sin(angle), 0,
+                Sin(-angle), Cos(angle), 0,
+                0, 0, 1,
+                0, 0, 0
+                );
+
+            r = Matrix44AffineFromEulerXYZ(euler);
+
+            Validate(IsSimilar(r, ref));
+
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test107">
+      <![CDATA[
+
+
+
+        SetFunctionName("Mult3x3(const Vector4 &v, const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+        Vector4 v4, r;
+
+        m.Set(
+                2.0f,  3.0f,  4.0f,
+                6.0f,  7.0f,  8.0f,
+               10.0f, 11.0f, 12.0f,
+               14.0f, 15.0f, 16.0f
+             );
+        v4.Set(6, -1, -3, 2);
+
+        Vector4 ref(
+                  m.GetElem(0, 0) * v4.X() + m.GetElem(1, 0) * v4.Y() + m.GetElem(2, 0) * v4.Z(),
+                  m.GetElem(0, 1) * v4.X() + m.GetElem(1, 1) * v4.Y() + m.GetElem(2, 1) * v4.Z(),
+                  m.GetElem(0, 2) * v4.X() + m.GetElem(1, 2) * v4.Y() + m.GetElem(2, 2) * v4.Z(),
+                  v4.W());
+
+        r = Mult3x3(v4, m);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test108">
+      <![CDATA[
+
+
+
+        SetFunctionName("Mult3x3(const Vector3 &v, const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+        Vector3 v3, r;
+
+        m.Set(
+            2.0f,  3.0f,  4.0f,
+            6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        v3.Set(6, -1, -3);
+
+        Vector3 ref(
+                  m.GetElem(0, 0) * v3.X() + m.GetElem(1, 0) * v3.Y() + m.GetElem(2, 0) * v3.Z(),
+                  m.GetElem(0, 1) * v3.X() + m.GetElem(1, 1) * v3.Y() + m.GetElem(2, 1) * v3.Z(),
+                  m.GetElem(0, 2) * v3.X() + m.GetElem(1, 2) * v3.Y() + m.GetElem(2, 2) * v3.Z() );
+
+        r = Mult3x3(v3, m);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test109">
+      <![CDATA[
+
+
+
+        SetFunctionName("Inverse3x3(const Matrix44Affine &src, &determinant)");
+
+        Matrix44Affine a, r, ref;
+        Vector4 va, vb;
+
+        a.Set(
+            1, 0, 0,
+            0, 0, 1,
+            0,-1, 0,
+            0, 0, 0
+            );
+
+        ref.Set(
+            1, 0, 0,
+            0, 0,-1,
+            0, 1, 0,
+            0, 0, 0
+            );
+
+        va.Set(1.0f, 0.0f, 0.0f, 0.0f);
+
+        float_test_type determinant;
+        r = Inverse3x3(a, determinant);
+
+        vb = Mult3x3(Mult3x3(va,  a), r);
+
+        Validate(IsSimilar(r, ref) && IsSimilar(va, vb));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test110">
+      <![CDATA[
+
+
+
+        SetFunctionName("Determinant3x3(const Matrix44Affine &result)");
+
+        Matrix44Affine a;
+
+        a.Set(
+             2,-1, 0,
+            -1, 2,-1,
+             0,-1, 2,
+             0, 0,-1
+            );
+
+        float_test_type r = Determinant3x3(a);
+
+        Validate(IsEqualWithEpsilon(r, (float_test_type)4.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test111">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromScale(const Vector3 &scale)");
+
+        Matrix44Affine m, r;
+        Vector3 s;
+        s.Set(3, 5, 1);
+
+        r.Set(
+            3, 0, 0,
+            0, 5, 0,
+            0, 0, 1,
+            0, 0, 0
+            );
+
+        m = Matrix44AffineFromScale(s);
+
+        Validate(IsSimilar(m, r));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test112">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromTranslation(const Vector3 &trans)");
+
+        Matrix44Affine m, r;
+        Vector3 t;
+        t.Set(3, 5, 1);
+
+        r.Set(
+            1, 0, 0,
+            0, 1, 0,
+            0, 0, 1,
+            3, 5, 1
+            );
+
+        m = Matrix44AffineFromTranslation(t);
+
+        Validate(IsSimilar(m, r));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test113">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromScaleQuaternion(const Vector3 &scale, const Quaternion &q)");
+
+        Matrix44Affine r, ref;
+        Vector3 t;
+        Quaternion q;
+        t.Set(3, 5, 1);
+        q.Set(0, 0, SQRT_HALF, SQRT_HALF);
+
+        ref.Set(
+             0, 3, 0,
+            -5, 0, 0,
+             0, 0, 1,
+             0, 0, 0
+            );
+
+        r = Matrix44AffineFromScaleQuaternion(t, q);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test114">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromScaleTranslation(const Vector3 &scale, const Vector3 &trans)");
+
+        Matrix44Affine r, ref;
+        Vector3 s, t;
+        s.Set(3, 5, 1);
+        t.Set(2, 1 ,3);
+
+        ref.Set(
+            3, 0, 0,
+            0, 5, 0,
+            0, 0, 1,
+            2, 1, 3
+            );
+
+        r = Matrix44AffineFromScaleTranslation(s, t);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test115">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromDiagonal(float_t a)");
+
+        Matrix44Affine r, ref;
+        float_test_type s = 3.0f;
+        ref.Set(
+            s, 0, 0,
+            0, s, 0,
+            0, 0, s,
+            0, 0, 0
+            );
+#if defined HOST_TESTING
+        r = Matrix44AffineFromDiagonal(s);
+#else
+        r = Matrix44AffineFromDiagonal<FloatType>(s);
+#endif
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test116">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromXRotationAngle(angle)");
+
+        Matrix44Affine r, ref;
+        float_test_type angle = 1.3f;
+
+#if defined HOST_TESTING
+        r = Matrix44AffineFromXRotationAngle( angle );
+#else
+        r = Matrix44AffineFromXRotationAngle<FloatType>( angle );
+#endif
+        ref = Matrix44AffineFromAxisRotationAngle(Vector3(1.0f, 0.0f, 0.0f), angle);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test117">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromXRotationAngle(angle)");
+
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+    #if defined HOST_TESTING
+            r = Matrix44AffineFromXRotationAngle( angle );
+    #else
+            r = Matrix44AffineFromXRotationAngle<FloatType>( angle );
+    #endif
+            ref = Matrix44AffineFromAxisRotationAngle(Vector3(1.0f, 0.0f, 0.0f), angle);
+
+            Validate(IsSimilar(r, ref));
+
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test118">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromYRotationAngle(angle)");
+
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+
+    #if defined HOST_TESTING
+            r = Matrix44AffineFromYRotationAngle( angle );
+    #else
+            r = Matrix44AffineFromYRotationAngle<FloatType>( angle );
+    #endif
+
+            ref = Matrix44AffineFromAxisRotationAngle(Vector3(0.0f, 1.0f, 0.0f), angle);
+
+            Validate(IsSimilar(r, ref));
+        }
+
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test119">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromZRotationAngle(angle)");
+
+        Matrix44Affine r, ref;
+        float_test_type angle = -PI + 0.0001f;
+
+        for(; angle < float_test_type(PI); angle += float_test_type(0.25f))
+        {
+
+    #if defined HOST_TESTING
+            r = Matrix44AffineFromZRotationAngle( angle );
+    #else
+            r = Matrix44AffineFromZRotationAngle<FloatType>( angle );
+    #endif
+
+
+            ref = Matrix44AffineFromAxisRotationAngle(Vector3(0.0f, 0.0f, 1.0f), angle);
+
+            Validate(IsSimilar(r, ref));
+
+        }
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test120">
+      <![CDATA[
+
+
+
+        SetFunctionName("RotateAroundXAxis(angle, Matrix44Affine)");
+        Matrix44Affine initialMat = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.3f, -1.4f));
+        Matrix44Affine r, ref;
+        float_test_type angle = 1.3f;
+
+#if defined HOST_TESTING
+        ref = Mult( Matrix44AffineFromXRotationAngle( angle ), initialMat );
+#else
+        ref = Mult( Matrix44AffineFromXRotationAngle<FloatType>( angle ), initialMat );
+#endif
+        r = RotateAroundXAxis(initialMat, angle);
+
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test121">
+      <![CDATA[
+
+
+
+        SetFunctionName("RotateAroundYAxis(angle, Matrix44Affine)");
+        Matrix44Affine initialMat = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.3f, -1.4f));
+        Matrix44Affine r, ref;
+        float_test_type angle = 1.3f;
+
+#if defined HOST_TESTING
+        ref = Mult( Matrix44AffineFromYRotationAngle( angle ), initialMat );
+#else
+        ref = Mult( Matrix44AffineFromYRotationAngle<FloatType>( angle ), initialMat );
+#endif
+        r = RotateAroundYAxis(initialMat, angle);
+
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test122">
+      <![CDATA[
+
+
+
+        SetFunctionName("RotateAroundZAxis(angle, Matrix44Affine)");
+        Matrix44Affine initialMat = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.3f, -1.4f));
+        Matrix44Affine r, ref;
+        float_test_type angle = 1.3f;
+
+#if defined HOST_TESTING
+        ref = Mult( Matrix44AffineFromZRotationAngle( angle ), initialMat );
+#else
+        ref = Mult( Matrix44AffineFromZRotationAngle<FloatType>( angle ), initialMat );
+#endif
+        r = RotateAroundZAxis(initialMat, angle);
+
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="matrix44affinefromortholh_test">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromOrthoLH(w, h, zn, zf)");
+
+        bool success = true;
+        float_test_type w = 10.0f;
+        float_test_type h = 16.0f;
+        float_test_type zn = 10.0f;
+        float_test_type zf = 80.0f;
+
+#if defined HOST_TESTING
+        Matrix44Affine mat(Matrix44AffineFromOrthoLH(w, h, zn, zf));
+#else
+        Matrix44Affine mat(Matrix44AffineFromOrthoLH<FloatType>(w, h, zn, zf));
+#endif
+
+        Vector4 minVec(-w/2.0f, -h/2.0f, zn, (float_test_type)1.0f);
+        Vector4 maxVec(w/2.0f, h/2.0f, zf, (float_test_type)1.0f);
+        for(int i=0;i<8;i++)
+        {
+            bool xBool = (i&1)!=0;
+            bool yBool = (i&2)!=0;
+            bool zBool = (i&4)!=0;
+            Vector4 testVector( Select(Mask4(xBool, yBool, zBool, true), maxVec, minVec ) );
+            Vector4 result = testVector * mat;
+
+            success &= IsSimilar((float)result.X(), xBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Y(), yBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Z(), zBool ? 1.0f: 0.0f );
+        }
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="matrix44affinefromorthorh_test">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromOrthoRH(w, h, zn, zf)");
+
+        bool success = true;
+        float_test_type w = 10.0f;
+        float_test_type h = 16.0f;
+        float_test_type zn = 10.0f;
+        float_test_type zf = 80.0f;
+
+#if defined HOST_TESTING
+        Matrix44Affine mat(Matrix44AffineFromOrthoRH(w, h, zn, zf));
+#else
+        Matrix44Affine mat(Matrix44AffineFromOrthoRH<FloatType>(w, h, zn, zf));
+#endif
+
+        Vector4 minVec(-w/(float_test_type)2.0f, -h/2.0f, -zn, (float_test_type)1.0f);
+        Vector4 maxVec(w/(float_test_type)2.0f, h/2.0f, -zf, (float_test_type)1.0f);
+        for(int i=0;i<8;i++)
+        {
+            bool xBool = (i&1)!=0;
+            bool yBool = (i&2)!=0;
+            bool zBool = (i&4)!=0;
+            Vector4 testVector( Select(Mask4(xBool, yBool, zBool, true), maxVec, minVec ) );
+            Vector4 result = testVector * mat;
+
+            success &= IsSimilar((float)result.X(), xBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Y(), yBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Z(), zBool ? 1.0f: 0.0f );
+        }
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test123">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromOrtho(w, h, zn, zf)");
+        // Note: These numbers were generated by running Matrix44AffineOrtho on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                0.125f, 0.0f,       0.0f,
+                0.0f,   0.222222f,  0.0f,
+                0.0f,   0.0f,       -0.01001f,
+                0.0f,   0.0f,       -0.001001f
+                );
+
+        Matrix44Affine r;
+
+#if defined HOST_TESTING
+        r = Matrix44AffineFromOrtho(16.0f, 9.0f, 0.1f, 100.0f);
+#else
+        r = Matrix44AffineFromOrtho<FloatType>(16.0f, 9.0f, 0.1f, 100.0f);
+#endif
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="matrix44affinefromorthooffcenterlh_test">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromOrthoOffCenterLH(l, r, b, t, zn, zf)");
+
+        bool success = true;
+        float_test_type l = -3.0f;
+        float_test_type r = 5.0f;
+        float_test_type t = 6.0f;
+        float_test_type b = -8.0f;
+        float_test_type zn = 10.0f;
+        float_test_type zf = 80.0f;
+
+#if defined HOST_TESTING
+        Matrix44Affine mat(Matrix44AffineFromOrthoOffCenterLH(l, r, b, t, zn, zf));
+#else
+        Matrix44Affine mat(Matrix44AffineFromOrthoOffCenterLH<FloatType>(l, r, b, t, zn, zf));
+#endif
+
+        Vector4 minVec(l, b, zn, (float_test_type)1.0f);
+        Vector4 maxVec(r, t, zf, (float_test_type)1.0f);
+        for(int i=0;i<8;i++)
+        {
+            bool xBool = (i&1)!=0;
+            bool yBool = (i&2)!=0;
+            bool zBool = (i&4)!=0;
+            Vector4 testVector( Select(Mask4(xBool, yBool, zBool, true), maxVec, minVec ) );
+            Vector4 result = testVector * mat;
+
+            success &= IsSimilar((float)result.X(), xBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Y(), yBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Z(), zBool ? 1.0f: 0.0f );
+        }
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="matrix44affinefromorthooffcenterrh_test">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromOrthoOffCenterRH(l, r, b, t, zn, zf)");
+
+        bool success = true;
+        float_test_type l = -3.0f;
+        float_test_type r = 5.0f;
+        float_test_type t = 6.0f;
+        float_test_type b = -8.0f;
+        float_test_type zn = 10.0f;
+        float_test_type zf = 80.0f;
+
+#if defined HOST_TESTING
+        Matrix44Affine mat(Matrix44AffineFromOrthoOffCenterRH(l, r, b, t, zn, zf));
+#else
+        Matrix44Affine mat(Matrix44AffineFromOrthoOffCenterRH<FloatType>(l, r, b, t, zn, zf));
+#endif
+
+        Vector4 minVec(l, b, -zn, (float_test_type)1.0f);
+        Vector4 maxVec(r, t, -zf, (float_test_type)1.0f);
+        for(int i=0;i<8;i++)
+        {
+            bool xBool = (i&1)!=0;
+            bool yBool = (i&2)!=0;
+            bool zBool = (i&4)!=0;
+            Vector4 testVector( Select(Mask4(xBool, yBool, zBool, true), maxVec, minVec ) );
+            Vector4 result = testVector * mat;
+
+            success &= IsSimilar((float)result.X(), xBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Y(), yBool ? 1.0f : -1.0f );
+            success &= IsSimilar((float)result.Z(), zBool ? 1.0f: 0.0f );
+        }
+
+        Validate(success);
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test124">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromOrthoOffCenter(l, r, b, t, zn, zf)");
+        // Note: These numbers were generated by running Matrix44AffineOrthoOffCenter on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                0.12500000f,  0.00000000f,    0.00000000f,
+                0.00000000f,  0.22222222f,    0.00000000f,
+                0.00000000f,  0.00000000f,  -0.010010010f,
+                0.25000000f, -0.11111111f, -0.0010010010f
+                );
+
+        Matrix44Affine r;
+
+#if defined HOST_TESTING
+        r = Matrix44AffineFromOrthoOffCenter(-10.0f, 6.0f, -4.0f, 5.0f, 0.1f, 100.0f);
+#else
+        r = Matrix44AffineFromOrthoOffCenter<FloatType>(-10.0f, 6.0f, -4.0f, 5.0f, 0.1f, 100.0f);
+#endif
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test125">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternionTranslation(q, trans)");
+        // Note: These numbers were generated by running Matrix44AffineFromQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                -0.63003671f,      0.77655685f,    0.0036630034f,
+                -0.76190484f,     -0.61904776f,      0.19047621f,
+                0.15018317f,      0.11721613f,      0.98168498f,
+                1.0000000f,       2.0000000f,       3.0000000f
+                );
+
+        Matrix44Affine r;
+
+        r = Matrix44AffineFromQuaternionTranslation(Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test126">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromQuaternionTranslation(q, trans, r)");
+        // Note: These numbers were generated by running Matrix44AffineFromQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                -0.63003671f,      0.77655685f,    0.0036630034f,
+                -0.76190484f,     -0.61904776f,      0.19047621f,
+                0.15018317f,      0.11721613f,      0.98168498f,
+                1.0000000f,       2.0000000f,       3.0000000f
+                );
+
+        Matrix44Affine r;
+
+        r = Matrix44AffineFromQuaternionTranslation(Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test127">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromScaleQuaternionTranslation(scale, q, trans)");
+        // Note: These numbers were generated by running Matrix44AffineFromScaleQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                    -1.8901101f,       2.3296704f,     0.010989010f,
+                    -1.5238097f,      -1.2380955f,      0.38095242f,
+                    0.15018317f,      0.11721613f,      0.98168498f,
+                     1.0000000f,       2.0000000f,       3.0000000f
+                );
+
+        Matrix44Affine r;
+
+        r = Matrix44AffineFromScaleQuaternionTranslation(Vector3(3.0f, 2.0f, 1.0f), Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test128">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromScaleQuaternionTranslation(scale, q, trans, r)");
+        // Note: These numbers were generated by running Matrix44AffineFromScaleQuaternionTranslation on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+                    -1.8901101f,       2.3296704f,     0.010989010f,
+                    -1.5238097f,      -1.2380955f,      0.38095242f,
+                    0.15018317f,      0.11721613f,      0.98168498f,
+                     1.0000000f,       2.0000000f,       3.0000000f
+                );
+
+        Matrix44Affine r;
+
+        r = Matrix44AffineFromScaleQuaternionTranslation(Vector3(3.0f, 2.0f, 1.0f), Normalize(Quaternion(0.1f, 0.2f, 2.1f, 1.0f)), Vector3(1.0f, 2.0f, 3.0f));
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test129">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineFromLookAt(Vector3 lookAt, Vector3 up,   Vector3 eyePosition)");
+        // Note: These numbers were generated by running Matrix44AffineLookAt on the input.
+        // This test case will only ensure future changes don't modify the results generated.
+        Matrix44Affine ref(
+           0.70710677f,     -0.40824825f,      0.57735020f,
+           0.00000000f,      0.81649649f,      0.57735020f,
+          -0.70710677f,     -0.40824825f,      0.57735020f,
+           0.00000000f,      0.00000000f,      -17.320505f
+        );
+
+        Matrix44Affine r;
+
+        Vector3 eye(10, 10, 10);
+        Vector3 focal(0, 0, 0);
+        Vector3 up(0, 1, 0);
+        r = Matrix44AffineFromLookAt(focal, up, eye);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="testM44AFromLookAt_johnhenckel">
+      <![CDATA[
+
+      SetFunctionName("Matrix44AffineFromLookAt - John Henckel regression");
+      Vector3 at = GetVector3_Zero();
+      Vector3 up = GetVector3_YAxis();
+      Vector3 eye = Vector3( 0.0f, 5.0f, -20.0f );
+      Matrix44Affine camera = Matrix44AffineFromLookAt( at, up, eye );
+
+      Vector3 res;
+      TransformPoints( &eye, 1, camera, &res );
+
+      Validate( IsSimilar( res, GetVector3_Zero() ) );
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test130">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetNormalError3x3(Matrix44Affine matrix)");
+        Matrix44Affine mat(
+            1.1f, 0.0f, 0.1f,
+            0.1f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, -0.1f, 0.0f
+        );
+
+        float_test_type r = GetNormalError3x3(mat);
+
+        Validate(IsSimilar((float_test_type)r, (float_test_type)0.0485f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test131">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsNormal3x3(Matrix44Affine matrix)");
+        Matrix44Affine mat1(
+            0.2672612f,    0.5345225f,    0.8017837f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+        Matrix44Affine mat2(
+            1.0f, 0.3f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+
+        Validate(
+             IsNormal3x3(mat1, (float_test_type)0.001f) &&
+            !IsNormal3x3(mat2, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test132">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetOrthogonalRowSetError3x3(Matrix44Affine matrix)");
+        Matrix44Affine mat(
+            1.1f, 0.0f, 0.1f,
+            0.1f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, -0.1f, 0.0f
+        );
+
+        float_test_type r = GetOrthogonalRowSetError3x3(mat);
+
+        Validate(IsSimilar((float_test_type)r, (float_test_type)0.0221f));
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="GetOrthogonalError3x3Test">
+      <![CDATA[
+
+
+
+        SetFunctionName("GetOrthogonalError3x3(Matrix44Affine matrix)");
+        Matrix44Affine mat(
+            1.1f, 0.0f, 0.1f,
+            0.1f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, -0.1f, 0.0f
+        );
+
+        float_test_type r = GetOrthogonalError3x3(mat);
+
+        Validate(IsSimilar((float_test_type)r, (float_test_type) 0.00521909f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test133">
+      <![CDATA[
+
+
+
+        SetFunctionName("QueryRotateDegenerateUnitAxis(Matrix44Affine::InParam matrix, Vector3::OutParam unitAxis)");
+        Matrix44Affine mat(
+            1.1f, 0.0f, 0.1f,
+            0.1f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, -0.1f, 0.0f
+        );
+
+        Vector3 r = QueryRotateDegenerateUnitAxis(mat);
+
+        // TODO : Add further testing.
+        Validate(IsSimilar(Magnitude(r), (float_test_type)1.0f));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test134">
+      <![CDATA[
+
+
+
+        SetFunctionName("void QueryRotate(Matrix44Affine::InParam matrix, Vector3::OutParam unitAxis, VecFloat::OutParam angle, Vector3::OutParam center)");
+        Vector3 axis = Normalize(Vector3(1,2,3));
+        Vector3 translation(5.0f, 3.0f, 7.0f);
+        Matrix44Affine mat = Matrix44AffineTranslate( Matrix44AffineFromAxisRotationAngle(axis, (float_test_type)1.0f), translation);
+
+        Vector3 r;
+        float_test_type angle;
+        Vector3 center;
+        QueryRotate(mat, r, angle, center);
+
+        Validate(IsSimilar(Magnitude(r), (float_test_type)1.0f) &&
+                 IsSimilar(r, axis)
+                 );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test135">
+      <![CDATA[
+
+
+
+        SetFunctionName("SLerp(Matrix44Affine lFrom, Matrix44Affine lTo, float lrParam, float lprAngle)");
+        Vector3 axis = Normalize(Vector3(1.0f, -1.0f, 0.05f));
+        Matrix44Affine from = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.25f );
+        Matrix44Affine to = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.75f );
+        Matrix44Affine ref = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.5f );
+        float_test_type angle;
+        Matrix44Affine result = SLerp( from, to, (float_test_type)0.5f, angle );
+
+        Validate( IsSimilar(result, ref, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test136">
+      <![CDATA[
+
+
+
+        SetFunctionName("SLerpByAngle(Matrix44Affine lFrom, Matrix44Affine lTo, float lrMaxAngle, float lprAngle)");
+        Vector3 axis = Normalize(Vector3(1.0f, -1.0f, 0.05f));
+        Matrix44Affine from = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.25f );
+        Matrix44Affine to = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.75f );
+        Matrix44Affine ref = Matrix44AffineFromAxisRotationAngle( axis, (float_test_type)0.5f );
+        float_test_type angle;
+        Matrix44Affine result = SLerpByAngle( from, to, (float_test_type)0.25f, angle );
+
+        Validate( IsSimilar(result, ref, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test137">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsOrthogonalRowSet3x3(Matrix44Affine matrix)");
+
+        Matrix44Affine mat1(
+            0.2672612f,    0.5345225f,    0.8017837f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+
+        Matrix44Affine mat2(
+            1.0f, 0.3f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+
+        // upper left 3x3 of mat3 is an orthogonal row set
+        Matrix44Affine mat3(
+            -0.5097992f,  0.2732867f, -0.8157323f,
+            -1.2839158f, -1.5041522f,  0.2984735f,
+            -1.718125f,   1.7992397f,  1.6765389f,
+                 10.0f,        10.0f,       10.0f
+        );
+
+        Validate(
+            !IsOrthogonalRowSet3x3(mat1, (float_test_type)0.001f) &&
+            !IsOrthogonalRowSet3x3(mat2, (float_test_type)0.001f) &&
+             IsOrthogonalRowSet3x3(mat3, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="IsOrthogonal3x3Test">
+      <![CDATA[
+
+
+
+        SetFunctionName("IsOrthogonal3x3(Matrix44Affine matrix)");
+
+        Matrix44Affine mat1(
+            0.2672612f,    0.5345225f,    0.8017837f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+
+        Matrix44Affine mat2(
+            1.0f, 0.3f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+        );
+
+        // upper left 3x3 of mat3 is orthogonal
+        Matrix44Affine mat3(
+             0.3333333f,  0.6666667f,  0.6666667f,
+            -0.8944272f,  0.4472136f,  0.0f,
+            -0.2981424f, -0.5962848f,  0.7453560f,
+             1.0f,        1.0f,        1.0f
+        );
+
+        Validate(
+            !IsOrthogonal3x3(mat1, (float_test_type)0.001f) &&
+            !IsOrthogonal3x3(mat2, (float_test_type)0.001f) &&
+             IsOrthogonal3x3(mat3, (float_test_type)0.001f) );
+
+
+
+      ]]>
+      </TEST>
+
+
+
+      <TEST NAME="test138">
+      <![CDATA[
+
+
+
+        SetFunctionName("OrthoNormalize3x3(m)");
+        Matrix44Affine initialMat(
+             0.0683740f,   0.7263507f,   0.2320748f,
+             0.5608486f,   0.1985144f,   0.2312237f,
+             0.6623569f,   0.5442573f,   0.2164633f,
+                  10.0f,        10.0f,       10.0f
+            );
+
+        Matrix44Affine r = OrthoNormalize3x3(initialMat);
+        bool isOrtho = IsOrthogonal3x3(r, (float_test_type)0.01f);
+        bool isNormal = IsNormal3x3(r, (float_test_type)0.01f);
+
+        Matrix44Affine mat2 = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.0f, 3.0f));
+        Matrix44Affine r2 = OrthoNormalize3x3(mat2);
+
+        Validate( isOrtho && isNormal &&
+                  IsOrthogonal(r2) && IsNormal(r2) && IsSimilar(mat2, r2) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test139">
+      <![CDATA[
+
+
+
+        SetFunctionName("InverseGeneric3x3(m)");
+        Matrix44Affine initialMat(
+             0.0683740f,   0.7263507f,   0.2320748f,
+             0.5608486f,   0.1985144f,   0.2312237f,
+             0.6623569f,   0.5442573f,   0.2164633f,
+                  10.0f,        10.0f,       10.0f
+            );
+        Matrix33 productRef(
+            1.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f
+            );
+
+        Matrix44Affine r = InverseGeneric3x3(initialMat);
+        Matrix33 product = Mult(Get3x3(r), Get3x3(initialMat));
+        Validate( IsSimilar(product, productRef) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test140">
+      <![CDATA[
+
+
+
+        SetFunctionName("InverseOfMatrixWithOrthonormal3x3(m)");
+        Matrix44Affine initialMat = OrthoNormalize3x3(Matrix44Affine(
+             0.0683740f,   0.7263507f,   0.2320748f,
+             0.5608486f,   0.1985144f,   0.2312237f,
+             0.6623569f,   0.5442573f,   0.2164633f,
+                  10.0f,        10.0f,       10.0f
+            ));
+        Matrix44Affine productRef(
+            1.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
+            0.0f, 0.0f, 1.0f,
+            0.0f, 0.0f, 0.0f
+            );
+
+        Matrix44Affine r = InverseOfMatrixWithOrthonormal3x3(initialMat);
+        Matrix44Affine product = Mult(r, initialMat);
+        Validate( IsSimilar(product, productRef) );
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test141">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineTransposeRotationalComponent(m)");
+        Matrix44Affine initialMat = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.3f, -1.4f));
+        Matrix44Affine ref = Transpose(initialMat);
+
+        Matrix44Affine r;
+        r = Matrix44AffineTransposeRotationalComponent(initialMat);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test142">
+      <![CDATA[
+
+
+
+        SetFunctionName("Matrix44AffineTranslate(m, trans)");
+        Matrix44Affine initialMat = Matrix44AffineFromEulerXYZ(Vector3(1.0f, 2.3f, -1.4f));
+
+        Matrix44Affine translationMatrix(   1.0f, 0.0f, 0.0f,
+                                            0.0f, 1.0f, 0.0f,
+                                            0.0f, 0.0f, 1.0f,
+                                            1.0f, 2.0f, 5.0f );
+        Vector3 &transVec = *reinterpret_cast<Vector3*>(&translationMatrix.GetRow(3));
+        Matrix44Affine ref = Mult( translationMatrix, initialMat );
+
+        Matrix44Affine r = Matrix44AffineTranslate(initialMat, transVec);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test143">
+      <![CDATA[
+
+
+
+        SetFunctionName("ScaleRow(m, r0, r1, r2)");
+        Matrix44Affine initialMat(
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f );
+
+        Matrix44Affine ref(
+                2.0f, 2.0f, 2.0f,
+                3.0f, 3.0f, 3.0f,
+                4.0f, 4.0f, 4.0f,
+                1.0f, 1.0f, 1.0f );
+
+        Matrix44Affine r;
+        r = ScaleRow(initialMat, (float_test_type)2.0f, (float_test_type)3.0f, (float_test_type)4.0f);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test144">
+      <![CDATA[
+
+
+
+        SetFunctionName("ScaleColumn(m, c0, c1, c2)");
+        Matrix44Affine initialMat(
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f );
+
+        Matrix44Affine ref(
+                2.0f, 3.0f, 4.0f,
+                2.0f, 3.0f, 4.0f,
+                2.0f, 3.0f, 4.0f,
+                1.0f, 1.0f, 1.0f );
+
+        Matrix44Affine r;
+        r = ScaleColumn(initialMat, (float_test_type)2.0f, (float_test_type)3.0f, (float_test_type)4.0f);
+
+        Validate(IsSimilar(r, ref));
+
+
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getxcolumn">
+      <![CDATA[
+
+        SetFunctionName("Vector4 GetXColumn()");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f 
+            );
+        Vector4 r = m.GetXColumn();
+        Vector4 ref( 2.0f, 6.0f, 10.0f, 14.0f );
+
+
+        Validate( r == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getycolumn">
+      <![CDATA[
+
+        SetFunctionName("Vector4 GetYColumn()");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        Vector4 r = m.GetYColumn();
+        Vector4 ref( 3.0f, 7.0f, 11.0f, 15.0f );
+
+
+        Validate( r == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getzcolumn">
+      <![CDATA[
+
+        SetFunctionName("Vector4 GetZColumn()");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        Vector4 r = m.GetZColumn();
+        Vector4 ref( 4.0f, 8.0f, 12.0f, 16.0f );
+
+
+        Validate( r == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="setxcolumn">
+      <![CDATA[
+
+        SetFunctionName("SetXColumn(Vector4 &)");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+        Matrix44Affine ref(
+            1.0f,  3.0f,  4.0f,
+            2.0f,  7.0f,  8.0f,
+            3.0f, 11.0f, 12.0f,
+            4.0f, 15.0f, 16.0f
+            );
+        m.SetXColumn(v4);
+
+        Validate( m == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="setycolumn">
+      <![CDATA[
+
+        SetFunctionName("SetYColumn(Vector4 &)");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+        Matrix44Affine ref(
+             2.0f, 1.0f,  4.0f,
+             6.0f, 2.0f,  8.0f,
+            10.0f, 3.0f, 12.0f,
+            14.0f, 4.0f, 16.0f
+            );
+        m.SetYColumn(v4);
+
+        Validate( m == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="setzcolumn">
+      <![CDATA[
+
+        SetFunctionName("SetZColumn(Vector4 &)");
+
+        Matrix44Affine m(
+             2.0f,  3.0f,  4.0f,
+             6.0f,  7.0f,  8.0f,
+            10.0f, 11.0f, 12.0f,
+            14.0f, 15.0f, 16.0f
+            );
+        Vector4 v4(1.0f, 2.0f, 3.0f, 4.0f);
+        Matrix44Affine ref(
+             2.0f,  3.0f, 1.0f,
+             6.0f,  7.0f, 2.0f,
+            10.0f, 11.0f, 3.0f,
+            14.0f, 15.0f, 4.0f
+            );
+        m.SetZColumn(v4);
+
+        Validate( m == ref );
+
+      ]]>
+      </TEST>
+        
+      <TEST NAME="TestGet3x3">
+            <![CDATA[
+
+        SetFunctionName("Get3x3(m)");
+        
+        Matrix44Affine m44a(.11f, .12f, .13f, .21f, .22f, .23f, .31f, .32f, .33f, .41f, .42f, .43f);
+        Matrix33 upper33(.11f, .12f, .13f, .21f, .22f, .23f, .31f, .32f, .33f);
+        
+        Matrix33 m33 = Get3x3(m44a);
+        
+        Validate( IsSimilar(m33, upper33) );
+        
+      ]]>
+        </TEST>
+
+      <TEST NAME="TestSet3x3">
+            <![CDATA[
+
+        SetFunctionName("Set3x3(Matrix44Affine, Matrix33)");
+        
+        Matrix44Affine m44a(.11f, .12f, .13f, .21f, .22f, .23f, .31f, .32f, .33f, .41f, .42f, .43f);
+        Matrix44Affine m44a_reference(1.1f, 1.2f, 1.3f, 2.1f, 2.2f, 2.3f, 3.1f, 3.2f, 3.3f, .41f, .42f, .43f);
+        Matrix33 new33(1.1f, 1.2f, 1.3f, 2.1f, 2.2f, 2.3f, 3.1f, 3.2f, 3.3f);
+        
+        Matrix44Affine m44a_new = Set3x3(m44a, new33);
+        
+        Validate( IsSimilar(m44a_new, m44a_reference) );
+        
+      ]]>
+        </TEST>
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test145">
+      <![CDATA[
+
+        SetFunctionName("Negate(const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Negate(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_inverse">
+      <![CDATA[
+
+        SetFunctionName("Inverse(const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Inverse(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test146">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Matrix44Affine &m, const float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Mult(m44_function_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test147">
+      <![CDATA[
+
+        SetFunctionName("Divide(const Matrix44Affine &m, const float_t a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Divide(m44_function_array[i], x_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test148">
+      <![CDATA[
+
+        SetFunctionName("Add(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a = m44_function_array[0];
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Add(a, m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test149">
+      <![CDATA[
+
+        SetFunctionName("Subtract(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a = m44_function_array[0];
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Subtract(a, m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test150">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Vector4 &v, const Matrix44Affine &m)");
+
+        Vector4 v4;
+        v4.Set(6.0f, -1.0f, -3.0f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                vec4Result = Mult(v4, m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test151">
+      <![CDATA[
+
+        SetFunctionName("Mult(const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+
+        a = m44_function_array[1];
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Mult(a, m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_transform_vector">
+      <![CDATA[
+
+        SetFunctionName("TransformVector(const Vector3 &v, const Matrix44Affine &m)");
+
+        Vector4 v4;
+        v4.Set(6.0f, -1.0f, -3.0f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                vec3Result = TransformVector(GetXYZ(v4), m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="perf_transform_point">
+      <![CDATA[
+
+        SetFunctionName("TransformPoint(const Vector3 &v, const Matrix44Affine &m)");
+
+        Vector4 v4;
+        v4.Set(6.0f, -1.0f, -3.0f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                vec3Result = TransformPoint(GetXYZ(v4), m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test152">
+      <![CDATA[
+
+        SetFunctionName("Transpose(const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Transpose(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test153">
+      <![CDATA[
+
+        SetFunctionName("Determinant(const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueFloat = Determinant(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test154">
+      <![CDATA[
+
+        SetFunctionName("IsSimilar(const Matrix44Affine &a, const Matrix44Affine &b, float_t epsilon = rw::math::kSmallFloat)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueBool = IsSimilar(m44_function_array[i], m44_function_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE - i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test155">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromScale(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromScale(v3_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test156">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromTranslation(const Vector3 &v)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromTranslation(v3_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test157">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromScaleQuaternion(const Vector3 &scale, const Quaternion &q)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromScaleQuaternion(v3_array[i],q_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test158">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromScaleTranslation(const Vector3 &scale, const Vector3 &translation)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromScaleTranslation(v3_array[i],v3_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test159">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromDiagonal(a)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+#if defined HOST_TESTING
+                matResult = Matrix44AffineFromDiagonal(x_array[i]);
+#else
+                matResult = Matrix44AffineFromDiagonal<FloatType>(x_array[i]);
+#endif
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test160">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromQuaternion(const Quaternion &q)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromQuaternion(q_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test161">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromAxisAngle(const Vector3 &axis, float_t angle)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromAxisRotationAngle(v3_array[i], (float_test_type) 2.0f);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test162">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromEulerXYZ(const Vector4 &euler)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Matrix44AffineFromEulerXYZ(v3_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test163">
+      <![CDATA[
+
+        SetFunctionName("EulerXYZFromMatrix44Affine(const Matrix44Affine& m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                vec3Result = EulerXYZFromMatrix44Affine(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test164">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromXRotationAngle(float_t angle)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+#if defined HOST_TESTING
+                matResult = Matrix44AffineFromXRotationAngle( 1.3f );
+#else
+                matResult = Matrix44AffineFromXRotationAngle<FloatType>( 1.3f );
+#endif
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test165">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromYRotationAngle(float_t angle)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+#if defined HOST_TESTING
+                matResult = Matrix44AffineFromYRotationAngle( 1.3f );
+#else
+                matResult = Matrix44AffineFromYRotationAngle<FloatType>( 1.3f );
+#endif
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test166">
+      <![CDATA[
+
+        SetFunctionName("Matrix44AffineFromZRotationAngle(float_t angle)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+#if defined HOST_TESTING
+                matResult = Matrix44AffineFromZRotationAngle( 1.3f );
+#else
+                matResult = Matrix44AffineFromZRotationAngle<FloatType>( 1.3f );
+#endif
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test167">
+      <![CDATA[
+
+        SetFunctionName("Inverse(const Matrix44Affine &m, float& determinant)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Inverse(m44_function_array[i], retValueFloat);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="inverse_perf_test">
+      <![CDATA[
+
+        SetFunctionName("Inverse(const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = Inverse(m44_function_array[i]);
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+  <TYPE NAME="operator">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="test168">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator *= (Matrix44Affine &m, float_t a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) * s;
+        }
+
+        m *= s;
+
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test169">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator /= (Matrix44Affine &m, float_t a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) / s;
+        }
+
+        m /= s;
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test170">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = a * s;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test171">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const float_t a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = s * a;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test172">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator / (const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / s;
+        }
+
+        r = a / s;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="float_test168">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator *= (Matrix44Affine &m, float_t a)");
+
+        Matrix44Affine m, ref;
+        float_basic_type s = 2.0f;
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) * s;
+        }
+
+        m *= s;
+
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="float_test169">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator /= (Matrix44Affine &m, float_t a)");
+
+        Matrix44Affine m, ref;
+        float_basic_type s = 2.0f;
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) / s;
+        }
+
+        m /= s;
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="float_test170">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_basic_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = a * s;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="float_test171">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const float_t a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, r, ref;
+        float_basic_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = s * a;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="float_test172">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator / (const Matrix44Affine &m, const float_t a)");
+
+        Matrix44Affine a, r, ref;
+        float_basic_type s = 2.0f;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / s;
+        }
+
+        r = a / s;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test173">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator *= (Matrix44Affine &m, VecFloatRef<INDEX> a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) * s;
+        }
+
+        m *= svec.X();
+
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test174">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator /= (Matrix44Affine &m, VecFloatRef<INDEX> a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) / s;
+        }
+
+        m /= svec.X();
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test175">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator * (const Matrix44Affine &m, const VecFloatRef<INDEX> a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = a * svec.X();
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test176">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator * (const VecFloatRef<INDEX> a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = svec.X() * a;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test177">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator / (const Matrix44Affine &m, const VecFloatRef<INDEX> a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / s;
+        }
+
+        r = a / svec.X();
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test178">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator *= (Matrix44Affine &m, VecFloatRefIndex a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) * s;
+        }
+
+        m *= svec.GetComponent(0);
+
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test179">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator /= (Matrix44Affine &m, VecFloatRefIndex a)");
+
+        Matrix44Affine m, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        m.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = m.GetElem(i) / s;
+        }
+
+        m /= svec.GetComponent(0);
+
+        Validate(IsSimilar(m, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test180">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator * (const Matrix44Affine &m, const VecFloatRefIndex a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) * s;
+        }
+
+        r = a * svec.GetComponent(0);
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test181">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator * (const VecFloatRefIndex a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector4 svec(s, (float_test_type)0.0f, (float_test_type)0.0f, (float_test_type)0.0f);
+          a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        ref.Set(4.0f, 6.0f, 8.0f, 10.0f, 12.0f, 14.0f, 16.0f, 18.0f, 20.0f, 22.0f, 24.0f, 26.0f);
+
+
+
+        r = svec.GetComponent(0) * a;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test182">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+#ifdef HOST_TESTING
+
+        SetFunctionName("operator / (const Matrix44Affine &m, const VecFloatRefIndex a)");
+
+        Matrix44Affine a, r, ref;
+        float_test_type s = 2.0f;
+        Vector3 svec(s, s, s);
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) / s;
+        }
+
+        r = a / svec.GetComponent(0);
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test183">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Vector4 &v, const Matrix44Affine &m)");
+
+        Matrix44Affine m;
+        Vector4 v4, r;
+        m.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        v4.Set(2.0f, 3.0f, 4.0f, 1.0f);
+
+        Vector4 ref(
+                  m.GetElem(0, 0) * v4.X() + m.GetElem(1, 0) * v4.Y() + m.GetElem(2, 0) * v4.Z() + m.GetElem(3, 0) * v4.W(),
+                  m.GetElem(0, 1) * v4.X() + m.GetElem(1, 1) * v4.Y() + m.GetElem(2, 1) * v4.Z() + m.GetElem(3, 1) * v4.W(),
+                  m.GetElem(0, 2) * v4.X() + m.GetElem(1, 2) * v4.Y() + m.GetElem(2, 2) * v4.Z() + m.GetElem(3, 2) * v4.W(),
+                  v4.W() );
+
+        r = v4 * m;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test184">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator *= (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int32_t i = 0; i < 4; ++i)
+        {
+            float_test_type elemI3 = (i==3) ? (float_test_type)1.0f : (float_test_type)0.0f;
+            ref.GetElem(i, 0) = a.GetElem(i, 0) * b.GetElem(0, 0) + a.GetElem(i, 1) * b.GetElem(1, 0) + a.GetElem(i, 2) * b.GetElem(2, 0) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 0);
+            ref.GetElem(i, 1) = a.GetElem(i, 0) * b.GetElem(0, 1) + a.GetElem(i, 1) * b.GetElem(1, 1) + a.GetElem(i, 2) * b.GetElem(2, 1) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 1);
+            ref.GetElem(i, 2) = a.GetElem(i, 0) * b.GetElem(0, 2) + a.GetElem(i, 1) * b.GetElem(1, 2) + a.GetElem(i, 2) * b.GetElem(2, 2) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 2);
+        }
+
+        a *= b;
+
+        Validate(IsSimilar(a, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test185">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator += (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) + b.GetElem(i);
+        }
+
+        a += b;
+
+        Validate(IsSimilar(a, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test186">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator -= (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) - b.GetElem(i);
+        }
+
+        a -= b;
+
+        Validate(IsSimilar(a, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test187">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator - (const Matrix44Affine &m)");
+
+        Matrix44Affine a, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = -a.GetElem(i);
+        }
+
+        r = -a;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test188">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator + (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) + b.GetElem(i);
+        }
+
+        r = a + b;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test189">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator - (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int i = 0; i < 12; i++)
+        {
+            ref.GetElem(i) = a.GetElem(i) - b.GetElem(i);
+        }
+
+        r = a - b;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test190">
+      <![CDATA[
+
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, r, ref;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+        b.Set(4.0f, 3.0f, 4.0f, 1.0f, 6.0f, 7.0f, 8.0f, 1.0f, 10.0f, 11.0f, 12.0f, 1.0f);
+
+        for (int32_t i = 0; i < 4; ++i)
+        {
+            float_test_type elemI3 = (i==3) ? (float_test_type)1.0f : (float_test_type)0.0f;
+            ref.GetElem(i, 0) = a.GetElem(i, 0) * b.GetElem(0, 0) + a.GetElem(i, 1) * b.GetElem(1, 0) + a.GetElem(i, 2) * b.GetElem(2, 0) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 0);
+            ref.GetElem(i, 1) = a.GetElem(i, 0) * b.GetElem(0, 1) + a.GetElem(i, 1) * b.GetElem(1, 1) + a.GetElem(i, 2) * b.GetElem(2, 1) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 1);
+            ref.GetElem(i, 2) = a.GetElem(i, 0) * b.GetElem(0, 2) + a.GetElem(i, 1) * b.GetElem(1, 2) + a.GetElem(i, 2) * b.GetElem(2, 2) + elemI3 /*a.GetElem(i, 3)*/ * b.GetElem(3, 2);
+        }
+
+        r = a * b;
+
+        Validate(IsSimilar(r, ref));
+
+#endif
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test191">
+      <![CDATA[
+
+
+
+        SetFunctionName("operator == (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, c;
+        a.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+        b.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+        c.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(a == b && !(a == c));
+
+
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test192">
+      <![CDATA[
+
+
+
+        SetFunctionName("operator != (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a, b, c;
+        a.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+        b.Set(1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f);
+        c.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        Validate(!(a != b) && a != c);
+
+
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+
+    <TYPE NAME="performance">
+
+      <TEST NAME="test193">
+      <![CDATA[
+
+        SetFunctionName("operator == (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueBool = a == m44_operator_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test194">
+      <![CDATA[
+
+        SetFunctionName("operator != (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                retValueBool = a != m44_operator_array[i];
+            }
+        }
+
+        StopTimer();
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test195">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator *= (Matrix44Affine &m, float_t a)");
+
+        float_test_type s = 2.1f;
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] *= s;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test196">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator /= (Matrix44Affine &m, float_t a)");
+
+        float_test_type s = 2.1f;
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] /= s;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test197">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator /= (Matrix44Affine &m, float_t a)");
+
+        float_test_type s = 2.1f;
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] /= s;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test198">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator *= (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] *= a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test199">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator += (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] += a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test200">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator -= (Matrix44Affine &m, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                m44_operator_array[i] -= a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test201">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator - (const Matrix44Affine &m)");
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = -m44_operator_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test202">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Matrix44Affine &m, const float_t a)");
+
+        float_test_type s = 2.1f;
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = m44_operator_array[i] * s;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test203">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator / (const Matrix44Affine &m, const float_t a)");
+
+        float_test_type s = 2.1f;
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = m44_operator_array[i] / s;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test204">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator + (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = m44_operator_array[i] + a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test205">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator - (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = m44_operator_array[i] - a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test206">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Matrix44Affine &a, const Matrix44Affine &b)");
+
+        Matrix44Affine a;
+        a.Set(2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f, 8.0f, 9.0f, 10.0f, 11.0f, 12.0f, 13.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                matResult = m44_operator_array[i] * a;
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+
+      <TEST NAME="test207">
+      <![CDATA[
+
+#if !defined RW_MATH_NO_OPERATOR_OVERLOADS
+
+        SetFunctionName("operator * (const Vector4 &v, const Matrix44Affine &m)");
+
+        Vector4 v4;
+        v4.Set(1.2f, 2.1f, 5.3f, 1.0f);
+
+        StartTimer(testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE * testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG);
+
+        for (int testloop = 0; testloop < testing::RW_MATH_UNITTEST_TEST_LOOP_COUNT_LONG; testloop++)
+        {
+            for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE; i++)
+            {
+                vec4Result = v4 * m44_operator_array[i];
+            }
+        }
+
+        StopTimer();
+
+#endif
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+  </TYPE>
+  
+<!-- The Last Test is test213, please change this number when you add more tests, make sure test names do not repeat-->
+
+</CLASS>
+
+</TESTCLASS>

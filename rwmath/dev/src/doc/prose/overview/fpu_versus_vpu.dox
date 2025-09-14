@@ -1,0 +1,52 @@
+/*!
+\page p_fpu_versus_vpu FPU versus VPU
+
+VPU library is designed to run on vector hardware, FPU library is designed to
+run on FPU hardware. Because vector hardware has instructions to do vector
+operations, the vpu library is generally faster to run vector and matrix
+operations. For scalar operations or single float operations, the fpu library
+is usually faster (since the VPU library has to simulate the scalar behavior using
+vector hardware).
+
+\section ieee_conformance IEEE Floating Point Standards Conformance
+
+For most platforms, vector hardware calculations do not conform to IEEE
+floating point standards. Precision and boundary condition value maybe
+different from platform to platform. 
+
+For example, divide on vector hardware may have precision from 5 digits to full
+digits depends what hardware it is running on. Divide by zero may not result in
+an exception, and infinity or not-a-number may be generated depending on hardware.
+Users cannot rely on certain platform behavior when writing cross platform code.
+
+See \ref p_choosing_fpu_or_vpu for more information
+
+\internal
+
+This documentation should be added back in later when there is time to properly format the table and verify the information.
+
+Table 1 Quick summary of different platform vpu/fpu capability
+	PC	XBox360	PS3 PPU	PS3 SPU
+IEEE  floating pint compatibility on FPU	Full	Full	Full	N/A2	Partial4
+IEEE floating point compatibility on VPU	Configurable, but slow on some processor if fully IEEE floating point compatible	Configurable, but slow if fully IEEE floating point compatible	Configurable, but slow if fully IEEE floating point compatible	No	No
+Vector Hardware Name	SSE1/SSE2/SSE3, 3D Now!1	VMX128	VMX	SPU	VU0
+Native vector type	__m128	__vector4	vector float	vector float	u_long128
+Native vector size	128 bit	128 bit	128 bit	128 bit	128 bit
+VPU IEEE floating point compatibility on by default	Yes	No	No	N/A2	N/A
+Can transfer data between vector register and floating point register	Yes	No	No	N/A	No(double check on this)
+Has Load Hit Store penalty	No	Yes	Yes	No	No
+Full floating point precision on VPU instructions	Yes	No	No	No	No
+Full floating point precision on VPU with software support3	Full floating point precision in hardware	Yes	Yes	Yes	Yes
+Compiler	MSVC/Intel	MSVC PowerPC backend	GCC 3 (GCC 4 later)	GCC 3 (GCC 4 later)	GCC 2.95.3
+Is native vector type an union type	Yes	Yes	No	No	No
+
+
+1. Only SSE 1 is supported in RenderWare math library
+
+2. SPU hardware doesn’t have scalar single precision floating point hardware support.
+
+3. Full floating point precision on VPU with software support doesn’t mean it is full IEEE floating point compatible. Since boundary condition with NaN and Infinity will still be wrong.
+
+
+
+*/

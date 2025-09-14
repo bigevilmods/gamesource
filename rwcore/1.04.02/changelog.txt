@@ -1,0 +1,62 @@
+/*!
+\page p_devlog rwcore Changelog
+
+\n
+\n
+
+rwcore library ChangeLog
+
+\n
+\n
+
+==============================================================================
+
+	Version 1.04.02
+
+	Changes.
+
+	  - Build warnings issued by SNC330 have been fixed.
+
+    Version 1.04.01 (February 17, 2010)
+
+    Changes.  The following API changes have been made in this release:
+
+      - none.
+
+    New features.  The following features have been added in this release:
+
+      - ETCR-263 - Made OSGlobal clear the OS global environment variable in
+        ShutdownOSGlobalSystem. This allows the OSGlobal system to be reused
+        in a DLL that is multiply loaded and unloaded in a process.  Integrated
+        from EAStdC-1.04.03.
+
+      - ETCR-334 - Provide compatibility with PS3 SDK 3.10+.  The __EDG__ macro
+        definition from spu_hosttype.h has been removed it conflicts with some
+        SDK headers.
+
+    Bug fixes.  The following bugs have been fixed in this release:
+
+      - none.
+
+    Version 1.04.00 (August 4, 2009)
+
+    Changes.  The following API changes have been made in this release:
+
+      - none.
+
+    New features.  The following features have been added in this release:
+
+      - ETCR-55 - rwcore now has support for endian-swapping enumerated types.
+
+      - ETCR-68 - rwcore can now build with EAStdC instead of rwstdc.  Set
+        the global property package.rwcore.useEAStdC=true to enable this feature.
+
+      - Added support for building in the pc64 configuration as requested by the
+        EATech Physics team.
+
+    Bug fixes.  The following bugs have been fixed in this release:
+
+      - BUG#29991 - On the PS3, the include file rw/core/debug/host.h now
+        includes <sys/types.h> for the definition of size_t.
+
+*/

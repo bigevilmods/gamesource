@@ -1,0 +1,46 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestPlane :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestPlane();
+    virtual ~UnitTestPlane();
+    void Test();
+
+//#BLOCK
+
+private:
+
+    EXPLICIT_NAMESPACE(Vector3) v3_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector4) v4_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Plane) p_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float x_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float y_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float z_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    float w_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) vecResult;
+    EXPLICIT_NAMESPACE(Plane) planeResult;
+    float_basic_type retValueFloat;
+
+#ifdef _MSC_VER
+#pragma warning(disable:4324)
+#endif
+
+    EXPLICIT_NAMESPACE(Plane) p_function_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+#ifdef _MSC_VER
+#pragma warning(default:4324)
+#endif
+
+};
+

@@ -1,0 +1,94 @@
+<project>
+    <!--
+	***********************************************************************************************
+	package: Apt
+
+	The scriptinit task below is commented for the intermediate time where not all packages are 
+	framework 2. The issue is that a framework 2 game that uses a framework 1 package (like OSDK
+	at the moment) that depends on a framework 2 package (like Apt now is) will cause an exception
+	when reading this file that the task ScriptInit is not valid (because Framework went into 
+	compatibility mode). The code below explicitely sets up the include dirs and libs properties
+	to what is expected to work. This prevents the exception in the aforementioned case.
+	
+    Once we can reasonably expect framework 2 support from all packages, we will go back to the 
+    eaconfig way of doing things with the ScriptInit task.
+	
+	***********************************************************************************************
+	-->
+    
+    <!--task name="ScriptInit" PackageName="Apt">
+		<IncludeDirs>
+			${package.Apt.dir}\include\Apt
+		</IncludeDirs>
+	</task -->
+	
+    <!-- package.Apt.appdir should only be used for non-distributable files, like triangle.exe -->
+    <choose>
+        <do if="@{PropertyExists('install-package-root')}">
+            <property name="tmp_my_version" value="@{PathGetFileName('@{PathGetFullPath('..')}')}"/>
+            <property name="package.Apt.appdir" value="@{PathGetFullPath('${install-package-root}\Apt\${tmp_my_version}')}" />
+            <fail message="Installed package root not found @ ${package.Apt.appdir}"
+                unless="@{DirectoryExists('${package.Apt.appdir}')}"/>
+            <eval code="@{PropertyUndefine('tmp_my_version')}" type='Function' />
+        </do>
+        <do unless="@{PropertyExists('install-package-root')}">
+          <!-- EXPORT: Apt install dir -->
+          <property name="package.Apt.appdir" value="${package.Apt.dir}"/>
+        </do>
+    </choose>
+	
+    <property name="package.Apt.includedirs">
+		${package.Apt.dir}\include
+		${package.Apt.dir}\include\Apt
+	</property>
+    
+    <!-- DC - Ensure the properties we use are defined. If they aren't defined, we are most likely 
+         being used by an asset build system, or something that does not plan to build apt.  
+     -->
+    <do if="@{PropertyExists('config')}">
+        <do if="@{PropertyExists('lib-prefix')}">
+            <do if="@{PropertyExists('lib-suffix')}">
+            
+                <fileset name="package.Apt.libs">
+                    <includes name="${package.Apt.builddir}/${config}/lib/${lib-prefix}Apt${lib-suffix}" />
+                </fileset>
+    
+            </do>
+        </do>
+    </do>
+
+    <!-- Append this path to your list of Flash class paths in order to publish Flash 7 SWFs that use filters. -->
+    <!-- The Apt-specific effects, such as Specular, are also included in this classpath                       -->
+    <property name="package.Apt.filters.classpath" value="${package.Apt.dir}\source\Apt\filters\classes" />
+
+    <!-- aTack path -->
+    <property name="package.Apt.aTackCompiler" value="${package.Apt.dir}/bin/aTackCompiler.exe" />
+
+    <!-- DebugInfoBuilder path -->
+    <property name="package.Apt.DebugInfoBuilder" value="${package.Apt.dir}/bin/DebugInfoBuilder.exe" />
+
+    <!-- Path to a file that contains release processing logic, allowing other packages to 
+         use nant to tell this package to perform some release operations -->
+    <property name="package.Apt.release-logic-path" value="${package.Apt.dir}/scripts/release-process.xml" />
+
+    <!-- When releasing, this property points to a file that has a specific format to tell release logic how
+         to find+replace specific text in this package to account for new version numbers -->
+    <property name="package.Apt.release-update-path" value="${package.Apt.dir}/scripts/release-update.txt" />
+
+    <!-- Triangle.exe location -->
+    <property name="package.Apt.triangle"   value="${package.Apt.appdir}/bin/Apt/triangle.exe"/>
+
+    <!-- When releasing, we want to ignore these files.  They are either temporary files checked in to a
+         dev line, or just junk we don't want our customers to see. -->
+    <property name="package.Apt.release-excludes">
+        source/AptViewer/dump_aptrmpc.h
+        source/AptViewer/dump_aptrmps2.h
+        source/AptViewer/dump_aptrmxbox.h
+        ....log
+        ....ilk
+        lib/...
+        doc/...
+        test/...
+    </property>
+
+</project>

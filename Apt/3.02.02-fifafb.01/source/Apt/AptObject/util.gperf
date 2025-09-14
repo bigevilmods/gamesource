@@ -1,0 +1,16 @@
+struct UtilMembers { char *szName; int nIndex; };
+%%
+formatNumberString,1
+replaceString,2
+trimString,3
+trimLeftString,4
+trimRightString,5
+searchArray,6
+reverseSearchArray,7
+countArray,8
+getAptVersion,9
+safeForIn,10
+convertHsvToColorTransform,11
+colorMatrixMultiply,12
+profileBlockStart,13
+profileBlockEnd,14

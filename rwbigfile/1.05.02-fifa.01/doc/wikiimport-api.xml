@@ -1,0 +1,1949 @@
+<?xml version="1.0" encoding="UTF-8"?><mediawiki><siteinfo><sitename>DocsWiki</sitename><base>http://globaltechdocs.ea.com/mediawiki/index.php?title=Main_Page</base><generator>MediaWiki 1.5.5</generator><case>first-letter</case><namespaces/></siteinfo><page><title>RWCore:RWBigfile:API:rw::core::Big</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;rw::core::Big Class Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="classrw_1_1core_1_1_big"&gt;&lt;/div&gt;
+__TOC__
+&lt;br/&gt; [[#topofthepage|Big]] class encapsulates the bigfile format and provides a way of accessing the member files.&lt;br/&gt;
+&lt;h2&gt;Requirements&lt;/h2&gt;
+----
+
+'''Header:''' rw/core/bigfile/bigfile.h
+&lt;h2 class="doxy"&gt;Public Types&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;enum '''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1752e4014aa28c7a06a813fd34d6c9dd9|Options]]''' {
+'''OPTION_LOAD_NAME_INDEX''' = 1
+
+}
+''&lt;br/&gt;Flags to pass during object construction.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;enum '''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc|BigfileType]]''' {
+'''BFTYPE_FAST'''
+
+'''BFTYPE_N'''
+
+'''BFTYPE_24'''
+
+'''BFTYPE_HASH16'''
+
+'''BFTYPE_HASH20'''
+
+'''BFTYPE_UNKNOWN'''
+
+}
+''&lt;br/&gt;This package (tools and libraries) support these types of bigfiles.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;enum '''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230b|LocateOptions]]''' {
+'''LOCATE_OPT_NONE''' = 0x0
+
+'''LOCATE_OPT_SLASH_CONVERT_FORWARD''' = 0x1
+
+'''LOCATE_OPT_SLASH_CONVERT_BACK''' = 0x2
+
+'''LOCATE_OPT_NAME_CONVERT_LOWERCASE''' = 0x4
+
+'''LOCATE_OPT_NAME_CONVERT_UPPERCASE''' = 0x8
+
+}
+''&lt;br/&gt;flags for [[#classrw_1_1core_1_1_big_1c430fd61d82754a65f0113be92a6340d|Big::Locate]] &lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2 class="doxy"&gt;Public Member Functions&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1ac2911fe7701a0a4972f2c1d4262b2d7|Big]](const void *bigFilePtr, const void *bigfileHeader)
+''&lt;br/&gt;Construct a [[#topofthepage|Big]] object from a memory image.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_141e1f25517ced81b8b894c153cef946b|Big]](const void *bigFilePtr, unsigned int flags)
+''&lt;br/&gt;Construct a [[#topofthepage|Big]] object from a memory image.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;bool&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;HasFAT()&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const BigFileDirectoryEntry *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;GetEntryForIndex(uint32_t index)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const uint32_t *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;GetConstituents(const BigFileDirectoryEntry &amp;BFD)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const char *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;GetFATStringForIndex(uint32_t index)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1085009871353357958322f2a3d02453b|SetFile]](const void *bigFilePtr, const void *bigfileHeader)
+''&lt;br/&gt;Set a new bigfile to operate on.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_17ec0850532059de20d11a953696d2a7f|SetNameIndex]](const void *nameIndex)
+''&lt;br/&gt;Set a name index.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;bool&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]](const char *name, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int flags, unsigned int *entryFlags)
+''&lt;br/&gt;Search for a member file by name.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;bool&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]](uint64_t hashedName, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int *entryFlags)
+''&lt;br/&gt;Search for a member file by hash value.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185|FindFileByIndex]](int index, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, unsigned int *entryFlags)
+''&lt;br/&gt;Return information about a given bigfile.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;char *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]](int entryNum, char *name, size_t nameLen)
+''&lt;br/&gt;Return the name of the subfile at the given index.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const char *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]](const char *name, int entryNum, uint64_t *entryOffset, uint64_t *entrySize, void **tocPtr, int *tocIndex, unsigned int flags)
+''&lt;br/&gt;Locate file in bigfile return size, offset, name.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1f1f194eb7652bb7bcc9aefbbb970797c|GetCount]]()
+''&lt;br/&gt;Get the number of files in a bigfile.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1678a7f153ec23493832909229b4242e5|GetVersion]]()
+''&lt;br/&gt;Get the file format version.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_14a08f408b813ca73415c744585403660|GetPointer]](int number)
+''&lt;br/&gt;Return a pointer to the given file.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1c430fd61d82754a65f0113be92a6340d|Locate]](const char *name)
+''&lt;br/&gt;Locate big and return pointer from a name.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;char *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_176dd58f29555015f3a432a511b8b99a6|GetName]](int number, char *name, unsigned int flags)
+''&lt;br/&gt;Get name of ith file in a bigfile.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1be0fcb58a90e3309aec92e23d7a0aa48|GetBaseAddress]]()
+''&lt;br/&gt;Returns the pointer to the beginning of the bigfile data in memory.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2 class="doxy"&gt;Static Public Member Functions&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;unsigned int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1eb7b55657782b09cbb1cd0f25a037668|GetHeaderSize]](const void *bigfileptr)
+''&lt;br/&gt;Get the size of a big file header.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;unsigned int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_134c3f3c9f5f00e5fc5c7632e0b4a0364|GetNameIndexSize]](const void *bigFilePtr)
+''&lt;br/&gt;Get the size of a name index (only applies to BFTYPE_FAST bigfiles).&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt; [[#classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc|BigfileType]] &lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1c8d14fa99a45bbc5ca4330656cefdd0e|GetHeaderType]](const void *bigFilePtr)
+''&lt;br/&gt;Returns the type of bigfile that this is.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;unsigned int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;GetFATSize(const void *bigFilePtr)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;bool&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;HasFAT(const void *bigFilePtr)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;uint64_t&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1224b23d3ca117c1cca0913d409354467|GetDJB2HashBigEndian]](const char *string, uint64_t seed)
+''&lt;br/&gt;calculate a DBJ2 hash on the input string&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2 class="doxy"&gt;Static Public Attributes&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;const uint64_t&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_1dd9607bdffc9af207fe2a030cba921ce|DEFAULT_HASH_SEED]] = 5381&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt; [[#topofthepage|Big]] class encapsulates the bigfile format and provides a way of accessing the member files.&lt;br/&gt;
+&lt;h2&gt;Member Enumeration Documentation&lt;/h2&gt;
+----
+&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;'''enum rw::core::Big::BigfileType'''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This package (tools and libraries) support these types of bigfiles.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;dl&gt;&lt;dt&gt;'''Enumerator:'''&lt;dd&gt;&lt;table border="0" style="background:#eef3f5;"&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc87f609546bc7581fe638c9fb2f2c25be"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_FAST''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Preferred format. 32-byte header, fixed-size index entries with hashed names for fast searching, per-file flags and optional name strings. Compression formats supported: refpack, chunked refpack, and chunked zlib.&lt;br/&gt;&lt;br/&gt;Created by the bigfile tool.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc2abc641e872d69eaa510ccff7f448a4d"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_N''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Legacy format. Each index entry has an N-byte-sized offset and size field, where N can be 2, 3, 4, or 5. Supports bigfiles up to 2^40 bytes in size. Can compress with refpack. Created by the glump tool.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bcfaac12f945b69f8f8140face96501e8e"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_24''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Legacy format. Each index entry has a 24-bit offset and size field. The maximum size total size of a bigfile with this type of header is 16MB. Created by the glump tool with the -24 option.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc2560111726cd7d6eae80cbe4cafd5341"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_HASH16''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Legacy format. Hash16 format (offset/zSize/size/32-bit hash for name) Created by the bighead tool with the -hash16 option.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc509c280c8dca565d5bdef9cf75960dfe"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_HASH20''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Legacy format. Hash20 format (offset/zSize/size/64-bit hash for name) Created by the bighead tool with the -hash20 option.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bce33ceac4089f819e33e67c1a1229f993"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''BFTYPE_UNKNOWN''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This is not a recognized type of bigfile.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/dl&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230b"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;'''enum rw::core::Big::LocateOptions'''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;flags for [[#classrw_1_1core_1_1_big_1c430fd61d82754a65f0113be92a6340d|Big::Locate]] &lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;dl&gt;&lt;dt&gt;'''Enumerator:'''&lt;dd&gt;&lt;table border="0" style="background:#eef3f5;"&gt;&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230b247f70103d52a5a52ce8c0a9e72a9dfd"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''LOCATE_OPT_NONE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Do not modify the file path&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230ba33537a32772c7498e7b023b3fd148bf"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''LOCATE_OPT_SLASH_CONVERT_FORWARD''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;All backslashes will be converted to forward slashes (glump -paths2)&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230b1c568b59f6657c4051f0c1c7756e8c48"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''LOCATE_OPT_SLASH_CONVERT_BACK''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;All forward slashes will be converted to back slashes (glump -paths4)&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230be4560de7d19978a765a5b5c28046fded"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''LOCATE_OPT_NAME_CONVERT_LOWERCASE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Name will be converted to lower case (glump -tolower, bigfile -nameLower)&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_19825bfc93ddf802e7c6044f09516230b01c2f8f624a44dd20ca37078823b69b3"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''LOCATE_OPT_NAME_CONVERT_UPPERCASE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Name will be converted to upper case (glump -toupper, bigfile -nameUpper)&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/dl&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1752e4014aa28c7a06a813fd34d6c9dd9"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;'''enum rw::core::Big::Options'''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Flags to pass during object construction.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;dl&gt;&lt;dt&gt;'''Enumerator:'''&lt;dd&gt;&lt;table border="0" style="background:#eef3f5;"&gt;&lt;div id="classrw_1_1core_1_1_big_1752e4014aa28c7a06a813fd34d6c9dd94037e997a01890495cae65e80945c996"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''OPTION_LOAD_NAME_INDEX''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This option is passed to the constructor and when done so will load the name index automatically.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/dl&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2&gt;Member Attribute Documentation&lt;/h2&gt;
+----
+&lt;div id="classrw_1_1core_1_1_big_1dd9607bdffc9af207fe2a030cba921ce"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;const uint64_t rw::core::Big::DEFAULT_HASH_SEED
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Default hash seed value for GetDJB2HashBigEndian. This should match the seed value in the bighead tool.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2&gt;Member Function Documentation&lt;/h2&gt;
+----
+&lt;div id="classrw_1_1core_1_1_big_1ac2911fe7701a0a4972f2c1d4262b2d7"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt; rw::core::Big::Big(const void *bigFilePtr, const void *bigfileHeader)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Construct a [[#topofthepage|Big]] object from a memory image.&lt;br/&gt;&lt;br/&gt;It is not necessary that the entire bigfile be loaded; just the header.&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigFilePtr''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer containing the loaded bigfile (or bigfile header)
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigfileHeader''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer containing an alternate header (optional)
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000001"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_141e1f25517ced81b8b894c153cef946b"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt; rw::core::Big::Big(const void *bigFilePtr, unsigned int flags)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Construct a [[#topofthepage|Big]] object from a memory image.&lt;br/&gt;&lt;br/&gt;The bighead tool does not output the name index for bigfile-created archives so this constructor does not take a separate header parameter.&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigFilePtr''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer containing the loaded bigfile (or bigfile header)
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''flags''&lt;/td&gt;
+
+&lt;td align="left"&gt;flags specifying which load-time options to perform, such as OPTION_LOAD_NAME_INDEX to load the name index.
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000002"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;bool rw::core::Big::FindFileByHash(uint64_t hashedName, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int *entryFlags) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Search for a member file by hash value.&lt;br/&gt;&lt;br/&gt;This function searches for the given subfile in the header. The header must be in BFTYPE_FAST, BFTYPE_HASH16, or BFTYPE_HASH20 format&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''hashedName''&lt;/td&gt;
+
+&lt;td align="left"&gt;32-bit DJB2 hash of the name to search for, in big-endian format.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''entryoffset''&lt;/td&gt;
+
+&lt;td align="left"&gt;A 64-bit buffer to receive the offset of the member file. May be NULL. If the file is not found, 0 will be filled in.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''entrysize''&lt;/td&gt;
+
+&lt;td align="left"&gt;A 64-bit buffer to receive the uncompressed size of the member file. May be NULL. If the file is not found, 0 will be filled in.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''zipSize''&lt;/td&gt;
+
+&lt;td align="left"&gt;A 64-bit buffer to receive the compressed size of the member file. May be NULL. If the file is not found, 0 will be filled in.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''tocindex''&lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to an integer to start the search from. May be NULL. If set and non-zero, the search will start at that record and continue until a matching name is found or until the last record is checked. Records prior to the tocindex will NOT be checked for a matching name. If a match is found, tocindex is updated with that record index. If no match is found, tocindex is set to -1. Basically, this parameter can speed up the linear search by allowing the search to ignore all records, before tocindex.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''entryFlags''&lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to a unsigned int which receives the per-file flags in fileformat.h. Only applicable to BFTYPE_FAST- format bigfiles.
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;true if the file was found, false if not.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]] , [[#classrw_1_1core_1_1_big_1224b23d3ca117c1cca0913d409354467|GetDJB2HashBigEndian]] , [[#classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185|FindFileByIndex]] , [[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000010"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void rw::core::Big::FindFileByIndex(int index, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, unsigned int *entryFlags) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Return information about a given bigfile.&lt;br/&gt;&lt;br/&gt;This function returns information about the ith bigfile member. It can only be used with bigfiles in the BFTYPE_FAST, BFTYPE_HASH16, and BFTYPE_HASH20 formats. Looksup are O(1). Refer to FindFileByHash for a description of the output parameters.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]] , [[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]] , [[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000011"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;bool rw::core::Big::FindFileByName(const char *name, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int flags, unsigned int *entryFlags) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Search for a member file by name.&lt;br/&gt;&lt;br/&gt;Calls GetDJB2HashBigEndian to get a hash value of the fileName, then calls FindFileByHash with this value. Refer to that function for further details and an explanation of the parameters.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''fileName''&lt;/td&gt;
+
+&lt;td align="left"&gt;name of file to search for, exactly as it appears in the bigfile header. It is case-sensitive, unlike legacy format searches
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''flags''&lt;/td&gt;
+
+&lt;td align="left"&gt;Flags to convert the fileName to use forward or back slashes before the hash is computed
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''entryFlags''&lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to a unsigned int which receives optional information about the file entry.
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;true if the file was found, false if not.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]] , [[#classrw_1_1core_1_1_big_1224b23d3ca117c1cca0913d409354467|GetDJB2HashBigEndian]] , [[#classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185|FindFileByIndex]] , [[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]] ,&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000009"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;char * rw::core::Big::FindNameByIndex(int entryNum, char *name, size_t nameLen) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Return the name of the subfile at the given index.&lt;br/&gt;&lt;br/&gt;This function returns the name of the member file at the ith entry. If the bigfile does not have names, NULL is returned. This function can only be used with the BFTYPE_FAST header type, and a name index must be set first with SetNameIndex. Lookups are O(1).&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''entryNum''&lt;/td&gt;
+
+&lt;td align="left"&gt;The index number of the entry to return.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''pathBuffer''&lt;/td&gt;
+
+&lt;td align="left"&gt;Pass a buffer to receive the path nd name of the subfile.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''pathBufSize''&lt;/td&gt;
+
+&lt;td align="left"&gt;Size in bytes of the path buffer.
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;a pointer to the pathBuffer variable. If entryNum is out of range, NULL is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_17ec0850532059de20d11a953696d2a7f|SetNameIndex]] , [[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]] , [[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000012"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1be0fcb58a90e3309aec92e23d7a0aa48"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;const void * rw::core::Big::GetBaseAddress() const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Returns the pointer to the beginning of the bigfile data in memory.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1f1f194eb7652bb7bcc9aefbbb970797c"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;int rw::core::Big::GetCount() const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get the number of files in a bigfile.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000013"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Returns the number of files contained in a big file. If the pointer does not point to a recognized bigfile, BFTYPE_UNKNOWN will be returned.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;Number of files lumped together in the bigfile. 0 is returned if this isn't a valid bigfile.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] , [[#classrw_1_1core_1_1_big_1eb7b55657782b09cbb1cd0f25a037668|GetHeaderSize]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1224b23d3ca117c1cca0913d409354467"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;uint64_t rw::core::Big::GetDJB2HashBigEndian(const char *string, uint64_t seed)&lt;tt style="font-weight:normal;"&gt;[static]&lt;/tt&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;calculate a DBJ2 hash on the input string&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''string''&lt;/td&gt;
+
+&lt;td align="left"&gt;Input string to hash.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''hash''&lt;/td&gt;
+
+&lt;td align="left"&gt;Starting hash value
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+Reference: [http://www.cs.yorku.ca/~oz/hash.html http://www.cs.yorku.ca/~oz/hash.html] &lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;64-bit hash of the input string, converted to big-endian format&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000005"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1eb7b55657782b09cbb1cd0f25a037668"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;unsigned int rw::core::Big::GetHeaderSize(const void *bigfileptr)&lt;tt style="font-weight:normal;"&gt;[static]&lt;/tt&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get the size of a big file header.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000006"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Returns the size in bytes of a big file header. This information is contained inthe first 16 bytes of the header, so you don't need to read the entire header into memory if you just want to get the complete header size. This function is static so it can be used before the bigfile object has been constructed.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;Size in bytes of the bigfile header. If it is not a recognized big file type, 0 is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1c8d14fa99a45bbc5ca4330656cefdd0e|GetHeaderType]] , [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1c8d14fa99a45bbc5ca4330656cefdd0e"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt; [[#classrw_1_1core_1_1_big_1cd21a47c400cad54e233af26ace752bc|BigfileType]]  rw::core::Big::GetHeaderType(const void *bigFilePtr)&lt;tt style="font-weight:normal;"&gt;[static]&lt;/tt&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Returns the type of bigfile that this is.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000014"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;The type of the bigfile header. BFTYPE_FAST, BFTYPE_HASH16is returned. If this is a valid 24-bit (legacy style) header, BFTYPE_24 is returned. In all other cases, BFTYPE_N is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1eb7b55657782b09cbb1cd0f25a037668|GetHeaderSize]] , [[#classrw_1_1core_1_1_big_1f1f194eb7652bb7bcc9aefbbb970797c|GetCount]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_176dd58f29555015f3a432a511b8b99a6"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;char * rw::core::Big::GetName(int number, char *name, unsigned int flags) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get name of ith file in a bigfile.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000018"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Legacy function supporting BFTYPE_N and BFTYPE_24 formats. Does not work with BFTYPE_HASH16, BFTYPE_HASH20, or BFTYPE_FAST formats.&lt;br/&gt;&lt;br/&gt;Uses LocateEntry to find the name from the index.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''index''&lt;/td&gt;
+
+&lt;td align="left"&gt;index of member file to get name of
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''name''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer to copy name into. It is the caller's responsibility to ensure this buffer is large enough to hold the complete name. If not, a buffer overrun will occur.
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''flags''&lt;/td&gt;
+
+&lt;td align="left"&gt;This parameter is passed straight to LocateEntry. Refer to that function for a description of the options.
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;pointer to the supplied string buffer.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_134c3f3c9f5f00e5fc5c7632e0b4a0364"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;unsigned int rw::core::Big::GetNameIndexSize(const void *bigFilePtr)&lt;tt style="font-weight:normal;"&gt;[static]&lt;/tt&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get the size of a name index (only applies to BFTYPE_FAST bigfiles).&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000007"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;Size in bytes of the bigfile header. Can only be used with BFTYPE_FAST bigfiles.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1c8d14fa99a45bbc5ca4330656cefdd0e|GetHeaderType]] , [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_14a08f408b813ca73415c744585403660"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void * rw::core::Big::GetPointer(int number) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Return a pointer to the given file.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000016"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Legacy function supporting BFTYPE_N and BFTYPE_24 formats.&lt;br/&gt;&lt;br/&gt;Returns a pointer to a file in a bigfile by getting an offset from FindFileByIndex or LocateEntry, and adding the offset to the mBigFileData.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''number''&lt;/td&gt;
+
+&lt;td align="left"&gt;index of member to get pointer to
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to a file is returned if the file is found in the bigfile. If the file is not found, the return value is NULL.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185|FindFileByIndex]] , [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1678a7f153ec23493832909229b4242e5"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;int rw::core::Big::GetVersion() const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get the file format version.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000015"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;The GetVersion function gets the file format version number from the header. If this version is higher than what the library was built with, it's likely that an updated runtime will be required to handle the updated format.&lt;br/&gt;&lt;br/&gt;If this is a legacy format bigfile, it the version of glump that was used to create the bigfile is returned. This version number does not imply a change to the format, however.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;The version of the big file creator as an integer. 0 if version information is not attached.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1c430fd61d82754a65f0113be92a6340d"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void * rw::core::Big::Locate(const char *name) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Locate big and return pointer from a name.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000017"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Legacy function supporting BFTYPE_N and BFTYPE_24 formats. Does not work with BFTYPE_HASH16, BFTYPE_HASH20, or BFTYPE_FAST formats.&lt;br/&gt;&lt;br/&gt;Returns a pointer to the requested file.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''name''&lt;/td&gt;
+
+&lt;td align="left"&gt;name of subfile to search for
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to the file is returned if the file is found in the bigfile. If the file was not found, NULL is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]] , [[#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|LocateEntry]] , [[#classrw_1_1core_1_1_big_14a08f408b813ca73415c744585403660|GetPointer]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;const char * rw::core::Big::LocateEntry(const char *name, int entryNum, uint64_t *entryOffset, uint64_t *entrySize, void **tocPtr, int *tocIndex, unsigned int flags) const &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Locate file in bigfile return size, offset, name.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000008"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Legacy function supporting BFTYPE_N and BFTYPE_24 formats. Does not work with BFTYPE_HASH16, BFTYPE_HASH20, or BFTYPE_FAST formats.&lt;br/&gt;&lt;br/&gt;The LocateEntry function searches a big file directory for the specified file and returns the offset and size of the file. If entryname is not NULL then a case-insensitive search for that file name is performed, otherwise the entrynum-th file in the big file is located. The returned offset is from the start of the bigfile.&lt;br/&gt;&lt;br/&gt;Note that the path directory separator character must be consistent with what was used when the bigfile was produced. i.e. If your file path is \"dir\\file.txt\" but the index contains \"dir/file.txt\", the entry will not be found. glump has options to use either forward slahes or back slashes for the paths, and this function takes flags that can also modify the path at runtime to use consistent directory separator characters.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;A pointer to the name of the lump file is returned, or NULL is returned on failure to find the requested file. The offset and size are returned via the pointers entryoffset and entrysize.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1eb7b55657782b09cbb1cd0f25a037668|GetHeaderSize]] , [[#classrw_1_1core_1_1_big_1f1f194eb7652bb7bcc9aefbbb970797c|GetCount]] , [[#classrw_1_1core_1_1_big_1c8d14fa99a45bbc5ca4330656cefdd0e|GetHeaderType]] , [[#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|FindFileByName]] , [[#classrw_1_1core_1_1_big_1d0baa904810457bf809bacc61f171a15|FindFileByHash]] , [[#classrw_1_1core_1_1_big_14f5d9aa5dd508a5138427441e6ebc185|FindFileByIndex]] , [[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_1085009871353357958322f2a3d02453b"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void rw::core::Big::SetFile(const void *bigFilePtr, const void *bigfileHeader)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Set a new bigfile to operate on.&lt;br/&gt;&lt;br/&gt;It is not necessary that the entire bigfile be loaded; just the header.&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigFilePtr''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer containing the loaded bigfile (or bigfile header)
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigfileHeader''&lt;/td&gt;
+
+&lt;td align="left"&gt;buffer containing an alternate header (optional)
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000003"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_17ec0850532059de20d11a953696d2a7f"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void rw::core::Big::SetNameIndex(const void *nameIndex)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Set a name index.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''nameIndex''&lt;/td&gt;
+
+&lt;td align="left"&gt;pointer to name index in bigfile
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|FindNameByIndex]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;div id="importlib_1_importlib000004"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:rw::core::BigHandler</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;rw::core::BigHandler Class Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="classrw_1_1core_1_1_big_handler"&gt;&lt;/div&gt;
+__TOC__
+&lt;br/&gt;This class implements a file system handler for Bigfiles.&lt;br/&gt;
+&lt;h2&gt;Requirements&lt;/h2&gt;
+----
+
+'''Header:''' rw/core/bigfile/handler.h
+&lt;h2 class="doxy"&gt;Public Types&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;enum '''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6|AddOption]]''' {
+'''ADDFLAG_USE_ALTERNATE_HEADER''' = 0x01
+
+'''ADDFLAG_ADD_TO_HEAD''' = 0x02
+
+'''ADDFLAG_DRM''' = 0x04
+
+'''ADDFLAG_SLASH_CONVERT_FORWARD''' = 0x08
+
+'''ADDFLAG_SLASH_CONVERT_BACKWARD''' = 0x10
+
+'''ADDFLAG_NAME_CONVERT_LOWERCASE''' = 0x20
+
+'''ADDFLAG_NAME_CONVERT_UPPERCASE''' = 0x40
+
+'''ADDFLAG_EXTERNAL_DECOMPRESS''' = 0x80
+
+'''ADDFLAG_LOAD_NAME_INDEX''' = 0x100
+
+'''ADDFLAG_ADD_PERMANENT_HEAD''' = 0x200
+
+'''ADDFLAG_FILE_USES_SDATA''' = 0x400
+
+}
+''&lt;br/&gt;Flags for AddArchiveFromFile.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;enum '''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1a71691d9dfaba0a9d063a679a8c703e4|OpenFlags]]''' {
+'''FOPEN_DECOMPRESS_IN_PLACE''' = 0x10000
+
+'''FOPEN_SEARCH_OTHER_BIGFILES''' = 0x20000
+
+}
+''&lt;br/&gt;Flags for Open.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2 class="doxy"&gt;Public Member Functions&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;BigHandler(EA::Allocator::ICoreAllocator *allocator)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;BigHandler(EA::Allocator::ICoreAllocator *allocator, const char *deviceName)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;BigHandler(EA::Allocator::ICoreAllocator *allocator, const char *deviceName, EA::Jobs::JobScheduler *jobScheduler, uint32_t unused, EA::Jobs::JobAffinity jobAffinity, EA::Jobs::JobPriority jobPriority)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;virtual&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1cb7e631f6e394393446af75cd443e433|~BigHandler]]()
+''&lt;br/&gt;Destroy a [[#topofthepage|BigHandler]] object.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1f17b6210589c35efd320348925a1f6b7|AddArchiveFromFile]](const char *filename, unsigned int flags)
+''&lt;br/&gt;Adds a bigfile archive to the search list.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_10990fc2a2cb5418837c6af54309f47a7|AddArchiveFromMemory]](const char *filename, char *bigdata, char *bighead, unsigned int flags)
+''&lt;br/&gt;Adds a bigfile archive from memory to the search list.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1597f4aa27a48ab14e817fed1e7ee3e52|RemoveArchive]](void *archive)
+''&lt;br/&gt;Remove an archive from the bigfile search list.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;void *&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1ba7002deb8ea6cca65ad3933a0606c3c|GetHeader]](void *archive)
+''&lt;br/&gt;Get the bigfile header from a given archive handle.&lt;br/&gt;''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;unsigned int&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;GetBigFileCount()&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;uint64_t&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[#classrw_1_1core_1_1_big_handler_1a72876f4cbaa3ea76b4d6790a39a9df6|FindEntry]](const char *name, void **entryArchive, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int *entryFlags)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;bool&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;EntryExists(const char *name)&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;This class implements a file system handler for Bigfiles.&lt;br/&gt;&lt;br/&gt;After the object has been registered with the file library, use [[#classrw_1_1core_1_1_big_handler_1f17b6210589c35efd320348925a1f6b7|BigHandler::AddArchiveFromFile]] to register one or more bigfiles with the device. Files inside bigfiles can then be loaded as if they were on the normal file system.&lt;br/&gt;&lt;br/&gt;This class supports directory searches, but if you use that feature, the name strings must be available, otherwise no patterns will match.&lt;br/&gt;
+&lt;h2&gt;Member Enumeration Documentation&lt;/h2&gt;
+----
+&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;'''enum rw::core::BigHandler::AddOption'''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Flags for AddArchiveFromFile.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;dl&gt;&lt;dt&gt;'''Enumerator:'''&lt;dd&gt;&lt;table border="0" style="background:#eef3f5;"&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6d29f4cc5e17603c57098b50ed54e25e3"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_USE_ALTERNATE_HEADER''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Use an alternate header instead of the one included in the bigfile. The name should be \"&lt;bigfile&gt;.bh\". If the alternate header is not available, the header inside the main bigfile will be used as a fallback.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6f58b63d4d5bed6579e43edf3b1a400b1"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_ADD_TO_HEAD''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Add the big file to the handler as head. The newly added big file will be searched first.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd64a350f66a902a4b01815af6ad85a12e2"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_DRM''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;When opening the bigfile (and the alternate header, if used), append the .edat extension and pass the AsyncOp::FOPEN_DRM flag when the bigfile (but not the subfiles) are opened. You must be using rwfilesystem 1.07.00 or later for this flag to be respected. If not, this flag is silently ignored.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6814a79443ef0455c75069610c7242185"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_SLASH_CONVERT_FORWARD''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This option will convert any backslashes in the path provided by the caller to forward slashes before doing the name lookup. Use this if you built your bigfiles with the paths2 option.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6ae337270f776e082ee4670c3a35faf67"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_SLASH_CONVERT_BACKWARD''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This option will convert any forward slashes in the path provided by the caller to backslashes before doing the name lookup. Use this if you built your bigfiles with the paths4 option.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6375dfe8ee284f2322a771809bdf56cb8"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_NAME_CONVERT_LOWERCASE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This option will convert names provided by the caller to lowercase before doing the name lookup. See -tolower in glump.exe or -nameLower in bigfile.exe&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd663778c8c8fa0e6749e0fcea182804925"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_NAME_CONVERT_UPPERCASE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This option will convert names provided by the caller to uppercase before doing the name lookup. See -toupper in glump.exe or -nameUpper in bigfile.exe&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6c7a6667da49acf543155775373d2d62a"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_EXTERNAL_DECOMPRESS''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Use this flag to decompress external to rwbigfile, ie. ignore BIGFILE_FORMAT_FLAG_COMPRESSION_TYPE_*.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6d6b20322c490d1387083edae02c9a4e6"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_LOAD_NAME_INDEX''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;This flag tells the handler to load the name index. The use-case for loading the name index is to do wild-card searches.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd61e4a80128cc3953b6355ccf631cfda51"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_ADD_PERMANENT_HEAD''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Add the big file to the handler as a permanent head. The newly added big file will always be searched first. Example use would be for a patch.big file where patched data should always take precedence over other files.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd66f60b3aff8036a1278d28fba349163c5"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''ADDFLAG_FILE_USES_SDATA''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/dl&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_1a71691d9dfaba0a9d063a679a8c703e4"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;'''enum rw::core::BigHandler::OpenFlags'''&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Flags for Open.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;dl&gt;&lt;dt&gt;'''Enumerator:'''&lt;dd&gt;&lt;table border="0" style="background:#eef3f5;"&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1a71691d9dfaba0a9d063a679a8c703e411e338bd3787918e05505345232feabb"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''FOPEN_DECOMPRESS_IN_PLACE''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;Use in-place decompression, if the output buffer is large enough. This feature avoids the need for a temporary buffer to hold the compressed data. Instead, the compressed data is read into the tail end of the output buffer, and decompressed to the start. Requires that the buffer be a few bytes larger than the decompressed file size. If this flag is not specified, or the buffer is not large enough to hold the file, the decompression will be done via streaming, which is not as fast and requires temporary buffers.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;div id="classrw_1_1core_1_1_big_handler_1a71691d9dfaba0a9d063a679a8c703e436476815a67bf96d985662c8f14d69b5"&gt;&lt;/div&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;''FOPEN_SEARCH_OTHER_BIGFILES''&lt;/td&gt;
+
+&lt;td align="left"&gt;&lt;br/&gt;If the path specifies a specific bigfile, (e.g. \"myfile.big|file1.xml\",&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;/dl&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2&gt;Member Function Documentation&lt;/h2&gt;
+----
+&lt;div id="classrw_1_1core_1_1_big_handler_1cb7e631f6e394393446af75cd443e433"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;virtual virtual rw::core::BigHandler::~BigHandler()&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Destroy a [[#topofthepage|BigHandler]] object.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000021"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;This function releases any resources allocated by the object.&lt;br/&gt;&lt;br/&gt;Before destroying the object, all open subfiles should be closed and all added bigfiles should be removed with RemoveArchive. Also, the bigfile device should be unregistered with the library so the library can throw a helpful error message if the big: device is referenced after it's been destroyed.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#topofthepage|BigHandler]] , [[#classrw_1_1core_1_1_big_handler_1f17b6210589c35efd320348925a1f6b7|AddArchiveFromFile]] , [[#classrw_1_1core_1_1_big_handler_1597f4aa27a48ab14e817fed1e7ee3e52|RemoveArchive]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_1f17b6210589c35efd320348925a1f6b7"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void * rw::core::BigHandler::AddArchiveFromFile(const char *filename, unsigned int flags)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Adds a bigfile archive to the search list.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000022"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Adds the given bigfile to the list of searchable bigfiles. The new bigfile is added to the tail of the search list.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''filename''&lt;/td&gt;
+
+&lt;td align="left"&gt;name of bigfile to add to the list
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''flags''&lt;/td&gt;
+
+&lt;td align="left"&gt;0 or a combination of some of the AddOption flags
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;On success, a handle to the new archive is returned. Use this handle to remove the archive from the list when it is no longer needed. If there was an error (such as file not found, unrecognized bigfile type), NULL is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_handler_1597f4aa27a48ab14e817fed1e7ee3e52|RemoveArchive]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_10990fc2a2cb5418837c6af54309f47a7"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void * rw::core::BigHandler::AddArchiveFromMemory(const char *filename, char *bigdata, char *bighead, unsigned int flags)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Adds a bigfile archive from memory to the search list.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000023"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;Adds the given bigfile to the list of searchable bigfiles. The new bigfile is added to the tail of the search list.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''Parameters:'''&lt;table border="0" style="background:#eef3f5;"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''filename''&lt;/td&gt;
+
+&lt;td align="left"&gt;name of bigfile to add to the list
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bigdata''&lt;/td&gt;
+
+&lt;td align="left"&gt;pointer to the big file (.big) in memory
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''bighead''&lt;/td&gt;
+
+&lt;td align="left"&gt;pointer to the big file header (.bh) in memory (optional)
+&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;''flags''&lt;/td&gt;
+
+&lt;td align="left"&gt;0 or a combination of some of the AddOption flags
+&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''Returns:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt;On success, a handle to the new archive is returned. Use this handle to remove the archive from the list when it is no longer needed. If there was an error (such as file not found, unrecognized bigfile type), NULL is returned.&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_handler_1597f4aa27a48ab14e817fed1e7ee3e52|RemoveArchive]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_1a72876f4cbaa3ea76b4d6790a39a9df6"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;uint64_t rw::core::BigHandler::FindEntry(const char *name, void **entryArchive, uint64_t *entryOffset, uint64_t *entrySize, uint64_t *zSize, int *tocIndex, unsigned int *entryFlags)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;FindEntry searches the big file list for file name and optionally fills params from [[RWCore:RWBigfile:API:rw::core::Big#classrw_1_1core_1_1_big_110d7fa87150094c2ee030216891b2465|Big::FindFileByName]] or [[RWCore:RWBigfile:API:rw::core::Big#classrw_1_1core_1_1_big_1be527ba4984d25db0085888c2718272a|Big::LocateEntry]] . returns the entry's offset if found, otherwise zero. entryArchive is the return value from AddArchiveFromFile, also the parameter to RemoveArchive.&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_1ba7002deb8ea6cca65ad3933a0606c3c"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void * rw::core::BigHandler::GetHeader(void *archive)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Get the bigfile header from a given archive handle.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000025"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;This function is really only useful for debugging purposes (say you want to iterate over the bigfile index and print out each member's information).&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="classrw_1_1core_1_1_big_handler_1597f4aa27a48ab14e817fed1e7ee3e52"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;void rw::core::BigHandler::RemoveArchive(void *archive)&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;Remove an archive from the bigfile search list.&lt;br/&gt;&lt;br/&gt;&lt;div id="importlib_1_importlib000024"&gt;&lt;/div&gt;'''Library:''' rwbigfile&lt;br/&gt;&lt;br/&gt;This function removes an archive from the search list. Before removing the archive, all of its subfiles should be closed. In debug configs, an assert will be thrown if this is not the case.&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#classrw_1_1core_1_1_big_handler_1f17b6210589c35efd320348925a1f6b7|AddArchiveFromFile]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:bigfile.h</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;bigfile.h File Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="bigfile_8h"&gt;&lt;/div&gt;
+__TOC__
+
+&lt;h2&gt;Namespaces&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw::core &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Classes&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;class&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[RWCore:RWBigfile:API:rw::core::Big|rw::core::Big]]&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;Header file of [[RWCore:RWBigfile:API:rw::core::Big|rw::core::Big]] .&lt;br/&gt;
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:handler.h</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;handler.h File Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="handler_8h"&gt;&lt;/div&gt;
+__TOC__
+
+&lt;h2&gt;Namespaces&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw::core &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw::core::codec &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Classes&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;class&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;[[RWCore:RWBigfile:API:rw::core::BigHandler|rw::core::BigHandler]]&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Defines&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''RWBIGFILE_CHUNKED_DECOMPRESSION_SUPPORTED'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;Header file of [[RWCore:RWBigfile:API:rw::core::BigHandler|rw::core::BigHandler]] .&lt;br/&gt;
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:version.h</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;version.h File Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="version_8h"&gt;&lt;/div&gt;
+__TOC__
+
+&lt;h2&gt;Defines&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''[[#version_8h_1dbb66aaaea59c70a7cd688dc444de46e|RW_BIGFILE_VERSION_MAJOR]]'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;1&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''[[#version_8h_10e23706e61231bdbdb1c720f5214376b|RW_BIGFILE_VERSION_MINOR]]'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;5&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''[[#version_8h_12e415e695260fd59da89a037e3d412c0|RW_BIGFILE_VERSION_PATCH]]'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;2&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''[[#version_8h_1fc2eaf118ea6208192462d616a00b9f2|RW_BIGFILE_CREATE_VERSION_NUMBER]]'''(major_ver, minor_ver, patch_ver)&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;((major_ver) * 1000000 + (minor_ver) * 1000 + (patch_ver))&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''[[#version_8h_1198516dea7a83611867f5e0efb97e397|RW_BIGFILE_VERSION]]'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;RW_BIGFILE_CREATE_VERSION_NUMBER( RW_BIGFILE_VERSION_MAJOR, RW_BIGFILE_VERSION_MINOR, RW_BIGFILE_VERSION_PATCH )&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;Define the major, minor and patch versions.&lt;br/&gt;
+&lt;h2&gt;Define Documentation&lt;/h2&gt;
+----
+&lt;div id="version_8h_1fc2eaf118ea6208192462d616a00b9f2"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;#define RW_BIGFILE_CREATE_VERSION_NUMBER ((major_ver) * 1000000 + (minor_ver) * 1000 + (patch_ver))&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This is a utility macro that users may use to create a single version number that can be compared against RW_BIGFILE_VERSION.&lt;br/&gt;&lt;br/&gt;For example:&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;div style="background-color: #f5f5f5;"&gt;&lt;font color="#000099"&gt; #if RW_BIGFILE_VERSION &gt; RW_BIGFILE_CREATE_VERSION_NUMBER( 1, 1, 0 )&lt;/font&gt;&lt;br/&gt;&lt;font color="#000099"&gt;&lt;/font&gt;&lt;font color="#000000"&gt; printf(&lt;/font&gt;&lt;font color="#CC0000"&gt;"Bigfile version is greater than 1.1.0.\n"&lt;/font&gt;&lt;font color="#000000"&gt;);&lt;/font&gt;&lt;br/&gt;&lt;font color="#000000"&gt;&lt;/font&gt;&lt;font color="#000099"&gt; #endif&lt;/font&gt;&lt;br/&gt;&lt;/div&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="version_8h_1198516dea7a83611867f5e0efb97e397"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;#define RW_BIGFILE_VERSION RW_BIGFILE_CREATE_VERSION_NUMBER( RW_BIGFILE_VERSION_MAJOR, RW_BIGFILE_VERSION_MINOR, RW_BIGFILE_VERSION_PATCH )&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This macro is an aggregate of the major, minor and patch version numbers.&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#version_8h_1fc2eaf118ea6208192462d616a00b9f2|RW_BIGFILE_CREATE_VERSION_NUMBER]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="version_8h_1dbb66aaaea59c70a7cd688dc444de46e"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;#define RW_BIGFILE_VERSION_MAJOR 1&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This define indicates the major version number for the bigfile package.&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#version_8h_1198516dea7a83611867f5e0efb97e397|RW_BIGFILE_VERSION]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="version_8h_10e23706e61231bdbdb1c720f5214376b"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;#define RW_BIGFILE_VERSION_MINOR 5&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This define indicates the minor version number for the bigfile package.&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#version_8h_1198516dea7a83611867f5e0efb97e397|RW_BIGFILE_VERSION]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+&lt;div id="version_8h_12e415e695260fd59da89a037e3d412c0"&gt;&lt;/div&gt;
+&lt;table border="0" width="100%" style="padding:4px; background:#eef3f5;border-width: 1px;  border-style: solid; border-color: #dedeee;"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="background-color:#d5e1e8; width:100%; border-width:1px;  border-style:solid; border-color:#84b0c7; font-weight:bold;"&gt;#define RW_BIGFILE_VERSION_PATCH 2&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;br/&gt;This define indicates the patch version number for the bigfile package.&lt;br/&gt;'''See also:'''&lt;table border="0"&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;    &lt;/td&gt;
+
+&lt;td align="left"&gt; [[#version_8h_1198516dea7a83611867f5e0efb97e397|RW_BIGFILE_VERSION]] &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br/&gt;&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+
+
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:rwbigfile.cpp</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;rwbigfile.cpp File Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="rwbigfile_8cpp"&gt;&lt;/div&gt;
+__TOC__
+
+&lt;h2&gt;Namespaces&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw::core &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; EA::StdC &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Classes&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRY16&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRY24&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRY32&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRY40&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;class&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRYHASH&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;class&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRYHASH16&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BIGENTRYHASH20&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BigFileHeader&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;struct&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::BigFileHeaderLegacy&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Defines&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''MAKEID'''(a, b, c, d)&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;(((static_cast&lt;int&gt;(a))&lt;&lt;24)|((static_cast&lt;int&gt;(b))&lt;&lt;16)|((static_cast&lt;int&gt;(c))&lt;&lt;8)|static_cast&lt;int&gt;(d))&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''BIGHEAD_HASH16ID'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;MAKEID('V','i','v','4')&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''BIGHEAD_HASH20ID'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;MAKEID('V','i','V','4')&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''BIGNID'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;MAKEID('B','I','G','0')&lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''BIG24ID'''&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;0xc0fb&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;Implements [[RWCore:RWBigfile:API:rw::core::Big|rw::core::Big]] .&lt;br/&gt;
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:rwbighandler.cpp</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;rwbighandler.cpp File Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="rwbighandler_8cpp"&gt;&lt;/div&gt;
+__TOC__
+
+&lt;h2&gt;Namespaces&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; rw::core &lt;/td&gt;
+
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;namespace&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt; EA::Allocator &lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Classes&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="right" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;class&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;rw::core::DecompressDriver&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Defines&lt;/h2&gt;
+----
+
+&lt;table border="0" cellpadding="0" cellspacing="0"&gt;
+&lt;tr&gt;
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="top"&gt;#define '''MIN'''(a, b)&lt;/td&gt;
+
+&lt;td align="left" style="padding: 1px 0px 0px 8px; margin: 4px; border-top-width: 1px; border-right-width: 1px;  border-bottom-width: 1px; border-left-width: 1px; border-top-color: #E0E0E0; border-right-color: #E0E0E0;  border-bottom-color: #E0E0E0; border-left-color: #E0E0E0; border-top-style: solid;border-right-style: none;  border-bottom-style: none;border-left-style: none;background-color: #FAFAFA;" valign="bottom"&gt;((a) &lt; (b) ? (a) : (b))&lt;/td&gt;
+
+&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h2&gt;Detailed Description&lt;/h2&gt;
+----
+&lt;br/&gt;Implements [[RWCore:RWBigfile:API:rw::core::BigHandler|rw::core::BigHandler]] .&lt;br/&gt;
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page><page><title>RWCore:RWBigfile:API:rwbigfile Changelog</title><id>1</id><restrictions>edit=sysop:move=sysop</restrictions><revision><id>1</id><timestamp>2010-05-26T04:25:21Z</timestamp><contributor><username>API Import</username></contributor><text xml:space="preserve">&lt;div id="topofthepage"&gt;&lt;/div&gt;
+__NOEDITSECTION__
+&lt;center&gt;
+&lt;h2&gt;rwbigfile Changelog Page Reference&lt;/h2&gt;
+----
+
+&lt;/center&gt;&lt;div id="p_devlog"&gt;&lt;/div&gt;&lt;br/&gt;
+
+&lt;br/&gt;&lt;br/&gt;rwbigfile library ChangeLog&lt;br/&gt;&lt;br/&gt;
+
+&lt;br/&gt;&lt;br/&gt;============================================================================== Version 1.05.02&lt;br/&gt;&lt;br/&gt;Changes.&lt;ul&gt;&lt;li&gt;Support for rwstdc has been removed.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;Critical sections added in parts of the bigfile handler to improve thread safety.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;A flag was added to the bigfile handler to indicate that it should not decompress data automatically but pass it compressed back to the user.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;The bigfile tool has added -toUpper and -toLower command line options.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;The bigfile tool now does not sort the index by default but includes files in the order they are specified on the command line or via response file, to maintain compatibility with Glump's conventions.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;A "permanent head" file has been added to the handler that lets the user specify a big file that will always remain at the head of the list and, hence, will always be searched first.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;Support for in-memory big files has been added.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;The bigfile handler now can pass through the appropriate SDATA flag to the underlying PS3 rwfilesystem driver.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;The bigfile tool has been ported to Linux and OS X.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Version 1.05.01 - (March 3, 2010)&lt;br/&gt;&lt;br/&gt;New features.&lt;ul&gt;&lt;li&gt;Bigfile has the added ability to merge big file archives.&lt;/li&gt;&lt;li&gt;Files contained in a big file can now be opened via their index. For example:&lt;br/&gt;&lt;br/&gt;&lt;div style="background-color: #f5f5f5;"&gt;&lt;font color="#000000"&gt;          AsyncOp op;&lt;/font&gt;&lt;br/&gt;&lt;font color="#000000"&gt;          op.Open(&lt;/font&gt;&lt;font color="#CC0000"&gt;"big:mybigfile.big,5"&lt;/font&gt;&lt;font color="#000000"&gt;); &lt;/font&gt;&lt;font color="#336600"&gt;// Opens the fifth file in mybigfile.big&lt;/font&gt;&lt;br/&gt;&lt;/div&gt;
+&lt;/li&gt;&lt;li&gt;Bigfile allows files to be serialized into the archive in either the order they are specified on the command line or alphabetically.&lt;/li&gt;&lt;li&gt;Bigfile allows the index to be sorted by file offset which is required for consistent behavior with the index lookup feature mentioned above.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Changes.&lt;ul&gt;&lt;li&gt;WinBig was updated to read new big file formats, including those whose contents have been packed using the new chunk compression formats.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Bug fixes. The following bugs have been fixed in this release:&lt;ul&gt;&lt;li&gt;Avoid reading the next chunk info if we have read the last chunk which was causing crashes when the chunk abuts unrelated data.&lt;/li&gt;&lt;li&gt;WinBig would crash when opening files created with the -fat option.&lt;/li&gt;&lt;li&gt;Bigfile would not extract files from a big file archive that were compressed.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Version 1.05.00 - (December 11, 2009)&lt;br/&gt;&lt;br/&gt;New features. The following features have been added in this release:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-240. A command line option, -compressThreshold, analogous to glump's -packthresh was added to the bigfile tool to specify the minimum size of a file to be compressed.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-243. A feature was added to the bigfile tool allow file names within the big file archive to be specified. The format, sourcefilename=destinationfilename, follows glump's convention and an additional command line parameter, -sourcefile, was introduced to disable this renaming.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-244. The bigfile tool returns a non-zero result when a failure occurs.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-245. The bigfile tool has the ability to sort alphabetically, analagous to glump's -sort3 option.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;A new constructor has been added to the Big class that takes an option indicating whether or not it should load the name index automatically. This only works with new-style big files.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;A new method, GetBaseAddress(), has been added to the Big class to fetch the base address of the bigfile data in memory.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Bug fixes. The following bugs have been fixed in this release:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-238. Wildcards searches in big files were greedily matching subdirectories causing unexpected and inconsistent behavior with other file system components.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-259. Files previously could have been compressed using the bigfile tool using LZX but the runtime would not be able to read them.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;Loading an old-format bigfile after a new-format bigfile would cause reads of files from the old-format file to fail.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Version 1.04.00 - (September 30, 2009)&lt;br/&gt;&lt;br/&gt;Changes. The following API changes have been made in this release:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;the glump and bighead tools are deprecated. They have been superceded by a new tool called "bigfile", which authors bigfiles using a format similar to what bighead uses. Refer to the documentation included in the tool for how to use it. The bigfile tool is basically a stripped-down glump. If there are features in glump that would prevent you from using the bigfile tool, please let us know at and we'll add them back in after the use case is understood.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;New features. The following features have been added in this release:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-106. If you're using rwfilesystem 1.12.00 or later, the bigfile handler will spawn another thread to decompress the data. This can result in improved performance on data being read from the hard drive because the next read can start while the current one is still decompressing. You don't need to take any special action to enable this feature, it will be automatically enabled if you build rwbigfile with rwfilesystem 1.12.00 or later.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-149. It is now possible to search other bigfiles if the file you requested wasn't found in the bigfile specified. Pass the flag [[RWCore:RWBigfile:API:rw::core::BigHandler#classrw_1_1core_1_1_big_handler_1a71691d9dfaba0a9d063a679a8c703e436476815a67bf96d985662c8f14d69b5|rw::core::BigHandler::FOPEN_SEARCH_OTHER_BIGFILES]] to the AsyncOp::Open function. If the file is located in the specified bigfile, that file is returned.. If the file is not located in the specified bigfile, all other bigfiles will be searched and the first match will be returned.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-150. Wildcarded file names can be used with the HASH16 index format. In order to do this, the name index must be loaded in addition to the hashed index. This feature is only available in BFTYPE_FAST bigfiles, which must be created with the new bigfile tool. The header rw/core/bigfile/fileformat.h describe the new format. Three new functions have been added to the runtime library, [[RWCore:RWBigfile:API:rw::core::Big#classrw_1_1core_1_1_big_134c3f3c9f5f00e5fc5c7632e0b4a0364|rw::core::Big::GetNameIndexSize()]] , [[RWCore:RWBigfile:API:rw::core::Big#classrw_1_1core_1_1_big_17ec0850532059de20d11a953696d2a7f|rw::core::Big::SetNameIndex()]] , and [[RWCore:RWBigfile:API:rw::core::Big#classrw_1_1core_1_1_big_1bd45307b54ba9f9be8cde4da53539235|rw::core::Big::FindNameByIndex()]] . Pass the flag [[RWCore:RWBigfile:API:rw::core::BigHandler#classrw_1_1core_1_1_big_handler_1b3c04cf892a0a93ba958799d8da3fdd6d6b20322c490d1387083edae02c9a4e6|rw::core::BigHandler::ADDFLAG_LOAD_NAME_INDEX]] to AddArchiveFromFile if you want to be able to perform wildcard searches on the loaded bigfile. The runtime library continues to handle all formats (new bigfile, legacy bigfile, and bighead) for now. At some point in the future, support for the legacy formats may be removed, and they are generally inefficient so we encourage you to migrate your toolchain to the bigfile tool.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-226. The bigfile tool and runtime library support chunked asset decompression. rwcodec-1.04.00 or later is required to use this feature. Set a decompression job with rw::core::BigHandler::SetDecompressJobInfo().&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Bug fixes. The following bugs have been fixed in this release:&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;ETCR-118. When extracting files from a bigfile using the glump tool, if the file was in a non-existent subdirectory, it was skipped. This bug has been fixed.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;&lt;br/&gt;Version 1.03.00 - (September 11, 2008)&lt;br/&gt;&lt;br/&gt;&lt;ul&gt;&lt;li&gt;Links to release notes for this and older versions are available on the package server.&lt;/li&gt;&lt;/ul&gt;&lt;br/&gt;
+&lt;h2 class="doxy"&gt;User Comments&lt;/h2&gt;
+----
+{{{{NAMESPACE}}_talk:{{PAGENAME}}}}
+</text></revision></page></mediawiki>

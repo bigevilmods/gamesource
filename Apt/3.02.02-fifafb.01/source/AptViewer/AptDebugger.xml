@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<project default="Aptdebugger">
+    <property name="RenderwareIncDir" value="" />
+    <property name="RenderwareLibDir" value="" />
+    <property name="DirtySockIncDir" value="" />
+    <property name="DirtySockLibDir" value="" />
+    <property name="ToolIMIncDir" value="" />
+    <property name="ToolIMLibDir" value="" />        
+    <property name="EACORECURRENTGENLIBDIR" value="" />
+    
+    <property name="debuggerconfig-type" value="debug" if="${config-type} == deprecated-d" />
+    <property name="debuggerconfig-type" value="release" if="${config-type} == deprecated-z" />    
+
+
+    <!-- This section is only if using the AptDebugger for the AptViewer -->
+    <do if="${package.Apt.EnableDebugger}">
+	    <property name="runtime.debuggerbuilddependencies">
+		    ${property.value}
+		    EAThread
+		    eacore
+	    </property>	
+	    
+	    <property name="runtime.debuggerusedependencies">
+		    ${property.value}		    
+		    coreallocator
+		    Endian		    
+		    toolim
+	    </property>	
+	    
+	    <property name="runtime.AptViewerEAGLREAL.builddependencies">
+	        ${property.value}
+	        ${runtime.debuggerbuilddependencies}
+	    </property>
+	    <property name="runtime.AptViewerPCOpenGL.builddependencies">
+	        ${property.value}
+	        ${runtime.debuggerbuilddependencies}
+	    </property>
+	    <property name="runtime.AptViewerEAGLREAL.usedependencies">
+	        ${property.value}
+	        ${runtime.debuggerusedependencies}
+	    </property>
+	    <property name="runtime.AptViewerPCOpenGL.usedependencies">
+	        ${property.value}
+	        ${runtime.debuggerusedependencies}
+	    </property>	    	    
+	    <property name="runtime.AptViewerEAGLREAL.usedependencies.pc">
+	        ${property.value}
+	        eacore
+	    </property>
+	    <property name="runtime.AptViewerEAGLREAL.usedependencies.xenon">
+	        ${property.value}
+	        eacore
+	        xenonsdk
+	    </property>	    	    
+        
+        
+	    <dependent name="eacore" />
+	    <dependent name="coreallocator" />
+	    <dependent name="Endian" />
+	    <dependent name="PPMalloc" />
+	    <dependent name="toolim" />
+    	
+	    <do if="${package.Apt.AptDebuggerUseDirtyXSDK}"> <!-- Here we do not want to use Renderware -->
+            <dependent name="DirtyXSDK" />
+            <property name="DirtySockIncDir" value="${package.DirtyXSDK.dir}\include" />
+            <property name="DirtySockLibDir" value="${package.DirtyXSDK.dir}\library\${config-system}\final" />
+            
+            <!-- <property name="ToolIMLibDir" value="${package.AptDebugger.dir}\lib\External\Apt" /> -->
+			
+			<!-- with new toolim, there is no option that you can completely ignore RW4.5. so we have to set up those folders. -->
+			<!-- if you are using older ToolIM that supports DirtySock with out using RW totally then comment out next stuff. -->
+            <do unless="@{RegistryKeyExists('CurrentUser', 'Software\RenderWare\Installer\4.5')}">      <!-- No renderware found, use socket files from AptDebugger package -->   
+                <dependent name="AptDebugger" />
+                <property name="RenderwareIncDir" value="${package.AptDebugger.dir}\lib\External\Apt\${config}" />
+                <property name="RenderwareLibDir" value="${package.AptDebugger.dir}\lib\External\Apt\${config}" />                
+            </do>
+            <do if="@{RegistryKeyExists('CurrentUser', 'Software\RenderWare\Installer\4.5')}">
+                <dependent name="renderware" />      
+    		    <property name="RenderwareIncDir" value="${package.renderware.platform.native.includedirs}" />
+    		    <property name="RenderwareLibDir" value="${package.renderware.appdir}\platform\lib\native\${renderware.host}\${renderware.config}" />
+    	    </do>
+            
+        </do>
+        
+        <do unless='${config-system} == pc || ${config-system} == xenon'>
+            <property name="EACORECURRENTGENLIBDIR" value="${package.AptDebugger.dir}\lib\External\Apt" />
+        </do>
+        <do if='${config-system} == pc || ${config-system} == xenon'>
+            <property name="EACORECURRENTGENLIBDIR" value="${package.eacore.dir}\lib" />
+        </do>
+        
+        <property name="ToolIMIncDir">
+    	    ${package.toolim.includedirs}
+        </property>  
+
+        <property name="ToolIMLibDir" value ="${package.toolim.builddir}/${config}/lib/EA.ToolIM.UnmanagedAPI${lib-suffix}" />
+    </do>
+</project>

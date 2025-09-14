@@ -1,0 +1,37 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVecFloat<FloatType>::UnitTestVecFloat()
+#else
+UnitTestVecFloat::UnitTestVecFloat()
+#endif
+{
+
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+UnitTestVecFloat<FloatType>::~UnitTestVecFloat()
+#else
+UnitTestVecFloat::~UnitTestVecFloat()
+#endif
+{
+
+}
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+void UnitTestVecFloat<FloatType>::Test()
+#else
+void UnitTestVecFloat::Test()
+#endif
+{
+
+}
+
+//#BLOCK
+

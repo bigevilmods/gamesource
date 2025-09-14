@@ -1,0 +1,13 @@
+<project>
+
+    <property name="package.rwcontroller.includedirs">
+        ${package.rwcontroller.dir}/include
+    </property>
+
+    <property name="package.rwcontroller.libdir" value="${package.rwcontroller.builddir}/${config}/lib"/>
+
+    <fileset name="package.rwcontroller.libs">
+        <includes name="${package.rwcontroller.libdir}/${lib-prefix}rwcontroller${lib-suffix}"/>
+    </fileset>
+
+</project>

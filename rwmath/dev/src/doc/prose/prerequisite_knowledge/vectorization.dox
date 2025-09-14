@@ -1,0 +1,72 @@
+/*!
+\page p_vectorization Vectorization
+
+While many assume that concurrency is the big new problem on this round of console hardware, there
+is a second problem equally significant. This problem is often referred to as vectorization and it's
+what has a great impact on the math library.
+
+Traditional CPUs were largely designed to work on individual numbers like integers and floating
+point values. This design was reflected in the register and instruction sets. Unfortunately, CPU
+designers ran into the limitations of silicon scalability and clockspeed and they were forced to
+look into other ways to increase hardware performance. Concurrency, e.g. throwing more CPUs at the
+problem, was one way to solve the problem; vectorization is the second.
+
+Modern CPUs prefer to work on multiple values at once. Register and instruction sets work on multiple
+scalars at once, and the entire architecture is build around working on doing simple work on large
+sets of data, rather than doing complicated work on small sets of data. Vectorization is the catch-all
+term to describe everything related to this paradigm shift.
+
+To give an example, consider the following piece of traditional code...
+
+\code
+    float a = 0.2f;
+    float b = 0.5f;
+    float x = 1.f, y = 2.f, z = 3.f, w = 4.f;
+
+    if (SomeFunction() > epsilon)
+    {
+        x *= a;
+        y *= a;
+        z *= a;
+        w *= a;
+    }
+    else
+    {
+        x *= b;
+        y *= b;
+        z *= b;
+        w *= b;
+    }
+\endcode
+ 
+Here's how you would write it to be vectorization friendly...
+
+\code 
+    VecFloat a(0.2f);
+    VecFloat b(0.5f);
+     
+    Vector4 v(1.f, 2.f, 3.f, 4.f);
+    Vector4 va = v * a;
+    Vector4 vb = v * b;
+    v = Select(CompGreaterThan(SomeFunction(), epsilon), va, vb);
+\endcode
+
+This example illustrates several points at once.
+    - Instead of declaring floating point values, it declares vector types.
+    - It uses operations from the math library instead of writing out the full arithmetic itself. This leverages the platform specific intrinsics.
+    - It splats scalar constants over a complete vector for faster operations (\ref p_vec_float "VecFloat" does this for you automatically).
+    - It avoids if-statements by computing both branches and then selecting the right output with a compare-select statement.
+
+The key observation is that operations on 128 bit registers (containing four floats) are fast, and all other operations are slow. Thus, if
+you were access a single float from a 128 bit register, rather than extracting it and switching to scalar 32 bit registers (which
+don't even exist on the PS3 SPUs) it is faster to duplicate the single float four times across a vector register and do operations on that. This
+process is called splatting and the RenderWare Math library abstracts this for you using the \ref p_vec_float "VecFloat" type.
+
+Splatting, memory-access, and branching are all topics that deserve great consideration. The math library is not a conclusive source 
+of vectorization expertise, but it is necessary to dedicate some attention to the following three topics.
+
+- \ref p_scalar_access "Working with scalars" on Playstation 3 and Xbox 360
+- \ref p_load_hit_store "Load Hit Store (LHS)" and the price of trips down memory lane
+- \ref p_branching "Branching" and how doing all the work is better than hoping you can skip some.
+
+*/

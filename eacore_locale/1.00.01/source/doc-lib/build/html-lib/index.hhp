@@ -1,0 +1,45 @@
+[OPTIONS]
+Compatibility=1.1
+Full-text search=Yes
+Contents file=index.hhc
+Default Window=main
+Default topic=index.html
+Index file=index.hhk
+Language=0x409 English (United States)
+Title=eacore_locale
+
+[WINDOWS]
+main="eacore_locale","index.hhc","index.hhk","index.html","index.html",,,,,0x23520,,0x387e,,,,,,,,0
+
+[FILES]
+index.html
+main_8cpp-example.html
+locale_8h-source.html
+locale_8cpp.html
+locale_8h.html
+p_overview.html
+p_copyright.html
+p_documenthistory.html
+p_whatis.html
+p_tools.html
+p_support.html
+p_gettingstarted_overview.html
+p_gettingstarted_locale_overview.html
+p_gettingstarted_locale.html
+p_lib_ref_overview.html
+p_devlog.html
+group__g__overview.html
+group__g__intro.html
+group__g__gettingstarted.html
+group__g__gettingstarted__locale.html
+group__g__refs.html
+group__g__lib__locale.html
+group__g__devlog.html
+modules.html
+files.html
+annotated.html
+classes.html
+functions.html
+_class_e_a_1_1_core_1_1_locale.html
+_class_e_a_1_1_core_1_1_locale-members.html
+examples.html

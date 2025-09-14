@@ -1,0 +1,14 @@
+/*!
+\page p_history History
+
+
+RWMath actually traces its roots to two different math libraries.  They are EAMath, and an older RWMath library.  One
+of the goals of the library was to create a unified library for legacy code that used EAMath, and legacy code that
+used the older RWMath library.  The API that was created is essentially a union of the two API's with
+a few changes.
+-# Some function and types were modified for consistency or because they were misleading.
+-# The library introduced a VecFloat type (and other associated types) for better performance on next-gen architectures.
+-# Some functions were deprecated because of poor naming, or because they returned by reference.
+
+
+*/

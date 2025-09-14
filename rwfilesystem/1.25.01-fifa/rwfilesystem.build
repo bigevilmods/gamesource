@@ -1,0 +1,113 @@
+<project default="build" xmlns="schemas/ea/framework3.xsd">
+    <package name="rwfilesystem" initializeself="true"/>
+    <property name="Dll" value="${Dll??false}" local="true" />
+    
+    <include file="source/doc-lib/doc-basic.build"/>
+    <!-- Conditionally include examples.xml since this file is stripped when the package is distributed externally. -->
+    <include file="examples/examples.xml" if="@{FileExists('${package.dir}/examples/examples.xml')}"/>
+    
+    <property name="RWFILESYSTEM_HTTP_ENABLED" value="0" unless="@{PropertyExists('RWFILESYSTEM_HTTP_ENABLED')}" local="true"/>
+    <property name="RWFILESYSTEM_HTTP_ENABLED" value="0" if="${config-system} == 'winrt' or ${config-system} == 'ctr' or ${Dll}" local="true"/>
+    
+    <runtime>
+        <property name="local-config-system" value="${config-system}" local="true"/>
+        <property name="local-config-system" value="microsoft" if="${config-compiler} == vc"/>
+        <property name="local-config-system" value="apple" if="${config-system} == iphone || ${config-system} == osx"/>
+        <property name="local-config-system" value="android" if="${config-system} == android"/>
+        <property name="local-config-system" value="unix" if="${config-system} == unix || ${config-system} == unix64 || ${config-system} == freebox || ${config-system} == stv"/>
+
+        <!-- These files are only compiled on platforms that use the incremental installer -->
+        <fileset name="incremental_install_files">
+            <includes name="source/rwincrementalinstaller.cpp"/>
+            <includes name="source/rwcachedriver.cpp"/>
+            <includes name="source/rwinstalldriver.cpp"/>
+        </fileset>
+            
+        <Library name="rwfilesystem">
+            <buildtype name="DynamicLibrary" if="${Dll}"/>
+            <buildtype name="WinRTCppLibrary" if="@{OptionSetExists('WinRTCppLibrary')}"/>
+
+            <config>
+                <warningsuppression>
+                    <do if="${config-compiler} == 'gcc'">
+                        -Wno-multichar
+                    </do>
+                    <do if="${config-compiler} == 'sn'">
+                        --diag_suppress=1437
+                    </do>
+                    <do if="${config-compiler} == 'ghs'">
+                        --diag_suppress=1822
+                    </do>
+                    <!-- This is to be removed in a later release when we remove the deprecated Close(void*) and GetSize(void*) methods -->
+                        <do if="${config-compiler} == 'vc'">
+                            <!-- disables warning: "no override available for virtual member function from base class "Y"; function is hidden -->
+                            -wd4266
+                        </do>
+                        <do if="${config-compiler} == 'sn'">
+                            --diag_suppress=613
+                        </do>
+                    <!-- End block to remove after deprecations -->
+                </warningsuppression>
+                <defines>
+                    <do if="${Dll} and ${config-compiler} == 'vc'">
+                        RWCORELIB_API=__declspec(dllexport)
+                    </do>
+                    <do if="${config-system} == xenon">
+                        EATHREAD_XTL_H_ENABLED=0
+                    </do>
+                </defines>
+            </config>
+            
+            <dependencies>
+                <auto>
+                    coreallocator
+                    EABase
+                    EAAssert
+                    EASTL
+                    EAThread
+                    EAStdC
+                    <do if="${RWFILESYSTEM_HTTP_ENABLED} == 1">
+                        DirtySDK
+                    </do>
+                </auto>
+            </dependencies>
+
+            <includedirs>
+                ${package.dir}/include
+                ${package.dir}/include/${local-config-system}
+                ${package.dir}/source
+            </includedirs>
+            
+            <headerfiles>
+                <includes name="include/**/*.h"/>
+                <includes name="source/*.h"/>
+                <includes name="source/${local-config-system}/*.h"/>
+                <excludes name="include/rw/core/filesys/httpdriver.h" unless="${RWFILESYSTEM_HTTP_ENABLED} == 1" />
+                <excludes name="include/rw/core/filesys/ihttpdirectoryhandler.h" unless="${RWFILESYSTEM_HTTP_ENABLED} == 1" />
+            </headerfiles>
+            
+            <sourcefiles>
+                <includes name="source/*.cpp"/>
+                <includes name="source/apple/*.mm" if="${local-config-system} == apple" optionset="ObjectiveCPPLibrary"/>
+                <excludes fromfileset="incremental_install_files" unless="${config-system} == ps3 || ${config-system} == xenon" />
+                <includes name="source/${local-config-system}/*.cpp"/>
+                <excludes name="source/rwhttpdriver.cpp" unless="${RWFILESYSTEM_HTTP_ENABLED} == 1" />
+            </sourcefiles>
+            <bulkbuild enable="true" /> 
+
+            <java>
+                <sourcefiles basedir="${package.dir}/source/android/java_source" if="${config-system} == android">
+                    <includes name="**.java"/>
+                </sourcefiles>
+            </java>
+
+            
+        </Library>
+    </runtime>
+    
+    <!--This is outside runtime element because structured xml doesn't have a way to specify this-->
+    <do if="${RWFILESYSTEM_HTTP_ENABLED} == 1">
+        <task name="AddNetworkLibsToModule" module="runtime.rwfilesystem"/>
+    </do>
+    
+</project>

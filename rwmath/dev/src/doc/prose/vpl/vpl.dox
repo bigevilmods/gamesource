@@ -1,0 +1,18 @@
+/*!
+\page p_vpl Vectorization Portability Library
+
+For a relatively brief overview of the VPL, please read the overview for \ref p_vpl_library.
+
+It is \em highly recommended that users read the \ref p_vpl_api_support_docs before using the library.  This
+documentation shows what VPL functions are implemented on the various vpl platforms.
+
+Further VPL documentation:
+- \ref p_vpl_header_structure - Describes the header files that compose the VPL.
+- \ref p_vpl_endian_issues - Describes issues related to platform endianness you may encounter when writing portable code.
+- \ref p_vpl_platform_information - Describes what platforms are supported by the VPL, and some terminology you may come across.
+- \ref p_vpl_api_support_docs - This page has information and tables that describe what functions are available on each platform.
+- \ref p_vpl_simulated_operations - This page discusses the VPL's ability to simulate vector operations on platforms that don't "natively" support an operation.
+- \ref p_vpl_migration_from_internal_macros - This page describes a useful header file that can be included to help detect the use of internal math macros.
+- \ref p_vpl_sse2_support - Describes how to enable SSE2 in the VPL.
+
+*/

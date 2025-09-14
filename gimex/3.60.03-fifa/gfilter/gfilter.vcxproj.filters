@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cmn\dib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\expr.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\facenter.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\facomment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\facopy.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fblend.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fblur.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fchanmap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fchroma.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fcolbal.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fcontrast.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fcreep.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fcrop.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fcsmap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdeband.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdeint.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdilate.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdot3.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdoubled.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fdrops.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fedge.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fembm.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fequalize.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ferode.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ffill.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fflip.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ffont.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fgamma.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fgrb.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fgrey.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fgrid.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fhalfsize.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fhsl.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fhsv.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\finvert.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fline.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fmedian.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fmipmap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fmipmont.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fnil.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fopenlib.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\foutline.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fpalsort.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fphotoshop.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fpixel.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fpreten.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fpsnr.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fpsort.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fradfill.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\frect.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fremap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\frot.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\frotate.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fsafe.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fscale.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fscreen.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fshade.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fsharpen.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fshrink.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fsize.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fsmooth.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fstereo.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fswap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ftedge.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ftemporalfix.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ftexmap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ftexture.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ftranspose.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fundot3.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\funembm.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fwarp.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fwrap.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fxcolour.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fyi.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\fzoom.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\hash.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\hsv.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\invtable.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="cmn\ranger.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\gfilter.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

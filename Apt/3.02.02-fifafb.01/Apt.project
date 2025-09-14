@@ -1,0 +1,142 @@
+<BuildRunner>
+    <Title>EA::Apt</Title>
+    <Width>1000</Width>
+    <Height>600</Height>
+    <!-- Default parameters for window layout and organization -->
+
+    <CommandBarVisible>false</CommandBarVisible>
+    <OutputWindowWordWrap>false</OutputWindowWordWrap>
+
+    <PropertyWindow>
+        <Visible>true</Visible>
+        <Size>400</Size>
+        <Dock>Left</Dock>
+    </PropertyWindow>
+
+    <!-- Uses nant to run everything. -->
+    <DefaultProgram>nant.exe</DefaultProgram> 
+
+    <ToolBarItems>
+
+        <DropDownButton>
+            <MenuItems>               
+                <MenuItem>
+                    <Label>Apt Library</Label>
+                    <Arguments>
+                        build  -D:ea_aptaux_UseRWC=%Global-UseRWC% -D:package.Apt.EnableDebugger=%Global-Debugger%  -D:config=%Global-Config% 
+                    </Arguments>
+                </MenuItem>
+                <Seperator/>
+                
+                <MenuItem>
+                    <Label>AptFF Library</Label>
+                    <Arguments>
+                        AptFF  -D:ea_aptaux_UseRWC=%Global-UseRWC% -D:package.Apt.EnableDebugger=%Global-Debugger% -D:config=%Global-Config%  
+                    </Arguments>
+                </MenuItem>
+                
+                <MenuItem>
+                    <Label>Clean</Label>
+                    <Arguments>
+                        clean  -D:ea_aptaux_UseRWC=%Global-UseRWC% -D:package.Apt.EnableDebugger=%Global-Debugger% -D:config=%Global-Config% 
+                    </Arguments>
+                </MenuItem>
+                <Seperator/>
+
+                <MenuItem>
+                    <Label>Dependency Tree</Label>
+                    <Arguments>
+                        build -D:config=%Global-Config% %buildrunner-verbose% -quickrun:list_dependents
+                    </Arguments>
+                </MenuItem>
+
+            </MenuItems>
+        </DropDownButton>
+        <Seperator/>
+                
+         <PushButton>
+            <Label>Create VS Project</Label>
+            <Arguments>
+                configure -D:config=%Global-Config% %buildrunner-verbose%
+            </Arguments>
+         </PushButton>
+         <Seperator/>
+        
+         <PushButton>
+                <Label>PCOpenGL viewer</Label>
+                <Arguments>
+                    AptViewerPCOpenGL  -D:ea_aptaux_UseRWC=%Global-UseRWC% -D:package.Apt.OpenGL=true -D:package.Apt.EnableDebugger=%Global-Debugger% -D:config=%Global-Config% 
+                </Arguments>
+          </PushButton>
+        <Seperator/>
+       
+        <DropDownButton>
+            <MenuItems>               
+                <MenuItem>
+                    <Label>Package</Label>
+                    <Arguments>
+                        package -D:config=%Global-Config%  
+                    </Arguments>
+                </MenuItem>
+               
+                <MenuItem>
+                    <Label>Documentation</Label>
+                    <Arguments>
+                        documentation -D:config=%Global-Config% 
+                    </Arguments>
+                </MenuItem>
+                
+                <MenuItem>
+                    <Label>External package</Label>
+                    <Arguments>
+                        package-external -D:config=%Global-Config% 
+                    </Arguments>
+                </MenuItem>
+                
+            </MenuItems>
+        </DropDownButton>
+        <Seperator/>
+
+    </ToolBarItems>
+
+    <UserSettings>
+        <FileName>usersettings_tmp.xml</FileName>
+        
+        <Properties Category='Build Options'>
+            <Enum>
+                <DisplayName>Configuration</DisplayName>
+                <Name>Global-Config</Name>
+                <Description>Select a configuration to build with in BuildRunner.</Description>
+                <Values Default='2'>
+                    <Value>pc-vc-dev-debug</Value>
+                    <Value>pc-vc-dev-opt</Value>
+                    <Value>pc-vc-rw-dev-debug</Value>
+                    <Value>pc-vc-rw-dev-opt</Value>
+                    <Value>xenon-vc-dev-debug</Value>
+                    <Value>xenon-vc-dev-opt</Value>
+                    <Value>xenon-vc-rw-dev-debug</Value>
+                    <Value>xenon-vc-rw-dev-opt</Value>
+                    <Value>ps3-gcc-dev-debug</Value>
+                    <Value>ps3-gcc-dev-opt</Value>
+                    <Value>ps3-gcc-rw-dev-debug</Value>
+                    <Value>ps3-gcc-rw-dev-opt</Value>
+                </Values>
+            </Enum>
+        
+            <Bool>
+                <DisplayName>Enable Debugger</DisplayName>
+                <Name>Global-Debugger</Name>
+                <Description>Enables (true) or disables (false) AptDebugger.</Description>
+                <Value>false</Value>
+            </Bool>
+             
+            <Bool>
+                <DisplayName>Use Componentized Renderware</DisplayName>
+                <Name>Global-UseRWC</Name>
+                <Description>Uses Componentized Renderware</Description>
+                <Value>true</Value>
+            </Bool>
+                        
+        </Properties>
+    </UserSettings>
+</BuildRunner>

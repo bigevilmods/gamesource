@@ -1,0 +1,75 @@
+
+<html>
+<head>
+    <title>Incremental Installer User Guide</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Incremental Installer User Guide</h1>
+<p>The Incremental Installer provides a API for installing files either upfront or 
+in the background (on PS3 only) and caching files while the game is running (both PS3 and Xenon), 
+whenever the CPU/media is idle. The data that is installed is copied to the 
+persistent partition so that the game data will still be there after the console 
+has been turned off, rebooted, played different games, etc. The data that is cached 
+is copied to the temp partition, meaning that game data may get cleaned out.</p>
+
+<p>Currently only the Playstation 3 and XENON are supported.</p>
+
+<h2>Incremental Installer organization</h2>
+
+<p>The code part is approximately 40 lines and sets up the Incremental 
+Installer. The majority of these lines deal with configuring the driver. </p>
+
+<p>An example of both the code and the configuration file can be found in the 
+example code provided in the "examples/incremental_install" folder. </p>
+
+<p>Note that this example also demonstrates interrupting and resuming the incremental 
+installer. If the installer is prematurely quit the installer will continue installing 
+on the next run. If all the game data is installed, the incremental installer will quit 
+immediately.</p>
+
+<p>Note that the example also shows how to remount a big file.</p>
+
+<h2>Incremental Installer Remounting BIG files</h2>
+
+<p>Good behavior is to remount the BIG files whence they are cached. If you omit to do so
+the BIG files will not be mounted on the harddrive after a reboot of the game. Note that 
+the example also shows how to remount a big file.</p>
+
+<p>Note that if you clear the cache all the time, this means that the BIG files will never
+get mounted on the cache unless the mount occurs after the data has been cached (which is 
+hardly ever.) The persistent install does not suffer from this, but it is still sub optimal
+as the BIG files are not used untill the game is run for the second time, when the data is 
+installed.</p>
+
+<p>The incremental installer does not automatically remount the BIG files due to a limitation
+of the RwBigFile design. In the RwBigFile design the BigHandler class controls which archives
+are mounted on its virtual device. However, because the client owns the BigHandler the 
+FileSystem is unaware of where to remount the files. Hence you must manually mount it. </p>
+
+<p>One option would be to pass in the BigHandler (or multiple) to the incremental installer, but
+that does not solve the problem yet because different BigHandlers can have different BIG files
+associated with them. In order to solve this problem the list of files to install/cache must be
+augmented with additional information such as: Is this file a BIG file?, Which BigHandler does 
+this file belong to?, etc. For the time being the 'best' solution seems to be to manually remount
+the BIG files.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

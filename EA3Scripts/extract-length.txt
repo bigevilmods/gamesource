@@ -1,0 +1,3 @@
++animexpr -nnc -expr {
+ 	Printl(NumFrames);
+}

@@ -1,0 +1,84 @@
+<project default="build" xmlns="schemas/ea/framework3.xsd">	
+
+  <package  name="EA3_SDK_light" initializeself="True" />
+  
+  <runtime>
+    <Library name="EA3_SDK_light">
+      <buildtype name="Library" unless="${Dll??false}"/>
+      <buildtype name="DynamicLibrary" if="${Dll??false}"/>
+      <config>
+        <defines>
+          <do if="${Dll??false}">
+            EA3_EXPORTS
+            EA3UTIL_EXPORTS
+          </do>
+          _SCL_SECURE_NO_WARNINGS
+          _CRT_SECURE_NO_DEPRECATE
+          NO_DUMMY_DECL
+          HAVE_MEMCPY
+        </defines>
+        <warningsuppression>
+          <do if="${config-compiler} == 'vc'">
+            -wd4127 <!-- conditional expression is constant -->
+            -wd4189 <!-- local variable is initialized but not referenced -->
+            -wd4191 <!-- unsafe conversion from ... to ... -->
+            -wd4211
+            -wd4242 <!-- conversion from ... to ..., possible loss of data -->
+            -wd4244 <!-- conversion from ... to ..., possible loss of data -->
+            -wd4245 <!-- conversion from ... to ..., signed/unsigned mismatch -->
+            -wd4263 <!-- member function does not override any base class virtual member function -->
+            -wd4264 <!-- no override available for virtual member function... function is hidden -->      
+            -wd4266 <!-- no override available for virtual member function from base - function is hidden -->
+            -wd4310 <!-- cast truncates constant value -->
+            -wd4365 <!-- signed/unsigned mismatch -->
+            -wd4512 <!-- assignment operator could not be generated -->
+            -wd4625 <!-- copy constructor could not be generated because a base class copy constructor is inaccessible -->
+            -wd4626 <!-- reinterpret_cast used between related classes ... -->
+            -wd4946 <!-- reinterpret_cast used between related classes -->
+            -wd4201 <!-- nonstandard extension used: nameless struct/union -->
+            -wd4701 <!-- potentially uninitialized local variable ... used -->
+            -wd4706 <!-- assignment within conditional expression -->
+            -wd4800          
+            -wd5033
+          </do>
+        </warningsuppression>
+        <buildoptions if="${config-compiler} == 'vc'">
+          <option name="buildset.cc.options" if="${config-compiler}==vc">
+            ${option.value}
+            -bigobj 
+          </option>
+        </buildoptions>
+      </config>
+      <dependencies>
+        <auto>
+          EABase
+          coreallocator
+          EAIO
+          EASTL
+          EAStdC
+          EAAssert
+          EATrace
+          EAThread
+          PPMalloc
+          zlib   
+        </auto>
+      </dependencies>
+      <includedirs>
+        ${package.dir}/include/EA3_LIB
+        ${package.dir}/include/EA3Util
+      </includedirs>
+      <headerfiles>
+        <includes name="${package.dir}/include/EA3_LIB/*.h"/>
+        <includes name="${package.dir}/include/EA3Util/*.h"/>
+        <includes name="${package.dir}/source/EA3_LIB/*.h"/>
+        <includes name="${package.dir}/source/EA3Util/*.h"/>        
+      </headerfiles>
+      <sourcefiles>
+        <includes name="${package.dir}/source/EA3_LIB/*.cpp"/>
+        <includes name="${package.dir}/source/EA3Util/*.cpp"/>        
+      </sourcefiles>
+      <bulkbuild enable="true"/>
+    </Library>
+  </runtime>
+</project>     	
+

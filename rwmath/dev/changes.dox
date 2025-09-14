@@ -1,0 +1,708 @@
+/*!
+\page p_change_log RenderWare Math Changelog
+
+\section s_version_1_18_00 Version 1.18.00
+
+\par Improvements
+- rwmath on x64/x64 now uses \c _mm_shuffle_epi32 in preference to \c _mm_shuffle_ps in
+many situations (assuming SSE2 code generation is enabled).  This
+change improves performance for many rwmath functions.
+- Modified SPU implementations for internal macros in order to work around a compiler code generation problem.
+- Increased cross platform portability
+
+\par Bug Fixes
+- Fixed preprocessor logic for setting the VPL_SSE2 define.  In some cases (e.g. pc64 builds) VPL_SSE2 was not being defined even though SSE2 support was available.
+
+\section s_version_1_17_01 Version 1.17.01
+
+\par Additions
+-Increased cross platform portability
+
+\par Bug Fixes
+- Fixed to use SSE on x64 platforms using older versions of EABase
+- Fixed minor issues related to VS 11, Intel's compiler and the Clang compiler
+
+\section s_version_1_17_00 Version 1.17.00
+
+\par Additions
+
+-Added PSP2 support
+-Added the optimal name space which uses the vpu or fpu based on the platform.
+-Added unaligned stores for the fpu/vpu.
+-Added VecLoadImm_Int to the VPL to load 32 bit integers across all elements in a vector.
+
+\section s_version_1_16_00 Version 1.16.00
+
+\par Bug Fixes
+- Added \c MultAdd functions for FPU vector types make the fpu/vpu API's more consistent.
+- Fixed the alignment defines to properly match VectorIntrinsic alignment for the target platform.  This change primarily affects devices with ARM processors.
+
+\par Additions
+- Added a method called MultiplyByVector to the quaternion class which performs element-wise multiplication.
+- Added support for Freebox (an x86 set-top box) and OSX.
+- Added a define that specifies the alignment of the VectorIntrinsic type (i.e.\c RW_MATH_VECTORINTRINSIC_ALIGNMENT).
+
+\section s_version_1_15_02 Version 1.15.02
+
+\par Improvements
+- Workedaround/fixed opt only unit test failures that occured when using llvm-gcc or clang on iOS.
+- Fixed a bug in IsSimilarRotation(quaternion, quaternion) where the code wasn't correctly determining if two quaternions were in opposite hemispheres.
+
+\section s_version_1_15_01 Version 1.15.01
+
+\par Improvements
+
+- Some modifications were made to rwmath's neon code to allow the code to compile using llvm-gcc or clang when targeting iOS devices.
+- Modified QuaternionGetMatrix44AffineRowX/Y/Z so all input arguments are passed as const references.
+
+\section s_version_1_15_00 Version 1.15.00
+
+\par Additions
+- Added a method called WriteToFloat to VecFloat.  This method stores the VecFloat's value to a \c float memory address provided.
+
+\par Improvements
+- Made some minor optimizations to VPU functions that took scalar float's as input.
+- Added a define to allow rwmath to be compiled with implicit float to VecFloat conversions (and vice versa) disabled.
+
+\section s_version_1_14_00 Version 1.14.00
+
+\par Additions
+- Added Vector3 constructors to allow construction of a Vector3 from a Vector2 and a scalar value.
+- Added platform support for the CTR (Nintendo 3DS).
+
+\par Improvements
+- Optimized IsZero implementations on Xenon.
+- Optimized vpu::Ceil function.
+
+\section s_version_1_13_01 Version 1.13.01
+
+- May 5th, 2011
+
+\par Bug Fixes
+- Fixed some neon code that broke the build on Android/iPhone when neon support was enabled.
+
+\section s_version_1_13_00 Version 1.13.00
+
+- May 5th, 2011
+
+\par Improvements
+- The BlackBerry PlayBook is now supported by rwmath.
+- The rwmath package now supports code stripping using the CodeStripper package.
+- Integrated optimizations made to \c EulerXYZFromMatrix33 and \c QuaternionFromEulerXYZ.
+
+\par Additions
+- Added a new MiniFloat API for low precision floating point number packing/unpacking.  See rw/math/mini.h for more info.
+
+\par Changes
+- Modified defined vpu alignment constants to be 8 (instead of 16) for Neon builds due to the lower alignment requirements for the instruction set.
+
+\section s_version_1_12_01 Version 1.12.01
+
+- Jan 5th, 2011
+
+\par Additions
+- Added the deterministic implementations for the estimate & fast versions of Reciprocal & ReciprocalSquareRoot macros on PC.
+  define RWMATH_NO_NONDETERMINISTIC_SSE_INTRINSICS to use these deterministic versions.
+
+\section s_version_1_12_00 Version 1.12.00
+
+- Nov 15th, 2010
+
+\par Improvements
+- Android, Palm and Airplay are now supported
+- Made a small change to the rwmath build file to avoid warnings depending on eaconfig when building with recent versions of nant.
+- Made build file changes to add support for bulk builds.
+- Modified the implementation of fpu Abs to avoid inefficient masking implementation.
+
+\section s_version_1_11_00 Version 1.11.00
+
+- May 31st, 2010
+
+\par Improvements
+- iPhone (as well as iPod/iPad) support has been added to math.  There is also
+  optional support for neon vector unit optimizations on newer devices.
+- Added a workaround for an SNC compiler optimization bug in ps3sdk 330.001.
+
+\section s_version_1_10_00 Version 1.10.00
+
+- March 23th, 2010
+
+\par Additions
+- Added HalfVector2, HalfVector3 & HalfVector4 types in rw::math::half namespace.
+- Added HalfFromFloat and FloatFromHalf conversion functions in rw::math::half namespace.
+- Added HalfVector2FromVector2, HalfVector3FromVector3, HalfVector4FromVector4 functions to convert
+  from FPU Vector types to their corresponding Half Vector types.
+- Added Vector2FromHalfVector2, Vector3FromHalfVector3, Vector4FromHalfVector4 functions to convert
+  from Half Vector types to their corresponding FPU Vector types.
+- Added 'Sqt' (Scaled quaternion translation) types and operations in both VPU and FPU namespace.
+- Added Quaternion Pow functions in both VPU and FPU namespace.
+- Added Unix support. (both generic support via the FPU or optionally optimized support via SSE instructions on supporting systems).
+- Added Get3x3 and Set3x3 functions to get and set the upper 3x3 submatrix of Matrix44 and Matrix44Affine.
+- Added preliminary support for Palm OS (currently only for internal use).
+
+\par Improvements
+- Made rwmath compile clean on SNC with --Xdiag=2 and without any diag_suppressions.
+- Optimized both VPU and FPU versions of scalar Abs, Min, and Max functions on PC and PS3 SPU.
+- Minimized the public exposure of some X360 SDK headers (xtl.h etc.) by only including them in the Xenon VPU specific math headers
+  to improve the compile time on Xenon.
+
+\par Changes
+- Removed PS2 and XBOX support in rwmath.
+- Changed rwmath pclint policy file based on the request from basekit.
+- Removed 'generate-sln' build target from rwmath build file.
+
+
+\section s_version_1_09_00 Version 1.09.00
+
+- April 14th, 2009
+
+\par Additions
+- Added VPL conversion functions VecUtilConvertFloatToHalf and VecUtilConvertHalfToFloat that 
+  convert a vector floats to a vector of half floats and vice versa.
+- Added uniformly distributed random float generator between 0.0 and 1.0f, and also added
+  Guassian and Poisson random number generators.
+- Added routines to return the maximum/minimum component of a vector as a VecFloat 
+  for both FPU and VPU Vector2/3/4 types.
+- Added a single element rotate left/right functions for FPU/VPU Vector2/3/4 and Mask2/3/4 types.
+- Added SqrtFast, InvSqrtFast and ReciprocalFast for VPU Vector2/3/4 types. 
+- Added the mechanism to optionally initialize default constructed math types with a specific constant
+   value and also validate against that constant value to help detecting uninitialized values.
+- Added VPL routines to shift the entire vector left/right by 0-7 bits.
+
+\par Improvements
+- Re-implemented SqrtFast, InvSqrtFast and ReciprocalFast for FPU types. The implication of these fast
+  versions is increase in speed and decrease in precision. If you want the precise versions, please use Sqrt,
+  InvSqrt, and Reciprocal functions.
+- Removed the redundent NLerp call from SLerp function for Soa4Vector2/3/4 types.
+- Added include guards to some simulated headers to avoid multiple inclusion of the same header files.
+- In cross builds of math the \c vpu::Vector2 and \c vpu::Vector3 types are filled
+  with zeros in the z, and w components of the internal VectorIntrinsic type.
+  This change was made to ensure the vectors have deterministic values when
+  building cross tools.
+- Optimized rw::math::vpu::Quaternion::Slerp function on Xenon and PS3 PPU
+- Made some changes to how templated constants were generated on Xenon.  This
+  change should eliminate some problems that could be encountered when rwmath
+  functions were called from global constructors on Xenon.  It should also
+  reduce overall code size a small amount.
+
+\par Bug Fixes
+- Fixed the constant for FLOAT_ONE_AS_UINT32 as it previously contained a typo.
+- Fixed a problem on Xenon where VPU mask and vector types was not returned by register 
+  while being used as the function return type.
+- Corrected the RWConfig target OS define macros that are used in math base header.
+
+\section s_version_1_08_01 Version 1.08.01
+
+- October 1st, 2008
+
+\par Changes to Existing Interfaces or Functionality
+- Removed explicit constructors for vector types that take a single float.
+
+\par Additions
+- Added conversion functions Vector2FromFloat, Vector3FromFloat, Vector4FromFloat in 
+  Vector2, Vector3, and Vector4 types to replace the explicit single float vector
+  constructors.
+
+\section s_version_1_08_00 Version 1.08.00
+
+- August 27th, 2008
+
+\par Bug Fixes
+- Fixed the problem where a few math headers were not standalone clean.
+
+\par Improvements
+- Changed mask and vector types so that they are passed through VMX registers when they are
+  used as non-inline function's function arguments (Xbox 360 only)
+- The constant for PI was changed slightly so it is identical on the PS3 PPU and SPU.  The original constant was specified in
+  greater precision than could be represented by a 32bit float.  The new constant used should have the same precision but
+  rounds identically on PPU/SPU.
+- Significant wii optimizations to VPU/FPU Matrix44 Multiply, Quaternion NLerp and Normalize functions, and also to VPU sqrt functions
+  using paired single instructions.
+- Made the fast/estimate versions of math functions on Wii at least as fast as their corresponding accurate ones.
+
+\par Additions
+- Added SSE2 support for PC configs (See rwmath documentation for more details).
+- Added inline keyword to all templated FPU math routines.
+- Added agressive inlining to FPU source cpp files on Wii.
+- Added Soa4 functions with pluralized function names to keep function naming consistency among Soa4 types.
+- Added explicit constructors for vector types that take a single float.
+- Added a 'Set' method to both FPU and VPU Vector3Plus type that takes a Vector3 and a VecFloat.
+- Added 'Inverse' function to both FPU and VPU QuatPos types.
+
+\par Workaround for Wii compiler bugs
+- Provided a workaround for a Wii compiler bug where it fails loading floating
+  point values correctly if being compiled with '-pooldata off -str pool' options.
+
+\section s_version_1_07_00 Version 1.07.00
+
+- March 6th, 2008
+
+\par Bug Fixes
+- Fixed some assertion macros that caused compile errors if assertions were
+  enabled.
+- Removed an assertion that was not required and could assert for valid inputs.
+
+\par Improvements
+- The rwmath build no longer builds an unnecessary test launcher for PS3 during a
+  standard build of the library.
+- RWMath now builds on GCC 4.11 without warnings or errors.
+- RWMath now builds on the current releases of SNC (however SNC is still in a
+  state of flux so further math updates may potentially be necessary).
+- Several API's that could cause aliasing bugs were modified to return
+  instances of a type instead of a reference to a type.  \c GetNormal, \c
+  GetXY, \c GetXYZ, \c GetVector3, \c GetVector (for fpu \c Vector4's) were
+  modified.  Any math code that uses these functions as L-values, or assigns
+  them to a reference type may need to be updated due to this change.
+- Made some small optimizations to the \c MagnitudeRecip functions on fpu.
+
+
+\section s_version_1_06_01 Version 1.06.01
+\par Bug Fixes
+- An unsigned <-> signed mismatch warning was fixed in VecUtilCreate4Bit_UInt,
+  VecUtilCreate4Bit_UShort, and VecUtilCreate4Bit_UChar on the Xbox 360
+
+\section s_version_1_06_00 Version 1.06.00 
+
+\par Additions
+- Added structure-of-arrays VPU vector and mask types.  Specifically, the types 
+  \c Soa4Float, \c Soa4MaskScalar, \c Soa4Vector2, \c Soa4Mask2, \c Soa4Vector3,
+  \c Soa4Mask3, \c Soa4Vector4 and \c Soa4Mask4 types have been added. The associated
+  operations (add, subtract, mutiply, divide, dot, cross, normalize, lerp, select, etc.) 
+  are included as well.
+- Added PS2 support back to RWMath.  PS2 is now an officially supported platform.
+- Added \c ReciprocalEstimate for scalar types.  This function is more efficient
+  than \c Reciprocal if the platform has a reciprocal estimate instruction.  \c
+  FloatReciprocalEstimate and \c DoubleReciprocalEstimate were also added to
+  the VPL.
+- Added \c VecNot to the VPL to perform a bitwise 'not' of a vector.
+- Added a constructor to the \c Vector3Plus class that initializes a vector
+  from a \c Vector3 and a scalar value.
+- Added a \c ClampToNegPosRange function for scalar and vector types.
+- Added Matrix constructors so that matrix types can be constructed from a list
+  of \c VecFloat's.  Note: This could cause ambiguous constructor calls for user code
+  that is currently passing both float and VecFloat types to a matrix constructor.
+- Added several \c VecUtilCreateIntrinsic* functions to the VPL that allow easy
+  creation of vector intrinsics from an argument list of component types.
+- Added several VPL functions for testing whether or not all/any elements of a vector are true/false.
+  (\c VecAllTrue_Word, \c VecAnyTrue_Word, \c VecAllFalse_Word, and \c VecAnyFalse_Word)
+- Added \c MagnitudeFast, and \c MagnitudeEstimate for \c Vector2, \c Vector3, and \c Vector4.
+- Added \c SqrtEstimate for scalar types.
+- Added \c Permute functions for \c Vector2, \c Vector3, and \c Vector4.  This
+  function creates a new vector by permuting the elements of an existing vector.
+- Added \c VecShiftLeftByBytesUsingVectorBitCount and \c
+  VecShiftRightByBytesUsingVectorBitCount to the VPL.  These functions shift an
+  entire vector left/right based on a count contained in a
+  VectorIntrinsic.
+- Added \c VecUtilCreate4Bit_UInt, \c VecUtilCreate4Bit_UShort, and \c
+  VecUtilCreate4Bit_UChar to the VPL.  These functions initialize all elements
+  of a vector to a specified 4bit integer value.
+
+\par Significant Optimizations
+- Made some optimizations to the VPU \c Sin and \c Cos functions on PC.
+- \c QuaternionFromAxisRotationAngle was optimized (courtesy of Matthew Jones).
+- Previously some matrix code on Xbox 360 used XM matrix functions for their
+  implementation.  This code has now been replaced with the standard RWMath
+  vector code since it is faster than the SDK code.
+
+\par Bug Fixes
+- Matrix SLerp methods were not returning proper values when the rotation between the 
+  two matrices was about the Z axis.
+- 64-bit PC was not rounding values consistent with the same operation on 32-bit PC
+  in \c FastFloatToInt32.
+- A bug in \c SLerpByAngle for fpu Matrix33 types has been fixed.  One of the
+  arguments to the function was not passed properly (it was passed by value
+  instead of by reference) which meant users were never returned the angle result
+  from the function.
+
+\par Improvements
+- Functions that were constructing vector types from literals (such as 0, 0.5, 1, etc) have
+  been changed to construct the constants on the vector unit.
+- Some small optimizations were made to some SPU functions.  The code better
+  exploits the SPU instruction set.  For example, rotates are now used in dot
+  products instead of using a simulated shift left operation using a shuffle.
+  Also, some compile time constants are constructed instead of being loaded
+  from local store.  Some unnecessary (for the SPU) checks for zero inputs were also
+  eliminate from a few functions.
+- Some steps were taken to reduce the likelyhood of internal math constants being
+  accessed before they are initialized.  On the PS3 all constants should be initialized
+  at compile time.  On the PC/Xbox 360 all constants are initialized in the library section,
+  so they should be initialized before any "user" section code is executed.
+- Added \c Select functions that operate on Mask types.  So, for example, you can use a \c MaskScalar
+  to select between two \c Mask3 values.
+
+\section s_version_1_05_01 Version 1.05.01 
+
+- Oct. 10th, 2007
+
+This release of math is a patch release.  It fixes two math bugs that were
+encountered after the 1.05.00 release.
+
+\par Bug Fixes
+- A bug in the VPU version of \c IsSimilarRotation for Quaternions has been fixed.
+  This bug was only present in the 1.05.00 release of rwmath.
+- The define to detect a Renderware cross configuration on Wii was changed from \c rwTARGET_WII to
+  \c rwTARGET_REVOLUTION to match other Renderware packages.  It is unlikely
+  this change will negatively impact any users since cross support on Wii was
+  only recently added for Renderware packages.
+
+\section s_version_1_05_00 Version 1.05.00 
+
+- June 25th, 2007
+
+\par Additions
+- Constructors were added to \c Mask2, \c Mask3, and \c Mask4 that take a single \c MaskScalar
+  as input, and replicate it across all elements of the mask.
+- Several new projection matrix functions were added to the library.  In prior
+  versions of RWMath, all projection matrices were generated for a right handed
+  coordinate system.  New versions of the functions have been added that
+  generate either explicitly right handed or left handed projection matrices.
+  The new functions added are:
+  <ul>
+    <li> Matrix44AffineFromOrthoLH
+    <li> Matrix44AffineFromOrthoRH
+    <li> Matrix44AffineFromOrthoOffCenterLH
+    <li> Matrix44AffineFromOrthoOffCenterRH
+    <li> Matrix44FromOrthoLH
+    <li> Matrix44FromOrthoRH
+    <li> Matrix44FromOrthoOffCenterLH
+    <li> Matrix44FromOrthoOffCenterRH
+    <li> Matrix44FromPerspectiveLH
+    <li> Matrix44FromPerspectiveRH
+    <li> Matrix44FromPerspectiveFovLH
+    <li> Matrix44FromPerspectiveFovRH
+    <li> Matrix44FromPerspectiveOffCenterLH
+    <li> Matrix44FromPerspectiveOffCenterRH
+    <li> Matrix44FromLookAtLH
+    <li> Matrix44FromLookAtRH
+  </ul>
+  The previous functions still exist in the library, and still assume a right
+  handed coordinate system, so there is no impact on previous code.
+- Added \c VecRotateLeftImm to the VPL.  This function rotates the contents of a vector left by the number
+  of words specified.
+- Added \c SetTrue and \c SetFalse methods and \c GetMask?_True and
+  \c GetMask?_False constant creation functions for all mask types.  These
+  methods/functions initialize all elements of a mask to either true or false.
+- Added \c VecCompLessThan_? to the VPL for all integral vector types.
+- Added \c VecLoad and \c VecStore functions to the VPL for loading and storing
+  vectors to aligned memory addresses.
+- Added wrapping and saturating vector subtract routines to the VPL for signed/unsigned types.
+  The functions were added for int, short and char vectors.
+- Added \c Reciprocal functions for \c Vector2, \c Vector3, and \c Vector4 classes.
+- Added \c IsRotation functions to \c Matrix33, \c Matrix44, and \c Matrix44Affine.  \c IsRotation3x3 was added for \c Matrix44 and \c Matrix44Affine types.
+
+\par Bug Fixes
+- The \c Matrix44FromPerspectiveOffCenter function had a bug that caused an incorrect perspective
+  matrix to be computed.  The bug would have caused projected points to have the wrong y coordinate.
+  The function has now been fixed to return the correct matrix.
+- The vpu.h and fpu.h headers were not including the necessary mask API
+  headers.  Now the mask headers are included.
+
+\par Changes to Existing Interfaces or Functionality
+- The implementation for \c IsSimilarRotation was modified to improve its
+  numeric stability.  Users of this function may need to increase the epsilon
+  passed to the function in order to get similar results.
+
+\par Significant Optimizations
+- Several optimizations were made for the Wii.  The optimizations cover FPU
+  functions and a few VPU functions.  Some of the significant optimizations
+  on the FPU for float types are:
+  <ul>
+    <li> Abs
+    <li> Min/Max
+    <li> Sqrt
+    <li> InvSqrt
+    <li> Mult(Matrix44Affine, Matrix44Affine)
+    <li> Inverse(Matrix44Affine, &determinant) and Inverse(Matrix44Affine)
+  </ul>
+  More optimizations can be made available on Wii once some compiler bugs have been resolved.
+
+\par Improvements
+- Some code, internal to math, has been modified to compile (and compile
+  without warnings) on GCC 4.1.1.  These changes do not have any impact on client
+  code.
+- The API's for all the vector load operations in the VPL have been made const correct.
+- A couple assignment operators were returning objects by value instead of by reference.
+  This return value caused poor code generation on the Wii, and has now been
+  corrected.
+- Added some missing assignment operators to the FPU library.  This greatly
+  improves the code generation on Xenon.  On Xenon the default assignment
+  operators were using integer copies.
+
+\section s_version_1_04_00 Version 1.04.00 
+
+- Feb. 6th, 2007
+
+\par Additions
+- A vectorization portability library (VPL) has been added to the math library.  The
+  library is intended to make it \em easier to write portable vectorized code.  Please
+  read the documentation for the \ref p_vpl_library for more details.
+- Added \c IsSimilarRotation function for the quaternion classes.  This function may
+  be used to determine if two quaternions represent the same rotation (within a
+  tolerance).
+- Added \c Divide functions for \c Vector2, \c Vector3, and \c Vector4 classes.
+  These functions perform element-wise division of two vectors.
+- Added explicit constructors for \c Vector2, \c Vector3, and \c Vector4 classes that
+  take a single scalar parameter.  This parameter is then replicated across each element
+  of a vector.  These constructors make it easy to construct a vector from a single
+  \c VecFloat or \c float value.
+
+\par Bug Fixes
+- The constructor that converted from fpu quaternions to vpu quaternions had a
+  typo that produced an incorrect conversion.  The constructor has now been fixed.
+- Various pow functions in the PS3 SDK produce incorrect results for some
+  inputs (e.g. pow(0.001, 126.0) ).  RWMath works around this issue by calling SDK
+  functions that do not produce incorrect values for its Pow routines.  To workaround
+  the problem double precision floats are being converted to floats when performing
+  the calculation.  This workaround will be reverted if/when Sony fixes these bugs.
+
+\par Significant Optimizations
+- The \c Inverse function for \c vpu::Matrix44Affine has been optimized.  The new
+  version is faster than the old version, and also takes significantly less stack
+  space.
+
+\par Improvements
+- The standard math builds no longer have a dependency on Trap2.  Trap2 is now only
+  a dependency when building unit tests.
+- The math initialize.xml script has been updated to allow math to work with
+  Visual Studio project file generation.
+
+\section s_version_1_03_00 Version 1.03.00 
+
+- Nov. 22nd, 2006
+
+This version of math adds some new features requested by math users.  It also
+introduces some optimizations and other miscellaneous improvements.
+
+\par Additions
+- Added \c CheckedNormalizeReturnMagnitude functions for all vector and
+  quaternion types.  This function is virtually the same as \c
+  NormalizeReturnMagnitude, except it gracefully handles inputs of magnitude 0.
+  In this situation, the function returns a 0 vector/quaternion (instead of an
+  undefined result) and a magnitude of 0.
+- Added a \c GetXY function for accessing the X/Y elements of a \c Vector3 or
+  \c Vector4 as a \c Vector2.
+
+\par Bug Fixes
+- Some template functions that were 'recursively' defined have been removed.
+  This fix should not have any impact on user code.
+
+\par Changes to Existing Interfaces or Functionality
+- \c AxisAngleFromQuaternion was modified so that it returns a valid axis when
+  the identity quaternion (or a quaternion near identity) is returned.  Previously
+  an axis of (0,0,0) was returned.  This result caused problems for some users, and
+  they needed to add "special case" code to handle the result.
+
+\par Significant Optimizations
+- Many comparison operators have been optimized to avoid unnecessary conversion
+  to floating point values.  This significantly reduces the number of
+  load-hit-stores that occur on the Xenon and the PS3 PPU.
+- Optimized \c vpu::Matrix44AffineFromQuaternionTranslation and
+  \c vpu::Matrix44AffineFromScaleQuaternionTranslation.
+- Optimized \c vpu::Modulo and \c vpu::IntFloor on XBox360 and PS3 PPU.
+- Optimized an internal vector reciprocal operation on the SPU.  This
+  optimization should improve the performance of many math operations that
+  require reciprocals or divisions.
+- Optimized internal vector reciprocal-squareroot calculations on Xbox 360 and
+  PS3 PPU.  This optimization should improve performance on math operations
+  that require reciprocal-squareroots or squareroots.
+- Rewrote \c Matrix33 and \c Matrix44Affine \c Transpose functions on Xenon.
+  The older routines were doing conversions to \c XMMATRIX types, and used \c
+  XMMATRIX routines.
+
+\par Improvements
+- Worked around an SPU compiler bug that was sometimes causing the compiler to
+  crash when building math code in debug or when force inlining of math functions
+  was disabled.
+- The assertion code inside the \c SLerpNoCheck function is now less strict.
+  This allows quaternion/vectors that are close to unit length to be SLerp'ed.
+  Also, the new tolerance is now consistent with the tolerance of the \c SLerp
+  function.
+
+\section s_version_1_02_01 Version 1.02.01 
+
+- Nov. 14th, 2006
+
+This release of math is a patch release.  It fixes two math issues that were
+encountered during the "repackaging" of other RenderWare projects.
+
+\par Bug Fixes
+- The alignment enum's in the FPU types have been modified for non-RWCROSS
+  (i.e. standard) builds.  Previously, FPU types claimed they were not aligned,
+  and required only single byte alignment.  The types now specify that they are
+  aligned and that they require the same alignment as a float or double type
+  (depending on the template parameter).  This bug exhibited itself when users
+  aligned RWMath FPU types on a single byte boundary and generated an exception
+  when accessing the unaligned data (e.g. on PS3 PPU or Xenon).  This change
+  only impacts client code that was making use of the \c IsAligned or \c
+  Alignment enums in the RWMath FPU types.
+- The endian swapping code that is defined for RWCROSS builds, would sometimes
+  fail, because \c rwTARGET_XX defines had not been defined at the time the
+  RWMath headers were included.  The header files have been updated to \c #include
+  the RWCore ostypes.h header \em if a cross build is defined, and \c rwTARGET_XX
+  is not defined.  This change should only impact math usage in \c RWCROSS
+  builds.  i.e. any "native" use of math should not be affected by this change.
+  See \ref p_endian_swapping for more information on endian swapping in math,
+  and how the target platform endianness is determined in cross builds.
+
+
+\section s_version_1_02_00 Version 1.02.00 
+
+- Aug. 29th, 2006
+
+\par Additions
+- Ported the math library to Wii.  See \ref s_vpu_math_on_wii for important
+  notes on the current VPU implementation of Wii math.
+
+\par Bug Fixes
+- A bug in the VPU version of \c Matrix44Affine::Inverse was fixed.  The bug
+  could produce incorrect results in the Z component of the first row of the
+  matrix that is returned.
+- A bug was fixed in the FPU floor routine for PC.  The \c Floor function could
+  return invalid results if the precision of the FPU was modified.  (DirectX on
+  the PC modifies the FPU precision and could make this bug manifest itself.)
+  The bug also caused problems for FPU versions of \c Round, \c IntRound, and
+  \c IntFloor which internally called \c Floor.
+- A bug was fixed in the VPU floor routine for SPU.  The \c Floor function could
+  return an incorrect result for \em extremely large inputs (e.g. 2.5521178e38f).
+- A bug was fixed in \c SqrtFast.  The function could fail to return a correct result
+  for an input of zero (or almost zero on the PC).
+
+\par Significant Optimizations
+- \c rw::math::vpu::EulerXYZFromMatrix33 and \c rw::math::vpu::Matrix44FromEulerXYZ
+  were optimized for the PS3 PPU.
+
+\section s_version_1_01_00 Version 1.01.00 
+
+- June 29th, 2006
+
+This release of RWMath introduces a new "Mask" API to help users write
+\ref p_branch_free_coding "branchless" code on the FPU and VPU.
+
+\par Additions
+- Added new "Mask" API's for writing branch free code.  See \ref p_branch_free_coding.
+
+\par Bug Fixes
+- A bug in \c SgnNonZero() was fixed.  The VPU version of SgnNonZero was
+  returning 1 or 0 to indicate true/false instead of using 1, -1.  This was
+  inconsistent with the FPU version of the function.  The VPU implementation
+  has been changed to be the same as the FPU version.
+- A bug was fixed in release builds of the FPU version of ATan2 on the SPU.
+  The bug itself is in Sony's implementation of atan2.  A workaround has been
+  implemented to avoid the bug in Sony's implementation.
+- The fpu version of NormalizeReturnMagnitude for Quaternion's was not
+  implemented or declared.  This function has now been implemented.
+- The type_fwd.h header file now forward declares the \c VectorIntrinsic type.
+
+\par Significant Optimizations
+- Optimized \c Floor() on the FPU and VPU for all platforms.
+- VPU function implementations now try to build \c VecFloat values (where
+  possible) instead of converting from float literals.
+- Reduced the number of locations where scalar VPU code converted \c VecFloat's
+  to \c float types.
+
+\par Other Changes
+- A change to the VectorIntrinsic typedef for Xbox 360 was reverted.  The change
+  introduced in RWMath 1.00.00 negatively impacted performance on Xbox 360.
+
+\section s_version_1_00_00 Version 1.00.00 
+
+- June 1st, 2006
+
+This is the first officially supported version of RWMath to be released as a
+Nant package.
+
+\par Changes to Existing Interfaces or Functionality
+- <code>IsOrthogonal*</code> and <code>GetOrthogonalError*</code> functions were 
+  renamed to <code>IsOrthogonalRowSet*</code> and <code>GetOrthogonalRowSetError*</code>. 
+  New <code>IsOrthogonal*</code> and <code>GetOrthogonalError*</code> functions 
+  were implemented which now perform correct matrix orthogonality tests. Those who
+  currently use the <code>IsOrthogonal*</code> and <code>GetOrthogonalError*</code> 
+  need to change the calls accordingly if the old functionality is desired. However, if 
+  you really did intend to check for an orthogonal matrix, no changes are required.
+- EndianSwap routines have been modified to be compatible with RenderWare Platform's
+  concept of endian swapping.  Endian swapping is now a no-op except when RWCROSS is
+  defined, and the target platform has an endianness that is different from the PC.
+
+\par Improvements
+- Compiler deficiencies on the SPU meant several constants were appearing in
+  the BSS segment and getting initialized at runtime.  This initialization
+  strategy resulted in wasted memory and the need to run initialization code.
+  The math library has been modified to avoid this compiler issue.  The library
+  now takes up less memory, and does not require initialization of constants
+  at runtime.  Removing runtime initialization of data also means the math
+  library should work properly with all versions of Job Manager.
+- The assertion code inside the SLerp function is now less strict.  This allows
+  quaternion/vectors that are close to unit length to be SLerp'ed.
+- Eliminated warnings that were occuring at high warning levels.
+
+
+\par Additions
+- A new rw::math::RandomNumberGenerator class has been added to support multiple
+  instances of random number generators.
+- A component wise clamp function was added to the Quaternion, and Vector classes.
+- Component wise Max, Min, and Abs functions were added to the Quaternion class.
+- Constant operations were added for creating scalar constants (i.e. -2, -1,
+  -0.5, -0, 0, 1, 0.5, 1, 2 ).  These operations are much faster than creating a
+  VecFloat from a float literal.
+- Added "estimate" and "fast" versions of Vector and Quaternion \c Normalize and \c NLerp functions.
+  For example \c rw::math::vpu::NormalizeFast(Vector4);
+- Users may explicitly enable/disable force inlining of math code using
+  RW_MATH_ENABLE_FORCE_INLINING/RW_MATH_DISABLE_FORCE_INLINING.
+- Explicit constructors were added to Matrix44, Matrix44Affine, and Matrix44AffinePacked to
+  allow easier conversions between these types.
+- Added IsAnyNaN functions for Quaternion, Plane and all standard Vector/Matrix types.  The function
+  will return true if any element of the object is a NaN.
+- Added Get[XYZW]Column, and Set[XYZW]Column methods to the matrix classes.  These
+  methods get and set entire columns vectors by value.
+
+
+\par Bug Fixes
+- \c IsOrthogonal and \c IsOrthogonal3x3 functions now return \c false when called 
+  on a zero matrix.
+- A bug in \c AxisAngleFromQuaternion was fixed.  The routine would generate a
+  vector of NaN's for certain inputs.  The bug has been fixed, and the code has been
+  further optimized.
+- Fixed a bug on x86 where a squareroot macro was returning a "bad" value for very
+  small numbers (i.e. denormalized floating point values).  This bug actually
+  showed up when attempting to normalize a vector with extremely small values.
+
+\section s_version_0_09_00 Version 0.09.00 
+
+- May 8, 2006
+
+Review release of the new RenderWare Math library, separate from RenderWare
+Platform.  The release is intended for beta consumption and peer review.
+    
+\par Changes to Existing Interfaces or Functionality
+- First release of math library outside independent of RenderWare Platform.
+- Math library now depends on EABase instead of RenderWare.
+- The FPU library no longer offers aligned types or padding.
+- Middle layer functions have been replaced with macros. Please, considered
+  this layer an unpublished implementation layer for the time being. If you
+  happened to use the unpublished <code>_asm*</code> functions you will have to
+  rewrite your code as the layer is modified. Please do not use these functions
+  or macros yet.
+- Inlining has been greatly improved on PS3 by "force inlining" most of the VPU routines.
+- PS2 support has been dropped in the math library.
+
+\par Additions
+- We have introduced defines to determine the version of renderware at compile
+  time. Take a look at the \ref p_defines "define" documentation for more info.
+- Introduced typedef's for all Vector types.  The typedef's indicate what basic
+  type an element is, and what is the preferred (possibly class) type to use when
+  accessing data.
+- Component wise * operators were added to the vector/quaternion types.
+- Added a Cross function for the Vector2 class.
+- Added a MultAdd function for the FPU and VPU library that takes scalar
+  arguments (i.e. float/double/VecFloat).
+
+\par Bug Fixes
+- Some small fixes were made to the timing code in the testing framework.
+- Some missing Vector and Quaternion operators (ie. -, +) where added to the library.
+- Added some constant operations that were missing from the FPU library.
+- Fixed a bug in the Matrix SLerp routines where the routine would not return a
+  result in lprAngle if its initial value was 0.
+- Fixed a bug in NormalizeAngle that was returning an incorrect result for some inputs.
+- Fixed some warnings that were generated on newer PS3 SDK's.
+
+*/

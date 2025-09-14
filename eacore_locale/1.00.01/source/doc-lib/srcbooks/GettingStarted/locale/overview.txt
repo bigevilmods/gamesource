@@ -1,0 +1,14 @@
+/*!
+**********************************************************************
+
+\page p_gettingstarted_locale_overview eacore_locale Overview
+
+eacore_locale is a run-time library for accessing strings from .loc files
+built by a tool called Locomoto.
+
+- \ref p_gettingstarted_locale
+
+\sa
+- \ref g_refs
+
+*/

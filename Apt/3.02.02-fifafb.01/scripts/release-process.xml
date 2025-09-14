@@ -1,0 +1,39 @@
+<!-- This file contains tasks and properties that can be used to help release the Apt package.
+     It is expected to be run by some external script.
+     -->
+<project>
+    <!-- Perform some checks to ensure that everything is ready to go for releasing this package.
+         Will fail if something is wrong. -->
+    <createtask name="package.Apt.release-process-check">
+        <parameters>
+            <!-- New version we are going to release -->
+            <option name="version" value="Required" />
+        </parameters>
+        <code>
+            <!-- Ensure that the user has the Perl Dev Kit installed -->
+            <property name="perlapp-exists" value="true"/>
+            <exec program="perlapp.exe" failonerror="false" message="Testing if Perl Devkit is installed." stdout="false" />
+            <do if="${exec.exitcode} eq -1">
+                <echo message="[warning] Perl DevKit not installed.  Apt will not be up to date! Please see http://confluence.ea.com/x/4g1FCg for more info"/>
+                <property name="perlapp-exists" value="false"/>
+            </do>
+        </code>
+    </createtask>
+    
+    <!-- Perform the pre-release updating process -->
+    <createtask name="package.Apt.release-process-update">
+        <parameters>
+            <!-- New version we are going to release -->
+            <option name="version" value="Required" />
+            <!-- Perforce changelist we should put any checked out files into -->
+            <option name="changelist" value="Required" />
+        </parameters>
+        <code>
+            <!-- Compile SWFC -->
+            <p4edit files="${package.Apt.dir}/bin/Apt/swfc.exe" change="${package.Apt.release-process-update.changelist}" />
+            <do if="@{StrCompare(${perlapp-exists}, 'true')} == 0">
+                <exec program="buildswfc.bat" message="Building SWFC..." workingdir="${package.Apt.dir}/bin/Apt" />
+            </do>
+        </code>
+    </createtask>
+</project>

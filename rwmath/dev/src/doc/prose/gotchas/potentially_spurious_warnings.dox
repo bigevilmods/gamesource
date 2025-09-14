@@ -1,0 +1,73 @@
+/*!
+\page p_potentially_spurious_warnings Potentially Spurious Warnings
+
+\par GCC4 Warnings
+
+In some ways, GCC4's warning analysis system is far more advanced/aggressive
+than other compilers.  This can lead to situations where GCC will generate
+warnings for code that looks quite safe (and in fact is safe).  However, in other
+situations it will catch difficult to find bugs.
+
+Consider the following code:
+
+\code
+rw::math::vpu::Vector3 vec3;
+Vec3.SetX(1.0f);
+Vec3.SetY(2.0f);
+Vec3.SetZ(3.0f);
+\endcode
+
+Compiling this code (in release) may give a warning like:
+<BR><tt>warning: 'vec3$mV' is used uninitialized in this function</tt><BR>
+The warning will probably refer to code in the math library and not the users code.
+
+\par So why does this warning get generated?
+
+The VPU math library works on vectors.  So, setting the X element requires the
+vector class to modify the X component of an entire vector.  This could be done as a
+permute that takes the previous vector value and the value of X, and combines
+them into the resulting vector with only its X component modified.  However, in
+this particular case, the previous vector value is not initialized.  So, the
+code is trying to set the X component using the value for X and an
+uninitialized vector.
+
+Now, here is where the magic of GCC 4 comes in to play.  GCC4 is actually smart enough
+to analyze code that is inlined.  Since the default constructor for Vector3
+does not initialize the vector, GCC knows the member is uninitialized when SetX
+tries to access it.  (Most compilers see that the constructor has executed, and
+just assume the object has been initialized properly.)
+In the situation shown above, the warning is valid, but also harmless (except for the
+warnings that are generated).
+
+\par Is this warning always harmless?
+
+No, in some situations this warning will catch legitimate bugs in the code.  For example:
+
+\code
+Vector3 AddOneToVectorComponents( Vector3::InParam v )
+{
+    Vector3 ones;
+    return v + ones;
+}
+\endcode
+
+In this code, \c ones should have been initialized to all 1's for the function
+to be correct.  GCC will notice that the variable is not initialized and give a
+warning (at least if the constructor is inlined).
+
+\par How can this problem be fixed?
+
+The math library could be changed to always initialize vectors.  However,
+that would just suppress the warning in all situations.  That would make
+it harder for teams to locate legitimate bugs where math types are not
+initialized.  It also means that default constructors would unnecessarily
+initializes values (reducing performance).
+
+The easiest way to avoid the problem is to modify the code so it initializes all
+componenets of the vector using a single API call, or use a constructor that
+initializes the vector.  In fact, initializing all components of a Vector
+simultaneously is faster than initializing each element individually.
+
+
+*/
+

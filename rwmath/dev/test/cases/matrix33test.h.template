@@ -1,0 +1,42 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestMatrix33 :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestMatrix33();
+    virtual ~UnitTestMatrix33();
+    void Test();
+
+//#BLOCK
+
+private:
+
+    EXPLICIT_NAMESPACE(Matrix33) m33_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type x_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type y_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type z_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    float_test_type w_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Quaternion) q_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Vector3) v3_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+
+    float_basic_type retValueFloat;
+    bool retValueBool;
+    EXPLICIT_NAMESPACE(Matrix33) retValueM33;
+    EXPLICIT_NAMESPACE(Vector3) retValueV3;
+
+    EXPLICIT_NAMESPACE(Matrix33) m33_operator_array[testing::RW_MATH_UNITTEST_TEST_MATRIX_ARRAY_SIZE];
+    EXPLICIT_NAMESPACE(Matrix33) matResult;
+    EXPLICIT_NAMESPACE(Vector3)  vecResult;
+
+};
+

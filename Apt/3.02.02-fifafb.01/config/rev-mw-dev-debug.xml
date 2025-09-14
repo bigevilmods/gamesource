@@ -1,0 +1,4 @@
+<project>
+  <dependent name="eaconfig" />
+  <include file="${package.eaconfig.dir}/config/rev-mw-dev-debug.xml" />
+</project>

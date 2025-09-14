@@ -1,0 +1,103 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestMini" HEADER="minitest.h" SOURCE="minitest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/half.h rw/math/fpu/scalar.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+        <TEST NAME="TestMiniTypes">
+            <![CDATA[
+
+        SetFunctionName("Test MiniTypes()");
+
+        using namespace rw::math::mini;
+
+        bool result = true;
+        result &= sizeof(MiniFloat<2,2>::mini_t) == 1;
+        result &= sizeof(MiniFloat<3,4>::mini_t) == 1;
+        result &= sizeof(MiniFloat<4,4>::mini_t) == 2;
+        result &= sizeof(MiniFloat<2,10>::mini_t) == 2;
+        result &= sizeof(MiniFloat<10,8>::mini_t) == 4;
+        Validate(result);
+
+          ]]>
+        </TEST>
+
+        <TEST NAME="TestMiniFromFloat">
+            <![CDATA[
+
+        SetFunctionName("FloatFromMini(MiniFromFloat(float))");
+
+        using namespace rw::math::mini;
+
+        bool result = true;
+        result &= 2.0f == MiniFloat<2,2>::FloatFromMini(MiniFloat<2,2>::MiniFromFloat(2.0f));
+        result &= 2.0f == MiniFloat<4,4>::FloatFromMini(MiniFloat<4,4>::MiniFromFloat(2.0f));
+        result &= 2.0f == MiniFloat<20,3>::FloatFromMini(MiniFloat<20,3>::MiniFromFloat(2.0f));
+        Validate(result);
+        
+          ]]>
+        </TEST>
+
+        <TEST NAME="TestMiniFloatIsZero">
+            <![CDATA[
+
+            SetFunctionName("MiniFloat<>::IsZero()");
+
+            using namespace rw::math::mini;
+
+            bool result = true;
+            result &=  MiniFloat<2,2>::IsZero(static_cast<MiniFloat<2,2>::mini_t>(0));
+            result &=  MiniFloat<4,4>::IsZero(static_cast<MiniFloat<4,4>::mini_t>(0));
+            result &=  MiniFloat<9,9>::IsZero(static_cast<MiniFloat<9,9>::mini_t>(0));
+            result &= !MiniFloat<2,2>::IsZero(static_cast<MiniFloat<2,2>::mini_t>(1));
+            result &= !MiniFloat<4,4>::IsZero(static_cast<MiniFloat<4,4>::mini_t>(1));
+            result &= !MiniFloat<9,9>::IsZero(static_cast<MiniFloat<9,9>::mini_t>(1));
+            Validate(result);
+        
+          ]]>
+        </TEST>
+
+        <TEST NAME="TestMiniFloatIsInfinite">
+            <![CDATA[
+
+            SetFunctionName("MiniFloat<>::IsInfinite()");
+
+            using namespace rw::math::mini;
+
+            bool result = true;
+            result &= !MiniFloat<2,2>::IsInfinite(static_cast<MiniFloat<2,2>::mini_t>(0));
+            result &= !MiniFloat<4,4>::IsInfinite(static_cast<MiniFloat<4,4>::mini_t>(0));
+            result &= !MiniFloat<9,9>::IsInfinite(static_cast<MiniFloat<9,9>::mini_t>(0));
+            Validate(result);
+        
+          ]]>
+        </TEST>
+
+        <TEST NAME="TestMiniFloatIsNaN">
+            <![CDATA[
+
+            SetFunctionName("MiniFloat<>::IsNaN()");
+
+            using namespace rw::math::mini;
+
+            bool result = true;
+            result &= !MiniFloat<2,2>::IsNaN(static_cast<MiniFloat<2,2>::mini_t>(0));
+            result &= !MiniFloat<4,4>::IsNaN(static_cast<MiniFloat<4,4>::mini_t>(0));
+            result &= !MiniFloat<9,9>::IsNaN(static_cast<MiniFloat<9,9>::mini_t>(0));
+            Validate(result);
+        
+          ]]>
+        </TEST>
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

@@ -1,0 +1,52 @@
+/*!
+\page p_devlog EA Core Locale Changelog
+
+	CURRENT RELEASE INFORMATION
+	
+	NOTES
+
+	KNOWN ISSUES
+
+	BUILD ENVIRONMENT
+
+	Refer to the tlconfig package for details of what compilers and platforms
+	this library supports.
+
+	Users are expected to compile the library themselves.  This is to reduce
+	the possiblity of issues resulting from binary incompatibilities.  We have
+	provided nant configuration files for the Windows, GameCube, PlayStation2,
+	Xbox, and Xenon systems.
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+	1.00.01 (March 31, 2005)
+
+		- Fixed undefined package.locale.dir property in initialize.xml. (DevTrack 8910)
+		- Fixed build warning with Xenon SDK build 1332.3. (DevTrack 9589)
+
+		- Updated tlconfig version to 1.00.18.
+		- Updated HelpToolkit version to 5.00.01.
+		- Updated Lint version to 8.00q.
+
+		
+	1.00.00 (December 2, 2004)
+
+		- This package was created from the locale module in the realcore
+		  package and the locomoto tool in the realcoretools package.  The
+		  library interface has been changed to make it compliant with
+		  current EAC coding conventions as of November, 2004.  The
+		  locomoto tool is unchanged from its last release.
+
+		- the public header file is eacore/locale/locale.h.
+
+		- LOCALE_create has become EA::Core::Locale::Locale.
+
+		- LOCALE_getstate has become EA::Core::Locale::GetState.
+
+		- LOCALE_setstate has become EA::Core::Locale::SetLanguage.
+
+		- LOCALE_getstrA has become EA::Core::Locale::GetString.
+
+		- LOCALE_getstrW has become EA::Core::Locale::WGetString.
+
+*/

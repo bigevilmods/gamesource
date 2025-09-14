@@ -1,0 +1,165 @@
+/*!
+\page p_scalar_access Scalar Access
+
+In the good old days, writing a math library took about two hours. You simply declared something like the following...
+\code
+    struct Vector
+    {
+        float x;
+        float y;
+        float z;
+        float w;
+    };
+\endcode
+...and off you went.
+
+Over time you would add some functions for arithmetic and the occasional dot and cross product. The real daring
+folks would even consider overloading some operators to make math in C++ look the way one would write it on paper. Interesting
+work, but certainly no rocket science.
+
+And then came SIMD, MMX, SSE, VMX, LHS and a few more acronyms. Up until recently we have been able to avoid these acronyms by sending in 
+an expert to optimize the inner loops, leaving the rest of our code untouched. Unfortunately the hardware has caught up with us and 
+the free lunch is over. We have reached the point where the impact of acronyms affects everybody's code.
+
+Most importantly, all common hardware now offers some vector intrinsic type that typically holds four floating point values (for a total of
+128 bits). Operations run significantly faster on these types. That means the definition of the vector type has changed to look
+something like the following...
+\code
+    struct Vector
+    {
+        _hardware_specific_type_ v;
+    };
+\endcode
+
+This is great and all, until you realize you have lots of code like this...
+\code
+    if (player.GetPos().z < 0.f)
+    {
+        player.Drown();
+    }
+\endcode
+
+This won't compile with your new vector type since it doesn't have a member called <code>z</code> anymore. This is easily solved you
+think. After all, isn't that what unions were invented for? So you quickly update your vector type to look somewhat like below...
+\code
+    struct Vector
+    {
+        union
+        {
+            _hardware_specific_type_ v;
+            struct
+            {
+                float x, y, z, w;
+            };
+        };        
+    };
+\endcode
+
+Now all your code compiles and runs again, but low and behold; it runs significantly slower! What happened?
+
+\section Unions
+
+It turns out the introduction of a union thwarted your compilers capability to use the vector intrinsic registers
+effectively. Consider the following piece of code...
+\code
+    Vector a, b, c, d;
+    a = b + c;
+    d = a * 2.f;
+    a = a + d;
+    c = DotProduct(b, d);    
+\endcode
+Ideally you'd like something like this generated...
+\code
+    register a_, b_, c_, d_;
+    
+    b_ = _fetch_from_memory(b);
+    c_ = _fetch_from_memory(c);
+    
+    _add_intrinsic(a_, b_, c_);
+    _mul_intrinsic(d_, a_, constant_two);
+    _add_intrinsic(a_, a_, d_);
+    _dot_intrinsic(c_, b_, d_);
+    
+    _store_register_in_memory(a_, a);
+    _store_register_in_memory(b_, b);
+    _store_register_in_memory(c_, c);
+    _store_register_in_memory(d_, d);
+\endcode
+In other words, you fetch all values into registers, do multiple operations on them, and then store it in memory again. The addition of a union
+however leads to the following...
+\code
+    register a_, b_, c_, d_;
+    
+    b_ = _fetch_from_memory(b);
+    c_ = _fetch_from_memory(c);
+    
+    _add_intrinsic(a_, b_, c_);
+    _store_register_in_memory(a_, a); // immediately write a back to memory
+    
+    a_ = _fetch_from_memory(a); // and fetch it from memory again
+    _mul_intrinsic(d_, a_, constant_two);
+    _store_register_in_memory(d_, d); // write d into memory
+    
+    a_ = _fetch_from_memory(a); // fetch a again
+    d_ = _fetch_from_memory(d); // as well as d again
+    _add_intrinsic(a_, a_, d_);
+    _store_register_in_memory(a_, d);
+    
+    b_ = _fetch_from_memory(b);
+    d_ = _fetch_from_memory(d); // fetch d again
+    _dot_intrinsic(c_, b_, d_);    
+    _store_register_in_memory(c_, c);
+\endcode
+
+Unfortunately it is not likely we'll see compilers improve in this regard meaning we have to work our way around this limitation somehow.
+
+For more information on unions and their performance impact, refer to the \ref p_unions "rationale section on unions".
+
+\section Accessors
+
+Having realized that unions are a bad idea in our math library, we continue looking for a solution. Our next try looks something like this...
+\code
+    struct Vector
+    {
+        _hardware_specific_type_ v;
+        
+        float GetX() const;
+        float GetY() const;
+        float GetZ() const;
+        float GetW() const;
+        
+        void SetX(float x) const;
+        void SetY(float y) const;
+        void SetZ(float z) const;
+        void SetW(float w) const;
+    };
+\endcode
+
+And voila, we can now port our legacy code and write something like the following...
+\code
+    if (player.GetPos().GetZ() < 0.f)
+    {
+        player.Drown();
+    }
+\endcode
+
+Oh, if only life was that simple. As soon as you try the approach above, you'll run into new problems.
+- It is relatively easy to transform <code>vector.x</code> to <code>vector.GetX()</code>. Unfortunately, transforming <code>vector.x = 42.f</code> to <code>vector.SetX(42.f)</code> is more difficult. Regular expressions can't automate this.
+- <code>v.SetX(a.GetY() - b.GetZ())</code> doesn't look as elegant as <code>v.x = a.y - b.z</code>.
+- The setting and getting of actual <code>float</code>s turns out to be slow because moving from vector registers to scalar registers is very costly.
+
+All these problems are addressed in the accessors that the RenderWare Math library offers. The rationale and design of this architecture is
+described in the section on \ref p_accessors "accessors".
+
+\section s_but_what_about But What About
+
+The observant and knowledgeable reader may point out that the intrinsic type on the Xbox 360 is already a 
+union (<code>XMVECTOR</code> as defined in <code>Xboxmath.h</code> in the Microsoft Xbox 360 SDK). And indeed, the Microsoft compiler 
+generates better code in the presence of unions. One can choose to derive a vector type from Microsoft's <code>XMVECTOR</code> and get
+the ability to write <code>vector.x</code> with a minimal penalty.
+
+Unfortunately the Playstation 3 and GCC compiler offer little help in this respect. Its vector intrinsic type is truly singular
+and embedding it in a union has disastrous performance implications. Since the math libray aims to offer a cross platform solution it is 
+forced to design around the lowest common denominator.
+
+*/

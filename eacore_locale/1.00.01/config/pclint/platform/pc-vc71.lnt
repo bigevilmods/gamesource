@@ -1,0 +1,51 @@
+//******************************************************************************************
+//
+// Copyright (c) 2003 Electronic Arts Inc.
+//
+//******************************************************************************************
+
+// Microsoft Visual C++ 7.x configuration options
+
+-si4 -sl4 -sp4	// set up pointer lengths
+
+env-vc7.lnt		// Visual Studio environment options
+co-msc70.lnt	// MS C++ options
+
+-d_WIN32		// for Windows
+-d_M_IX86
+
+-d__fastcall=
+-d__asm=asm
+
+// Disabling options specific to the VC7 version
+
+-elibsym(14)						// Symbol ' ' previously defined
+
+-emacro(960, _S_I*)					// Octal constant notation used for the _S_IWRITE, etc. defines
+-emacro(1924, INVALID_HANDLE_VALUE)	// ignore C-style casts in this macro.
+-emacro(923, INVALID_HANDLE_VALUE)
+
+// VC7 causes some trouble so we have to avoid with these disable statements
+-esym(126, __MIDL___MIDL_itf_wtypes_0003_0001)		// Inconsistent structure definition
+-esym(578, y1)	// Declaration of symbol ' ' hides symbol ' '
+-esym(578, stat)	// Declaration of symbol ' ' hides symbol ' '
+-esym(765, WindowProc)	// external ' ' could be made const
+-esym(923, HWND)	// Cast from int to pointer
+
+//Switching a bunch of stuff off for the horribly non-compliant Windows code
+-efunc(917, WinMain,UpdateTimerProc)		// Prototype coercion 
+-esym(950, __stdcall)					// Non-ANSI reserved word or construct: '__stdcall'
+-esym(1065, WinMain)					// Symbol 'WinMain(struct HINSTANCE__ *, struct HINSTANCE__ *, char *, int)' not declared as "C" conflicts with line 1258, file D:\Program Files\Microsoft Visual Studio .NET\VC7\PlatformSDK\include\winbase.h
+-efunc(1924, WinMain,UpdateTimerProc)		// C-style cast -- More Effective C++ #2
+-efunc(923, WinMain,UpdateTimerProc)		// cast from unsigned long to pointer
+-efunc(909, WinMain,UpdateTimerProc)		// Implicit conversion from unsigned short to bool
+-efunc(713, WinMain,UpdateTimerProc)		// Loss of precision (return) (unsigned int to int)
+
+// header file 'x' not directly used in module 'y'
+-efile(964, windows.h)
+-efile(964, windef.h)
+-efile(964, guiddef.h)
+-efile(964, ole2.h)
+-efile(964, objbase.h)
+
+

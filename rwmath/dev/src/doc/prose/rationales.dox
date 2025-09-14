@@ -1,0 +1,16 @@
+/*!
+\page p_rationales Rationales
+
+The math team feels it is important to have rationale for our decisions.
+Providing rationale ensures that we have thought about decisions carefully.
+Rationale also helps users understand why certain decisions were made.  Often,
+the reasons for decisions are quite complicated, and not immediately obvious
+without proper rationale.
+
+- \ref p_guiding_principles "Guiding Principles"
+- \ref p_history "History of the Math Library"
+- \ref p_unions "Unions of Intrinsics and Scalars"
+- \ref p_accessors "Component Accessors"
+- \ref p_mixed_mode_math "FPU and VPU Mixed Mode"
+
+*/

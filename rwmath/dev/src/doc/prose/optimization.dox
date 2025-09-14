@@ -1,0 +1,16 @@
+/*!
+\page p_optimization Optimization
+
+This section contains useful information about optimizing code with respect to the math library.
+
+Before diving into the details, you may want to read some optimization guidelines:
+    - \ref p_optimization_guidelines "Optimization Guidelines"
+
+Once you have a general idea of how to optimize next-gen code, take a look at some specific optimizations:
+    - \ref p_data_dependencies "Data Dependencies"
+    - \ref p_estimates_and_approximations "Estimates and Approximations"
+    - \ref p_literal_constants "Literal Constants"
+    - \ref p_branch_free_coding "Branch Free Coding using Comparisons and Selections"
+
+
+*/

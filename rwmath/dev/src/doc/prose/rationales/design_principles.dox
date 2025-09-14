@@ -1,0 +1,17 @@
+/*!
+\page p_guiding_principles Guiding Principles
+
+Math library design goal is to
+-	provides the best performance possible for the next gen platform (XBox360, and PS3)
+-	provides interface compatibility with EAMath and RW4.0 math library as much as possible to reduce total porting cost. If it doesn’t compromise the performance significantly.
+-   provides an API that works almost identically on FPU and VPU hardware.
+
+To achieve the best performance, math library has used many techniques to get C/C++ compiler to produce the most optimal code
+-	force inline/always inline is used to force compiler inline functions that we know it should be inlined
+-	simulate scalar calculation on VMX pipeline to reduce float to/from vmx register movement and increase CPU pipeline efficiency
+-	branchless algorithms allow better instruction interleave/optimization and increase instruction throughput
+-	switching between pass data by reference or value with a single define
+-	return data by value
+-	generate constants where practical (rather than loading them from memory)
+
+*/

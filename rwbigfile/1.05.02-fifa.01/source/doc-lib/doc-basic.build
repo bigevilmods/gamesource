@@ -1,0 +1,117 @@
+<project>
+
+    <property name="Namespace" value = "RWCore:RWBigfile" />
+
+    <property name="doc-srcdir" value = "${package.dir}\source\doc-lib" />
+    <property name="doc-builddir" value = "${package.builddir}/doc" />
+
+    <target name="docswikitoc" hidden="true">
+        <dependent name="CriterionDocTools"/>
+        <dependent name="Saxon"/>
+
+        <property name="doc-builddir" value = "${package.builddir}/doc" />
+		<property name="index-output" value = "${doc-builddir}\toc.xml" />
+		<property name="index-input" value = "${doc-builddir}\combine.xml" />
+		
+		<exec program="${package.Saxon.dir}/bin/Transform.exe" workingdir="${doc-builddir}">
+			<args>
+				<arg value="-o ${index-output}" />
+				<arg value="${index-input} ${package.CriterionDocTools.dir}\xslt\buildindex.xsl" />
+			</args>
+		</exec>
+		
+        <!-- Transform TOC to MediaWiki markup -->
+        <property name="transform-path" value="${package.Saxon.dir}\bin"/>
+        <property name="doc-wikioutput" value="${package.dir}\doc\wikiimport-toc.xml"/>
+        <property name="doc-xmlinput" value="${doc-builddir}\toc.xml"/>
+
+        <!-- Strip the following namespace from all classes ,structs, and unions entries in the toc. If
+        you do not want the namespace to be strip set the property to # -->
+        <!--<property name="strip-namespace" value="#"/>-->
+        <property name="strip-namespace" value="rw::core::"/>
+
+        <!-- if you want to add multiple package wiki pages to the same namespace you need to make
+         sure the toc for each package has a unique name. Add a name to the end of the namespace the
+         page will be imported to e.g. if you wanted RWPhysics:base and RWPhysics:draw -->
+        <!--<property name="toc-namespace" value = "${Namespace}:base" />-->
+        <property name="toc-namespace" value = "${Namespace}" />
+
+        <exec program="cmd.exe" workingdir="${package.CriterionDocTools.dir}/xslt">
+            <args>
+                <arg value="/c toc2wiki.bat ${transform-path} ${doc-wikioutput} ${doc-xmlinput} ${Namespace} ${toc-namespace} ${strip-namespace}" />
+            </args>
+        </exec>
+    </target>
+
+    <target name="docsdoxy2wiki" hidden="true">
+        <dependent name="CriterionDocTools"/>
+        <dependent name="Saxon"/>
+
+        <property name="doc-xmlpath" value="${doc-builddir}\xml"/>
+        <property name="doc-xmlcombine" value="${doc-builddir}\combine.xml"/>
+        <copy file="${package.CriterionDocTools.dir}\xslt\combine.xslt" todir="${doc-xmlpath}" overwrite="true"/>
+        <exec program="${package.Saxon.dir}/bin/Transform.exe" workingdir="${doc-xmlpath}">
+            <args>
+                <arg value="-o ${doc-xmlcombine}" />
+                <arg value="index.xml combine.xslt" />
+            </args>
+        </exec>
+
+        <!-- Transform doxygen xml to MediaWiki markup -->
+        <property name="transform-path" value="${package.Saxon.dir}\bin"/>
+        <property name="doc-wikioutput" value="${package.dir}\doc\wikiimport-api.xml"/>
+        <property name="doc-xmlinput" value="${doc-xmlcombine}"/>
+
+        <exec program="cmd.exe" workingdir="${package.CriterionDocTools.dir}/xslt">
+            <args>
+                <arg value="/c doxy2wiki.bat ${transform-path} ${doc-wikioutput} ${doc-xmlinput} ${Namespace} " />
+            </args>
+        </exec>
+    </target>
+
+    <target name="docsdoxygen" hidden="true">
+        <echo message="Executing doxygen..." />
+
+        <property name="doc-doxygen-outdir" value="${doc-builddir}"/>
+        <property name="doc-doxygen-configfile" value="doxygenconfig-basic"/>
+        <property name="chmfilename" value="api.chm"/>
+
+        <mkdir dir="${doc-doxygen-outdir}" unless="@{DirectoryExists('${doc-doxygen-outdir}')}" />
+
+        <!-- Settings for the doxygen config file -->
+        <dependent name="Doxygen"/>
+        <property name="exec.env.PROJECTNAME" value="${package.name}" />
+        <property name="exec.env.PROJECTVERSION" value="${package.targetversion}" />
+        <property name="exec.env.OUTDIR" value="${doc-doxygen-outdir}" />
+        <property name="exec.env.WARNLOGFILE" value="${doc-doxygen-outdir}/buildwarnings.txt" />
+        <property name="exec.env.GENHTML" value="YES" />
+        <property name="exec.env.GENXML" value="YES" />
+        <property name="exec.env.GENCHM" value="YES" />
+        <property name="exec.env.HHCPATH" value="${package.Framework.dir}/source/UserDoc/bin/hhc.exe" />
+
+        <exec program="${package.Doxygen.bindir}\doxygen.exe" workingdir="${doc-srcdir}/doxygen-config">
+            <args>
+                <arg value="${doc-doxygen-configfile}" />
+            </args>
+        </exec>
+
+        <!-- Copy the built help file to the doc directory. -->
+        <copy file="${doc-doxygen-outdir}/html/index.chm"
+              tofile="${package.dir}/doc/${package.name}-${package.version}.chm"
+              overwrite="true"/>
+    </target>
+
+    <target name="docsclean" hidden="true">
+        <echo message="Cleaning previous documentation build files..." />
+        <delete dir="${package.builddir}\doc"/>
+    </target>
+
+    <target name="docsbuild">
+        <echo message="Building documentation files for all platforms..." />
+        <call target="docsclean"/>
+        <call target="docsdoxygen"/>
+        <call target="docsdoxy2wiki"/>
+        <call target="docswikitoc"/>
+    </target>
+
+</project>

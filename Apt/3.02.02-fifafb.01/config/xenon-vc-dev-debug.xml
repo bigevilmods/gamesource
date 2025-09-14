@@ -1,0 +1,15 @@
+<project>
+	<!-- TEMP:  Auto-detect whether we're using May or June XDK (i.e. Alpha or Beta Kit) -->
+	<property name="Temp.XenonSDKVersion" value="@{RegistryGetValue('LocalMachine', 'SOFTWARE\Microsoft\Xbox\2.0\SDK', 'InstalledVersion')}" />
+	<property name="package.xenonsdk.version" value="2.0.1538.0" if="${Temp.XenonSDKVersion} == '2,0,1538,0'"/>
+	<property name="package.xenonsdk.version" value="2.0.1640.0" if="${Temp.XenonSDKVersion} == '2,0,1640,0'"/>
+
+	<dependent name="eaconfig" />
+	<include file="${package.eaconfig.dir}/config/xenon-vc-dev-debug.xml" />
+
+    <!-- override stttings as needed for profile build. -->
+	<optionset name="config-options-common">
+		<option name="runtimeerrorchecking" value="off"/>	<!-- RTC checks crash the Xenon as of the May '05 SDK -->
+	</optionset>
+	
+</project>

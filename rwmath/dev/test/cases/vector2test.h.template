@@ -1,0 +1,41 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestVector2 :
+    public UnitTest
+{
+public:
+
+#include "testing_util.inl"
+
+    UnitTestVector2();
+    virtual ~UnitTestVector2();
+    void Test();
+
+//#BLOCK
+
+private:
+
+   float_test_type tolerance;
+   float_test_type x_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+   float_test_type y_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+   EXPLICIT_NAMESPACE(Vector2) v2a_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+   EXPLICIT_NAMESPACE(Vector2) v2b_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+   EXPLICIT_NAMESPACE(Vector2) v2out_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+   EXPLICIT_NAMESPACE(Vector2) v2a_norm_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+   EXPLICIT_NAMESPACE(Vector2) v2b_norm_array[testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE];
+
+   float_test_type retValueFloat;
+   bool retValueBool;
+
+};
+
+
+

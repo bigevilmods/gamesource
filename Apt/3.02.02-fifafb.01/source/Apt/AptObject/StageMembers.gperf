@@ -1,0 +1,8 @@
+struct StageMembers { char *szName; int nIndex; };
+%%
+align,1
+height,2
+width,3
+scaleMode,4
+addListener,100
+removeListener,101

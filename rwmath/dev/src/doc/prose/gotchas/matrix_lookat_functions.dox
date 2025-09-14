@@ -1,0 +1,19 @@
+/*!
+\page p_matrix_lookat_functions Matrix LookAt Functions
+
+Some engineers are confused by the results returned by the LookAt functions.
+This confusion usually comes down to the nature of the transformation itself.
+For example engineers might expect the LookAt transformations to essentially
+move the origin to the camera's position and rotate to look at the target.
+
+In fact, the transformation is the exact opposite.  The LookAt functions
+transform the world so that the camera is at the origin and rotates the
+world around the camera.
+
+So, the result of the LookAt transformations are often the inverse of the expected
+transformation.  From a rendering perspective it makes sense that the LookAt functions
+move the camera to the origin.  However, for other purposes this may seem backwards.
+If you find that the tranformations are not doing what you expect, you may simply
+need to take the Inverse of the result from these functions.
+
+*/

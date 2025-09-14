@@ -1,0 +1,148 @@
+/*!
+\page p_member_initializer Math Type Member Initialization and Validation
+
+This feature is to help you detecting uninitialized values in math types. We use user definable macros in both 
+standard default constructors and assignment operators/copy constructors of math types. The initialization macros are
+only called in default constructors, and the validation macros are only called in assignment operators and copy
+constructors. This way, the error would be caught as soon as an assignment of an illegal value occurred.
+For example, you can set the member variable of math types to an initial value (e.g. NaN) in the default constructors,
+and then validate that the members are not set to those initial values in the assignment operators and copy constructors.
+
+Note: This functionality is not supported by the deprecated math APIs. (e.g. when RW_MATH_ENABLE_DEPRECATED_API is defined). 
+In cross builds, the four elements of VPU Vector2 and Vector3 types are always initialized as zeros.
+
+\section s_macro_names Macro Names and Definitions
+
+The following shows the macros that you must define before including any math type headers in order to use this feature.
+
+Note: In order to make the macros global to all user code, you also need to explicitly add your macro definitions in the following two math header files. 
+(Since EA's current configuration package eaconfig does not support global defines, there is no way to achieve the same thing by NAnt
+build scripts without touching these two math headers. One alternative is to use your own configuration package. If you have any other suggestions, 
+please feel free to contact us.)
+
+\code
+
+"rwmath\1.09.00\include\rw\math\detail\base.h"
+
+// Sample macro definition
+#define RW_MATH_FPU_MEMBER_INIT_FUNCTION FpuMemberInit
+#define RW_MATH_FPU_MEMBER_VALIDATE_FUNCTION FpuMemberValidate
+
+// DO NOT MODIFY CODE BELOW
+#ifdef RW_MATH_FPU_MEMBER_INIT_FUNCTION
+template<class T>
+void RW_MATH_FPU_MEMBER_INIT_FUNCTION(T& f);
+#endif
+
+#ifdef RW_MATH_FPU_MEMBER_VALIDATE_FUNCTION
+template<class T>
+void RW_MATH_FPU_MEMBER_VALIDATE_FUNCTION(const T& f);
+#endif
+
+\endcode
+
+\code
+
+"rwmath\1.09.00\include\rw\math\vpu\vector_intrinsic.h"
+
+// Sample macro definition
+#define RW_MATH_VPU_MEMBER_INIT_FUNCTION VectorIntrinsicMemberInit;
+#define RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_4 VectorIntrinsicMemeberValidate4
+
+// DO NOT MODIFY CODE BELOW
+#ifdef RW_MATH_VPU_MEMBER_INIT_FUNCTION
+void RW_MATH_VPU_MEMBER_INIT_FUNCTION(rw::math::vpu::VectorIntrinsic& vi);
+#endif
+
+// validate the first two elements of the vector
+#ifdef RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_2
+void RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_2(rw::math::vpu::VectorIntrinsicInParam vi);
+#endif
+// validate the first three elements of the vector
+#ifdef RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_3
+void RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_3(rw::math::vpu::VectorIntrinsicInParam vi);
+#endif
+// validate all four elements of the vector
+#ifdef RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_4
+void RW_MATH_VEC_INTRINSIC_MEMBER_VALIDATE_FUNCTION_4(rw::math::vpu::VectorIntrinsicInParam vi);
+#endif
+
+\endcode
+
+\section s_example Example
+
+The following sample code provides a sample implementation of the initialization and validation functions.
+
+
+In your code (for simplicity, only functions in the global namespace are supported) :
+
+\code
+
+// All function signatures must match the one defined in math headers above
+
+#define RW_MATH_ENABLE_ASSERTS
+
+#include "rw/math/vpu/vector_intrinsic.h"
+
+void VectorIntrinsicMemberInit(::rw::math::vpu::VectorIntrinsic& vi) 
+{
+            ::rw::math::vpu::detail::VectorIntrinsicUnion temp; 
+            temp.scalarUInt[0] = 0x7FC00000; 
+            temp.scalarUInt[1] = 0x7FC00000; 
+            temp.scalarUInt[2] = 0x7FC00000; 
+            temp.scalarUInt[3] = 0x7FC00000; 
+            vi = temp.vector;
+}
+
+void VectorIntrinsicMemeberValidate4(::rw::math::vpu::VectorIntrinsicInParam vi)
+{
+            rw::math::vpu::detail::VectorIntrinsicUnion temp;
+            temp.vector = vi; 
+            float x = temp.scalarFloat[0]; 
+            float y = temp.scalarFloat[1];
+            float z = temp.scalarFloat[2];
+            float w = temp.scalarFloat[3];
+
+            bool unInitialized = (x != x); 
+            unInitialized |= (y != y); 
+            unInitialized |= (z != z); 
+            unInitialized |= (w != w); 
+            RW_MATH_ASSERT_MSG(unInitialized == false, "uninitialized vector."); 
+}
+
+
+template<>
+void FpuMemberInit(float& f)
+{
+            rw::math::detail::Flt32UInt32Union temp;
+            temp.i = 0x7FC00000;
+            f = temp.f;
+}
+ 
+template<>
+void FpuMemberInit(double& f)
+{
+            rw::math::detail::Flt64UInt64Union temp;
+            temp.i = 0x7FF8000000000000;
+            f = temp.f;
+}
+
+template<>
+void FpuMemberValidate(const float& f)
+{
+            bool unInitialized = (f != f);
+            RW_MATH_ASSERT_MSG(unInitialized == false, "uninitialized float."); 
+}
+
+template<>
+void FpuMemberValidate(const double& f)
+{
+            bool unInitialized = (f != f);
+            RW_MATH_ASSERT_MSG(unInitialized == false, "uninitialized double."); 
+}
+
+\endcode
+
+
+*/
+

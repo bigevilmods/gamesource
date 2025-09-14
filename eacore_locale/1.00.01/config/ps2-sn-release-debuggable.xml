@@ -1,0 +1,4 @@
+<project>
+	<include file="${package.tlconfig.dir}/config/ps2-sn-release-debuggable.xml" />
+	<include file="platform/ps2-sn.xml"/>
+</project>

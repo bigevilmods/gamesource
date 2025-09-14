@@ -1,0 +1,13 @@
+<project>
+
+	<!-- EAStdC header files location. -->
+	<property name="package.OSG.includedirs">
+		${package.OSG.dir}/include
+	</property>
+
+	<!-- EAStdC libraries location. -->
+	<fileset name="package.OSG.libs">
+		<includes name="${package.OSG.builddir}/${config}/lib/${lib-prefix}OSG${lib-suffix}" />
+	</fileset>
+
+</project>

@@ -1,0 +1,74 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+class UnitTestSoa4Float :
+    public UnitTest
+{
+public:
+
+    UnitTestSoa4Float();
+    virtual ~UnitTestSoa4Float();
+    void Test();
+
+    ::rw::math::vpu::Soa4Float CreateSoa4Float(float x, float y, float z, float w)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarFloat[0] = x;
+        vu.scalarFloat[1] = y;
+        vu.scalarFloat[2] = z;
+        vu.scalarFloat[3] = w;
+        return ::rw::math::vpu::Soa4Float(vu.vector);
+    }
+
+
+    bool IsEqual(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        return !memcmp( &a.mV, &b.mV, sizeof(::rw::math::vpu::VectorIntrinsic) );
+    }
+
+    bool IsEqualBitwise( ::rw::math::vpu::VectorIntrinsicInParam v0, ::rw::math::vpu::VectorIntrinsicInParam v1 )
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion v0u, v1u;
+        v0u.vector = v0;
+        v1u.vector = v1;
+        return( 
+                v0u.scalarUInt[0] == v1u.scalarUInt[0] &&
+                v0u.scalarUInt[1] == v1u.scalarUInt[1] &&
+                v0u.scalarUInt[2] == v1u.scalarUInt[2] &&
+                v0u.scalarUInt[3] == v1u.scalarUInt[3]
+              );
+    }
+
+    bool IsEqualWithEpsilon(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b, ::rw::math::vpu::Soa4Float::InParam epsilon)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU, epsilonU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        epsilonU.vector = epsilon.mV;
+        return
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[0], bU.scalarFloat[0], epsilonU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[1], bU.scalarFloat[1], epsilonU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[2], bU.scalarFloat[2], epsilonU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[3], bU.scalarFloat[3], epsilonU.scalarFloat[3] );
+    }
+
+    bool IsEqualWithEpsilon(::rw::math::vpu::Soa4Float::InParam a, ::rw::math::vpu::Soa4Float::InParam b)
+    {
+        ::rw::math::vpu::detail::VectorIntrinsicUnion aU, bU;
+        aU.vector = a.mV;
+        bU.vector = b.mV;
+        return
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[0], bU.scalarFloat[0] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[1], bU.scalarFloat[1] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[2], bU.scalarFloat[2] ) &&
+            UnitTest::IsEqualWithEpsilon( aU.scalarFloat[3], bU.scalarFloat[3] );
+    }
+
+//#BLOCK
+
+};
+
+
+

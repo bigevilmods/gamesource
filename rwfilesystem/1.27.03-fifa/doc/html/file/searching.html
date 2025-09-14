@@ -1,0 +1,54 @@
+
+<html>
+<head>
+    <title>Searching</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Searching for files</h1>
+
+<p>A file name may or may not contain a device specifier (such as D: or
+cdrom0:).  If it does, the device on which the file is being opened
+must be registered with RealFile::AddDevice.  If it does not contain a
+device specifier, the library will perform a search to try to find
+it.  Each location in the search path is checked and the file is opened
+in the first location that it is found.</p>
+
+<p>After the <tt>rw::core::filesys::Manager</tt> object has been created, this path
+is set to the current working directory or device.  Any other locations
+to search must be added to the search path with
+<tt>rw::core::filesys::Manager::AddSearchLocation</tt>.</p>
+
+<p>For example, you might set a search path like this:
+<pre><code class="cpp">
+rw::core::filesys::Manager::SetSearchPath("d:\\;c:\\");
+</code></pre></p>
+
+<p>Then open a file named like this: 
+<pre><code class="cpp">
+rw::core::filesys::AsyncOp::Open("hello.txt", rw::core::filesys::AsyncOp::FOPEN_READONLY);
+</code></pre></p>
+
+<p>The library will first search for "d:\\hello.txt" and if it is not found,
+will try "c:\\hello.txt".  If "c:\\hello.txt" is not found either, the open
+operation will fail.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

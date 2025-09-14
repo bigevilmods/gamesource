@@ -1,0 +1,85 @@
+/*!
+\page p_soa4 Structure of Array 4 (SoA4) Math
+
+\section soa4_what What is SoA Math?
+
+SoA math is a set of specialized math types and operations on those types.  If you are unfamiliar with the terms
+AoS (array of structures) or SoA (structure of arrays), please refer to
+<a href="http://globaltechdocs/EATechEngineering:AoS_vs_SoA">AoS vs SoA</a>.  RWMath takes a hybrid approach that
+we have named SoA4.  In a nut shell, each SoA4 math type represents a collection of 4 simple math types.  For example
+a \c Soa4Vector3 will store 4 vector3's.
+
+\section soa4_why_use Why use SoA Math?
+
+The main reason for using SoA types are:
+\li Performance
+\li Memory Savings (in some situations)
+
+Designing your system around SoA types may also lead to a more concurrency
+friendly design.  That is because SoA operations encourage operations across
+large batches of data whose elements can be operated on idependent of one another.
+This makes those operations much easier to distribute across multiple jobs/threads.
+(Although RWMath doesn't make any provisions for running code across multiple
+threads of execution.)
+
+In my opinion writing optimized SoA code is much easier (assuming you can represent
+it in SoA form).  That is because SoA code looks very similar to scalar code.  However
+optimized AoS code often requires a lot of thought to determine how data can be manipulated
+so it can exploit vector operations.  A lot of time is often necessary to shuffle data into
+temporary registers so they can make use of vector operations.
+
+\section soa4_why_not_use_aos_for_soa Why not write SoA code using AoS types?
+
+Some math users have experimented with using existing AoS types (e.g. an AoS
+Vector4) to write SoA code.  While this may be possible for many tasks, I don't
+think it is desirable.
+\li Using an AoS type doesn't properly convey a programmers intent.  Code
+written using AoS types will probably be very confusing.  AoS types have certain
+semantics that would be violated when used to write SoA code.
+\li AoS types may lack necessary operations for writing SoA code.  For example
+many scalar operations (e.g. Sin/Cos, Sqrt) are not available for AoS Vector4
+types.  Adding these sorts of operations to the AoS type isn't very logical.
+\li For "large" types such as SoA vectors or matrices, users would have to
+either define their own types (composed of AoS types) or forgo types entirely
+and write code that works on many "scalar" values.  These options would require
+the user to write far more code than if they used a library that provided these
+types and operations.
+
+In short, writing SoA code using AoS types is likely to be more error prone,
+confusing, and difficult.
+
+\section soa4_example SoA4 Example
+
+Lets look at a trivial example to see how SoA math can be used to improve
+performance.  Lets suppose you want to calculate the square root of 4 values.
+(This is a fairly contrived example, but you can imagine that you may have a list
+of values that could be easily processed 4 at a time.)
+
+\code
+output[0] = Sqrt(input[0]);
+output[1] = Sqrt(input[1]);
+output[2] = Sqrt(input[2]);
+output[3] = Sqrt(input[3]);
+\endcode
+
+If you examine the implementation of Sqrt you will see that it actually performs 4 square roots (one for
+each element of the vector used to represent the \c VecFloat).  Wouldn't it be better to do this computation
+for all 4 values simultaneously?
+
+\code
+// Convert the inputs into SoA
+Soa4Float soa4Input = Soa4FloatFromVecFloats(input[0], input[1], input[2], input[3]);
+// Perform 4 sqrt's at once
+Soa4Float soa4Output = Sqrt(soa4Input);
+// Convert back to AoS form
+Soa4FloatToVecFloats(soa4Output, output[0], output[1], output[2], output[3]);
+\endcode
+
+This was a very simple example.  Designed to give you a brief introduction to SoA math.  A more elaborate example
+that computes the Mandelbrot fractal can be found here: \ref p_mandelbrot_example 
+
+\section soa4_further_reading Further Reading
+    - \ref p_mandelbrot_example
+    - \ref p_writing_soa4_code
+
+*/

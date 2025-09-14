@@ -1,0 +1,78 @@
+/*!
+**********************************************************************
+\mainpage RenderWare Math
+
+
+<table align="center" border="0">
+<tr><td>
+        - <b>Version - $projectnumber</b>
+        - <b>$datetime</b>
+</td></tr></table>
+        
+\htmlonly
+    <table width="80%" border="0" cellpadding="0" cellspacing="0" align="center">
+    <tr>
+    <td>
+    <i>
+    <p align="center">"Really, we're just trying to offer next-generation math in a traditional straight-jacket;<br>
+    sacrificing performance at the cost of a significant increase in implementation complexity."</p>
+                                            <p align="right">-Anonymous, January 2006</p>
+    <br>
+    <p align="center">"There are 10 kinds of people: Those who understand binary, and those who dont."</p>
+                                                        <p align="right">-Unknown</p>
+    </i>
+    </td>
+    </tr>
+    </table>
+\endhtmlonly
+
+<table align="center" border="0">
+<tr><td>
+    <b>Important external links</b>
+        - <a href="http://globaltechdocs.ea.com/RWMath:Welcome">RWMath Wiki</a> - Note, the location
+          of the wiki page may change in the future.  If so, try locating the math wiki through <a href="http://globaltechdocs.ea.com/">EA Tech</a>.
+
+    <b>Important links</b>
+        - \ref p_prerequisite_knowledge "Prerequisite Knowledge"
+        - \ref p_overview "Overview"
+        - \ref p_best_practices "Best Practices"
+        - \ref p_optimization "Optimization"
+        - \ref p_gotchas "Gotchas"
+        - \ref p_rationales "Rationales"
+
+    <b>Changes</b>
+        - Please refer to the \ref p_change_log "change log".
+        
+    <b>Acknowledgements</b>
+        - Alex Fry
+        - Andrew Willmot
+        - Andy Eakins
+        - Andy Younger
+        - Christopher Caulfield
+        - Christopher Maddock
+        - Daniel Collin
+        - David Bollo
+        - David Cope
+        - Eric Schenk
+        - Iain Hutchison
+        - Jaap Suter
+        - James Tan
+        - Jason Sanmiya
+        - Jean-Philippe Flouret
+        - John Henckel
+        - John Leung
+        - Justin Foxworthy
+        - Kevin Kralian
+        - Matthew Jones
+        - Max Burke
+        - Michael Pang
+        - Mona Fawzy
+        - Olivier Nallet
+        - Peter Engstrom
+        - Ryan Ridout
+        - Terence Guo
+        - Wayne Buckholdt
+
+</td></tr></table>
+
+*/

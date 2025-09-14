@@ -1,0 +1,21 @@
+<package>
+    <contactName>
+    </contactName>
+
+    <contactEmail>
+    </contactEmail>
+
+    <summary>
+        RenderWare Core library
+    </summary>
+
+    <description>
+    </description>
+
+    <homePageUrl>
+        http://eatech/C13/C2/P417/default.aspx
+    </homePageUrl>
+
+    <frameworkVersion>2</frameworkVersion>
+    <buildable>true</buildable>
+</package>

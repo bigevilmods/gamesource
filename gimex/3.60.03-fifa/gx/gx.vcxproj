@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3AC57115-B7D8-4296-AA95-36A2620D7B5C}</ProjectGuid>
+    <RootNamespace>gx</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <CLRSupport>false</CLRSupport>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\build\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">build\$(Platform)\$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../include;../gimex/cmn;../gfilter/cmn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DEBUG;ATL_NO_LEAN_AND_MEAN;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)build\$(Platform)\$(Configuration)\crapi.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\codex.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\gfilter.lib;version.lib;shell32.lib;vfw32.lib;ole32.lib;comdlg32.lib;winmm.lib;wsock32.lib;gdi32.lib;tapi32.lib;rasapi32.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>..\include;../gimex/cmn;../gfilter/cmn;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;ATL_NO_LEAN_AND_MEAN;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <ExceptionHandling>false</ExceptionHandling>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(SolutionDir)build\$(Platform)\$(Configuration)\crapi.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\codex.lib;$(SolutionDir)build\$(Platform)\$(Configuration)\gfilter.lib;version.lib;shell32.lib;vfw32.lib;ole32.lib;comdlg32.lib;winmm.lib;wsock32.lib;gdi32.lib;tapi32.lib;rasapi32.lib;wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(ProjectName).exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="expr.cpp" />
+    <ClCompile Include="findfile.cpp" />
+    <ClCompile Include="gcolour.cpp" />
+    <ClCompile Include="gopen.cpp" />
+    <ClCompile Include="gsocket.cpp" />
+    <ClCompile Include="gx.cpp" />
+    <ClCompile Include="gxcram.cpp" />
+    <ClCompile Include="gxfilter.cpp" />
+    <ClCompile Include="gxinfo.cpp" />
+    <ClCompile Include="gxopt.cpp" />
+    <ClCompile Include="gxvideo.cpp" />
+    <ClCompile Include="hash.cpp" />
+    <ClCompile Include="hashidi.cpp" />
+    <ClCompile Include="invtable.c" />
+    <ClCompile Include="range.cpp" />
+    <ClCompile Include="ranger.cpp" />
+    <ClCompile Include="spit.cpp" />
+    <ClCompile Include="stdgimex.cpp" />
+    <ClCompile Include="ustr.cpp" />
+    <ClCompile Include="wildmatch.cpp" />
+    <ClCompile Include="wildname.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="expr.h" />
+    <ClInclude Include="falloc.h" />
+    <ClInclude Include="findfile.h" />
+    <ClInclude Include="gcolour.h" />
+    <ClInclude Include="gopen.h" />
+    <ClInclude Include="gsocket.h" />
+    <ClInclude Include="gtoolerror.h" />
+    <ClInclude Include="gx.h" />
+    <ClInclude Include="gxcram.h" />
+    <ClInclude Include="gxinfo.h" />
+    <ClInclude Include="gxopt.h" />
+    <ClInclude Include="gxvideo.h" />
+    <ClInclude Include="hash.h" />
+    <ClInclude Include="hashidi.h" />
+    <ClInclude Include="range.h" />
+    <ClInclude Include="ranger.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="spit.h" />
+    <ClInclude Include="stdgimex.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gx.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="gx.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\codex\codex.vcxproj">
+      <Project>{5728de05-6585-4e2c-83bd-aaf12b62fca7}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\crapi\crapi.vcxproj">
+      <Project>{e5bc48b9-9fd6-4e57-b46e-deccf58c911e}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

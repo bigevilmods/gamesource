@@ -1,0 +1,70 @@
+<project default="build">
+
+    <optionset name="config.targetoverrides">
+        <option name="tool-build" value="include" />
+        <option name="clean" value="exclude"/>
+    </optionset>
+
+    <package name="rwbigfile" targetversion="1.05.02"/>
+
+    <property name="runtime.rwbigfile.buildtype" value="Library"/>
+
+    <property name="runtime.buildmodules">
+        rwbigfile
+    </property>
+
+    <property name="runtime.rwbigfile.usedependencies">
+        coreallocator
+        EABase
+        EAAssert
+        EASTL
+        EAThread
+        Endian
+        job_manager
+        rwcodec
+        rwfilesystem
+        EAStdC
+    </property>
+
+    <fileset name="runtime.rwbigfile.sourcefiles">
+        <includes name="source/*.cpp"/>
+        <excludes name="source/rwbighandler.cpp"/> <!-- Kris: Remove rwbigfilehandler.cpp due to compilation conflicts with old rwfilesys package, we don't use it anyway (dixit Andy Younger :) )-->
+    </fileset>
+
+    <property name="runtime.rwbigfile.includedirs">
+        ${package.dir}/include
+    </property>
+  
+	  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+	  <fileset name="runtime.rwbigfile.bulkbuild.sourcefiles" fromfileset="runtime.rwbigfile.sourcefiles"/> 
+
+    <do if="@{PropertyExists('package.rwfilesystem.enableprofiler')}">
+        <property name="runtime.rwbigfile.defines" if="${package.rwfilesystem.enableprofiler}">
+            ${property.value}
+            EA_FILESYSTEM_PROFILING
+        </property>
+    </do>
+
+    <include file="scripts/Initialize.xml"/>
+    <include file="source/doc-lib/doc-basic.build"/>
+    <do if="${config-system}==pc || ${config-system}==unix">
+        <include file="tools/tools.xml"/>
+    </do>
+
+    <do unless="@{TargetExists('tool-publish')}">
+        <target name="tool-publish"/>
+    </do>
+
+    <do unless="@{TargetExists('tool-publish-clean')}">
+        <target name="tool-publish-clean"/>
+    </do>
+
+    <!-- The default clean target is overridden
+        because the published tools need to be deleted. -->
+    <target name="clean" description="Clean the specific configuration"
+            depends="tool-publish-clean">
+        <property name="eaconfig.build.target" value="clean-default" />
+        <property name="eaconfig.build.group" value="runtime" />
+        <call target="eaconfig-build-caller" force="true" />
+    </target>
+</project>

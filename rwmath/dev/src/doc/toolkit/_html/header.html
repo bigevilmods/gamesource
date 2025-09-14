@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>$title</title>
+        <link href="stylesheet.css" rel="stylesheet" type="text/css">
+            <SCRIPT Language="JavaScript">
+
+function checkframeset()
+{
+	/* if not a CHM file, and this doc is not part of frameset, then load frameset */
+	if (location.href.search("ms-its:")!=0 && location.href.search("mk:")!=0 && location.href.search("file:")!=0 && top.frames.length<1)
+	{
+		var re = new RegExp("http:.*/(\\w*.html)","g");
+		var r = re.exec(location.href);
+		if (r[1].length>0);
+			location.href = "index.htm?right="+r[1];
+	}
+}
+
+            </SCRIPT>
+            <SCRIPT SRC="hiermenu.js"></SCRIPT>
+    </head>
+    <body bgcolor="#ffffff" link="#000066" vlink="#808080" alink="#ff0000" onload="checkframeset();"
+        topmargin="1" leftmargin="1" rightmargin="1">
+        <SCRIPT LANGUAGE="JavaScript">
+        </SCRIPT>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td colspan="5" bgcolor="#6688ee">&nbsp;</td>
+            </tr>
+            <tr>
+                <td align="left" bgcolor="#9999aa" height="13">&nbsp;&nbsp;</td>
+                <td width="50%" align="left" bgcolor="#9999aa" height="13"><b><font face="courier new" size="6">1 + 1 = 10</font></b></td>
+                <td width="50%" align="right" bgcolor="#9999aa" height="13"><b><font face="courier new" size="6">$projectname</font></b></FONT></td>
+                <td align="right" bgcolor="#9999aa" height="13">&nbsp;&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="5" bgcolor="#9999aa">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="5" bgcolor="#6688ee">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="5">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <h1><a name="top">$title</a></h1>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

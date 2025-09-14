@@ -1,0 +1,57 @@
+/*!
+\page p_endian_swapping Endian Swapping
+
+The endian swapping functions in RW Math probably do not behave the way you
+would expect.  The endian swapping functions have been preserved for
+compatibility with RenderWare platform code.  Renderware's endian swapping
+routines are conditional (i.e. they do not always perform an endian swap).  The
+endian swap routines are only defined for "cross" builds.  And even then, they
+only endian swap when the host platform has a different endianness than the
+target platform.
+
+For example, consider a pipeline tool is built using a "cross" build.  If the
+tool is running on a PC, but creating data for an XBox 360, the endian swap
+routines will perform and endian swap.  However, if a PC tool is creating data
+for an Xbox (i.e. also x86), no endian swapping is performed.
+
+Also, when "native" code calls an endian swap routine, the endian swap is a
+no-op.  That is because the system assumes that endian swapping has already been
+performed in the pipeline, and therefore no endian swapping needs to be done at
+runtime.
+
+At the moment, users who require endian swapping in "native" code should write
+their own endian swapping routines.  However, if there is demand for this
+functionality, the math library could add new routines to explicitly endian swap
+data regardless of the build configuration.
+ 
+\par Build Issues
+
+If you are performing a "native" (i.e. standard) build of math, this section can be
+ignored.  The section is only relevant if you are building or including math
+for a "cross" application.
+
+In order to get correct endian swapping behavior, there are a couple prerequisites.
+-# \c RWCROSS must be defined.  This define indicates that the math library is being build in the "cross" configuration.
+-# The math library must be able to determine the target platform it is being cross compiled for.
+
+If you are building your application using rwconfig, the necessary defines
+should be automatically passed to the compiler.
+
+If you are not using rwconfig, then you may need to manually specify some
+additional defines.  First, you will need to ensure that \c RWCROSS is defined.
+You may either define \c RWCROSS before including math, or pass \c RWCROSS as a
+definition on the compiler's command line.  Once \c RWCROSS has been defined, the
+RWMath headers will attempt to determine the target platform.  If a \c
+rwTARGET_XX define exists, RWMath will use the specified platform as the target
+platform.  If such a define does not exist, it will attempt to include
+ostypes.h (a header from rwcore).  So, users should either ensure a \c
+rwTARGET_XX define exists, or add rwcore's include path's to the compiler's
+include paths.
+
+RWMath goes out of its way to avoid including ostypes.h.  The math library does
+not want to add any additional dependencies if they can be avoided.  If you
+get a compile error indicating ostypes.h can not be found, please make sure that you
+have added rwcore's include paths to the compiler include paths, or explicitly define
+a \c rwTARGET_XX define if you do not want to include rwcore.
+
+*/

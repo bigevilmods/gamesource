@@ -1,0 +1,8 @@
+<project>
+  <dependent name="eaconfig" />
+  <include file="${package.eaconfig.dir}/config/global/init.xml" />
+  <include file="platform/pc-vc.xml" />
+  <include file="${package.eaconfig.dir}/config/configset/dev-debug.xml" />
+  <include file="${package.eaconfig.dir}/config/global/combine.xml" />
+  <include file="${package.eaconfig.dir}/config/pc-vc-dev-debug.xml" />
+</project>

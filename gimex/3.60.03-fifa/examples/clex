@@ -1,0 +1,10 @@
+#!/bin/sh
+gcc -O -I$EACINCLUDES -o many2many_eg many2many_eg.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a -L$EACLIBS
+gcc -O -I$EACINCLUDES -o any2any_eg any2any_eg.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a -L$EACLIBS
+gcc -O -I$EACINCLUDES -o some2some_eg some2some_eg.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a -L$EACLIBS
+
+#gcc -O -I$EACINCLUDES -o gext gext.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a -L$EACLIBS
+#gcc -O -I$EACINCLUDES -o resampleimage_eg resampleimage_eg.cpp resample.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a libfilterunixz.a libcrapiunixz.a -L$EACLIBS
+#gcc -O -I$EACINCLUDES -o saveany_eg saveany_eg.cpp stdgimex.cpp libgimexunixz.a libcodexunixz.a -L$EACLIBS
+#gcc -O -I$EACINCLUDES -o tga2bmp_eg stdgimex.cpp tga2bmp_eg.cpp tgaread.cpp bmpwrite.cpp -L$EACLIBS
+

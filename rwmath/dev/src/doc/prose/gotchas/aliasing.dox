@@ -1,0 +1,268 @@
+/*!
+\page p_aliasing Aliasing
+
+\section s_aliasing_background Background
+
+Pointers or references alias one another when they refer (or potentially refer)
+to the same block of memory.  Pointer aliasing can sometimes cause a compiler
+to produce very poor code.  That is because the compiler may need to reload
+aliased data from memory to ensure it has not been modified.  The compiler
+may also be unable to efficiently reschedule instructions because it must
+maintain a particular order for memory accesses.
+
+Consider this example:
+\code
+void FillMemoryByValueDoubled( int *valueToFill, int *buffer, int length )
+{
+    for( int index=0; index < length; index++ )
+    {
+        buffer[i] = 2 * (*valueToFill);
+    }
+}
+\endcode
+
+Now, what should the memory accesses look like for an optimized build of this
+function?  You may guess that the memory access look something like this:
+
+- Read \c valueToFill from memory.
+- Write to \c buffer[0]
+- Write to \c buffer[1]
+- Write to \c buffer[2]
+...
+- Write to \c buffer[length-1]
+
+However, that is not what the accesses to memory will look like.  In reality the
+compiler would produce this access pattern:
+
+- Read \c valueToFill from memory.
+- Write to \c buffer[0]
+- Read \c valueToFill from memory.
+- Write to \c buffer[1]
+- Read \c valueToFill from memory.
+- Write to \c buffer[2]
+...
+- Read \c valueToFill from memory.
+- Write to \c buffer[length-1]
+
+The compiler must reload \c valueToFill from memory after every store.  That is because valueToFill may
+point to an element within \c buffer and could be modified by one of the writes
+to \c buffer.  This code generation may seem very inefficient, but it is the
+only way to ensure correct behavior (given that \c valueToFill
+and \c buffer may alias one another).
+
+Since code that must assume pointers can alias is often slower than code that can
+assume pointers never alias, the compiler tries to determine situations in which
+pointers will not alias one another.  For example, the compiler assumes that pointers
+do not alias local variables that have not had their address taken.  In the example
+above, the compiler would most likely assume that \c valueToFill and \c buffer
+do not alias \c index.  That way \c index does not need to be reloaded after
+every store to memory.
+
+The C++ standard also gives the compiler another technique for determining when
+memory accesses do not alias one another.  The standard says that you can not
+access memory through an incompatible type.  The specifics are rather complicated,
+but it means you can not (legally at least) access an integer value using a float
+pointer.  So, the compiler may deduce that incompatible types never alias one another
+(if the code it is compiling does not violate the standard).  How could this help the
+compiler?  Well lets consider a slightly different example:
+
+
+\code
+void FillMemoryByValueDoubled( float *valueToFill, int *buffer, int length )
+{
+    for( int index=0; index < length; index++ )
+    {
+        buffer[i] = static_cast<int>(2.0f * (*valueToFill));
+    }
+}
+\endcode
+
+In this example the compiler should produce the memory access pattern we expected:
+
+- Read \c valueToFill from memory.
+- Write to \c buffer[0]
+- Write to \c buffer[1]
+- Write to \c buffer[2]
+...
+- Write to \c buffer[length-1]
+
+That is because the compiler assumes that \c valueToFill and \c buffer do not alias
+one another since their types do not alias.  Essentially the compiler can say "floats
+are not stored in the same memory locations as ints, therefore the float pointer
+does not alias the int pointer".
+
+
+
+\section s_aliasing_analysis_implications Aliasing Analysis Implications
+
+The compiler makes several aliasing deductions based on the types used by a C++
+program combined with the rules specified in the C++ standard.  Using these
+deductions a C++ compiler may make several optimizations.
+
+One optimization that was discussed is the removal of loads/stores to memory.
+So, if code breaks the C++ standard, the compiler may produce code that does
+not behave as intended.  In actual fact, the compiler is producing perfectly
+reasonable code.  The incorrect behavior is because the users source code is
+incorrect (not because the compiler is producing "wrong" code).
+
+Another optimization involves the order data is written back to memory.  Consider
+the following code:
+
+\code
+float floatValue = 10.0f;
+unsigned int *uintPtr = reinterpret_cast<unsigned int*>(&floatValue);
+*uintPtr = ((*uintPtr) ^ 0x80000000);
+floatValue *= 2.0f;
+\endcode
+
+What is the value of \c floatValue at the end of this code?
+Strictly speaking the value is undefined, because we have broken the C++ standard by accessing
+float data through an incompatible type (an unsigned int pointer).  But in practice the value
+for \c floatValue could be 20.0f, -20.0f, or -10.0f.
+
+Why is this the case?  Well, here are a few possible scenarios.
+
+\par Scenario 1
+
+-# floatValue gets set to 10 and stored to memory
+-# floatValue is loaded into an integer register
+-# the integer is XOR'ed with 0x80000000 effectively flipping the sign bit
+-# the integer value is written back to memory (floatValue gets changed to -10.0f)
+-# floatValue is read from memory into a float register
+-# floatValue is multiplied by 2.0f
+-# floatValue is stored to memory (float value is -20.0f)
+
+\par Scenario 2
+
+-# floatValue gets set to 10 and stored to memory
+-# floatValue is loaded into an integer register
+-# the integer is XOR'ed with 0x80000000 effectively flipping the sign bit
+-# floatValue is read from memory into a float register
+-# floatValue is multiplied by 2.0f (float value is changed to 20.0f)
+-# the integer value is written back to memory (floatValue gets changed to -10.0f)
+
+\par Scenario 3
+
+-# floatValue gets set to 10 and stored to memory
+-# floatValue is loaded into an integer register
+-# the integer is XOR'ed with 0x80000000 effectively flipping the sign bit
+-# floatValue is read from memory into a float register
+-# the integer value is written back to memory (floatValue gets changed to -10.0f)
+-# floatValue is multiplied by 2.0f (float value is changed to 20.0f)
+
+These scenerios are all possible because \c uintPtr is assumed to not alias \c
+floatValue.  Since the pointers are assumed not to alias, the compiler is able
+to reorder the float/integer operations as well as the reads/writes to and from
+memory.
+
+These types of problems can occur whenever the compiler makes an aliasing
+optimization that is theoretically possible but "wrong" in practice (because
+the code violates the C++ standard).
+
+
+\section s_aliasing_implications Aliasing Implications for Math
+
+Because accessing memory through incompatible types can cause code generation
+problems, the math library is designed to avoid such operations.  That is why
+the math library does not have any API's for getting a reference to a vector
+element as a float.  Doing so could lead to users accessing vectors data through
+a float reference/pointer which could lead to aliasing bugs.
+
+\section s_aliasing_avoiding  Avoiding Aliasing
+
+The easiest way to avoid aliasing is to avoid casting operations that reinterpret
+one data type as another incompatible data type.  i.e. never cast a vector to a float.
+
+Another way to avoid aliasing issues is to use type-punning.  Type punning effectively
+tells the compiler that variables of different types occupy the same memory.  You can
+find a short discussion of type punning here:
+http://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+
+Another way to avoid aliasing issues (on GCC) is to enable \c -fnostrict-aliasing.
+That option essentially disables strict aliasing optimizations on GCC.  So, the
+compiler will not use type information to determine memory access do not alias
+one another.
+
+\subsection s_aliasing_examples More Examples of Aliasing
+
+The hardware-centric view of pointers is that they can point at any
+memory, so a write through a pointer may change any variable in a program:
+
+\code
+    int i = 23;
+    *f = 5;
+    // We don't know what value i has at this point.
+\endcode
+
+We cannot know what value i has, since the pointers &i and f may point
+at the same address (that is what ISO C means when it say that &i and f
+may alias).
+
+This prevents many types of optimizations, and it makes a real difference
+since most pointers in real life cannot point on the same position.  ISO C
+improves the situation (for the compiler) by roughly saying "pointers of
+different types cannot point to the same address".
+
+\code
+    int foo(float *f)
+    {
+            int i = 23;
+            *f = 5.0;
+            // A float* cannot point on the same address as int*.
+            return i * 2;
+    }
+\endcode
+
+So the compiler may optimize this to
+
+\code
+    int foo(float *f)
+    {
+            *f = 5.0;
+            return 46;
+    }
+\endcode
+
+The ISO specification does not really prevent pointers to point to the
+same address -- it specifies that the result is undefined when you
+dereference a pointer that points to an object of a different
+(incompatible) type.  So the following example is OK:
+
+\code
+    int i = 23, *tmp;
+    tmp = (int*)f;
+    *tmp = 5;
+    // We don't know what value i has at this point.
+\endcode
+
+But note the important difference that we are actually writing the memory
+position as an "int" and not as a "float".
+
+There exist an important exception to the rule above:  char* may alias all
+types (too much code would break if ISO had prevented this...)
+
+There are cases where you wish to access the same memory as different
+types:
+
+\code
+    float *f = 2.718;
+    printf("The memory word has value 0x%08x\n", *((int*)f));
+\endcode
+
+You cannot do that in ISO C, but gcc has an extension in that it
+considers memory in unions as having multiple types, so the following
+will work in gcc (but is not guaranteed to work in other compilers!)
+
+\code
+    union {
+        int i;
+        float f;
+    } u;
+    u.f = 2.718;
+    printf("The memory word has value 0x%08x\n", u.i);
+\endcode
+
+One bieffect of this is that gcc may miss optimization opportunities
+when you use union-heavy constructs.
+
+*/

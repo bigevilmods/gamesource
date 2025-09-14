@@ -1,0 +1,258 @@
+<html>
+<head>
+    <title>RWCodec - Change Log</title>
+    <link href="../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="toc.js"></script>
+    <script type="text/javascript" src="../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>RWCodec - Change Log</h1>
+
+This document lists the changes for each RWCodec release and the work we
+are currently doing.
+
+<h3>Version 1.09.00</h3>
+<ul>
+    <li>Adding support for streaming LZ4 compression / decompression via an implementation of the icodec intefrace.</li>
+</ul>
+
+<h3>Version 1.08.00</h3>
+<ul>
+    <li>Adding support for the LZ4 compression algorithm for chunk based compression/decompression.  LZ4 offers extremely fast
+    compression and decompression while sacrificing some compression ratio.</li>
+</ul>
+
+<h3>Version 1.07.06</h3>
+<ul>
+    <li>Resolving chunkpack.exe crash when building assets on Android.</li>
+</ul>
+
+<h3>Version 1.07.05</h3>
+<ul>
+    <li>Provides the ability to disable lzx encoding by defining package.rwcodec.use_lzx to false.</li>
+</ul>
+
+<h3>Version 1.07.04</h3>
+<ul>
+    <li>Use EAMain as entry point for unit tests.</li>
+</ul>
+
+<h3>Version 1.07.03</h3>
+<ul>
+    <li>Fix warnings on VS2012 with Windows SDK 7</li>
+    <li>Fix warnings on clang</li>
+    <li>Fix WinRT build errors</li>
+</ul>
+
+<h3>Version 1.07.02</h3>
+<ul>
+    <li>FreeBSD support added</li>
+    <li>Ported to WinRT</li>
+</ul>
+
+<h3>Version 1.07.01</h3>
+<ul>
+    <li>Added additional platform support.</li>
+    <li>XenonSDK-2.0.21119.0 (March 2012) build compatibility fix.</li>
+</ul>
+
+<h3>Version 1.07.00</h3>
+<ul>
+    <li>Added Vita support (integrated from dev-vita branch)</li>
+</ul>
+
+<h3>Version 1.06.06</h3>
+<ul>
+    <li>Removed EAStdC from rwcodec's SPU job uild dependencies.</li>
+    <li>Fixed a potential memory leak in the zlib chunk decompressor.</li>
+</ul>
+
+<h3>Version 1.06.05</h3>
+<ul>
+    <li>Chunkpack build fixes for VS2010.</li>
+    <li>Re-enabled asserts for the lzma job in release configurations.</li>
+    <li>Only force-enable assertions for SPU builds.</li>
+    <li>Enabled bulk-build support.</li>
+</ul>
+
+<h3>Version 1.06.04</h3>
+<ul>
+    <li>Changed the docs to be HTML based.</li>
+    <li>Fixed build error for dll-tool configurations.</li>
+</ul>
+
+<h3>Version 1.06.03</h3>
+<ul>
+    <li>Added CodeStripper support scripts.</li>
+    <li>Fixed a missing #ifdef surrounding an assertion.</li>
+</ul>
+
+<h3>Version 1.06.02</h3>
+<ul>
+    <li>Added #if !defined(EA_ASSERT_ENABLED) guards to the lzma and refpack
+        job source files, in order to fix an issue with the latest EAC Basekit
+        Reported by Bob Summerwill</li>
+</ul>
+
+<h3>Version 1.06.01</h3>
+<ul>
+    <li>Removed default LZX support for PC builds.  LZX is now only included
+    on PC for tool configurations.</li>
+
+    <li>Replaced old Endian package dependency with functionality in EAStdC</li>
+
+    <li>Fixed build issues on pc64</li>
+
+    <li>Added support for building as a dll for pc and pc64</li>
+</ul>
+
+<h3>Version 1.06.00</h3>
+<ul>
+    <li>Added support for the LZMA codec to the chunked
+    compression/decompression infrastructure.</li>
+
+    <li>Added a command line option to chunkpack.exe, -u, to unchunkpack a
+    file.</li>
+
+    <li>Removed the ICodec::SetJob method in favor of ICodec::GetJobEntryPoint
+        and ICodec::GetJobParameters methods. This was done in order to work
+        around Job Manager's deprecation of Job objects.</li>
+
+    <li>Reverted a change made to the initialization of the zlib library
+        in the ZlibInflate/ZlibDeflate classes that broke backwards
+        compatibility.</li>
+</ul>
+
+<h3>Version 1.05.04</h3>
+<ul>
+
+    <li>A bug was fixed where including xcompress.lib for PC builds was 
+    breaking incremental linking.</li>
+
+    <li>A bug was fixed where the chunk decompressor was asserting incorrectly
+    on iOS configurations.</li>
+</ul>
+    
+<h3>Version 1.05.03</h3>
+<h4>Changes.</h4>
+    <ul>
+        <li>Support for rwstdc has been removed.</li>
+
+    <li>Added support for the new zlib package. This is enabled by default,
+        and can be disabled by setting the build property
+        package.rwcodec.usezlib to false.</li>
+
+    <li>Chunkpack avoids reprocessing files that have already been
+    chunkpacked.</li>
+
+    <li>Chunk size limitation has been replaced and warns on PS3 if chunks
+    are too big to fit in local store.</li>
+    </ul>
+ 
+
+<h3>Version 1.05.02 - (March 3, 2010)</h3>
+
+<h4>Changes</h4>
+<ul>
+    <li>Lowered job queue pressure by better leveraging the Job Manager event
+    system.</li>
+</ul>
+
+<h4>Bug fixes.</h4>
+<ul>
+    <li>When the total file size was a multiple of the chunk size both the
+        chunk compressor and decompressor would be unable to properly process
+        the data.</li>
+</ul>
+
+<h3>Version 1.05.01 - (February 3, 2010)</h3>
+<h4>Bug fixes</h4>
+    <ul>
+    <li>ETCR-313. The SPU chunk decompressor wasn't properly handling buffers
+          that were not a multiple of 16-bytes in length. The data transfer of
+          the last 16-byte segment would stomp over what existed next to it.</li>
+    <li>ETCR-320. Corrected a resource leak caused by a memset in the
+    descructor of a non-POD class.</li>
+    </ul>
+
+<h3>Version 1.05.00 - (December 11, 2009)</h3>
+<h4>Changes</h4>
+    <ul>
+        <li>ChunkDecompressor::SetNumberOfJobs() has been deprecated.</li>
+        <li>BufferedChunkDecompressor::SetNumberOfJobs() has been deprecated.</li>
+        <li>ChunkReader::SINGLEREADER_SleepOnAllDecompressions() has been</li>
+        deprecated. Please use ChunkReader::SleepOnDecompressionGroup()
+        instead.</li>
+    </ul>
+    <h4>New features</h4>
+    <ul>
+    <li>PC64 and Wii support have been added to the chunk decompression
+    framework.</li>
+    <li>Asynchronous decompression has been added to the
+        BufferedChunkDecompressor. To decompress a chunk packed buffer
+        asynchronously you can use the new 
+        BufferedChunkDecompressor::DecompressAsync() and
+        BufferedChunkDecompressor::SleepOn() methods.</li>
+    <li>A method, ChunkReader::DecompressChunkData, was added to perform
+    synchronous chunk decompression.</li>
+    </ul>
+
+    <h4>Behaviour changes</h4>
+    <ul>
+    <li>The number of jobs parameter taken by the ChunkDecompressor and
+        BufferedChunkDecompressor constructors is now ignored and now each 
+        chunk to be decompressed launches its own job. To control the physical 
+        execution resources that the chunk decompression jobs run on use the 
+        affinity mechanisms provided.</li>
+    <li>Chunk size has been reduced from 160kb to 128kb to facilitate easier
+        and more correct integration into the SPU local store. This has a
+        knock-on effect in that tools using chunked compression (ie:
+        chunkpack, or rwbigfile's bigfile tool) have to be rebuilt and as</li>
+        does the data.</li>
+    </ul>
+
+    <h4>Bug fixes</h4>
+    <ul>
+    <li>Occasional hangs in the chunk decompression jobs where the job would
+    appear to pull incorrect data from the queue have been resolved.</li>
+    </ul>
+
+<h3>Version 1.04.00 - (September 30, 2009)</h3>
+
+<h4>Changes</h4>
+
+    <li>None.</li>
+
+    <h4>New features</h4>
+
+    <li>ETCR-84.  rwcodec now has a codec that Sony's Edge zlib implementation.
+        Refer to the documentation on rw::core::codec::ChunkDecompressor for
+        details.  Our thanks to our co-op, Kyle Loveless, who integrated this
+        into rwcodec, and to Andy Younger, who provided the initial package and
+        much support to Kyle during the implementation.</li>
+
+        <h4>Bug fixes</h4>
+
+    <li>None.</li>
+
+<h3>Version 1.03.01 - (October 21, 2008)</h3>
+
+<ul><li>Links to release notes for this and older versions are available on the package server.</li></ul>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

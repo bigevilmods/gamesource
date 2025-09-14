@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE INPUTSPEC SYSTEM "inputspec.dtd">
+
+<INPUTSPEC>
+
+	<!-- ************************ Global directory settings ************************* -->    
+	<GLOBALDIR RECURSIVE="YES">    
+		<FILEPATTERN>*.h</FILEPATTERN>
+		<FILEPATTERN>*.cpp</FILEPATTERN>
+		<FILEPATTERN>*.inl</FILEPATTERN>
+	</GLOBALDIR> 
+
+	<!-- ************************ Groups and file/dir inputs ************************ -->
+
+	<DIR SOURCE="../../lib" />
+	<DIR SOURCE="../../../include" />
+	<DIR SOURCE="../../../examples" >
+		<FILEPATTERN>*.cpp</FILEPATTERN>
+	</DIR>
+
+	<FILE SOURCE="../srcbooks/mainpage.txt" />   
+
+	<GROUP TITLE="Overview of eacore_locale help" NAME="g_overview">
+		<FILE SOURCE="../srcbooks/Overview/Overview.txt" />
+		<FILE SOURCE="../srcbooks/Overview/Copyright.txt" />
+		<FILE SOURCE="../srcbooks/Overview/DocumentHistory.txt" />
+	</GROUP>
+
+	<GROUP TITLE="Introduction to eacore_locale" NAME="g_intro">
+		<FILE SOURCE="../srcbooks/Introduction/Introduction.txt" />
+	</GROUP>
+
+	<GROUP TITLE="Getting Started" NAME="g_gettingstarted">
+		<FILE SOURCE="../srcbooks/GettingStarted/overview.txt" />
+		
+		<!-- Locale Lib -->
+		<GROUP TITLE="Using eacore_locale library" NAME="g_gettingstarted_locale">
+			<FILE SOURCE="../srcbooks/GettingStarted/locale/overview.txt" />
+			<FILE SOURCE="../srcbooks/GettingStarted/locale/localefiles.txt" />
+		</GROUP>
+	</GROUP>
+			
+	<GROUP TITLE="Reference Guides" NAME="g_refs">
+		<FILE SOURCE="../srcbooks/References/overview.txt" />
+		<GROUP TITLE="Library Reference" NAME="g_refs">
+			<GROUP TITLE="eacore_locale library reference" NAME="g_lib_locale">
+				<FILE SOURCE="../../../include/eacore/locale/locale.h" />
+				<DIR SOURCE="../../lib" RECURSIVE="NO" />
+			</GROUP>
+		</GROUP>
+	</GROUP>
+	
+	<GROUP TITLE="Development Log" NAME="g_devlog">
+		<FILE SOURCE="../../../changes.txt" />
+	</GROUP>
+
+</INPUTSPEC>

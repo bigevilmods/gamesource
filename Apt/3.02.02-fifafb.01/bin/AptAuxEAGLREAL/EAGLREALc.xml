@@ -1,0 +1,7 @@
+<config>
+    <options>
+    <fastbuildtextures value="no"/>    
+	<huff value="yes"/>
+    <useDTX5 value="no"/>
+    </options>
+</config>

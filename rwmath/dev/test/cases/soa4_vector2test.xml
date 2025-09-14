@@ -1,0 +1,1011 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4Vector2" HEADER="soa4_vector2test.h" SOURCE="soa4_vector2test.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_vector2.h rw/math/vpu/soa4_vector2_operation.h rw/math/vpu/vector2.h rw/math/vpu/soa4_mask2.h rw/math/vpu/soa4_maskscalar.h" COMMON="true">
+
+
+    <TYPE NAME="function">
+
+        <TYPE NAME="correctness">
+
+        <!-- Constructors/Methods for Soa4Float's -->
+
+        <TEST NAME="soa4vector2_default_constructor">
+        <![CDATA[
+
+            SetFunctionName("Soa4Vector2()");
+
+            Soa4Vector2 v;
+
+            Validate( true ); // Take address of v so that it is referenced
+
+        ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_copy_constructor">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2(const Soa4Vector2&)");
+
+            Soa4Vector2 ref( mA );
+
+            Validate( IsEqual( ref, mA ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_scalar_constructor">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2(Soa4Float)");
+
+            Soa4Vector2 ref( Soa4FloatFromFloat( 1.0f ) );
+
+            Validate( IsEqual( ref, mOne ) );
+            ]]>
+        </TEST>
+
+        <TEST NAME="soa4vector2_vector_intrinsic_constructor">
+            <![CDATA[
+
+            SetFunctionName("Soa4Vector2(VectorIntrinsic)");
+
+            VectorIntrinsic vx, vy;
+            vx = Soa4FloatFromFloat( 1.0f ).mV;
+            vy = Soa4FloatFromFloat( 1.0f ).mV;
+
+            Soa4Vector2 ref( vx, vy );
+
+            Validate( IsEqual( ref, mOne ) );
+            ]]>
+        </TEST>
+
+        <TEST NAME="soa4vector2_operator_equals">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2 operator=(const Soa4Vector2&)");
+
+            Soa4Vector2 ref( mZero );
+            Validate( !IsEqual( ref, mOne ) );
+
+            ref = mOne;
+
+            Validate( IsEqual( ref, mOne ) );
+            Validate( &ref.x != &mOne.x && &ref.y != &mOne.y );
+            ]]>
+        </TEST>
+
+        <TEST NAME="soa4vector2_X">
+            <![CDATA[
+            SetFunctionName("X()");
+
+            Soa4Vector2 ref( mNegOne );
+
+            const Soa4Float& cx = ref.X();
+            Validate( IsEqual( cx, ref.x ) );
+
+            Soa4Float& x = ref.X();
+
+            x = Soa4FloatFromFloat( 1.0f );
+
+            Validate( !IsEqual( ref, mOne ) );
+            Validate( IsEqual( ref.x, Soa4FloatFromFloat(  1.0f ) ) );
+            Validate( IsEqual( ref.y, Soa4FloatFromFloat( -1.0f ) ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_Y">
+            <![CDATA[
+            SetFunctionName("X()");
+
+            Soa4Vector2 ref( mNegOne );
+
+            const Soa4Float& cy = ref.Y();
+            Validate( IsEqual( cy, ref.y ) );
+
+            Soa4Float& y = ref.Y();
+
+            y = Soa4FloatFromFloat( 1.0f );
+
+            Validate( !IsEqual( ref, mOne ) );
+            Validate( IsEqual( ref.x, Soa4FloatFromFloat( -1.0f ) ) );
+            Validate( IsEqual( ref.y, Soa4FloatFromFloat(  1.0f ) ) );
+            ]]>
+        </TEST>
+
+        
+        <TEST NAME="soa4vector2_soa4vector2_from_vector2">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2FromVector2(Vector2::InParam v)");
+
+            Vector2 v( 1.0f, -1.0f );
+            Soa4Vector2 sv = Soa4Vector2FromVector2( v );
+            Validate( IsEqual( sv.x, Soa4FloatFromFloat(  1.0f ) ) );
+            Validate( IsEqual( sv.y, Soa4FloatFromFloat( -1.0f ) ) );
+            ]]>
+        </TEST>
+               
+
+        <TEST NAME="soa4vector2_soa4vector2_from_vector2_2">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2FromVector2(Vector2::InParam v0, Vector2::InParam v1, Vector2::InParam v2, Vector2::InParam v3)");
+
+            // These are the same values as in the member vector "mA"
+            Vector2 v0( -1.0f, 5.0f );
+            Vector2 v1(  2.0f, 3.0f );
+            Vector2 v2(  3.0f, 3.0f );
+            Vector2 v3( -4.0f, 1.0f );
+
+            Soa4Vector2 sv = Soa4Vector2FromVector2( v0, v1, v2, v3 );
+
+            Validate( IsEqual( sv, mA ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_soa4vector2_from_vector2_3">
+            <![CDATA[
+            SetFunctionName("Soa4Vector2FromVector2(const Vector2*)");
+
+            // These are the same values as in the member vector "mA"
+            Vector2 v[4] = {
+                Vector2( -1.0f, 5.0f ),
+                Vector2(  2.0f, 3.0f ),
+                Vector2(  3.0f, 3.0f ),
+                Vector2( -4.0f, 1.0f )
+            };
+
+            Soa4Vector2 sv = Soa4Vector2FromVector2( v );
+
+            Validate( IsEqual( sv, mA ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_vector2_from_soa4vector2">
+            <![CDATA[
+            SetFunctionName("Vector2FromSoa4Vector2(Soa4Vector2::InParam, Vector2& v0, Vector2& v1, Vector2& v2, Vector2& v3)");
+            Vector2 v0, v1, v2, v3;
+            Vector2 rv0( -1.0f, 5.0f );
+            Vector2 rv1(  2.0f, 3.0f );
+            Vector2 rv2(  3.0f, 3.0f );
+            Vector2 rv3( -4.0f, 1.0f );
+
+            Vector2FromSoa4Vector2( mA, v0, v1, v2, v3 );
+            Validate( IsEqual( v0, rv0 ) );
+            Validate( IsEqual( v1, rv1 ) );
+            Validate( IsEqual( v2, rv2 ) );
+            Validate( IsEqual( v3, rv3 ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_vector2_from_soa4vector2_2">
+            <![CDATA[
+            SetFunctionName("Vector2FromSoa4Vector2(Soa4Vector2::InParam, Vector2* v)");
+            Vector2 v[4];
+            Vector2 rv0( -1.0f, 5.0f );
+            Vector2 rv1(  2.0f, 3.0f );
+            Vector2 rv2(  3.0f, 3.0f );
+            Vector2 rv3( -4.0f, 1.0f );
+
+            Vector2FromSoa4Vector2( mA, v );
+            Validate( IsEqual( v[0], rv0 ) );
+            Validate( IsEqual( v[1], rv1 ) );
+            Validate( IsEqual( v[2], rv2 ) );
+            Validate( IsEqual( v[3], rv3 ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op1">
+            <![CDATA[
+            SetFunctionName("operator *= (Soa4Vector2& v, Soa4Float::InParam a)");
+
+            Soa4Vector2 s( mA );
+            s *= Soa4FloatFromFloat( 2.0f );
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( -2.0f, 4.0f, 6.0f, -8.0f );
+            ref.y.mV = Set( 10.0f, 6.0f, 6.0f, 2.0f );
+            Validate( IsEqual( ref, s ) );
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator *= (Soa4Vector2& v, Soa4Vector2::InParam s)");
+
+            Soa4Vector2 t( mA );
+            t *= mTwo;
+
+            Validate( IsEqual( ref, t ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op2">
+            <![CDATA[
+            SetFunctionName("operator /= (Soa4Vector2& v, Soa4Float::InParam a)");
+            Soa4Vector2 s;
+            s.x.mV = Set( -2.0f, 4.0f, 6.0f, -8.0f );
+            s.y.mV = Set( 10.0f, 6.0f, 6.0f, 2.0f );
+
+            s /= Soa4FloatFromFloat( 2.0f );
+            Validate( IsEqualWithEpsilon( s, mA ) );
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator /= (Soa4Vector2& v, Soa4Vector2::InParam s)");
+
+            Soa4Vector2 t;
+            t.x.mV = Set( -2.0f, 4.0f, 6.0f, -8.0f );
+            t.y.mV = Set( 10.0f, 6.0f, 6.0f, 2.0f );
+
+            {
+                t /= mTwo;
+                Validate( IsEqualWithEpsilon( t, mA ) );
+            }
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op3">
+            <![CDATA[
+            SetFunctionName("operator += (Soa4Vector2& v, Soa4Float::InParam a)");
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( 0.0f, 3.0f, 4.0f, -3.0f );
+            ref.y.mV = Set( 6.0f, 4.0f, 4.0f,  2.0f );
+            Soa4Float one = Soa4FloatFromFloat( 1.0f );
+
+            Soa4Vector2 s( mA );
+            s += one;
+            Validate( IsEqual( s, ref ) );
+
+            //-----------------------------------------------------------------------
+            
+            SetFunctionName("operator -= (Soa4Vector2& v, Soa4Float::InParam a)");
+
+            s -= one;
+            Validate( IsEqual( s, mA ) );
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op4">
+            <![CDATA[
+            SetFunctionName("operator *  (Soa4Float::InParam s, Soa4Vector2::InParam v)");
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( -2.0f, 4.0f, 6.0f, -8.0f );
+            ref.y.mV = Set( 10.0f, 6.0f, 6.0f, 2.0f );
+
+            Soa4Float two = Soa4FloatFromFloat( 2.0f );
+            {
+                Soa4Vector2 s = two * mA;
+                Validate( IsEqual( s, ref ) );
+            }
+            
+            //-----------------------------------------------------------------------
+            
+            SetFunctionName("operator *  (Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            {
+                Soa4Vector2 t = mA * two;
+                Validate( IsEqual( t, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+            
+            SetFunctionName("operator *  (Soa4Vector2::InParam v, Soa4Vector2::InParam s)");
+
+            {
+                Soa4Vector2 u = mA * mC;
+                Validate( IsEqual( u.x, Soa4FloatFromFloats( -1.0f, 0.0f, -3.0f, -8.0f ) ) && 
+                            IsEqual( u.y, Soa4FloatFromFloats( 0.0f, 3.0f, -3.0f, 2.0f ) ) );
+            }
+            
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Mult(Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            {
+                Soa4Vector2 v = Mult( mA, two );
+                Validate( IsEqual( v, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Mult(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 w = Mult( mA, mTwo );
+                Validate( IsEqual( w, ref ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op5">
+            <![CDATA[
+            SetFunctionName("operator /  (Soa4Vector2::InParam v, Soa4Vector2::InParam s)");
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( -2.0f, 4.0f, 6.0f, -8.0f );
+            ref.y.mV = Set( 10.0f, 6.0f, 6.0f, 2.0f );
+
+            {
+                Soa4Vector2 s = ref / mTwo;
+                Validate( IsEqualWithEpsilon( s, mA ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator /  (Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            Soa4Float two = Soa4FloatFromFloat( 2.0f );
+
+            {
+                Soa4Vector2 t = ref / two;
+                Validate( IsEqualWithEpsilon( t, mA ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Divide(Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            {
+                Soa4Vector2 u = Divide( ref, two );
+                Validate( IsEqualWithEpsilon( u, mA ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Divide(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 w = Divide( ref, mTwo );
+                Validate( IsEqualWithEpsilon( w, mA ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op6">
+            <![CDATA[
+            SetFunctionName("operator += (Soa4Vector2& v, Soa4Vector2::InParam b)");
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( 0.0f, 3.0f, 4.0f, -3.0f );
+            ref.y.mV = Set( 6.0f, 4.0f, 4.0f,  2.0f );
+
+            {
+                Soa4Vector2 s( mA );
+                s += mOne;
+
+                Validate( IsEqual( s, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator +  (Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            Soa4Float one = Soa4FloatFromFloat( 1.0f );
+            {
+                Soa4Vector2 t = mA + one;
+                Validate( IsEqual( t, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator +  (Soa4Float::InParam s, Soa4Vector2::InParam v)");
+
+            {
+                Soa4Vector2 u = one + mA;
+                Validate( IsEqual( u, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator +  (Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 v = mOne + mA;
+                Validate( IsEqual( v, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+            SetFunctionName("Add(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 w = Add( mA, mOne );
+                Validate( IsEqual( w, ref ) );
+            }
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op7">
+            <![CDATA[
+            SetFunctionName("operator -  (Soa4Vector2::InParam v, Soa4Float::InParam s)");
+
+            Soa4Vector2 ref;
+            ref.x.mV = Set( 9.0f, 8.0f, -9.0f, -8.0f );
+            ref.y.mV = Set( 4.0f, 2.0f, 3.0f, 0.0f );
+
+            Soa4Float one = Soa4FloatFromFloat( 1.0f );
+
+            {
+                Soa4Vector2 s = mB - one;
+                Validate( IsEqual( s, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator -  (Soa4Float::InParam s, Soa4Vector2::InParam v)");
+
+            Soa4Vector2 ref2;
+            ref2.x.mV = Set( -9.0f, -8.0f, 9.0f, 8.0f );
+            ref2.y.mV = Set( -4.0f, -2.0f, -3.0f, 0.0f );
+
+            {
+                Soa4Vector2 t = one - mB;
+                Validate( IsEqual( t, ref2 ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator -  (Soa4Vector2::InParam v)");
+
+            Soa4Vector2 ref3;
+            ref3.x.mV = Set( -10.0f, -9.0f, 8.0f, 7.0f );
+            ref3.y.mV = Set( -5.0f, -3.0f, -4.0f, -1.0f );
+
+            {
+                Soa4Vector2 u = -mB;
+                Validate( IsEqual( u, ref3 ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator -= (Soa4Vector2& v, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 v( mB );
+                v -= mOne;
+                Validate( IsEqual( v, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("operator -  (Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 w;
+                w = mB - mOne;
+                Validate( IsEqual( w, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Negate(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Vector2 x = Negate( mB );
+                Validate( IsEqual( x, ref3 ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Subtract(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Vector2 y;
+                y = Subtract( mB, mOne );
+                Validate( IsEqual( y, ref ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_op8">
+            <![CDATA[
+            SetFunctionName("Dot(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Float ref = Soa4FloatFromFloats( 15.0f, 27.0f, -12.0f, 29.0f );
+                Soa4Float dot = Dot( mA, mB );
+                Validate( IsEqual( dot, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Cross(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Float ref = Soa4FloatFromFloats( -55.0f, -21.0f, 36.0f, 3.0 );
+                Soa4Float cross = Cross( mA, mB );
+                Validate( IsEqual( cross, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("MultAdd(Soa4Vector2::InParam a, Soa4Vector2::InParam b, Soa4Vector2::InParam c)");
+
+            {
+                Soa4Vector2 res = MultAdd( mA, mB, mC );
+                Soa4Vector2 ref = ( mA * mB ) + mC;
+                Validate( IsEqual( ref, res ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Reciprocal(Soa4Vector2::InParam a)");
+
+            {
+                Soa4Vector2 ref;
+                ref.x.mV = Set( 1.0f/10.0f, 1.0f/9.0f, 1.0f/-8.0f, 1.0f/-7.0f );
+                ref.y.mV = Set( 1.0f/5.0f, 1.0f/3.0f, 1.0f/4.0f, 1.0f/1.0f );
+
+                Soa4Vector2 res = Reciprocal( mB );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_magnitude">
+            <![CDATA[
+            SetFunctionName("Magnitude(Soa4Vector2::InParam v)");
+
+            Soa4Float ref = Soa4FloatFromFloats( 5.0990195135927848300282241090228f,
+                                3.6055512754639892931192212674705f,
+                                4.2426406871192851464050661726291f,
+                                4.1231056256176605498214098559741f );
+
+            Soa4Float invRef = Soa4FloatFromFloats( 0.19611613513818403192416246573168f,
+                                0.27735009811261456100917086672854f,
+                                0.23570226039551584146694812070162f,
+                                0.24253562503633297351890646211612f );
+
+            {
+                Soa4Float res = Magnitude( mA );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+            }
+                
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("MagnitudeFast(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Float res = MagnitudeFast( mA );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("MagnitudeEstimate(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Float res = MagnitudeEstimate( mA );
+                Validate( IsEqualWithEpsilon( res, ref, Soa4FloatFromFloat(0.02f) ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("MagnitudeSquared(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Float dot = Dot( mA, mA );
+                Soa4Float res = MagnitudeSquared( mA );
+                Validate( IsEqualWithEpsilon( res, dot ) );
+            }
+            
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("MagnitudeRecip(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Float res = MagnitudeRecip( mA );
+                Validate( IsEqualWithEpsilon( res, invRef ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_normalize">
+            <![CDATA[
+
+            Soa4Vector2 ref( mA );
+
+            Soa4Float mag = Soa4FloatFromFloats( 5.0990195135927848300282241090228f,
+                                3.6055512754639892931192212674705f,
+                                4.2426406871192851464050661726291f,
+                                4.1231056256176605498214098559741f );
+
+            
+            Soa4Float invMag = Soa4FloatFromFloats( 0.19611613513818403192416246573168f,
+                                0.27735009811261456100917086672854f,
+                                0.23570226039551584146694812070162f,
+                                0.24253562503633297351890646211612f );
+
+            ref *= invMag;
+
+            Soa4Float one = Soa4FloatFromFloats( 1.0f, 1.0f, 1.0f, 1.0f );
+
+            
+            SetFunctionName("NormalizeFast(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Vector2 res = NormalizeFast( mA );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+                Validate( IsEqualWithEpsilon( Magnitude( res ), one ) );
+                Validate( IsEqualWithEpsilon( mA, Mult( res, mag ) ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("NormalizeEstimate(Soa4Vector2::InParam v)");
+
+            {
+                Soa4Vector2 res = NormalizeEstimate( mA );
+                Validate( IsEqualWithEpsilon( res, ref, Soa4FloatFromFloat(0.003f) ) );
+                Validate( IsEqualWithEpsilon( Magnitude( res ), one, Soa4FloatFromFloat(0.003f) ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Normalize(Soa4Vector2::InParam v)");
+            
+            {
+                Soa4Vector2 res = Normalize( mA );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+                Validate( IsEqualWithEpsilon( Magnitude( res ), one ) );
+                Validate( IsEqualWithEpsilon( mA, Mult( res, mag ) ) );
+            }
+        
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("NormalizeReturnMagnitude(Soa4Vector2::InParam v, Soa4Vector2& result)");
+
+            {
+                Soa4Vector2 res;
+                Soa4Float testMagnitude = NormalizeReturnMagnitude( mA, res );
+                Validate( IsEqualWithEpsilon( res, ref ) );
+                Validate( IsEqualWithEpsilon( testMagnitude, mag ) );
+                Validate( IsEqualWithEpsilon( Magnitude( res ), one ) );                
+                Validate( IsEqualWithEpsilon( mA, Mult( res, mag ) ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CheckedNormalizeReturnMagnitude(Soa4Vector2::InParam v, Soa4Float& magnitude)");
+
+            {
+                VectorIntrinsic ax = CreateSoa4Float(-1.0f, 0.0f, 3.0f, -4.0f).mV;
+                VectorIntrinsic ay = CreateSoa4Float(5.0f, 0.0f, 3.0f,  1.0f).mV;
+                Soa4Vector2 vec( ax, ay );
+
+                Soa4Float zeroComponentMagnitude =  Soa4FloatFromFloats( 5.0990195135927848300282241090228f,
+                                0.0f,
+                                4.2426406871192851464050661726291f,
+                                4.1231056256176605498214098559741f );
+
+                Soa4Vector2 res;
+                Soa4Float testMagnitude = CheckedNormalizeReturnMagnitude( vec, res );
+                Soa4Vector2 nonChecked = Normalize( vec );
+
+                Validate( !IsEqual( nonChecked, vec ) );
+                Validate( IsEqualWithEpsilon( zeroComponentMagnitude, testMagnitude ) );
+                Validate( IsEqualWithEpsilon( vec, Mult( res, testMagnitude ) ) );
+            }
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_lerperscolony">
+            <![CDATA[
+
+            Soa4Float t = Soa4FloatFromFloats( 0.25f, 0.5f, 0.75f, 1.0f );
+            Soa4Vector2 ref = Soa4Vector2(
+                Soa4FloatFromFloats( 7.75f, 4.5f, -2.75f, 2.0f ),
+                Soa4FloatFromFloats( 3.75f, 2.0f,  0.25f, 2.0f ) );
+            Soa4Vector2 normalRef = Normalize( ref );
+
+            SetFunctionName("Lerp(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1, Soa4Float::InParam t)");
+
+            {
+                Soa4Vector2 res = Lerp( mB, mC, t );
+                Validate( IsEqual( res, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+
+            SetFunctionName("SLerp(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1, Soa4Float::InParam t)");
+
+            {
+                Soa4Vector2 a( Soa4FloatFromFloat( 1.0f ), Soa4FloatFromFloat( 2.0f ) );
+                Soa4Vector2 b( Soa4FloatFromFloat( -3.0f ), Soa4FloatFromFloat( 1.0f ) );
+                Soa4Float slerpT( Soa4FloatFromFloats( 0.75f, 0.75f, 0.75f, 0.75f ) );
+                Soa4Vector2 normalA = Normalize( a );
+                Soa4Vector2 normalB = Normalize( b );
+
+                Soa4Vector2 output = SLerp( normalA, normalB, slerpT );
+
+                Soa4Vector2 slerpRef( Soa4FloatFromFloat( -0.73185913885907916f ), Soa4FloatFromFloat( 0.68134627789812985f ) );
+                Validate( IsEqualWithEpsilon( output, slerpRef ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("NLerpEstimate(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1, Soa4Float::InParam t)");
+
+            {
+                Soa4Vector2 res = NLerpEstimate( mB, mC, t );
+                Validate( IsEqualWithEpsilon( res, normalRef, Soa4FloatFromFloat(0.003f) ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("NLerpFast(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1, Soa4Float::InParam t)");
+
+            {
+                Soa4Vector2 res = NLerpFast( mB, mC, t );
+                Validate( IsEqualWithEpsilon( res, normalRef ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("NLerp(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1, Soa4Float::InParam t)");
+
+            {
+                Soa4Vector2 res = NLerp( mB, mC, t );
+                Validate( IsEqualWithEpsilon( res, normalRef ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_clamp">
+            <![CDATA[
+            SetFunctionName("Min(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1)");
+
+            {
+                Soa4Vector2 res = Min( mA, mTwo );
+                VectorIntrinsic v[2] = {
+                    CreateSoa4Float( -1.0f, 2.0f, 2.0f, -4.0f ).mV,
+                    CreateSoa4Float( 2.0f, 2.0f, 2.0f, 1.0f ).mV
+                };
+                Soa4Vector2 ref( v[0], v[1] );
+
+                Validate( IsEqual( res, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Max(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1)");
+
+            {
+                Soa4Vector2 res = Max( mA, mTwo );
+                VectorIntrinsic v[2] = {
+                    CreateSoa4Float( 2.0f, 2.0f, 3.0f, 2.0f ).mV,
+                    CreateSoa4Float( 5.0f, 3.0f, 3.0f, 2.0f ).mV
+                };
+                Soa4Vector2 ref( v[0], v[1] );
+
+                Validate( IsEqual( res, ref ) );
+            }
+          
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Clamp(Soa4Vector2::InParam vecToClamp, Soa4Vector2::InParam minVecValue, Soa4Vector2::InParam maxVecValue)");
+
+            {
+                Soa4Vector2 res = Clamp( mA, mNegOne, mTwo );
+                VectorIntrinsic v[2] = {
+                    CreateSoa4Float( -1.0f, 2.0f, 2.0f, -1.0f ).mV,
+                    CreateSoa4Float( 2.0f, 2.0f, 2.0f, 1.0f ).mV
+                };
+                Soa4Vector2 ref( v[0], v[1] );
+
+                Validate( IsEqual( res, ref ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("ClampToNegPosRange(Soa4Vector2::InParam vecToClamp, Soa4Vector2::InParam range)");
+
+            {
+                VectorIntrinsic r[2] = {
+                    CreateSoa4Float( 1.0f, 1.0f, 1.0f, 1.0f ).mV,
+                    CreateSoa4Float( 2.0f, 2.0f, 2.0f, 2.0f ).mV
+                };
+                Soa4Vector2 range( r[0], r[1] );
+                Soa4Vector2 res = ClampToNegPosRange( mA, range );
+                VectorIntrinsic v[2] = {
+                    CreateSoa4Float( -1.0f, 1.0f, 1.0f, -1.0f ).mV,
+                    CreateSoa4Float( 2.0f, 2.0f, 2.0f, 1.0f ).mV
+                };
+                Soa4Vector2 ref( v[0], v[1] );
+
+                Validate( IsEqual( res, ref ) );
+            }
+
+            
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_abs">
+            <![CDATA[
+            SetFunctionName("Abs(Soa4Vector2::InParam v0)");
+
+            {
+                Soa4Vector2 abs = Abs( mA );
+                VectorIntrinsic v[2] = 
+                {
+                    CreateSoa4Float( 1.0f, 2.0f, 3.0f, 4.0f).mV,
+                    CreateSoa4Float( 5.0f, 3.0f, 3.0f, 1.0f).mV
+                };
+                Soa4Vector2 ref( v[0], v[1] );
+                Validate( IsEqual( ref, abs ) );
+            }
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_angles">
+            <![CDATA[
+            SetFunctionName("AngleBetweenVectors(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1)");
+
+            {
+                Soa4Vector2 normalizedA = Normalize( mA );
+                Soa4Vector2 normalizedB = Normalize( mB );
+                Soa4Float refAngle = Dot( normalizedA, normalizedB );
+                Soa4Float ref;
+                RW_MATH_VPU_ACos( ref.mV, refAngle.mV );
+            
+                Soa4Float res = AngleBetweenVectors( mA, mB );
+                Validate( IsEqualWithEpsilon( ref, res ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("AngleBetweenVectorsFast(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1)");
+
+            {
+                Soa4Vector2 normalizedA = Normalize( mA );
+                Soa4Vector2 normalizedB = Normalize( mB );
+                Soa4Float refAngle = Dot( normalizedA, normalizedB );
+                Soa4Float ref;
+                RW_MATH_VPU_ACos( ref.mV, refAngle.mV );
+            
+                Soa4Float res = AngleBetweenVectorsFast( mA, mB );
+                Validate( IsEqualWithEpsilon( ref, res ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CosAngleBetweenNormalizedVectors(Soa4Vector2::InParam v0, Soa4Vector2::InParam v1)");
+
+            {
+                Soa4Vector2 normalizedA = Normalize( mA );
+                Soa4Vector2 normalizedB = Normalize( mB );
+                Soa4Float refAngle = Dot( normalizedA, normalizedB );
+                Soa4Float res = CosAngleBetweenNormalizedVectors( normalizedA, normalizedB );
+
+                Validate( IsEqual( refAngle, res ) );
+            }
+
+            ]]>
+        </TEST>
+
+
+        <TEST NAME="soa4vector2_masks">
+            <![CDATA[
+
+            SetFunctionName("CompLessThan(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompLessThan( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( true, true, false, false ), CreateSoa4MaskScalar( false, false, true, false ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompGreaterThan(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompGreaterThan( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( false, false, true, true ), CreateSoa4MaskScalar( false, false, false, false ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompLessEqual(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompLessEqual( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( true, true, false, false ), CreateSoa4MaskScalar( true, true, true, true ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompGreaterEqual(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompGreaterEqual( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( false, false, true, true ), CreateSoa4MaskScalar( true, true, false, true ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+            
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompEqual(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompEqual( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( false, false, false, false ), CreateSoa4MaskScalar( true, true, false, true ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+            
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("CompNotEqual(Soa4Vector2::InParam a, Soa4Vector2::InParam b)");
+
+            {
+                Soa4Mask2 mask = CompNotEqual( mA, mB );
+                Soa4Mask2 refMask( CreateSoa4MaskScalar( true, true, true, true ), CreateSoa4MaskScalar( false, false, true, false ) );
+                Validate( IsEqual( mask, refMask ) );
+            }
+            
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Select(Soa4MaskScalar::InParam mask, Soa4Vector2::InParam trueValue, Soa4Vector2::InParam falseValue )");
+
+            {
+                Soa4Mask2 mask( CreateSoa4MaskScalar( true, false, true, false), CreateSoa4MaskScalar( false, true, false, true ) );
+                Soa4Vector2 res = Select( mask, mA, mB );
+                Soa4Vector2 ref( Soa4FloatFromFloats( -1.0f, 9.0f, 3.0f, -7.0f ), Soa4FloatFromFloats( 5.0f, 3.0f, 4.0f, 1.0f ) );
+                Validate( IsEqual( ref, res ) );
+            }
+
+            //-----------------------------------------------------------------------
+
+            SetFunctionName("Select(Soa4Mask2::InParam mask, Soa4Vector2::InParam trueValue, Soa4Vector2::InParam falseValue )");
+
+            {
+                Soa4MaskScalar mask = CreateSoa4MaskScalar( true, false, true, false);
+                Soa4Vector2 res = Select( mask, mA, mB );
+                Soa4Vector2 ref( Soa4FloatFromFloats( -1.0f, 9.0f, 3.0f, -7.0f ), Soa4FloatFromFloats( 5.0f, 3.0f, 3.0f, 1.0f ) );
+                Validate( IsEqual( ref, res ) );
+            }
+
+            ]]>
+        </TEST>
+        
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+</TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

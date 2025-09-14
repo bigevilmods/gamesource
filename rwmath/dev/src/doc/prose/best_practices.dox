@@ -1,0 +1,19 @@
+/*!
+\page p_best_practices Best Practices
+
+The following is a list of best practices for the math library.  When possible,
+please try to follow these best practices.  Following these practices should
+help protect you from internal changes to math, avoid bugs, and simplify
+writing/maintaining math code.
+
+
+    - \ref p_porting_legacy "Porting Legacy Code"
+    - \ref p_forward_declaring "Forward Declaring Math Types"
+    - \ref p_casting_between_math_types "Casting Between Math Types"
+    - \ref p_constants "Using Constants"
+    - \ref p_write_your_own "Write Your Own Math Library"
+    - \ref p_private_vs_public_functionality "Private vs Public Functionality"
+    - \ref p_hijacking_namespaces "Hijacking Namespaces"
+    - \ref p_choosing_fpu_or_vpu "Choosing FPU or VPU Math"
+    
+*/

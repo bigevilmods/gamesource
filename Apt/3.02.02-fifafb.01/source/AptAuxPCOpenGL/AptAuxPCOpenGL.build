@@ -1,0 +1,42 @@
+<project default="AptAuxPCOpenGL">
+    <!-- include package build file to get dependency and configuration information -->
+	<property name="runtime.AptAuxPCOpenGL.buildtype" value="Library"/>
+	<property name="runtime.AptAuxPCOpenGL.usedependencies">
+	    EABase
+	    coreallocator
+	    FontFusion
+	</property>
+	<property name="runtime.AptAuxPCOpenGL.usedependencies.pc">
+		DirectX
+	</property>
+	<property name="runtime.AptAuxPCOpenGL.usedependencies.xenon">
+		xenonsdk
+	</property>	
+    
+	<property name="runtime.AptAuxPCOpenGL.warningsuppression">
+	    -wd4512     <!-- assignment operator could not be generated -->
+	    -wd4619     <!-- #pragma warning there is no warning number XXXX -->	    
+	    -wd4242     <!-- conversion from int32_t to int16_t possible loss of data -->
+	    -wd4244     <!-- conversion from int32_t to int16_t possible loss of data -->	  
+        -wd4062     <!-- enumerate 'ApAuxUnitType_LineSolid' in switch of enum 'AptAuxUnitType' is not handled -->	      
+        -wd4191     <!-- 'type cast' : unsafe conversion from 'PROC' to 'PFNGLMULTITEXCOORD2FVARBPROC' -->
+        -wd4189     <!-- 'ptr' : local variable is initialized but not referenced -->
+		-wd4127     <!-- conditional expression is constant -->	           
+	    -wd4365     <!-- conversion from 'int' to 'unsigned int', signed/unsigned mismatch -->
+	</property>
+    
+	<property name="runtime.Apt.defines">
+	    ${runtime.defines}
+	</property>
+    
+	<property name="runtime.AptAuxPCOpenGL.includedirs">
+	    ${runtime.Apt.includedirs}
+		${package.Apt.dir}/include/AptFF
+		${package.Apt.dir}/include/AptAuxPCOpenGL
+		${package.Apt.dir}/source/AptAuxPCOpenGL
+	</property>
+	
+	<fileset name="runtime.AptAuxPCOpenGL.sourcefiles">
+		<includes name="${package.Apt.dir}/source/AptAuxPCOpenGL/*.cpp"/>
+	</fileset>
+</project>

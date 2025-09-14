@@ -1,0 +1,26 @@
+LIBRARY gimex
+EXPORTS
+    _GIMEX_init@0
+	_GIMEX_restore@0
+	_GIMEX_gopen@8
+	_GIMEX_open@16
+	_GIMEX_open@12=_OLDGIMEX_open@12
+	_GIMEX_about@0
+	_GIMEX_is@4
+	_GIMEX_read@16
+	_GIMEX_info@8
+	_GIMEX_close@4
+	_GIMEX_wopen@16
+	_GIMEX_write@16
+	_GIMEX_wclose@4
+	_GIMEX_loadframe@8
+	_GIMEX_freebitmap@4
+	_GIMEX_gopenstream@8
+	_GIMEX_set@4
+	_GIMEX_get@0
+	_GIMEX_find@8
+	_GIMEX_count@0
+	_GIMEX_installcallbacks@4
+	_GIMEX_installcallbacks64@4
+	GIMEXabout
+	TTFinfo

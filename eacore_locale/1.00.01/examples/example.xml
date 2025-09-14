@@ -1,0 +1,119 @@
+﻿<project default="example-build">
+	<optionset name="config.targetoverrides">
+		<option name="example-build" value="include" />
+    </optionset>
+
+    <!-- <include file="../eacore_locale.build"/> -->
+	<!-- include package build file to get dependency and configuration information -->
+	<include file="../eacore_locale.build"/>
+    <dependent name="renderware"/>
+    <dependent name="eaconfig"/>
+
+    <property name="example.buildmodules" value="locale"/>
+
+    <property name="example_name" value="locale"/>
+    <property name="example.${example_name}.buildtype" value="Program"/>
+    <property name="example.${example_name}.usedependencies">
+        renderware
+    </property>
+	<property name="example.${example_name}.includedirs">
+        ${package.renderware.includedirs}
+		${package.dir}/include
+		${package.dir}/build/${config}/loc	<!-- For the hex dump of the data files -->
+	</property>
+
+	<fileset name="example.${example_name}.libs" fromfileset="package.renderware.libs">
+		<includes name="${package.eacore_locale.builddir}/${config}/lib/${lib-prefix}eacore_locale${lib-suffix}"/>
+	</fileset>
+
+    <fileset name="example.${example_name}.sourcefiles">
+        <includes name="main.cpp" />
+    </fileset>
+
+
+	<!-- Convert the data files into object files -->
+		<property name="package.Util.version" value="1.6.3" unless="@{PropertyExists('package.Util.version')}"/>
+        <dependent name="Util" />
+		<exec
+			program="${package.dir}/bin/pc-vc71/locomoto.exe"
+			commandline="-index1 -ascii -csv">
+			<inputs>
+				<includes name="strtbl.csv"/>
+			</inputs>
+			<outputs>
+				<includes name="${package.dir}/build/${config}/loc/ascii/*.*"/>
+			</outputs>
+			<args>
+				<arg value="strtbl.csv"/>
+			</args>
+		</exec>
+
+		<!--
+			the locomoto tool can't put its output files into a particular
+			subdirectory, so until that gets fixed, we'll need to move the
+			header and database file to the correct output directory
+		-->
+		<move if="@{FileExists('strtbl.h')}"
+			todir="${package.dir}/build/${config}/loc/ascii">
+			<fileset>
+				<includes name="strtbl.h"/>
+				<includes name="strtbl.loc"/>
+			</fileset>
+		</move>
+
+		<exec
+			program="${package.Util.dir}/bin/xd.exe"
+			commandline="-t21 -w1 -nologo"
+			output="${package.dir}/build/${config}/loc/ascii/strtbl.dat"
+			stdout="false"
+			>
+			<inputs>
+				<includes name="${package.dir}/build/${config}/loc/ascii/strtbl.loc"/>
+			</inputs>
+			<outputs>
+				<includes name="${package.dir}/build/${config}/loc/ascii/strtbl.dat"/>
+			</outputs>
+			<args>
+				<arg value="${package.dir}/build/${config}/loc/ascii/strtbl.loc"/>
+			</args>
+		</exec>
+
+		<exec
+			program="${package.dir}/bin/pc-vc71/locomoto.exe"
+			commandline="-index1 -unicode -tab">
+			<inputs>
+				<includes name="strtbl.txt"/>
+			</inputs>
+			<outputs>
+				<includes name="${package.dir}/build/${config}/loc/unicode/*.*"/>
+			</outputs>
+			<args>
+				<arg value="strtbl.txt"/>
+			</args>
+		</exec>
+
+		<move if="@{FileExists('strtbl.h')}"
+			todir="${package.dir}/build/${config}/loc/unicode">
+			<fileset>
+				<includes name="strtbl.h"/>
+				<includes name="strtbl.loc"/>
+			</fileset>
+		</move>
+
+		<exec
+			program="${package.Util.dir}/bin/xd.exe"
+			commandline="-t21 -w1 -nologo"
+			output="${package.dir}/build/${config}/loc/unicode/strtbl.dat"
+			stdout="false"
+			>
+			<inputs>
+				<includes name="${package.dir}/build/${config}/loc/unicode/strtbl.loc"/>
+			</inputs>
+			<outputs>
+				<includes name="${package.dir}/build/${config}/loc/unicode/strtbl.dat"/>
+			</outputs>
+			<args>
+				<arg value="${package.dir}/build/${config}/loc/unicode/strtbl.loc"/>
+			</args>
+		</exec>
+</project>

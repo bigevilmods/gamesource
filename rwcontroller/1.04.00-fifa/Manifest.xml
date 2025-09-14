@@ -1,0 +1,21 @@
+<package>
+    <contactName>
+    </contactName>
+
+    <contactEmail>
+    </contactEmail>
+
+    <summary>
+        RenderWare Controller Library
+    </summary>
+
+    <description>
+    </description>
+
+    <homePageUrl>
+        http://eatech/C12/C2/P422/default.aspx
+    </homePageUrl>
+
+    <frameworkVersion>2</frameworkVersion>
+    <buildable>true</buildable>
+</package>

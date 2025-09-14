@@ -1,0 +1,52 @@
+
+<html>
+<head>
+    <title>Stream Filters</title>
+    <link href="../../style_sheet/style_sheet.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript" src="../toc.js"></script>
+    <script type="text/javascript" src="../../scripts/highlight/highlight.js"></script>
+    <script type="text/javascript">
+        initHighlightingOnLoad('cpp', 'python', 'xml');
+    </script>
+</head>
+<body onLoad="loadMenu('../')">
+
+<div id="body">
+<div id="header"></div>
+<div id="menubar"></div>
+<div id="content">
+
+<h1>Setting filters and taps for a stream</h1>
+
+<p>Filters and taps are used for separating chunks into classes (audio and
+video chunks for example) and delivering them to separate output points.
+A tap is simply the output point for a chunk class. Filters are used to
+separate the chunks. Each filter has an associated mask, a value and an
+output tap. Every time a chunk is parsed by the streamer, it is run
+through the filters in sequence until one of the filters captures the
+chunk. A filter captures a chunk if the masked chunk type matches the
+filter value. The chunk is then directed to the output tap associated
+with that filter. The following diagram illustrates this process: </p>
+
+<img src="../img/streamer.gif" alt="streamer" align="middle" border="0">
+
+<p>In this example, there are four filters and two output taps. The first
+two filters send their chunks to the first output tap and the third
+filter sends its chunks to the second output tap. The last filter sends
+all remaining chunks to a special tap called the abort tap. Every stream
+has two such taps known as the null tap and the abort tap. The null tap
+simply throws away any chunks that reach it. Any data reaching the abort
+tap causes the program to abort. The pseudo-taps can be referenced using
+the defines in the stream header file. User defined filters and taps are
+numbered from one to the value specified when the stream is created.
+Note that the last filter must always be a null filter (mask=0, value=0),
+meaning that it captures any chunks that reach it.</p>
+
+</div>
+<div id="footer"></div>
+
+</div>
+</body>
+</html>
+

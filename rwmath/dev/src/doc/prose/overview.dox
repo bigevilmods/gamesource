@@ -1,0 +1,53 @@
+/*!
+\page p_overview Overview
+
+The RenderWare Math library is divided into three parts; a traditional \ref p_fpu_library "FPU math library", a
+modern \ref p_vpu_library "VPU math library" and a \ref p_vpl_library "vectorization portability library".  The FPU
+and VPU math libraries provide extremely similar cross platform math API's.  The VPL library is a low level library
+intended for writing optimized code that works with primitive types (mostly
+vector types) using functions that are not always cross platform.  The
+libraries are largely defined in header files, with a small number of constants
+being defined in source files (requiring external linkage).
+
+\section Namespaces
+
+The FPU, VPU, and VPL libraries live in respective namespaces; \c rw::math::fpu, \c rw::math::vpu and \c rw::math::vpl
+
+\section Includes
+
+All header files in the math library are standalone and match the namespace structure and type names. For example, if a user
+requires rw::math::vpu::Vector4 he can <code>#include "rw/math/vpu/vector4.h"</code>.
+
+If a user needs only a forward declaration, he uses <code>#include "rw/math/types_fwd.h"</code>. See the \ref p_best_practices "best practices" on 
+\ref p_forward_declaring "forward declaring" for more information on why explicit forward declarations are discouraged.
+
+Furthermore, the math library provides several headers that group other headers. While convenient, we advise the user to include headers at 
+a more fine grained level; this improves compile times.
+
+    - To include the entire math library #include "rw/math/math.h"
+    - To include the FPU library #include "rw/math/fpu.h"
+    - To include the VPU library #include "rw/math/vpu.h"
+    - To include the VPL library #include "rw/math/vpl.h"
+    - To include all type definitions without their operations #include "rw/math/types.h"
+    
+\section Types
+
+Most types in the math library speak for themselves. Like most traditional math libraries, the math library contains <code>Vector2</code>, 
+<code>Vector3</code> and <code>Vector4</code> for two, three and four dimensional vectors. There is a <code>Plane</code> type, and obviously
+<code>Matrix33</code>, <code>Matrix44</code> and <code>Quaternion</code>.
+
+Most of these types speak for themselves; please refer to the API reference documentation or browse the code to see what
+functionality is available.
+
+All types come in two versions, one declared in the rw::math::fpu namespace (implemented using the floating point unit) and one in the 
+rw::math::vpu namespace (implemented using hardware specific vectorized types).
+
+Several types are not found in traditional math libraries and deserve extra attention. Please refer to the links below for more information
+on these types.
+- \ref p_vec_float "VecFloat"
+- \ref p_quat_pos "QuatPos"
+- \ref p_vector_3_plus "Vector3Plus"
+- \ref p_matrix44_affine "Matrix44Affine"
+- \ref p_matrix44_affine_packed "Matrix44AffinePacked"
+
+*/

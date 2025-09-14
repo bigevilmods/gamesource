@@ -1,0 +1,570 @@
+// (c) Electronic Arts. All Rights Reserved.
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\WinBig.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\WinBig.ico"
+IDR_WINBIGTYPE          ICON                    "res\\WinBigDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_EXCLAMATION_MARK    BITMAP                  "res\\ExclamationMark.bmp"
+IDB_SORT_DIRECTIONS     BITMAP                  "res\\SortDirections.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tShift+O",           ID_FILE_OPEN
+        MENUITEM "&Close\tShift+C",             57602
+        MENUITEM "&Save\tShift+S",              ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tShift+P",          ID_FILE_PRINT
+        MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM "&Delete\tDel",                ID_EDIT_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties\tAlt+Enter",      ID_EDIT_PROPERTIES
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About WinBig...",            ID_APP_ABOUT
+        MENUITEM "Wishlist...",                 ID_APP_WISHLIST
+    END
+END
+
+IDR_CONTEXT_ONFILE MENU 
+BEGIN
+    POPUP "1"
+    BEGIN
+        MENUITEM "&View\tDblClk",               ID_CONTEXT_ONFILE_VIEW
+        MENUITEM "Co&mpress (with Refpack)",    ID_CONTEXT_ONFILE_COMPRESS
+        MENUITEM "Compress (with Bzip2)",       ID_1_COMPRESS, GRAYED
+        MENUITEM "&Rename\tF2",                 ID_CONTEXT_ONFILE_RENAME
+        MENUITEM "&Copy\tCtrl+C",               ID_CONTEXT_ONFILE_COPY
+        MENUITEM "&Delete\tDel",                ID_CONTEXT_ONFILE_DELETE
+        MENUITEM "Undelete",                    ID_CONTEXT_ONFILE_UNDELETE
+        MENUITEM SEPARATOR
+        MENUITEM "BigFile &Properties\tAlt+Enter", ID_EDIT_PROPERTIES
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    VK_F2,          ID_CONTEXT_ONFILE_RENAME, VIRTKEY, NOINVERT
+    VK_RETURN,      ID_DBL_CLK,             VIRTKEY, NOINVERT
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_RETURN,      ID_EDIT_PROPERTIES,     VIRTKEY, ALT, NOINVERT
+    "A",            ID_EDIT_SELECT_ALL,     VIRTKEY, CONTROL, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_FILE_CLOSE,          VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 323, 125
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About WinBig"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,13,15,20,20
+    LTEXT           "WinBig Version",IDC_STATIC,40,10,52,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2000-2005",IDC_STATIC,39,31,119,8
+    DEFPUSHBUTTON   "OK",IDOK,185,16,56,14,WS_GROUP
+    LTEXT           "EA Core, Ignition",IDC_STATIC,39,20,54,8
+    EDITTEXT        IDC_HISTORY,7,43,309,73,ES_MULTILINE | ES_AUTOVSCROLL | 
+                    ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
+    LTEXT           "XXXX",IDC_VERSION,90,10,18,8
+END
+
+IDD_PACKED_BIGFILE DIALOG  0, 0, 186, 86
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,34,37,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,94,37,50,14
+    LTEXT           "This BIG file has been packed.  WinBig will need to extract it to a temporarry file",
+                    IDC_STATIC,29,13,129,23
+    CONTROL         "Never show this dialog again",IDC_NEVER_AGAIN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,41,57,107,10
+END
+
+IDD_ON_ACTION DIALOG  0, 0, 185, 95
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Warning"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,64,74,50,14
+    LTEXT           "You have just queued an action.",IDC_STATIC,19,13,104,8
+    LTEXT           "This action will not occur until you save the file.  If you have just added a file, the file cannot be deleted until after the save.",
+                    IDC_STATIC,20,26,150,25
+    CONTROL         "Don't annoy me with this message again.",
+                    IDC_ON_ACTION_NEVER_AGAIN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,20,57,144,10
+END
+
+IDD_DIALOG_WISHLIST DIALOGEX 0, 0, 339, 217
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Wishlist"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,275,194,50,14
+    EDITTEXT        IDC_WISHLIST_TEXT,7,7,325,182,ES_MULTILINE | ES_READONLY
+    PUSHBUTTON      "E-mail Ignition",IDC_SENDTOMMAIL,188,194,83,15
+END
+
+IDD_PROPERTIES DIALOG  0, 0, 146, 76
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Big File Properties"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_FILE_ALIGNMENT,68,14,24,14,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    CONTROL         "Compress file on Save",IDC_PACK_FILE,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,15,35,86,10
+    PUSHBUTTON      "Cancel",IDCANCEL,22,49,50,14
+    DEFPUSHBUTTON   "OK",IDOK,78,49,50,14
+    LTEXT           "File Alignment:",IDC_STATIC,16,17,50,9
+END
+
+IDD_NEW_VER DIALOG  0, 0, 223, 138
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Take me there...",IDOK,109,34,63,14
+    PUSHBUTTON      "Cancel",IDCANCEL,55,34,50,14
+    LTEXT           "There is a new version of WinBig available.",IDC_STATIC,
+                    36,18,137,8
+    ICON            IDR_MAINFRAME,IDC_STATIC,30,32,21,20
+    CONTROL         "Never show this dialog again.",IDC_NEVER_AGAIN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,53,62,109,10
+    LTEXT           "Clicking on ""Take me there..."" will attempt to open your explorer to r:\\funatic\\niwinski\\winbig copy the .exe to the location of your old WinBig (probably c:\\Program Files\\WinBig)",
+                    IDC_STATIC,27,81,158,32
+END
+
+IDD_OPEN_BIGFILE DIALOGEX 0, 0, 186, 63
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "What do ya wanna do?"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,129,42,50,14
+    PUSHBUTTON      "Add",IDC_OPEN_BIG_ADD,7,42,50,14
+    DEFPUSHBUTTON   "Open",IDC_OPEN_BIG_OPEN,67,42,50,14
+    LTEXT           "Static",IDC_OPEN_BIG_TEXT,19,15,142,21
+END
+
+IDD_SPAWN_EXTERNAL_APP DIALOGEX 0, 0, 211, 86
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "WinBig"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "&Yes",IDOK,43,58,50,14
+    PUSHBUTTON      "&No",IDCANCEL,129,57,50,14
+    LTEXT           "No viewer is associated with this file:",IDC_STATIC,53,
+                    15,135,18,SS_NOPREFIX
+    CONTROL         139,IDC_STATIC,"Static",SS_BITMAP,17,17,22,21
+    LTEXT           "Would you like to launch NotePad ?",IDC_STATIC,54,38,
+                    117,8
+    CTEXT           "",IDC_FILE_WITH_NO_VIEWER,58,25,91,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,2
+ PRODUCTVERSION 1,0,0,2
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "Electronic Arts Canada"
+            VALUE "FileDescription", "WinBig MFC Application"
+            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "InternalName", "WinBig"
+            VALUE "LegalCopyright", "Copyright (C) 2000-2003"
+            VALUE "OriginalFilename", "WinBig.EXE"
+            VALUE "ProductName", "WinBig Application"
+            VALUE "ProductVersion", "1, 0, 0, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 316
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 118
+    END
+
+    IDD_PACKED_BIGFILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+
+    IDD_ON_ACTION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+
+    IDD_DIALOG_WISHLIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 332
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_PROPERTIES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 139
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+
+    IDD_NEW_VER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 131
+    END
+
+    IDD_OPEN_BIGFILE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_SPAWN_EXTERNAL_APP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 204
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 79
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "WinBig\n\nWinBig\n\n\nWinBig.Document\nWinBig Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "WinBig"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+    ID_STATUSBAR_NUM_OF_FILES "The number of files in the current lumpy file"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Close print preview mode\nCancel Preview"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\WinBig.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

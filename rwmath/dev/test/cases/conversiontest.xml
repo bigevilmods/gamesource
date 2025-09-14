@@ -1,0 +1,33 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+<CLASS NAME="UnitTestConversion" HEADER="conversiontest.h" SOURCE="conversiontest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/math.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <TEST NAME="convert_quaternion_fpu_to_vpu">
+      <![CDATA[
+
+        SetFunctionName("Quaternion::Quaternion(const fpu::QuaternionTemplate<T> &v)");
+        ::rw::math::fpu::QuaternionTemplate<float> quatIn( 1.0f, 2.0f, 3.0f, 4.0f );
+        ::rw::math::vpu::Quaternion quat( quatIn );
+        Validate((float)quat.X() == 1.0f && (float)quat.Y() == 2.0f && (float)quat.Z() == 3.0f && (float)quat.W() == 4.0f);
+
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

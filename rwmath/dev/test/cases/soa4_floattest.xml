@@ -1,0 +1,508 @@
+<!-- (c) Electronic Arts. All Rights Reserved. -->
+<TESTCLASS>
+
+    <CLASS NAME="UnitTestSoa4Float" HEADER="soa4_floattest.h" SOURCE="soa4_floattest.inc" RWGENERICHEADER="" RWHOSTHEADER="" GENERIC="false" HOST="false" RWCOMMONHEADER="rw/math/vpu/soa4_float_operation.h rw/math/vpu/vector4_operation.h" COMMON="true">
+
+
+  <TYPE NAME="function">
+
+    <TYPE NAME="correctness">
+
+      <!-- Constructors/Methods for Soa4Float's -->
+
+      <TEST NAME="vecfloat_default_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float()");
+
+        Soa4Float v;
+
+        Validate( true ); // Take address of v so that it is referenced
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vecfloat_copy_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(const Soa4Float&)");
+
+        Soa4Float ref(CreateSoa4Float(1.0f, 2.0f, 3.0f, 4.0f));
+
+        Validate( IsEqual(ref, CreateSoa4Float(1.0f, 2.0f, 3.0f, 4.0f)) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_intrinsic_constructor">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(VectorIntrinsicInParam)");
+
+        Soa4Float ref;
+        ::rw::math::vpu::detail::VectorIntrinsicUnion vu;
+        vu.scalarFloat[0] = 1.0f;
+        vu.scalarFloat[1] = 2.0f;
+        vu.scalarFloat[2] = 3.0f;
+        vu.scalarFloat[3] = 4.0f;
+        ref.mV = vu.vector;
+        Soa4Float r(vu.vector);
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_scalar_float_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(const float &)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 9.0f, 9.0f, 9.0f));
+        Soa4Float r(Soa4FloatFromFloat(9.0f));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_scalar_vecfloat_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(vpu::Soa4Float &)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 9.0f, 9.0f, 9.0f));
+        Soa4Float r(Soa4FloatFromVecFloat(9.0f));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_vector4_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(vpu::Vector4 &)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 8.0f, 8.0f, 9.0f));
+        Soa4Float r(Soa4FloatFromVector4(Vector4(9.0f, 8.0f, 8.0f, 9.0f)));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_multiple_float_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(const float &, const float &, const float &, const float &)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 8.0f, 7.0f, 6.0f));
+        Soa4Float r(Soa4FloatFromFloats(9.0f, 8.0f, 7.0f, 6.0f));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="soa4vecfloat_to_floats">
+      <![CDATA[
+
+        SetFunctionName("Soa4FloatToFloats(Soa4Float::InParam v, float& r0, float& r1, float& r2, float& r3 )");
+
+        float v0, v1, v2, v3;
+        Soa4FloatToFloats(CreateSoa4Float(9.0f, 8.0f, 7.0f, 6.0f), v0, v1, v2, v3);
+
+        Validate( v0 == 9.0f && v1 == 8.0f && v2 == 7.0f && v3 == 6.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="soa4vecfloat_to_vecfloats">
+      <![CDATA[
+
+        SetFunctionName("Soa4FloatToVecFloats(Soa4Float::InParam v, VecFloat& r0, VecFloat& r1, VecFloat& r2, VecFloat& r3)");
+
+        VecFloat v0, v1, v2, v3;
+        Soa4FloatToVecFloats(CreateSoa4Float(9.0f, 8.0f, 7.0f, 6.0f), v0, v1, v2, v3);
+
+        Validate( v0 == 9.0f && v1 == 8.0f && v2 == 7.0f && v3 == 6.0f );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="soa4vecfloat_to_vector4">
+      <![CDATA[
+
+        SetFunctionName("Soa4FloatToVector4(Soa4Float::InParam v)");
+
+        Vector4 ref(9.0f, 8.0f, 7.0f, 6.0f);
+        Vector4 r(Soa4FloatToVector4(CreateSoa4Float(9.0f, 8.0f, 7.0f, 6.0f)));
+
+        Validate( r == ref );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="vector_multiple_vecfloat_creation">
+      <![CDATA[
+
+        SetFunctionName("Soa4Float(vpu::VecFloat::InParam, vpu::VecFloat::InParam, vpu::VecFloat::InParam, vpu::VecFloat::InParam)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 8.0f, 7.0f, 6.0f));
+        Soa4Float r(Soa4FloatFromVecFloats(VecFloat(9.0f), VecFloat(8.0f), VecFloat(7.0f), VecFloat(6.0f)));
+
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="getvector">
+      <![CDATA[
+
+        SetFunctionName("GetVector()");
+
+        Soa4Float ref(Soa4FloatFromFloat(3.0f));
+        const VectorIntrinsic &r = ref.GetVector();
+
+        Validate( IsEqualBitwise(r, ref.mV) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="assignment_operator">
+      <![CDATA[
+
+        SetFunctionName("operator =(const Soa4Float&)");
+
+        Soa4Float ref(Soa4FloatFromFloat(42.0f));
+        Soa4Float r;
+        r = ref;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <!-- Operations for Soa4Float's -->
+      <TEST NAME="negate">
+      <![CDATA[
+
+        SetFunctionName("Negate(Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(9.0f, 8.0f, -7.0f, 6.0f));
+        Soa4Float r(Negate(Soa4FloatFromVecFloats(-9.0f, -8.0f, 7.0f, -6.0f)));
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfadd">
+      <![CDATA[
+
+        SetFunctionName("SelfAdd(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-8.0f, -6.0f, 10.0f, -2.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        SelfAdd(r, a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfadd_operator">
+      <![CDATA[
+
+        SetFunctionName("operator +=(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-8.0f, -6.0f, 10.0f, -2.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        r += a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfsubtract">
+      <![CDATA[
+
+        SetFunctionName("SelfSubtract(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-10.0f, -10.0f, 4.0f, -10.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        SelfSubtract(r, a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfsubtract_operator">
+      <![CDATA[
+
+        SetFunctionName("operator -=(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-10.0f, -10.0f, 4.0f, -10.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        r -= a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfmult">
+      <![CDATA[
+
+        SetFunctionName("SelfMult(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f, -16.0f, 21.0f, -24.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        SelfMult(r, a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfmult_operator">
+      <![CDATA[
+
+        SetFunctionName("operator *=(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f, -16.0f, 21.0f, -24.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        r *= a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfdivide">
+      <![CDATA[
+
+        SetFunctionName("SelfDivide(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f/1.0f, -8.0f/2.0f, 7.0f/3.0f, -6.0f/4.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        SelfDivide(r, a);
+
+        Validate( IsEqualWithEpsilon(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="selfdivide_operator">
+      <![CDATA[
+
+      SetFunctionName("operator /=(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f/1.0f, -8.0f/2.0f, 7.0f/3.0f, -6.0f/4.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float r = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        r /= a;
+
+        Validate( IsEqualWithEpsilon(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="add">
+      <![CDATA[
+
+        SetFunctionName("Add(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-8.0f, -6.0f, 10.0f, -2.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = Add(b,a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="add_operator">
+      <![CDATA[
+
+        SetFunctionName("operator +(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-8.0f, -6.0f, 10.0f, -2.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = b + a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="subtract">
+      <![CDATA[
+
+        SetFunctionName("Subtract(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-10.0f, -10.0f, 4.0f, -10.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = Subtract(b, a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="subtract_operator">
+      <![CDATA[
+
+        SetFunctionName("operator -=(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-10.0f, -10.0f, 4.0f, -10.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = b - a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult">
+      <![CDATA[
+
+        SetFunctionName("Mult(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f, -16.0f, 21.0f, -24.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = Mult(b,a);
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mult_operator">
+      <![CDATA[
+
+        SetFunctionName("operator *(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f, -16.0f, 21.0f, -24.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = b * a;
+
+        Validate( IsEqual(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="divide">
+      <![CDATA[
+
+        SetFunctionName("Divide(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f/1.0f, -8.0f/2.0f, 7.0f/3.0f, -6.0f/4.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = Divide(b, a);
+
+        Validate( IsEqualWithEpsilon(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="divide_operator">
+      <![CDATA[
+
+        SetFunctionName("operator /(Soa4Float, Soa4Float)");
+
+        Soa4Float ref(CreateSoa4Float(-9.0f/1.0f, -8.0f/2.0f, 7.0f/3.0f, -6.0f/4.0f));
+        Soa4Float a = Soa4FloatFromFloats( 1.0f,  2.0f, 3.0f,  4.0f);
+        Soa4Float b = Soa4FloatFromFloats(-9.0f, -8.0f, 7.0f, -6.0f);
+        Soa4Float r = b / a;
+
+        Validate( IsEqualWithEpsilon(r, ref) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="mintest">
+      <![CDATA[
+        SetFunctionName("Min(Soa4Float, Soa4Float)");
+
+        Soa4Float ref( CreateSoa4Float( -1.0f, 2.0f, 15.0f, -1e6f ) );
+
+        Soa4Float a = Soa4FloatFromFloats( -1.0f, 2.0001f, 1e6f, 0.0f );
+        Soa4Float b = Soa4FloatFromFloats( 0.0f, 2.0f, 15.0f, -1e6f );
+        Soa4Float res = Min( a, b );
+
+        Validate( IsEqualWithEpsilon( res, ref ) );
+
+      ]]>
+      </TEST>
+
+      <TEST NAME="maxtest">
+      <![CDATA[
+        SetFunctionName("Max(Soa4Float, Soa4Float)");
+
+        Soa4Float ref( CreateSoa4Float( 0.0f, 2.0001f, 1e6f, 0.0f ) );
+
+        Soa4Float a = Soa4FloatFromFloats( -1.0f, 2.0001f, 1e6f, 0.0f );
+        Soa4Float b = Soa4FloatFromFloats( 0.0f, 2.0f, 15.0f, -1e6f );
+        Soa4Float res = Max( a, b );
+
+        Validate( IsEqualWithEpsilon( res, ref ) );
+
+      ]]>
+      </TEST>
+      
+      <TEST NAME="clamp">
+      <![CDATA[
+        SetFunctionName("Clamp(Soa4Float, Soa4Float)");
+
+        Soa4Float ref( CreateSoa4Float( -1.0f, 1.0f, 0.0f, -1.0f ) );
+
+        Soa4Float a = Soa4FloatFromFloats( -1.0001f, 15.0f, 0.0f, -1e6f );
+        Soa4Float res = Clamp( a, Soa4FloatFromFloats( -1.0f, -1.0f, -1.0f, -1.0f ), Soa4FloatFromFloats( 1.0f, 1.0f, 1.0f, 1.0f ) );
+
+        Validate( IsEqualWithEpsilon( res, ref ) );
+
+        Soa4Float ref2( CreateSoa4Float( -1.0f, 5.0f, 0.0f, -5.0f ) );
+
+        Soa4Float b = Soa4FloatFromFloats( -15.0f, 15.0f, 0.0001f, -5.0001f );
+        Soa4Float res2 = Clamp( b, Soa4FloatFromFloats( -1.0f, 0.0f, -32.0f, -5.0f ), Soa4FloatFromFloats( 0.0f, 5.0f, 0.0f, 0.0f ) );
+
+        Validate( IsEqualWithEpsilon( res2, ref2 ) );
+      ]]>
+      </TEST>
+
+    </TYPE>
+
+    <TYPE NAME="performance">
+
+    </TYPE>
+
+  </TYPE>
+
+
+</CLASS>
+
+</TESTCLASS>

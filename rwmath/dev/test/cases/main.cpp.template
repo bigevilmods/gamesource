@@ -1,0 +1,276 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+// ***********************************************************************************************************
+// Purpose: rwmath unit test main entry
+// ***********************************************************************************************************
+
+// turn on assertions and alignment checks in debug builds of the tests.
+#if defined(RWDEBUG) || defined(EA_DEBUG)
+    #define RW_MATH_ENABLE_ASSERTS
+    #define RW_MATH_ENABLE_ALIGNMENT_CHECK_CONSTRUCTORS
+    #define RW_MATH_ENABLE_ALIGNMENT_CHECK_FUNCTIONS
+#endif
+
+#include "EABase/eabase.h"
+#include "EAStdC/EAMemory.h"
+
+#ifdef EA_PLATFORM_CTR
+    // Suppress diagnostic remark about 'class "<X>" has an implicitly instantiated key function'
+    #pragma diag_suppress 2819
+#endif
+
+#ifdef EA_COMPILER_MSVC
+// Disabled : warning C4985: 'ceil': attributes not present on previous declaration.
+#pragma warning(disable: 4985)
+#endif
+
+#if defined __SPU__
+    #include <spu_printf.h>
+
+    int EATestMain(int argc, char** argv);
+    int main()
+    {
+        EATestMain(0, 0);
+    }
+#else
+    #include "EATest/EATestMain.inl"
+    #include "EATest/EASTLNewOperatorGuard.inl"
+#endif
+
+#include "testconfig.h"
+
+#include "unittest.h"
+#include "testing_math.h"
+#include "unittest_output.h"
+#include "macros.h"
+
+#include <rw/math/random.h>
+#include <rw/math/types_fwd.h>
+
+#if defined GENERIC_TESTING
+    #include <rw/math/fpu/constants.h>
+#else
+    #include <rw/math/vpu/constants.h>
+#endif
+
+#include <rw/math/fpu/constants_operation.h>
+
+#ifdef EA_PLATFORM_WINDOWS
+#include <float.h>
+#pragma warning(push, 0)
+#include <windows.h>
+#pragma warning(pop)
+#endif
+
+#ifdef EA_PLATFORM_XENON
+#define NOD3D
+#define NONET
+#include <Xtl.h>
+#endif
+
+#if EA_PLATFORM_REVOLUTION
+// Increase the memory limit in Metrowerks compiler.  This allows the optimized unit tests to be built.
+#pragma ppc_opt_defuse_mem_limit 1024
+#endif
+
+#if defined(EA_PLATFORM_PS3)
+#include <sdk_version.h>
+#if CELL_SDK_VERSION >= 0x090000
+#include <cell/sysmodule.h>
+#endif
+#include "../spulauncher/spulauncher.h"
+#include <sys/paths.h>
+#endif
+
+// Enable simulated operations so that all VPL tests can be run for all platforms.
+#define RW_MATH_ENABLE_SIMULATED_VPL_OPERATIONS
+
+// math headers needed for tests
+//#BLOCK
+
+// Test class includes
+
+//#BLOCK
+
+#ifdef EA_PLATFORM_PS3
+// This function loads all required PRX files.
+int LoadRequiredModules()
+{
+	#if CELL_SDK_VERSION >= 0x090000
+	if (cellSysmoduleLoadModule(CELL_SYSMODULE_IO) > 0)
+	{
+		printf("CELL_SYSMODULE_IO load failed\n");
+		return -1;
+	}
+	if (cellSysmoduleLoadModule(CELL_SYSMODULE_FS) > 0)
+	{
+		printf("CELL_SYSMODULE_FS load failed\n");
+		return -1;
+	}
+    if (cellSysmoduleLoadModule(CELL_SYSMODULE_SHEAP) > 0)
+	{
+		printf("CELL_SYSMODULE_SHEAP load failed\n");
+		return -1;
+	}
+	if (cellSysmoduleLoadModule(CELL_SYSMODULE_SYNC) > 0)
+	{
+		printf("CELL_SYSMODULE_SYNC load failed\n");
+		return -1;
+	}
+	#endif
+    return 0;
+}
+#endif
+
+#ifdef EA_PLATFORM_PS3
+
+int ExecuteSPUTests(char *spuResponseFilename)
+{
+    // The first pass through the loop counts the number of arguments that are in the file.
+    // The second pass allocates that number of elements, and also executes the
+    // SPU tests using those arguments.
+    int result = -1;
+    int argc = 1;
+    for( int pass = 0; pass < 2; pass++ )
+    {
+        FILE *spuResponseFile = fopen(spuResponseFilename, "r");
+        if( !spuResponseFile )
+        {
+            printf("Unable to load spu response file '%s'.\n", spuResponseFilename );
+            return -1;
+        }
+        fseek( spuResponseFile, 0, SEEK_END );
+        size_t fileSize = ftell(spuResponseFile);
+        char *argumentBuffer = new char[fileSize];
+        fseek( spuResponseFile, 0, SEEK_SET );
+        fread( argumentBuffer, 1, fileSize, spuResponseFile );
+        fclose(spuResponseFile);
+
+        char whiteSpaceDelimiters[] = { ' ', 10, 13, 0 /*Null terminator*/ };
+
+        // Now break the file into an array of arguments.
+        char **argv = NULL;
+        char *curToken;
+        if( pass )
+        {
+            argv = new char * [argc];
+            argv[0] = "dummy_arg";
+        }
+        argc = 1;
+        for( curToken = strtok( argumentBuffer, whiteSpaceDelimiters ); curToken; curToken = strtok( NULL, whiteSpaceDelimiters ) )
+        {
+            if( pass )
+            {
+                argv[argc] = curToken;
+            }
+            argc++;
+        }
+
+        if( pass )
+        {
+            // Launch the SPUtests using the supplied arguments in the response file.
+            result = SPULauncher(argc, argv);
+        }
+        delete [] argumentBuffer;
+    }
+    return result;
+}
+#endif
+
+#if EA_PLATFORM_REVOLUTION
+// Metrowerk's runs out of memory trying to compile main if optimizations are enabled.
+#pragma optimization_level 0
+#endif
+
+int EATestMain(int argc, char** argv)
+{
+    UnitTestOutputManager& outputManager = UnitTestOutputManager::OpenInstance();
+
+#ifdef EA_PLATFORM_PS3
+    if( LoadRequiredModules() == -1 )
+    {
+        printf("Testing aborted!\n");
+        return -1;
+    }
+#endif
+
+#if defined __SPU__
+    outputManager.AddOutput("spuproxy");
+#else 
+    if(!outputManager.ParseCommandLineArguments(argc, argv))
+    {
+        // Unrecognized command line argument
+        printf("Unrecognized command line argument\n");
+        return 1;
+    }
+#endif
+
+#if EA_WINAPI_FAMILY_PARTITION(EA_WINAPI_PARTITION_DESKTOP)
+    // set to exclusive execution mode, minimal thread switching.
+    SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL);
+#endif
+
+    outputManager.OutputInitial();
+
+    // FPU test code will appear below
+
+#if defined(EA_PLATFORM_WINDOWS) && !defined(EA_PLATFORM_WIN64)
+    #define TEST_FPU_PRECISION_MODES
+#endif
+
+#ifdef TEST_FPU_PRECISION_MODES
+    // On the PC, the FPU may run with various precision modes.  This can
+    // actually affect the correctness of some operations if they assume a
+    // certain number of bits in the mantissa.  For example optimized Floor
+    // code may exploit the floating point number system to floor a number
+    // by forcing certain mantissa bits to be shifted out.
+    // These tests are necessary to ensure math operations work regardless
+    // of the fpu precision that is set.
+    unsigned int fpuPrecisionModesToTest[] =
+    {
+        _PC_24,
+        _PC_53,
+        _PC_64
+    };
+    const int NUM_PRECISION_MODES_TO_TEST = sizeof(fpuPrecisionModesToTest)/sizeof(fpuPrecisionModesToTest[0]);
+    for( int i = 0; i < NUM_PRECISION_MODES_TO_TEST; i++ )
+    {
+        // _controlfp is used to modify floating point precision.
+        // Other "control" functions are available, but they _controlfp is used for compatibility on VS7 and VS8.
+        _controlfp( fpuPrecisionModesToTest[i], MCW_PC );
+#endif
+        //#BLOCK
+#ifdef TEST_FPU_PRECISION_MODES
+    } // for( int i = 0; i < NUM_PRECISION_MODES_TO_TEST; i++ )
+#endif
+
+    // VPU test code will appear below
+
+    //#BLOCK
+
+    UnitTest::ShowFinalResult();
+    outputManager.OutputFinal();
+
+#ifdef EA_PLATFORM_PS3
+    char fullPath[2048];
+    sprintf(fullPath, "%s/%s", SYS_APP_HOME, "spu-response.cmd" );
+    ExecuteSPUTests(fullPath);
+#endif
+
+#if defined __SPU__
+    spu_exit();
+#endif
+
+    int resultCode = UnitTest::PassedAllTests() ? 0 : 1;
+
+#ifdef EA_PLATFORM_PS3
+    // resultCode must also depend on the SPU tests results.
+    resultCode |= HaveAllTestsPassed() ? 0 : 1;
+#endif
+
+    return resultCode;
+}
+
+

@@ -1,0 +1,132 @@
+/*!
+\page p_writing_soa4_code Writing SoA4 Code
+
+\section s_writing_soa4_intro Introduction
+
+This document is intended to give you an introduction to writing SoA4 math code.
+
+\section s_writing_soa4_determining_if_soa_is_the_right_choice Determining if SoA is the Right Choice
+
+Before writing SoA4 code, you should probably first decide if SoA is suitable
+for the problem you are trying to solve.  For example, will it be possible to
+operate on multiple elements simultaneously?  Operating on multiple elements in
+a single operation can be problematic if you could potentially follow a
+different code path for each element.
+
+There may also be costs involved in using SoA code.  For example it may be
+necessary to convert data to/from SoA in order to work with other systems.
+
+Some code may actually be very efficient using AoS and moving to SoA may not
+provide much benefit.  It may be a good idea to examine the types of operations
+that your code is performing to see if using SoA will make an improvement.  It
+may be just as effective to execute multiple AoS operations that are interleaved
+instead of converting to SoA.  Some experience and experimentation may be required
+to determine what types of calculations will execute faster when SoA is used.
+
+Finally, if your code does not need to be high performance writing it using SoA
+types may be more difficult for little benefit.
+
+On the other hand, for performance critical applications SoA coding may be
+a signifant win.
+
+\section s_writing_soa4_data_layout Data Layout
+
+Note: These examples refer to some SoA4 types that have been planned but not yet created/released.
+ 
+Before you can operate on SoA data, it must be in an SoA format.  However that
+doesn't necessarily mean your input/output must be in SoA form.  In some situations
+it may be desirable to convert to/from SoA on the fly.  For example you could construct
+SoA types from AoS input data.  After the calculation(s) are performed, the data can be
+converted back to AoS.
+
+Example:
+\code
+    // input and output are pointers to Vector4's
+
+    // Convert to SoA
+    Soa4Vector3 soaInput( Soa4Vector3FromVector3( input[0], input[1], input[2], input[3] ) );
+    // Perform some SoA calculations (e.g. Normalize the input data)
+    Soa4Vector3 soaOutput = Normalize( soaInput );
+    // Convert to AoS
+    Vector3FromSoa4Vector3( soa4Output, output[0], output[1], output[2], output[3] );
+\endcode
+
+Another option is to store input/output data in SoA4 format:
+\code
+    // input and output are pointers to Soa4Vector4's
+
+    for(int i=0;i<numQuads;i++)
+    {
+        output[i] = Normalize( input[i] );
+    }
+\endcode
+
+Another option is to store the data in "pure" SoA form.  i.e. contiguous arrays for each element.  Assuming you can
+work in multiples of 4 and the arrays are 16-byte aligned you can use VectorIntrinsics's as the array type.
+
+\code
+    // floatX, floatY, floatZ, floatW, floatOutX, floatOutY, floatOutZ, floatOutW are 16-byte aligned single precision float arrays
+    VectorIntrinsic* inX = reinterpret_cast<VectorIntrinsic*>( floatX );
+    VectorIntrinsic* inY = reinterpret_cast<VectorIntrinsic*>( floatY );
+    VectorIntrinsic* inZ = reinterpret_cast<VectorIntrinsic*>( floatZ );
+    VectorIntrinsic* inW = reinterpret_cast<VectorIntrinsic*>( floatW );
+
+    VectorIntrinsic* outX = reinterpret_cast<VectorIntrinsic*>( floatOutX );
+    VectorIntrinsic* outY = reinterpret_cast<VectorIntrinsic*>( floatOutY );
+    VectorIntrinsic* outZ = reinterpret_cast<VectorIntrinsic*>( floatOutZ );
+    VectorIntrinsic* outW = reinterpret_cast<VectorIntrinsic*>( floatOutW );
+
+    int numberOfSoaElements = numberOfElements / 4;
+
+    for( int i=0; i < numberOfSoaElements; i++ )
+    {
+        Soa4Vector4 soaInput( inX[i], inY[i], inZ[i], inW[i] );
+        Soa4Vector4 soaOutput = Normalize( soaInput );
+        outX[i] = soaOutput.x;
+        outY[i] = soaOutput.y;
+        outZ[i] = soaOutput.z;
+        outW[i] = soaOutput.w;
+    }
+\endcode
+This memory layout may be more cache efficient if some elements of a
+vector/structure are never accessed.  However if all data in a structure is
+used, then using an SoA4 format would be more cache efficient because it would
+use less "ways" in the data cache.
+
+\section s_writing_soa4_aos_to_soa_calculations AoS to SoA Calculations
+
+Converting calculations to SoA is actually extremely easy.  The SoA4 math types
+have overloaded all the standard math operations.  So converting from AoS
+calculations to SoA calculations is as easy as changing your types to SoA types
+and converting any math function calls into equivalent RWMath function calls.
+
+\section s_writing_soa4_handling_branches Handling Branches
+
+In my opinion, braches represent the largest barrier to writing SoA code.  A
+branch in scalar code introduces a change in program flow that can vary
+each time through the branch.  This presents a problem for SoA calculations
+since a single SoA operation is doing many smaller operations in parallel.
+That means all those parallel operations must have the same program flow.
+
+So even though AoS calculations can be easily converted to SoA calculations,
+converting an entire code snippet to SoA can be made very difficult by
+branches in the code.
+
+The best approach is generally going to be switching branch free code.  RWMath
+provides comparison and select operations for writing branch free code.  See
+\ref p_branch_free_coding for more details.
+
+Other options exist.  For example if all 4 items in an SoA4 type generally
+branch the same way, you could use branches when all the branch conditions
+match.  In the case where those conditions don't match you could fall back to
+branching code that individually handles each item in the SoA4 structure.
+However, this will be inefficient in most cases.  If your code can't be made
+branch free it may be a good idea to stick with AoS code.  The most common case
+where a branch may be useful for SoA code is when you can perform an "early
+out" (e.g. for an intersection test) and there is a high probability that all
+items in the SoA4 object generally early out together.  \ref p_mandelbrot_example
+provides an example of where a loop can exit early if all 4 pixels in the loop
+fail a loop condition.
+
+
+*/

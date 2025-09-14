@@ -1,0 +1,24 @@
+/*!
+\page p_printf Printf
+
+If you try to use printf (or a similar function like snprintf) and pass vector components like so...
+\code
+	printf("(%f,%f,%f)", v.X(), v.Y(), v.Z());
+\endcode
+...you will most likely get unexpected results as you are relying on undefined behavior. The printf family of functions uses C-style
+elipses (...) to pass a variable number of arguments around. The problem is that this only works for plain old datatypes (PODs) like integers, floats
+and pointers.
+
+Unfortunately, because of \ref p_scalar_access "hardware restrictions", component access on a vector returns a proxy object rather than a
+float (as explained \ref p_accessors "here"). These proxy objects aren't PODs and won't work properly with the elipses.
+
+The solution is to make sure we pass PODs to printf by doing the following...
+\code
+    printf("(%f,%f,%f)", GetFloat(v.X()), GetFloat(v.Y()), GetFloat(v.Z()));
+\endcode
+
+The reason we're using the free function of rw::math::vpu::GetFloat rather than the member function (doing v.X().GetFloat()) is that the free
+function works even when component access does return a float (like in the FPU library or on a tweaked VPU library). The free function always works,
+the member functions only works sometimes. This is also explained in the section on \ref p_vec_float "VecFloat".
+
+*/

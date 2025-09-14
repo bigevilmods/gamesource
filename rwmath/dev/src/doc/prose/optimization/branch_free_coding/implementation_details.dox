@@ -1,0 +1,53 @@
+/*!
+\page p_implementation_details Implementation Details
+
+\par Introduction
+
+Although it is not necessary to understand the implementation of the Mask
+types, it is useful to know from a performance standpoint.  Knowing how
+the mask types are implemented will help you determine when to use the
+Mask type.
+
+\par Xenon / PS3 PPU
+
+The FPU implementation of masks, uses \c fsel to implement selects.
+
+The VPU implementaiton of masks, uses \c vsel to select between vectors.
+
+\par SPU
+
+The FPU implementation of masks \e simulates an \c fsel for single precision
+floating point values using vector intrinsics.  In fact, it tries to simulate
+the exact semantics of the \c fsel instruction, so it is still a boolean (not
+bitwise) operation.  Double precision float masks fall back to using branches
+(at the moment), but this could be optimized in the future.
+
+The VPU implementation of masks uses a vector select.
+
+\par x86
+
+The FPU implementation of masks currently uses branching code to simulate an \c
+fsel.  So the PC does not execute branch free code on the FPU.  It may be possible
+to optimize this code in the future, but most PC architectures already handle branches
+fairly efficiently (relative to other architectures).  The FPU implementation
+of masks on the PC essentially exists for compatibility with the other
+platforms.
+
+The VPU implementation of masks is implemented using a series of SSE instructions to
+simulate a vector select.  This sequence is actually quite high performance even though
+SSE lacks a single instruction to perform a select.
+
+\par Conclusions
+
+For optimal code on the PC, you should carefully examine the use of FPU masks.
+FPU masks may be slower than just writing standard branching code.  In fact,
+because all modern x86 processors support out of order execution, code should
+be profiled to ensure branch free coding is more efficient than the equivalent
+branching code.
+
+On the SPU, the FPU Mask is implemented quite efficiently and branch free code
+using FPU Masks should be considerably faster than equivalent branching code.
+However, the VPU mask support will no doubt be much faster.  Since vectors are
+the native data type of the SPU, it is preferrable to use VPU math types.
+
+*/

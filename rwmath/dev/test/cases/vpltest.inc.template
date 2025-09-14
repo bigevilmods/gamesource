@@ -1,0 +1,152 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+UnitTestVPL::UnitTestVPL()
+{
+	for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_array_1[i] = CreateVectorIntrinsic(
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30)
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_array_2[i] = CreateVectorIntrinsic(
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30),
+            (float)rw::math::Random() / (float)(rw::math::Random() % 30)
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_int_array[i] = CreateVectorIntrinsicSignedInt(
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_int_array_2[i] = CreateVectorIntrinsicSignedInt(
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random(),
+            (signed int)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_uint_array[i] = CreateVectorIntrinsic(
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_uint_array_2[i] = CreateVectorIntrinsic(
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random(),
+            (unsigned int)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_ushort_array[i] = CreateVectorIntrinsic(
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_ushort_array_2[i] = CreateVectorIntrinsic(
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random(),
+            (unsigned short)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_uchar_array[i] = CreateVectorIntrinsic(
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random()
+            );
+    }
+    
+    for (int i = 0; i < testing::RW_MATH_UNITTEST_TEST_VECTOR_ARRAY_SIZE; i++)
+    {
+        vecintrinsic_uchar_array_2[i] = CreateVectorIntrinsic(
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random(),
+            (unsigned char)rw::math::Random()
+            );
+    }
+    
+}
+
+UnitTestVPL::~UnitTestVPL()
+{
+
+}
+
+void UnitTestVPL::Test()
+{
+
+}
+
+//#BLOCK
+

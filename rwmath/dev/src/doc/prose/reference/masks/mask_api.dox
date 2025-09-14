@@ -1,0 +1,48 @@
+/*!
+\page p_mask_api Mask APIs
+
+\section s_mask_api_rationale Rationale
+
+C++ already has well known mechanisms for handling conditions.  For example
+'if' statements, the ternary operator, and short circuit operators like '&&'.
+So, why introduce a new mask API for writing conditional code?
+
+The only reason is performance.  The Mask API lets you write branch free code
+that is generally much faster (depending on the exact situation) than traditional
+branching code on next gen hardware.
+
+\section s_mask_api_intended_usage Intended Usage
+
+The goal of the mask API is to avoid branches.
+
+This is accomplished by first generating a mask based on a comparison that
+generates a mask.  For high performance the mask should be generated directly
+by the mask API.  (For example, you should \em not generate a mask from an
+expression that generates a \c bool.)  If your condition is complex, Mask operations such as \c
+And or \c Or can be used to build a single mask from other masks.
+
+Once a mask has been generated it can be used with a \c Select function to choose
+between one of two values.  The two values roughly correspond to the value of 
+the 'true' and 'false' clauses of a traditional if statement.
+It may be tempting to convert the mask to a \c bool and perform a branch, but
+this defeats the purpose of the mask API.  If you need to perform a branch based
+on a mask, you should probably re-examine whether or not the mask API should be
+used in this situation.
+
+\section s_mask_api Special Use Cases
+
+\em Sometimes it may make sense to use the mask API even when a branch is
+required.  For example, if a boolean expression is extremely complicated it
+may be faster to evaluate the expression using the mask API than using
+traditional C++ code.  However, it would probably be a good idea to time
+
+\section s_mask_api_bool_operations Bool Operations
+
+You may wonder why the Mask API has methods for converting a mask to a bool, or
+creating a mask from a bool.  Typically these operations are useful for
+debugging purposes.  For example you may want to print out whether or not a
+mask is true or false.  Generally speaking \c bool conversions and operations
+should not be used.  However there are exceptions to every rule.
+
+
+*/

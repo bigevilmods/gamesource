@@ -1,0 +1,38 @@
+// (c) Electronic Arts. All Rights Reserved.
+//#BLOCK
+// (c) Electronic Arts. All Rights Reserved.
+
+
+#ifdef GENERIC_TESTING
+template<class FloatType>
+#endif
+class UnitTestVectorIntrinsic :
+    public UnitTest
+{
+public:
+    union VectorIntrinsicUnion
+    {
+        uint32_t  scalarUInt[4];
+        float scalarFloat[4];
+        VectorIntrinsic vector;
+    };
+
+#include "testing_util.inl"
+
+    UnitTestVectorIntrinsic();
+    virtual ~UnitTestVectorIntrinsic();
+    void Test();
+     
+//#BLOCK
+
+private:
+
+#ifdef HOST_TESTING
+    rw::math::vpu::VectorIntrinsic CreateVectorIntrinsic(float x, float y, float z, float w);
+#endif
+
+
+};
+
+
+

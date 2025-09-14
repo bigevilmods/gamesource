@@ -1,0 +1,16 @@
+/*!
+\page p_vpl_header_structure VPL Header Structure
+
+By default, including \c rw/math/math.h will automatically include the VPL.
+For course, this also includes that math library.  If you would like to improve
+build times, you can include other headers provided for the VPL.
+
+\c rw/math/vpl.h - Includes all of the VPL (but doesn't include the rest of math).
+
+\c rw/math/vpl/float_operation.h - Includes floating point (both \c float and \c double) operations only.
+
+\c rw/math/vpl/vec_operation.h - Includes vector intrinsic operations only.
+
+\c rw/math/vpl/mem_operation.h - Includes memory operations only (e.g. memory prefetching).
+
+*/
